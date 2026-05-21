@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import polars as pl
-import pytest
 
 from warehouse_humanoid_tco.features.extraction import (
     compute_cycle_time,

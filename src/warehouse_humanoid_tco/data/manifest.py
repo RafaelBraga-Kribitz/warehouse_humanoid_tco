@@ -7,7 +7,7 @@ See PROJECT_CHARTER.md §6.2 Data Storage Layout.
 from __future__ import annotations
 
 import hashlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -44,7 +44,7 @@ def record_artifact(
         "pipeline_version": pipeline_version,
         "source_revision_sha": source_revision_sha,
         "produced_by": produced_by,
-        "run_timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "run_timestamp_utc": datetime.now(UTC).isoformat(),
         "sha256": _sha256(artifact_path),
     }
 

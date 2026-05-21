@@ -85,9 +85,11 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(10, 6))
     scenarios = sim_summary["scenario_id"].to_list()
     means = sim_summary["mean_throughput"].to_list()
-    stds = sim_summary["std_throughput"].to_list()
+    # Replace None std (single-run scenarios) with 0.0 to avoid matplotlib error
+    stds = [s if s is not None else 0.0 for s in sim_summary["std_throughput"].to_list()]
     x = range(len(scenarios))
-    ax.bar(x, means, yerr=stds, capsize=5, color="#9b59b6", alpha=0.7)
+    error_bars = stds if any(s > 0 for s in stds) else None
+    ax.bar(x, means, yerr=error_bars, capsize=5, color="#9b59b6", alpha=0.7)
     ax.set_xticks(x)
     ax.set_xticklabels(scenarios, rotation=45, ha="right")
     ax.set_ylabel("Orders per 8-hour Shift")
@@ -136,7 +138,7 @@ def module_04_main(
         json.dump(validation_report, f, indent=2)
 
     print(f"[Validation] Report: {report_path}")
-    print(f"\n✓ Module 4 complete.")
+    print("\n✓ Module 4 complete.")
     print(f"  Tableau exports: {tableau_dir}")
     print(f"  Executive charts: {charts_dir}")
 

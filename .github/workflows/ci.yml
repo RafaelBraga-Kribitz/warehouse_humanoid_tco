@@ -38,3 +38,12 @@ jobs:
         run: uv pip install -e ".[dev]" --system
       - name: Run tests
         run: pytest tests/ -v --tb=short
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -f docker/Dockerfile -t warehouse-humanoid-tco:test .
+      - name: Smoke test in container
+        run: docker run --rm warehouse-humanoid-tco:test python -c "import warehouse_humanoid_tco; print('ok')"

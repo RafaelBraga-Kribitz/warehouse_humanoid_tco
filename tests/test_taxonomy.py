@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from warehouse_humanoid_tco.data.enums import TaskCategory
 from warehouse_humanoid_tco.features.taxonomy import classify_task, needs_manual_review
 

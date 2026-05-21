@@ -1,0 +1,6 @@
+{
+  "phase": "module_03_tco",
+  "scenarios_analyzed": 5,
+  "discount_rate": 0.08,
+  "tco_scenarios_path": "test_project/data/processed/tco_scenarios.parquet"
+}

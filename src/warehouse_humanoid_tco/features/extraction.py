@@ -7,6 +7,7 @@ See PROJECT_CHARTER.md §4 Module 1, Steps 6-7.
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -15,12 +16,14 @@ import polars as pl
 
 from warehouse_humanoid_tco.features.parsers import (
     infer_dataset_type,
-    load_wbt_episodes_jsonl,
-    load_wbt_parquets,
     load_diversemanip_episodes_jsonl,
     load_diversemanip_parquets,
+    load_wbt_episodes_jsonl,
+    load_wbt_parquets,
     resolve_nested_dataset,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def compute_cycle_time(df: pl.DataFrame, fps: float) -> float:
@@ -136,7 +139,8 @@ def extract_dataset_episodes(
             feature_row["task_description"] = meta.get("task", "")
 
             features.append(feature_row)
-        except Exception:
+        except Exception as e:
+            logger.warning(f"Failed to extract features for episode {episode_id}: {e}")
             continue
 
     return pl.DataFrame(features)

@@ -39,10 +39,9 @@ def generate_profile_notebook(
     # === RAW DATASETS SECTION ===
     nb.cells.append(nbf.v4.new_markdown_cell("## Raw Datasets (De-Risk Validation)"))
 
-    derisk_data = {}
     if derisk_report.exists():
         with open(derisk_report) as f:
-            derisk_data = json.load(f)
+            _derisk_data = json.load(f)  # noqa: F841
 
     # Add de-risk summary as code cell
     nb.cells.append(nbf.v4.new_code_cell(
@@ -61,7 +60,10 @@ def generate_profile_notebook(
 
         # Schema
         nb.cells.append(nbf.v4.new_markdown_cell("### Schema"))
-        schema_md = "| Column | Type | Non-Null | Example |\n|--------|------|----------|----------|\n"
+        schema_md = (
+            "| Column | Type | Non-Null | Example |\n"
+            "|--------|------|----------|----------|\n"
+        )
         for col in summary_df.columns:
             dtype = summary_df.schema[col]
             non_null = summary_df[col].null_count() == 0

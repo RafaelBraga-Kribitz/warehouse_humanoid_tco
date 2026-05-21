@@ -1,0 +1,160 @@
+. venv/bin/activate && python -m warehouse_humanoid_tco.pipelines.module_01_capability_extraction
+
+[Phase 1] Extracting unitreerobotics/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly...
+  Downloading to /Users/rbk/warehouse_humanoid_tco/data/raw/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly...
+Fetching 34 files:   0%|          | 0/34 [00:00<?, ?it/s]Fetching 34 files:  62%|██████▏   | 21/34 [00:00<00:00, 206.56it/s]Fetching 34 files: 100%|██████████| 34/34 [00:00<00:00, 276.05it/s]
+  Extracting features...
+  ✓ 609 episodes extracted
+
+[Phase 1] Extracting unitreerobotics/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly...
+  Downloading to /Users/rbk/warehouse_humanoid_tco/data/raw/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly...
+Fetching 24 files:   0%|          | 0/24 [00:00<?, ?it/s]Fetching 24 files: 100%|██████████| 24/24 [00:00<00:00, 327.89it/s]
+  Extracting features...
+  ✓ 457 episodes extracted
+
+[Phase 1] Extracting unitreerobotics/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher...
+  Downloading to /Users/rbk/warehouse_humanoid_tco/data/raw/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher...
+Fetching 114 files:   0%|          | 0/114 [00:00<?, ?it/s]Fetching 114 files:  30%|██▉       | 34/114 [00:00<00:00, 337.78it/s]Fetching 114 files:  60%|█████▉    | 68/114 [00:00<00:00, 189.33it/s]Fetching 114 files:  93%|█████████▎| 106/114 [00:00<00:00, 248.67it/s]Fetching 114 files: 100%|██████████| 114/114 [00:00<00:00, 253.95it/s]
+  Extracting features...
+  ✓ 300 episodes extracted
+
+[Phase 2] Extracting unitreerobotics/G1_Dex1_DiverseManip_SingleArm_256x256...
+  Downloading to /Users/rbk/warehouse_humanoid_tco/data/raw/G1_Dex1_DiverseManip_SingleArm_256x256...
+Fetching 15 files:   0%|          | 0/15 [00:00<?, ?it/s]Fetching 15 files: 100%|██████████| 15/15 [00:00<00:00, 359.38it/s]
+  Extracting features...
+  ✓ 468 episodes extracted
+
+[Phase 2] Extracting unitreerobotics/G1_Dex1_DiverseManip_DualArm_256x256...
+  Downloading to /Users/rbk/warehouse_humanoid_tco/data/raw/G1_Dex1_DiverseManip_DualArm_256x256...
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Fetching 17 files: 100%|██████████| 17/17 [00:00<00:00, 339.59it/s]
+  Extracting features...
+  ✓ 525 episodes extracted
+
+[Classification] Mapping task descriptions to taxonomy...
+[Aggregation] Computing summary statistics per task category...
+[Export] Writing parquets...
+  ✓ /Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_per_episode.parquet
+  ✓ /Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_summary.parquet
+
+✓ Module 1 complete. 2359 episodes, 1 task categories.
+  Report: /Users/rbk/warehouse_humanoid_tco/reports/module_01_capability_extraction_report.json
+
+✓ Success. Outputs: {'per_episode': PosixPath('/Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_per_episode.parquet'), 'summary': PosixPath('/Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_summary.parquet'), 'validation_report': PosixPath('/Users/rbk/warehouse_humanoid_tco/reports/module_01_capability_extraction_report.json')}
+. venv/bin/activate && python -m warehouse_humanoid_tco.pipelines.module_02_simulation
+[Setup] Loading config from /Users/rbk/warehouse_humanoid_tco/config/autostore_baseline.yaml...
+[Setup] Loading humanoid capabilities from /Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_summary.parquet...
+  ✓ Loaded capability summary for 1 task categories
+  Using humanoid cycle time: 61.4±41.8s
+
+[Scenario] S-baseline-human
+  Composition: 100.0% human, 0.0% humanoid, 0.0% AMR
+  Running 15 simulation(s)...
+    Run 0: 930 orders/shift, queue=0.0
+    Run 1: 979 orders/shift, queue=0.0
+    Run 2: 964 orders/shift, queue=0.0
+    Run 3: 946 orders/shift, queue=0.0
+    Run 4: 1020 orders/shift, queue=0.0
+    Run 5: 887 orders/shift, queue=0.0
+    Run 6: 1004 orders/shift, queue=0.0
+    Run 7: 986 orders/shift, queue=0.0
+    Run 8: 963 orders/shift, queue=0.0
+    Run 9: 975 orders/shift, queue=0.0
+    Run 10: 1016 orders/shift, queue=0.0
+    Run 11: 982 orders/shift, queue=0.0
+    Run 12: 941 orders/shift, queue=0.0
+    Run 13: 870 orders/shift, queue=0.0
+    Run 14: 928 orders/shift, queue=0.0
+
+[Scenario] S-pure-humanoid
+  Composition: 0.0% human, 100.0% humanoid, 0.0% AMR
+  Running 15 simulation(s)...
+    Run 0: 929 orders/shift, queue=0.0
+    Run 1: 977 orders/shift, queue=0.0
+    Run 2: 963 orders/shift, queue=0.0
+    Run 3: 945 orders/shift, queue=0.0
+    Run 4: 1018 orders/shift, queue=0.0
+    Run 5: 887 orders/shift, queue=0.0
+    Run 6: 1005 orders/shift, queue=0.0
+    Run 7: 986 orders/shift, queue=0.0
+    Run 8: 963 orders/shift, queue=0.0
+    Run 9: 973 orders/shift, queue=0.0
+    Run 10: 1016 orders/shift, queue=0.0
+    Run 11: 980 orders/shift, queue=0.0
+    Run 12: 941 orders/shift, queue=0.0
+    Run 13: 869 orders/shift, queue=0.0
+    Run 14: 926 orders/shift, queue=0.0
+
+[Scenario] S-hybrid-5050
+  Composition: 50.0% human, 50.0% humanoid, 0.0% AMR
+  Running 15 simulation(s)...
+    Run 0: 927 orders/shift, queue=0.0
+    Run 1: 979 orders/shift, queue=0.0
+    Run 2: 962 orders/shift, queue=0.0
+    Run 3: 946 orders/shift, queue=0.0
+    Run 4: 1018 orders/shift, queue=0.0
+    Run 5: 889 orders/shift, queue=0.0
+    Run 6: 1005 orders/shift, queue=0.0
+    Run 7: 986 orders/shift, queue=0.0
+    Run 8: 963 orders/shift, queue=0.0
+    Run 9: 974 orders/shift, queue=0.0
+    Run 10: 1016 orders/shift, queue=0.0
+    Run 11: 982 orders/shift, queue=0.0
+    Run 12: 943 orders/shift, queue=0.0
+    Run 13: 870 orders/shift, queue=0.0
+    Run 14: 928 orders/shift, queue=0.0
+
+[Scenario] S-hybrid-amr
+  Composition: 60.0% human, 20.0% humanoid, 20.0% AMR
+  Running 15 simulation(s)...
+    Run 0: 927 orders/shift, queue=0.0
+    Run 1: 979 orders/shift, queue=0.0
+    Run 2: 962 orders/shift, queue=0.0
+    Run 3: 946 orders/shift, queue=0.0
+    Run 4: 1018 orders/shift, queue=0.0
+    Run 5: 889 orders/shift, queue=0.0
+    Run 6: 1005 orders/shift, queue=0.0
+    Run 7: 986 orders/shift, queue=0.0
+    Run 8: 963 orders/shift, queue=0.0
+    Run 9: 974 orders/shift, queue=0.0
+    Run 10: 1016 orders/shift, queue=0.0
+    Run 11: 982 orders/shift, queue=0.0
+    Run 12: 943 orders/shift, queue=0.0
+    Run 13: 870 orders/shift, queue=0.0
+    Run 14: 928 orders/shift, queue=0.0
+
+[Scenario] S-future-2028
+  Composition: 50.0% human, 50.0% humanoid, 0.0% AMR
+  Running 15 simulation(s)...
+    Run 0: 927 orders/shift, queue=0.0
+    Run 1: 979 orders/shift, queue=0.0
+    Run 2: 962 orders/shift, queue=0.0
+    Run 3: 946 orders/shift, queue=0.0
+    Run 4: 1018 orders/shift, queue=0.0
+    Run 5: 889 orders/shift, queue=0.0
+    Run 6: 1005 orders/shift, queue=0.0
+    Run 7: 986 orders/shift, queue=0.0
+    Run 8: 963 orders/shift, queue=0.0
+    Run 9: 974 orders/shift, queue=0.0
+    Run 10: 1016 orders/shift, queue=0.0
+    Run 11: 982 orders/shift, queue=0.0
+    Run 12: 943 orders/shift, queue=0.0
+    Run 13: 870 orders/shift, queue=0.0
+    Run 14: 928 orders/shift, queue=0.0
+
+[Export] Writing parquets...
+  ✓ /Users/rbk/warehouse_humanoid_tco/data/processed/simulation_runs.parquet
+
+✓ Module 2 complete. 75 runs across 5 scenarios.
+  Report: /Users/rbk/warehouse_humanoid_tco/reports/module_02_simulation_report.json
+
+✓ Success. Outputs: {'simulation_runs': PosixPath('/Users/rbk/warehouse_humanoid_tco/data/processed/simulation_runs.parquet'), 'validation_report': PosixPath('/Users/rbk/warehouse_humanoid_tco/reports/module_02_simulation_report.json')}
+. venv/bin/activate && python -m warehouse_humanoid_tco.pipelines.module_03_tco
+
+✗ Failed: Series.mean() got an unexpected keyword argument 'axis'
+[Setup] Loading simulation runs from /Users/rbk/warehouse_humanoid_tco/data/processed/simulation_runs.parquet...
+  ✓ Loaded 75 simulation runs
+[Setup] Loading TCO assumptions from /Users/rbk/warehouse_humanoid_tco/config/tco_assumptions.yaml...
+  ✓ Loaded assumptions
+
+[TCO] Computing financial metrics per scenario...
+make: *** [module-03] Error 1

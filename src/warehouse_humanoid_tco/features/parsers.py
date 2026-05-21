@@ -7,10 +7,13 @@ DiverseManip: standard LeRobot V2.0+ structure (meta/, data/, videos/)
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
 import polars as pl
+
+logger = logging.getLogger(__name__)
 
 
 def resolve_nested_dataset(dataset_path: Path) -> Path:
@@ -99,7 +102,8 @@ def load_wbt_parquets(dataset_path: Path) -> dict[int, pl.DataFrame]:
         try:
             df = pl.read_parquet(parquet_file)
             all_frames.append(df)
-        except Exception:
+        except Exception as e:
+            logger.warning(f"Failed to read parquet {parquet_file}: {e}")
             continue
 
     if not all_frames:
@@ -124,7 +128,8 @@ def load_wbt_parquets(dataset_path: Path) -> dict[int, pl.DataFrame]:
                 except (ValueError, IndexError):
                     episode_id = idx
                 episode_dfs[episode_id] = df
-            except Exception:
+            except Exception as e:
+                logger.warning(f"Failed to process episode from {parquet_file}: {e}")
                 continue
 
     if not episode_dfs:
@@ -161,7 +166,8 @@ def load_diversemanip_parquets(dataset_path: Path) -> dict[int, pl.DataFrame]:
             df = pl.read_parquet(parquet_file)
             episode_id = int(parquet_file.stem.split("_")[-1])
             episode_dfs[episode_id] = df
-        except Exception:
+        except Exception as e:
+            logger.warning(f"Failed to load parquet {parquet_file}: {e}")
             continue
 
     if not episode_dfs:

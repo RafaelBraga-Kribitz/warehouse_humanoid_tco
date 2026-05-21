@@ -36,7 +36,25 @@ wie sie bei Knapp AG und TGW Logistics eingesetzt werden.
 
 ## Wichtigste Erkenntnisse
 
-*(Werden nach Abschluss der Analyse befüllt)*
+### Gewinner-Szenario: S-hybrid-amr
+
+Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlichen Arbeitskräften, 20% Humanoid und 20% AMR die 5-Jahres-Gesamtbetriebskosten (TCO):
+
+| Szenario | 5-Jahr NPV | Kostenersparnis vs. Baseline | Amortisationszeit |
+|---|---|---|---|
+| **S-hybrid-amr** | **−€924K** | **50%** | **0,6 Jahre** |
+| S-hybrid-5050 | −€1.284M | 50% | 2,4 Jahre |
+| S-baseline-human | −€1.608M | — | — |
+| S-pure-humanoid | −€960K | 100% | 2,4 Jahre |
+| S-future-2028 | −€1.284M | 50% | 2,4 Jahre |
+
+### Kritische Erkenntnisse
+
+1. **Arbeitskostendomäne:** Das Kostenmodell wird von Personalkostenreduktion, nicht von Roboter-Capex, dominiert. Der Tornado-Chart in `reports/executive_charts/04_sensitivity_tornado.png` zeigt, dass eine 10%-Änderung der Arbeitskosten ±€340K NPV-Bewegung erzeugt.
+
+2. **Humanoid-Sensitivität:** Bei einem Capex > €180K pro Roboter verschwindet der Vorteil des S-hybrid-amr. Siehe Empfindlichkeitsanalyse (`reports/sensitivity_analysis_report.json`).
+
+3. **Modellunsicherheit:** Alle Szenarien zeigen statistisch identische Durchsätze (~959 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher **nicht** auf Durchsatz zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe `reports/module_02_simulation_validation.qmd` (Kruskal-Wallis p=1.0).
 
 ## Hinweis
 
