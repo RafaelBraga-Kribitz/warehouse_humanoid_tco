@@ -60,7 +60,7 @@ SSOT_METADATA_END -->
 | Primary goal | Build a recruiter-ready DA/BI portfolio piece for Austrian industrial employers (Knapp AG, TGW Logistics, Magna Steyr) |
 | Secondary goal | Produce a reproducible analytical framework for humanoid robot TCO that has analytical value beyond the portfolio |
 | Time budget | 8 to 10 weeks part-time |
-| Status | Draft, Module 0 (de-risk) in progress |
+| Status | v1.0 complete. All 4 modules shipped with real data (2,359 episodes). Tableau Public publication and external outreach pending. |
 | Repo structure | See SRS §8 |
 
 ---
@@ -755,6 +755,7 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 | Date | Version | Change | ADR(s) |
 |---|---|---|---|
+| 2026-05-21 | 1.1.0 | All P0–P3 audit items resolved. Linting cleaned (ruff compliance across all modules, 33 errors fixed). Import sorting fixed. Logging added to exception handlers. Line length constraints enforced. pyproject.toml per-file-ignores configured. Clone URL placeholder fixed in README. Charter Quick Facts updated to v1.0 complete. All 26 commits have descriptive, scope-prefixed messages. | — |
 | 2026-05-21 | 1.0.6 | Audit remediation phase 2: added §7.7 bibliography (7 peer-reviewed + public sources grounding assumptions); updated module_02_simulation_validation.qmd with Kruskal-Wallis test (p=1.0, scenarios indistinguishable) + Knapp benchmark validation (S-baseline = 959.4 ± 43.4 orders/shift, -0.06% deviation, PASS); added reproducibility badge to README; fixed README badge format (CI + reproducibility); expanded CHANGELOG to show dev progression; verified .github/workflows/reproducibility.yml scheduled correctly (Mondays 07:00 UTC). Test suite now 108 tests across 6 files, 70.5% coverage. | — |
 | 2026-05-21 | 1.0.5 | Full audit remediation: added §3.7 limitations table; updated hypothesis status (H1–H4) with confirmed/rejected/inconclusive; added OAT tornado chart; fixed payback and IRR calculation; added transfer factor and operational realism to config; added ADR-0005 and ADR-0006; added data lineage diagram; added Docker CI job; uv.lock committed; README humanized with "Why this project" and decision-language results. | ADR-0005, ADR-0006 |
 | 2026-05-21 | 1.0.4 | Monte Carlo sensitivity analysis (10,000 samples) complete. NPV P50 = €-1,084,673 ± €414K. OAT 5-parameter sweep complete. Sensitivity report in `reports/sensitivity_analysis_report.json`. | — |

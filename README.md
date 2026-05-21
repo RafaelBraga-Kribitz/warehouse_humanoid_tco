@@ -17,7 +17,7 @@ Extracts humanoid robot task capabilities from the open Unitree UnifoLM-WBT data
 
 ```bash
 # Clone
-git clone <repo-url>
+git clone https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco.git
 cd warehouse_humanoid_tco
 
 # Install dependencies (one-time)
