@@ -75,16 +75,14 @@ all: module-01 module-02 module-03 module-04
 # ── Analysis & Profiling ──────────────────────────────────────────────────────
 
 profile:
-	$(VENV) python << 'EOF'
-from pathlib import Path
-from warehouse_humanoid_tco.analysis.profile_outputs import generate_profile_notebook
-project_root = Path(".")
-generate_profile_notebook(
-    project_root / "data" / "processed",
-    project_root / "reports" / "derisk_inspection_report.json",
-    project_root / "notebooks" / "01_data_profile_summary.ipynb"
-)
-EOF
+	$(VENV) python -c "\
+from pathlib import Path; \
+from warehouse_humanoid_tco.analysis.profile_outputs import generate_profile_notebook; \
+generate_profile_notebook(\
+    Path('data/processed'),\
+    Path('reports/derisk_inspection_report.json'),\
+    Path('notebooks/01_data_profile_summary.ipynb')\
+)"
 
 dashboards: module-01 module-02 module-03 module-04
 	@echo "✓ Dashboard data ready"
