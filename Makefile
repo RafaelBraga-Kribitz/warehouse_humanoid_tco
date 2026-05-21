@@ -50,7 +50,7 @@ format:
 	$(VENV) ruff check --fix src/ tests/
 
 test:
-	$(VENV) pytest tests/ -v --tb=short 2>/dev/null || echo "No tests yet"
+	$(VENV) pytest tests/ -v --tb=short
 
 ci-local: lint test
 	@echo "✓ Local CI checks passed"

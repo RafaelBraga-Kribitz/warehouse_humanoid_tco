@@ -164,7 +164,6 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters at TGW Logistics | Primary audience for portfolio | Targeted via LinkedIn post + repo link |
 | Recruiters at Magna Steyr | Secondary audience | Reached via LinkedIn organic |
 | Robotics Network Austria (JOANNEUM RESEARCH, Graz) | Potential amplifier | Direct outreach after v1.0 |
-| Anthropic Claude as collaborator | Tutor / Builder / Reviewer | Continuous during development |
 
 ### 3.5 Business Risks
 

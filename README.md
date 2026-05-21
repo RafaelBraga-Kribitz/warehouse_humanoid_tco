@@ -30,7 +30,7 @@ make all
 
 ## Results Summary
 
-**Pipeline Status:** ✓ All 4 modules complete with real data (2026-05-21).
+**Pipeline Status:** ✓ All 4 modules complete. Module 1–3 fully tested on synthetic data; Module 1 real data download in progress (2026-05-21).
 
 ### Data
 - **2,359 episodes** extracted from 5 UnifoLM datasets (WBT + DiverseManip)
@@ -52,6 +52,8 @@ make all
 | S-future-2028 | €-1,284,125 | €480K | €1,007K |
 
 **Winner:** S-hybrid-amr (20% humanoid + 20% AMR minimizes total cost).
+
+> **Note:** Financial analysis above is based on synthetic module test runs (n=3 replicas per scenario, 2,359 extracted episodes). Real data results will be published as Module 1 downloads complete.
 
 ### Executive Charts
 - [TCO NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png)
