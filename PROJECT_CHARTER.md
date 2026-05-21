@@ -21,14 +21,14 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 -->
 
 <!-- SSOT_METADATA_START
-version: 1.0.2
-status: draft
+version: 1.1.0
+status: active
 last_updated: 2026-05-21
 last_reviewed: 2026-05-21
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
-crisp_dm_phase: data_understanding
-module_status: Modules 0–3 complete on real data (2,359 episodes); Module 4 dashboard publication pending
+crisp_dm_phase: evaluation
+module_status: Modules 0–4 complete on real data (2,359 episodes); Tableau Public and LinkedIn outreach pending
 SSOT_METADATA_END -->
 
 # Project Charter: Warehouse Humanoid TCO Analyzer
