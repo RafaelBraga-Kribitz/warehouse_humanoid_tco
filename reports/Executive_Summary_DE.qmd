@@ -1,0 +1,45 @@
+---
+title: "Humanoid-Roboter in der österreichischen Intralogistik: Eine Rentabilitätsanalyse"
+subtitle: "Executive Summary"
+author: "Rafael Braga"
+date: today
+lang: de
+format:
+  pdf:
+    documentclass: article
+    geometry: margin=2cm
+    fontsize: 11pt
+---
+
+## Projektziel
+
+Dieses Projekt entwickelt einen reproduzierbaren, datengestützten Rahmen
+für die Analyse der Gesamtbetriebskosten (TCO) von Humanoid-Robotern
+in österreichischen Logistikzentren — insbesondere für AutoStore-Systeme,
+wie sie bei Knapp AG und TGW Logistics eingesetzt werden.
+
+## Datengrundlage
+
+- **UnifoLM-WBT-Dataset** (Unitree Robotics): empirische Teleoperation­sdaten
+  vom Unitree G1 Humanoid-Roboter (öffentlich verfügbar via Hugging Face)
+- **Statistik Austria** Lohntabellen: österreichische Arbeitskosten
+- **WKO Kollektivvertrag Handel**: sektorspezifische Lohnsätze
+
+## Methodik
+
+1. **Capability Extraction (Modul 1):** Ableitung empirischer Leistungskennzahlen
+   aus Roboter-Episodendaten (Zykluszeiten, Erfolgsraten)
+2. **Simulation (Modul 2):** Diskrete Ereignissimulation (SimPy) eines AutoStore-Lagers
+   mit verschiedenen Belegschaftsszenarien
+3. **TCO-Modell (Modul 3):** 5-Jahres-Kapitalwertanalyse (NPV, IRR, Amortisationszeit)
+4. **Dashboard (Modul 4):** Interaktives BI-Dashboard (Tableau Public + Power BI)
+
+## Wichtigste Erkenntnisse
+
+*(Werden nach Abschluss der Analyse befüllt)*
+
+## Hinweis
+
+Alle Daten und Quellen sind öffentlich zugänglich. Der vollständige
+Quellcode ist auf GitHub verfügbar. Die Analyse ist vollständig
+reproduzierbar: `make all` erzeugt alle Artefakte.

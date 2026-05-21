@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.venv/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data — raw and interim are never committed
+data/raw/unifolm_wbt/
+data/raw/at_wages/
+data/interim/
+data/processed/*.parquet
+data/processed/*.csv
+# MANIFEST.yaml files ARE committed
+!data/raw/MANIFEST.yaml
+!data/processed/MANIFEST.yaml
+
+# Notebooks — .ipynb is generated from .py source via jupytext
+notebooks/*.ipynb
+
+# Reports — rendered outputs are not committed; sources (.qmd) are
+reports/*.html
+reports/*.pdf
+reports/derisk_inspection_report.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Docker
+.docker/

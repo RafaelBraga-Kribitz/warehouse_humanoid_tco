@@ -1,0 +1,13 @@
+# Processed data manifest — COMMITTED TO REPO
+# Records pipeline outputs: version, source hash, run timestamp.
+# See PROJECT_CHARTER.md §6.2 for data storage layout.
+
+outputs: []
+# Populated by each module script at runtime. Example entry:
+#
+# - artifact: humanoid_capabilities_per_episode.parquet
+#   pipeline_version: "0.1.0"
+#   source_revision_sha: "<unifolm_wbt_sha>"
+#   produced_by: scripts/run_module_01.py
+#   run_timestamp_utc: "2026-05-21T00:00:00Z"
+#   sha256: "<hash>"

@@ -1,0 +1,64 @@
+# TCO financial model assumptions
+# All assumptions are configurable for sensitivity analysis.
+# See PROJECT_CHARTER.md §7.6 for the sensitivity analysis protocol.
+# Source every assumption here. "Source: internal estimate" is forbidden.
+
+financial:
+  horizon_years: 5
+  discount_rate: 0.08              # Source: conservative WACC estimate for Austrian logistics
+  discount_rate_range: [0.04, 0.12]  # Sensitivity range
+
+labor:
+  # Source: WKO Kollektivvertrag Handel, 2026 snapshot
+  # https://www.wko.at/service/kollektivvertrag/
+  base_hourly_wage_eur: 18.50
+  annual_wage_growth_rate: 0.025  # Source: Statistik Austria wage growth trend 2020-2025
+  overhead_multiplier: 1.35       # social contributions, holiday, sick pay
+  training_cost_per_humanoid_eur: 5000   # operator training per humanoid unit
+  training_cost_range: [2000, 10000]
+
+humanoid:
+  # Source: market estimates from Unitree G1 pricing + analyst reports
+  unit_capex_eur: 120000
+  unit_capex_range: [80000, 200000]   # Sensitivity range
+  useful_life_years: 7
+  residual_value_fraction: 0.10       # 10% residual at end of life
+  annual_maintenance_fraction: 0.08   # 8% of capex per year
+  financing_rate: 0.045               # Source: Austrian bank leasing rates 2026
+  installation_cost_per_unit_eur: 8000
+  energy_cost_eur_per_kwh: 0.22      # Source: Statistik Austria industrial tariff 2025
+
+amr:
+  unit_capex_eur: 65000
+  useful_life_years: 8
+  residual_value_fraction: 0.15
+  annual_maintenance_fraction: 0.06
+  energy_cost_eur_per_kwh: 0.22
+
+infrastructure:
+  # AutoStore-specific additions
+  grid_expansion_cost_eur_per_bin: 150
+  integration_cost_eur: 200000     # one-time system integration
+  integration_cost_range: [100000, 400000]
+
+sensitivity_parameters:
+  - name: labor_base_hourly_wage_eur
+    range: [14.00, 25.00]
+  - name: humanoid_unit_capex_eur
+    range: [80000, 200000]
+  - name: annual_wage_growth_rate
+    range: [0.01, 0.05]
+  - name: discount_rate
+    range: [0.04, 0.12]
+  - name: humanoid_useful_life_years
+    range: [4, 10]
+  - name: humanoid_annual_maintenance_fraction
+    range: [0.04, 0.15]
+  - name: energy_cost_eur_per_kwh
+    range: [0.15, 0.35]
+  - name: financing_rate
+    range: [0.02, 0.08]
+  - name: training_cost_per_humanoid_eur
+    range: [2000, 10000]
+  - name: humanoid_throughput_multiplier
+    range: [0.70, 1.50]

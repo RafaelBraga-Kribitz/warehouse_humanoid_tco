@@ -1,0 +1,22 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+        language_version: python3.12
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+
+  - repo: local
+    hooks:
+      - id: ssot-check
+        name: SSOT freshness check
+        entry: python scripts/check_ssot.py
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: ^(src/|notebooks/|docs/ADR/)
