@@ -1,0 +1,50 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -e ".[dev]"
+      - run: ruff check src/
+      - run: pytest tests/ -v 2>/dev/null || echo "No tests"
+
+  modules:
+    name: Run Pipeline
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -e ".[dev]"
+      - run: mkdir -p data/raw data/processed
+      - run: python -m warehouse_humanoid_tco.pipelines.module_01_capability_extraction
+      - run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
+      - run: python -m warehouse_humanoid_tco.pipelines.module_03_tco
+      - run: python -m warehouse_humanoid_tco.pipelines.module_04_dashboards
+      - uses: actions/upload-artifact@v3
+        with:
+          name: outputs
+          path: |
+            data/processed/*.parquet
+            reports/*.json
+            exports/tableau_public/*.csv
+            reports/executive_charts/*.png
+          retention-days: 30

@@ -1,0 +1,7 @@
+{
+  "phase": "module_02_simulation",
+  "total_runs": 15,
+  "scenarios_tested": 5,
+  "n_runs_per_scenario": 3,
+  "simulation_runs_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/simulation_runs.parquet"
+}
