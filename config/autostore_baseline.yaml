@@ -73,3 +73,32 @@ scenarios:
     humanoid_throughput_multiplier: 1.30
 
 total_agents: 8                    # total workforce units per scenario
+
+capability_transfer:
+  # WBT demos are human-teleoperated at demonstration speed.
+  # Production humanoid throughput is estimated as a fraction of demo speed.
+  # This is the single largest methodological assumption in the model.
+  wbt_to_production_factor:
+    point_estimate: 0.70
+    range: [0.50, 0.90]
+    rationale: >
+      Early-deployment robotics literature (Boston Dynamics Spot case studies,
+      Figure AI pilot disclosures) suggests 50-90% of lab capability in
+      structured production environments. We use 70% as the central estimate.
+      This is the primary sensitivity parameter driving H3/H4 uncertainty.
+    source: "Internal assumption; no public benchmark for Unitree G1 in warehouse ops as of 2026"
+
+humanoid_operational:
+  mtbf_hours: 40.0              # mean time between failures (early deployment)
+  mttr_hours: 0.5               # mean time to repair/reset
+  battery_capacity_hours: 4.0   # hours per charge
+  recharge_time_hours: 1.0
+  supervision_ratio: 0.10       # fraction of one human FTE for robot supervision
+  shift_degradation_factor: 0.05  # throughput reduction per hour of shift
+  source: "Conservative estimates for early-deployment industrial robotics"
+
+amr_operational:
+  mtbf_hours: 80.0
+  battery_capacity_hours: 6.0
+  recharge_time_hours: 0.5
+  source: "Typical AMR spec from public vendor datasheets (Locus, Geek+)"
