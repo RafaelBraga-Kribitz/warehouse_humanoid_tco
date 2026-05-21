@@ -1,0 +1,12 @@
+{
+  "module": "04_dashboards",
+  "status": "complete",
+  "tableau_exports": "/Users/rbk/warehouse_humanoid_tco/exports/tableau_public",
+  "executive_charts": "/Users/rbk/warehouse_humanoid_tco/reports/executive_charts",
+  "next_steps": [
+    "Upload tableau_public/ CSVs to Tableau Public",
+    "Create dashboards in Tableau: TCO, Simulation, Capabilities",
+    "Share public link in portfolio README",
+    "Create Power BI .pbix from module outputs for Austrian recruiters"
+  ]
+}
