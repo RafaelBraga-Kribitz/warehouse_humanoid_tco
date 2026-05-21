@@ -84,7 +84,7 @@ make all
 **What this shows:**
 
 1. ✓ Data pipeline rigor: end-to-end extraction, validation, profiling
-2. ✓ Statistical modeling: SimPy discrete-event simulation with empirical inputs
+2. ✓ Statistical modeling: SimPy discrete-event simulation with empirical inputs + Kruskal-Wallis test (p=1.0 across 75 runs)
 3. ✓ Financial analysis: NPV, sensitivity, payback period for business decisions
 4. ✓ Reproducibility: every result is version-controlled and auditable
 
