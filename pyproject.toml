@@ -49,11 +49,11 @@ packages = ["src/warehouse_humanoid_tco"]
 
 [tool.black]
 line-length = 100
-target-version = ["py312"]
+target-version = ["py311"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py311"
 src = ["src"]
 
 [tool.ruff.lint]
@@ -61,7 +61,7 @@ select = ["E", "F", "I", "N", "W", "UP", "ANN", "S", "B", "SIM"]
 ignore = ["ANN101", "ANN102"]
 
 [tool.pyright]
-pythonVersion = "3.12"
+pythonVersion = "3.11"
 include = ["src"]
 strict = ["src/warehouse_humanoid_tco"]
 venvPath = "."

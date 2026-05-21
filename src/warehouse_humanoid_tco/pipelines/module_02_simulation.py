@@ -30,7 +30,7 @@ def module_02_main(
     project_root: Path,
     config_path: Path | None = None,
     capability_summary_path: Path | None = None,
-    n_runs: int = 3,
+    n_runs: int = 15,
     seed: int = 42,
 ) -> dict[str, Path]:
     """Run Module 2 end-to-end.
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     project_root = Path(__file__).parent.parent.parent.parent
 
     try:
-        paths = module_02_main(project_root, n_runs=3)
+        paths = module_02_main(project_root, n_runs=15)
         print(f"\n✓ Success. Outputs: {paths}")
     except Exception as e:
         print(f"\n✗ Failed: {e}", file=sys.stderr)

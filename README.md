@@ -1,5 +1,7 @@
 # warehouse_humanoid_tco
 
+[![Pipeline](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/pipeline.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/pipeline.yml)
+
 A reproducible analytical framework for the Total Cost of Ownership of humanoid robots in Austrian intralogistics, built as a Data Analytics / Business Intelligence portfolio project.
 
 > **All authoritative project information lives in `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`.** This README intentionally does not duplicate it. If you want the goals, scope, requirements, design decisions, or anything else about the project, open the Charter.
@@ -38,9 +40,9 @@ make all
 - **Validation:** Full data profiling notebook in `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)` (stakeholder transparency)
 
 ### Simulation
-- **15 runs** across 5 warehouse scenarios (3 replicas each)
+- **75 runs total** across 5 warehouse scenarios (15 replicas per scenario)
 - **Scenarios:** baseline human, pure humanoid, hybrid (50/50), hybrid + AMR, future 2028
-- **Metrics:** orders per shift, queue length, utilization (5 scenarios ranked by throughput)
+- **Metrics:** orders per shift, queue length, utilization (with 90% CI across runs)
 
 ### Financial Analysis (5-year horizon, 8% discount)
 | Scenario | NPV | Capex | Opex 5yr |
