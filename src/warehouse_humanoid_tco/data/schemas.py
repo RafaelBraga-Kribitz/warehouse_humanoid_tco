@@ -1,14 +1,29 @@
 """Schema definitions for inter-module contracts.
 
-Note: Pandera DataFrameModel API changed significantly; using simplified
-dictionaries for now. Full validation deferred to Module 1+ integration.
+Schemas are defined as both reference dicts (for documentation) and
+Pandera DataFrameSchemas (for runtime validation against polars DataFrames).
 See PROJECT_CHARTER.md §6.3 Schema Contracts.
 """
 
 from __future__ import annotations
 
-# Schema contracts documented as type annotations
-# Full pandera validation to be implemented in Module 1+ integration tests
+import pandera.polars as pa
+import polars as pl
+
+
+class HumanoidCapabilitySummarySchema(pa.DataFrameModel):
+    task_category: str = pa.Field(nullable=False)
+    n_episodes: int = pa.Field(ge=1, nullable=False)
+    cycle_time_p50: float = pa.Field(ge=0.5, le=600.0, nullable=False)
+    cycle_time_p95: float = pa.Field(ge=0.5, le=600.0, nullable=False)
+    cycle_time_mean: float = pa.Field(ge=0.5, le=600.0, nullable=False)
+    cycle_time_std: float = pa.Field(ge=0.0, nullable=False)
+    success_rate: float = pa.Field(ge=0.0, le=1.0, nullable=True)
+    insufficient_sample: bool = pa.Field(nullable=False)
+    pipeline_version: str = pa.Field(nullable=False)
+
+
+# Reference dicts — documentation only (not for runtime validation)
 
 EPISODE_METADATA_SCHEMA = {
     "episode_id": "str (unique, non-null)",
