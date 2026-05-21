@@ -225,3 +225,31 @@ def test_module03_main_tco_parquet_has_npv(tmp_path: Path) -> None:
 
     assert "npv_eur" in tco_df.columns
     assert all(tco_df["npv_eur"] < 0)
+
+
+# ── Real Data Integration Tests ──────────────────────────────────────────────
+
+@pytest.mark.integration
+def test_extract_episode_features_on_real_data(
+    tmp_path: Path, real_sample_episodes: pl.DataFrame | None
+) -> None:
+    """Integration test: extract features from real cached dataset episodes.
+
+    Uses fixture that loads ~10 episodes from WBT dataset (if available locally).
+    Verifies that feature extraction works end-to-end on real data.
+    """
+    if real_sample_episodes is None:
+        pytest.skip("Real dataset not available locally")
+
+    assert len(real_sample_episodes) > 0, "Fixture returned empty DataFrame"
+    assert "episode_index" in real_sample_episodes.columns
+    assert "action" in real_sample_episodes.columns
+
+    # Write real data to temp parquet and extract features
+    parquet_path = tmp_path / "real_episode.parquet"
+    real_sample_episodes.head(1).write_parquet(parquet_path)
+
+    result = extract_episode_features(parquet_path, "real_ep_0", fps=30.0)
+    assert result["cycle_time_seconds"] > 0
+    assert result["n_frames"] > 0
+    assert result["episode_id"] == "real_ep_0"
