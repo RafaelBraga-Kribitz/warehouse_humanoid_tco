@@ -1,0 +1,61 @@
+---
+title: "Module 1 Audit: Capability Extraction"
+subtitle: "UnifoLM-WBT-Dataset → humanoid_capabilities.parquet"
+author: "Rafael Braga"
+date: today
+format:
+  html:
+    toc: true
+    code-fold: true
+    theme: cosmo
+---
+
+## Purpose
+
+This report audits the Module 1 capability extraction pipeline.
+It answers the Module 1 verification checklist from PROJECT_CHARTER.md §4.
+
+## Status
+
+**NOT YET RUN.** Populate this report after executing `scripts/run_module_01.py`.
+
+## Verification Checklist
+
+- [ ] Reproducibility: `make module-01` produces identical outputs on two runs
+- [ ] All schemas validated programmatically
+- [ ] Manual taxonomy review CSV committed and auditable
+- [ ] Categories with insufficient sample size flagged
+- [ ] Audit report renders without errors
+- [ ] Unit tests pass for `classify_task`, `compute_cycle_time`, `compute_reach`
+- [ ] Pipeline is deterministic (seeds set)
+- [ ] All estimates documented as estimates, not measurements
+
+## Dataset Summary
+
+```{python}
+# Populated at runtime from derisk_inspection_report.json
+import json
+from pathlib import Path
+
+report_path = Path("../reports/derisk_inspection_report.json")
+if report_path.exists():
+    with open(report_path) as f:
+        report = json.load(f)
+    print(f"Dataset: {report['dataset_repo_id']}")
+    print(f"Revision SHA: {report.get('resolved_revision_sha', 'not yet resolved')}")
+    print(f"Total episodes: {report.get('info_summary', {}).get('total_episodes', 'unknown')}")
+else:
+    print("Run 00_derisk_dataset_inspection.py first.")
+```
+
+## Episode Distribution by Task Category
+
+*(Populate after Module 1 run)*
+
+## Known Limitations
+
+1. `payload_kg_estimate` is binned by visual inspection, not measured.
+2. `reach_meters_estimate` uses state vector position proxy, not FK.
+3. `energy_proxy_joint_integral` is mechanical work surrogate, not battery energy.
+4. UnifoLM-WBT is teleoperated data — capabilities reflect human-piloted performance.
+5. Task taxonomy mapping may miss episodes with non-English or non-standard descriptions.

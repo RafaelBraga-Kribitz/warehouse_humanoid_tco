@@ -1,0 +1,10 @@
+episode_id,task_description,task_category,reviewer,review_timestamp,notes
+# This file is committed to the repo as provenance.
+# See PROJECT_CHARTER.md §6 and Module 1 spec §5 (Step 5).
+# Columns:
+#   episode_id        - source episode identifier from UnifoLM-WBT
+#   task_description  - raw task description string from dataset
+#   task_category     - assigned taxonomy category (see enums.py TaskCategory)
+#   reviewer          - reviewer initials
+#   review_timestamp  - ISO datetime of review
+#   notes             - any ambiguity or edge-case note

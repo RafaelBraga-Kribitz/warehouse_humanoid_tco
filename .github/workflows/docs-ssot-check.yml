@@ -1,0 +1,72 @@
+name: Documentation SSOT Check
+
+# Enforces the Single Source of Truth discipline defined in PROJECT_CHARTER.md
+# Fails the build if:
+#   1. Markdown files appear outside the allowlist (sprawl)
+#   2. PROJECT_CHARTER.md is stale relative to recent code changes
+#   3. ADRs are malformed
+#   4. The Change Log lacks an entry for the latest charter modification
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Weekly run catches staleness even when code is idle
+    - cron: "0 6 * * 1"
+
+jobs:
+  ssot-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run SSOT enforcement script
+        run: |
+          python scripts/check_ssot.py
+
+  markdown-allowlist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Markdown allowlist
+        shell: bash
+        run: |
+          # Find all .md files
+          mapfile -t all_md < <(find . -type f -name "*.md" \
+              -not -path "./.git/*" \
+              -not -path "./node_modules/*" \
+              -not -path "./.venv/*" \
+              | sort)
+
+          # Define allowlist as regex
+          allowed_pattern='^\./(README\.md|PROJECT_CHARTER\.md|CONTRIBUTING\.md|LICENSE\.md|docs/ADR/[0-9]{4}-[a-z0-9-]+\.md|docs/glossary\.md|docs/.*\.md|reports/.*\.md|\.github/.*\.md)$'
+
+          violations=()
+          for f in "${all_md[@]}"; do
+              if [[ ! "$f" =~ $allowed_pattern ]]; then
+                  violations+=("$f")
+              fi
+          done
+
+          if [[ ${#violations[@]} -gt 0 ]]; then
+              echo "::error::Documentation sprawl detected. The following Markdown files are not in the SSOT allowlist:"
+              for v in "${violations[@]}"; do
+                  echo "  - $v"
+              done
+              echo ""
+              echo "See CONTRIBUTING.md for the allowed list and ADR discipline."
+              exit 1
+          fi
+
+          echo "All ${#all_md[@]} Markdown files are within the SSOT allowlist."

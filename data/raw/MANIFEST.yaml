@@ -1,0 +1,31 @@
+# Raw data manifest — COMMITTED TO REPO
+# Records all raw data sources, versions, access dates, and hashes.
+# See PROJECT_CHARTER.md §6.1 for the authoritative data source list.
+# RULE: no dataset enters the project without an entry here.
+
+sources:
+  - id: unifolm_wbt
+    name: "UnifoLM-WBT-Dataset"
+    repo_id: "unitreerobotics/UnifoLM-WBT-Dataset"
+    repo_type: "dataset"
+    revision_sha: null          # FILL IN after running 00_derisk_dataset_inspection.py
+    local_dir: "data/raw/unifolm_wbt/"
+    access_date: null           # FILL IN on first download
+    license: "Unitree open license — verify at dataset page before use"
+    notes: "LeRobot V2.0+ format. Whole-body teleoperation on Unitree G1."
+
+  - id: at_wages
+    name: "Statistik Austria Wage Tables"
+    url: "https://www.statistik.at/statistiken/arbeitsmarkt/loehne-und-gehaelter"
+    local_dir: "data/raw/at_wages/"
+    snapshot_date: null         # FILL IN on download
+    license: "CC BY 4.0 (Open Government Data Austria)"
+    notes: "Sector wage tables used for labor cost inputs in TCO model."
+
+  - id: wko_kv
+    name: "WKO Kollektivvertrag Handel"
+    url: "https://www.wko.at/service/kollektivvertrag/"
+    local_dir: "data/raw/wko_kv/"
+    snapshot_date: null
+    license: "Public domain"
+    notes: "Sector-specific wage rates for Handel (retail/logistics)."

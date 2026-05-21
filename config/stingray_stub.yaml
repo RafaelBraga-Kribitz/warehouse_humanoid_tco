@@ -1,0 +1,24 @@
+# Stingray shuttle architecture stub — v1.0 NOT CALIBRATED
+# See ADR-0003: full calibration deferred to v1.1
+# DO NOT use for production simulation in v1.0
+
+architecture: stingray
+version: "stub-1.0"
+status: stub  # not validated; do not run simulation against this
+
+layout:
+  # TODO v1.1: source from TGW public case studies
+  aisle_count: null
+  shuttle_tiers: null
+  conveyor_speed_m_per_s: null
+
+agents:
+  # TODO v1.1: calibrate from TGW FlashPick benchmarks
+  human: {}
+  humanoid: {}
+  amr: {}
+
+note: >
+  Stingray config is scaffolded to demonstrate framework generalizability.
+  Full calibration requires TGW-specific throughput benchmarks.
+  Planned for v1.1 per PROJECT_CHARTER.md §5.1 FR-10.
