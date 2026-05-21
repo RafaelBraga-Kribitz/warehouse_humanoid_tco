@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<datasource formatted-name='warehouse_humanoid_tco' inline='true' context='My Computer' default-sort='asc' version='10.0'>
+  <connection class='sqlserver' dbname='warehouse_humanoid_tco' server='localhost' username='' />
+  <named-connections>
+    <named-connection caption='warehouse_humanoid_tco' name='excel_warehouse_humanoid_tco'>
+      <connection class='excel' directory='' filename='exports/tableau_public' server='localhost' />
+    </named-connection>
+  </named-connections>
+  <table caption='Humanoid Capabilities Summary' name='humanoid_capabilities_summary'>
+    <connection name='excel_warehouse_humanoid_tco' table='humanoid_capabilities_summary.csv' />
+    <column caption='Task Category' datatype='string' name='[task_category]' role='dimension' semantic-role='[Country]' type='nominal' />
+    <column caption='Episode Count' datatype='integer' name='[n_episodes]' role='measure' type='quantitative' />
+    <column caption='Cycle Time p50 (s)' datatype='real' name='[cycle_time_p50]' role='measure' type='quantitative' />
+    <column caption='Cycle Time p95 (s)' datatype='real' name='[cycle_time_p95]' role='measure' type='quantitative' />
+    <column caption='Cycle Time Mean (s)' datatype='real' name='[cycle_time_mean]' role='measure' type='quantitative' />
+    <column caption='Cycle Time Std' datatype='real' name='[cycle_time_std]' role='measure' type='quantitative' />
+    <column caption='Reach Mean (m)' datatype='real' name='[reach_mean_meters]' role='measure' type='quantitative' />
+    <column caption='Reach Max (m)' datatype='real' name='[reach_max_meters]' role='measure' type='quantitative' />
+    <column caption='Energy Proxy Mean' datatype='real' name='[energy_proxy_mean]' role='measure' type='quantitative' />
+    <column caption='Success Rate' datatype='real' name='[success_rate]' role='measure' type='quantitative' />
+    <column caption='Insufficient Sample' datatype='boolean' name='[insufficient_sample]' role='dimension' type='nominal' />
+  </table>
+  <table caption='Simulation Runs' name='simulation_runs'>
+    <connection name='excel_warehouse_humanoid_tco' table='simulation_runs.csv' />
+    <column caption='Scenario ID' datatype='string' name='[scenario_id]' role='dimension' type='nominal' />
+    <column caption='Run ID' datatype='integer' name='[run_id]' role='dimension' type='ordinal' />
+    <column caption='Throughput (orders/shift)' datatype='integer' name='[throughput_orders_per_shift]' role='measure' type='quantitative' />
+    <column caption='Queue Length Mean' datatype='real' name='[queue_length_mean]' role='measure' type='quantitative' />
+    <column caption='Random Seed' datatype='integer' name='[seed]' role='dimension' type='ordinal' />
+  </table>
+  <table caption='TCO Scenarios' name='tco_scenarios'>
+    <connection name='excel_warehouse_humanoid_tco' table='tco_scenarios.csv' />
+    <column caption='Scenario ID' datatype='string' name='[scenario_id]' role='dimension' type='nominal' />
+    <column caption='NPV (€)' datatype='integer' name='[npv_eur]' role='measure' type='quantitative' />
+    <column caption='IRR (%)' datatype='real' name='[irr]' role='measure' type='quantitative' />
+    <column caption='Payback Years' datatype='real' name='[payback_years]' role='measure' type='quantitative' />
+    <column caption='Total Capex (€)' datatype='integer' name='[total_capex_eur]' role='measure' type='quantitative' />
+    <column caption='Total Opex 5yr (€)' datatype='integer' name='[total_opex_5yr_eur]' role='measure' type='quantitative' />
+  </table>
+</datasource>

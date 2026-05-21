@@ -1,0 +1,31 @@
+# warehouse_humanoid_tco dependencies
+# Generated 2026-05-21 from pyproject.toml
+# Use: pip install -r requirements.txt
+
+# Core dependencies
+polars[rtcompat]>=0.20
+pyarrow>=15.0
+duckdb>=0.10
+pandera>=0.18
+simpy>=4.1
+numpy>=1.26
+numpy-financial>=1.0
+huggingface-hub>=0.22
+matplotlib>=3.8
+plotly>=5.20
+pyyaml>=6.0
+rich>=13.0
+
+# Development dependencies
+pytest>=8.0
+pytest-cov>=5.0
+black>=24.0
+ruff>=0.4
+pyright>=1.1
+jupytext>=1.16
+pre-commit>=3.7
+
+# Notebook support
+jupyter>=1.0
+ipykernel>=6.0
+nbformat>=5.0
