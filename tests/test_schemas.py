@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-import pandas as pd
-import pandera as pa
+import pandera.polars as pa
+import polars as pl
 import pytest
 
 from warehouse_humanoid_tco.data.schemas import HumanoidCapabilitySummarySchema
 
 
-def make_valid_summary() -> pd.DataFrame:
-    return pd.DataFrame({
+def make_valid_summary() -> pl.DataFrame:
+    return pl.DataFrame({
         "task_category": ["pick_small_object"],
         "n_episodes": [15],
         "cycle_time_p50": [12.5],
@@ -29,14 +29,12 @@ def test_summary_schema_valid() -> None:
 
 
 def test_summary_schema_invalid_cycle_time() -> None:
-    df = make_valid_summary()
-    df["cycle_time_p50"] = -1.0  # violates ge=0.5
+    df = make_valid_summary().with_columns(pl.lit(-1.0).alias("cycle_time_p50"))
     with pytest.raises(pa.errors.SchemaError):
         HumanoidCapabilitySummarySchema.validate(df)
 
 
 def test_summary_schema_invalid_success_rate() -> None:
-    df = make_valid_summary()
-    df["success_rate"] = 1.5  # violates le=1.0
+    df = make_valid_summary().with_columns(pl.lit(1.5).alias("success_rate"))
     with pytest.raises(pa.errors.SchemaError):
         HumanoidCapabilitySummarySchema.validate(df)

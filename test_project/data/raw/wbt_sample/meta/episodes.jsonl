@@ -1,0 +1,5 @@
+{"episode_index": 0, "task": "pick up small pillow", "success": true}
+{"episode_index": 1, "task": "pick up small pillow", "success": true}
+{"episode_index": 2, "task": "grasp and move", "success": false}
+{"episode_index": 3, "task": "place in washing machine", "success": true}
+{"episode_index": 4, "task": "collect plates into dishwasher", "success": true}

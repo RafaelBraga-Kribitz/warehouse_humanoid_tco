@@ -44,33 +44,22 @@ TAXONOMY_KEYWORD_RULES: dict[str, list[str]] = {
 def classify_task(description: str) -> TaskCategory:
     """Map a task description string to a TaskCategory.
 
-    Returns TaskCategory.UNCLASSIFIED when no rule matches or multiple rules
-    conflict. Caller is responsible for routing ambiguous episodes to manual review.
+    Rules are checked in priority order (most specific first). Returns the
+    first matching category, or UNCLASSIFIED if nothing matches.
     """
     if not description:
         return TaskCategory.UNCLASSIFIED
 
     desc_lower = description.lower()
-    matches: list[str] = []
 
     for category, keywords in TAXONOMY_KEYWORD_RULES.items():
         for keyword in keywords:
             if keyword in desc_lower:
-                matches.append(category)
-                break
+                return TaskCategory(category)
 
-    if len(matches) == 1:
-        return TaskCategory(matches[0])
     return TaskCategory.UNCLASSIFIED
 
 
 def needs_manual_review(description: str) -> bool:
     """True if the episode cannot be cleanly classified by rules alone."""
-    desc_lower = description.lower() if description else ""
-    matches: list[str] = []
-    for category, keywords in TAXONOMY_KEYWORD_RULES.items():
-        for keyword in keywords:
-            if keyword in desc_lower:
-                matches.append(category)
-                break
-    return len(matches) != 1
+    return classify_task(description) == TaskCategory.UNCLASSIFIED

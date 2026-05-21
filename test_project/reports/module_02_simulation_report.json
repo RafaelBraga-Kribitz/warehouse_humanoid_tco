@@ -1,0 +1,7 @@
+{
+  "phase": "module_02_simulation",
+  "total_runs": 10,
+  "scenarios_tested": 5,
+  "n_runs_per_scenario": 2,
+  "simulation_runs_path": "test_project/data/processed/simulation_runs.parquet"
+}

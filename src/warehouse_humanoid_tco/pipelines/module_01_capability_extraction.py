@@ -21,9 +21,9 @@ import polars as pl
 import yaml
 
 from warehouse_humanoid_tco.data.download import download_dataset
+from warehouse_humanoid_tco.features.aggregation import aggregate_capabilities
 from warehouse_humanoid_tco.features.extraction import extract_dataset_episodes
 from warehouse_humanoid_tco.features.taxonomy import classify_task
-from warehouse_humanoid_tco.features.aggregation import aggregate_capabilities
 
 
 def module_01_main(
@@ -72,7 +72,7 @@ def module_01_main(
             download_dataset(repo_id, sha, dataset_dir)
 
         # Extract features
-        print(f"  Extracting features...")
+        print("  Extracting features...")
         try:
             episodes_df = extract_dataset_episodes(dataset_dir, fps=10.0)
             episodes_df = episodes_df.with_columns(
@@ -105,7 +105,7 @@ def module_01_main(
             print(f"  Downloading to {dataset_dir}...")
             download_dataset(repo_id, sha, dataset_dir)
 
-        print(f"  Extracting features...")
+        print("  Extracting features...")
         try:
             episodes_df = extract_dataset_episodes(dataset_dir, fps=10.0)
             episodes_df = episodes_df.with_columns(
@@ -146,10 +146,11 @@ def module_01_main(
 
     # ========== Aggregate ==========
     print("[Aggregation] Computing summary statistics per task category...")
-    if len(per_episode) > 0:
-        summary = aggregate_capabilities(per_episode)
-    else:
-        summary = pl.DataFrame()
+    summary = (
+        aggregate_capabilities(per_episode)
+        if len(per_episode) > 0
+        else pl.DataFrame()
+    )
 
     # ========== Export ==========
     print("[Export] Writing parquets...")

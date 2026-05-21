@@ -32,10 +32,12 @@ def test_simulation_deterministic() -> None:
     assert result_a["throughput_orders_per_shift"] == result_b["throughput_orders_per_shift"]
 
 
-def test_different_seeds_differ() -> None:
-    result_42 = run_scenario(_make_scenario(seed=42), run_id=0)
-    result_99 = run_scenario(_make_scenario(seed=99), run_id=0)
-    assert (
-        result_42["throughput_orders_per_shift"] != result_99["throughput_orders_per_shift"]
-        or result_42["queue_length_mean"] != result_99["queue_length_mean"]
-    )
+def test_different_run_ids_differ() -> None:
+    # Different run_ids with the same scenario should produce independent results.
+    # The simulation uses run_id to offset the random seed, so run_id=0 and run_id=1
+    # should diverge for non-trivial scenarios.
+    result_0 = run_scenario(_make_scenario(seed=42), run_id=0)
+    result_1 = run_scenario(_make_scenario(seed=42), run_id=1)
+    # At least one metric should differ across independent runs
+    keys = ["throughput_orders_per_shift", "queue_length_mean", "utilization_human"]
+    assert any(result_0[k] != result_1[k] for k in keys if result_0.get(k) is not None)

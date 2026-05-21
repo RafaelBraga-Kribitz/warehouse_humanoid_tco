@@ -45,3 +45,9 @@ Thumbs.db
 
 # Docker
 .docker/
+
+# Internal Docs
+docs/todo/
+
+# Large Files
+*.mp4
