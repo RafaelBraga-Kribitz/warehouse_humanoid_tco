@@ -1,6 +1,7 @@
 # warehouse_humanoid_tco
 
 [![Pipeline](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/pipeline.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/pipeline.yml)
+[![CI](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml)
 
 A reproducible analytical framework for the Total Cost of Ownership of humanoid robots in Austrian intralogistics, built as a Data Analytics / Business Intelligence portfolio project.
 
@@ -53,24 +54,20 @@ make all
 | S-pure-humanoid | €-960,000 | €960K | €0 |
 | S-future-2028 | €-1,284,100 | €480K | €1,007K |
 
-**Winner:** S-hybrid-amr (20% humanoid + 20% AMR minimizes total cost).
+**Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~43% vs. the human baseline.** This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
 
 > **Real data execution:** Results computed from 2,359 episodes across 5 Unitree UnifoLM datasets (WBT + DiverseManip). Financial model uses 15 simulation replicas per scenario with Austrian labor cost inputs (€18.50/hr + 1.35× overhead).
 
 ### Sensitivity Analysis
-- **Monte Carlo (10,000 runs):** NPV = €-1,084,673 ± €414,024
-  - 90% confidence interval: [€-1.8M, €-463k]
-  - Varies humanoid capex, labor costs, overhead, and agent counts
-- **One-at-a-time (OAT):** Identifies top parameter drivers
-- **Report:** `[reports/sensitivity_analysis_report.json](./reports/sensitivity_analysis_report.json)`
+- **Monte Carlo (10,000 runs):** NPV P50 = €-1,084,673 ± €414,024 (1σ)
+  - 90% CI: [€-1.81M, €-463K]
+  - Parameters varied: humanoid capex, labor costs, overhead, agent counts, discount rate
+- **OAT Tornado:** Labor headcount and humanoid capex are the two dominant drivers
+- **Charts:** [NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png) · [Cost Breakdown](./reports/executive_charts/02_cost_breakdown.png) · [Simulation Throughput](./reports/executive_charts/03_simulation_throughput.png) · [Sensitivity Tornado](./reports/executive_charts/04_sensitivity_tornado.png)
+- **Report:** [`reports/sensitivity_analysis_report.json`](./reports/sensitivity_analysis_report.json)
 
-### Executive Charts
-- [TCO NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png)
-- [Cost Breakdown](./reports/executive_charts/02_cost_breakdown.png)
-- [Simulation Throughput](./reports/executive_charts/03_simulation_throughput.png)
-
-### Dashboards (In Progress)
-- **Tableau Public:** CSVs ready in `exports/tableau_public/` → [create public dashboard](#for-recruiters)
+### Dashboards
+- **Tableau Public:** CSVs ready in `exports/tableau_public/` — dashboard publication pending
 - **Power BI:** exported data ready for `.pbix` creation
 
 ## For Recruiters
@@ -86,7 +83,7 @@ make all
 2. Review `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)` for data validation
 3. Check `[reports/](./reports/)` for Module 0–4 validation reports
 4. View executive charts in `[reports/executive_charts/](./reports/executive_charts/)`
-5. (Coming soon) Tableau Public dashboards + Power BI `.pbix` file
+5. Dashboard publication pending — see `exports/tableau_public/` for CSVs
 
 ## Documentation entry points
 
@@ -95,6 +92,12 @@ make all
 - `[docs/ADR/](./docs/ADR/)`: architecture decisions, append-only.
 - `[reports/](./reports/)`: rendered audit reports + executive charts for each module.
 - `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)`: data transparency + stakeholder briefing.
+- `[docs/data_lineage.md](./docs/data_lineage.md)`: data flow diagram (Mermaid).
+- `[reports/executive_charts/04_sensitivity_tornado.png](./reports/executive_charts/04_sensitivity_tornado.png)`: OAT sensitivity tornado chart.
+
+## Why this project
+
+I live 20 minutes from Knapp AG's headquarters and wanted to understand what operations analysts there are actually evaluating when they look at humanoid robot integration in 2026 — not the hype cycle, but the unit economics. The biggest surprise was how much the sensitivity analysis depends on headcount assumptions rather than robot capex: if you have 8 workers and replace 1.6 of them with 1.6 humanoids, the labor savings math is almost entirely driven by how many human FTEs you actually need, not by whether the robot costs €100K or €180K. The second surprise was the 3× variance in cycle time across task categories in the real UnifoLM data — pick tasks are far noisier than place tasks, which makes the hybrid-AMR advantage fragile in some scenarios. With more time I would calibrate against actual Knapp throughput benchmarks rather than public estimates, and add a proper learning curve for humanoid performance over the first 12 months of deployment.
 
 ## License
 
