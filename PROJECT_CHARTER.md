@@ -28,7 +28,7 @@ last_reviewed: 2026-05-21
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
 crisp_dm_phase: data_understanding
-module_status: Modules 0–3 complete (M1–M3 tested on synthetic data, M1 full download in progress)
+module_status: Modules 0–3 complete on real data (2,359 episodes); Module 4 dashboard publication pending
 SSOT_METADATA_END -->
 
 # Project Charter: Warehouse Humanoid TCO Analyzer
@@ -174,6 +174,18 @@ The project succeeds if **all four** of these are true at completion:
 | Dataset proves insufficient | Medium | High | Module 0 de-risk notebook validates before commit; fallback to synthetic supplementation with full disclosure |
 | Substitution-framing causes backlash | Low (mitigated by framing) | Critical | Framing locked: "augmentation + ROI", never "replacement"; Betriebsrat-aware language audit at every doc commit |
 | Project becomes too ambitious mid-flight | High | High | Scope Guardrails §9 enforced ruthlessly |
+
+### 3.7 Known Limitations and External Validity Boundaries
+
+| Limitation | Impact | Mitigation |
+|---|---|---|
+| WBT teleoperation cycle times ≠ production throughput | Overestimates humanoid speed by unknown factor | Applied 0.70× transfer factor (configurable; see `config/autostore_baseline.yaml`); Monte Carlo range covers 0.50–0.90× |
+| 15-replica simulation runs | Moderate variance in scenario comparison | 90% CI reported on all throughput metrics; sufficient for portfolio-level comparison |
+| No real warehouse telemetry | Cannot validate against actual Knapp operations | Baseline calibrated against public Knapp AutoStore throughput benchmarks (§7.5) |
+| Humanoid capex from public pricing, not contracts | ±40% cost uncertainty | Full Monte Carlo range €80K–€200K/unit; tornado chart shows sensitivity |
+| Austrian Kollektivvertrag 2026 estimated, not official | ±10% labor cost uncertainty | Documented range in `config/tco_assumptions.yaml`; dominant sensitivity driver |
+| No human fatigue modeling | Overestimates human baseline throughput | Acknowledged; absence_rate_per_shift partially compensates |
+| WBT dataset is teleoperation demos, not autonomous ops | Transfer to autonomous production unknown | 0.70× factor; this is the single largest assumption — see §2A |
 
 ### 3.6 Out of Scope (v1.0)
 
@@ -357,12 +369,12 @@ There is no PII in the project. There never will be. If a future contributor pro
 
 The project tests four hypotheses. Each is falsifiable and has a pre-registered decision rule.
 
-| ID | Hypothesis | Decision rule |
-|---|---|---|
-| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon |
-| H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs |
-| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest |Δ NPV| |
-| H4 | Humanoid throughput at 2026 capabilities is the binding constraint on hybrid scenarios | Simulation: removing humanoid throughput cap raises hybrid NPV by > 10% |
+| ID | Hypothesis | Decision rule | Status | Evidence |
+|---|---|---|---|---|
+| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **CONFIRMED** | S-baseline-human NPV €-1,608K vs S-pure-humanoid €-960K; human is more expensive — H1 REJECTED as stated; humanoid is cheaper at 2026 prices due to zero opex |
+| H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs | **CONFIRMED** | S-hybrid-amr NPV €-924K, lower than both pure scenarios |
+| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | OAT: human_count drives ±€602K NPV range vs humanoid_capex ±€96K; see `reports/executive_charts/04_sensitivity_tornado.png` |
+| H4 | Humanoid throughput at 2026 capabilities is the binding constraint on hybrid scenarios | Simulation: removing humanoid throughput cap raises hybrid NPV by > 10% | **INCONCLUSIVE** | Transfer factor sensitivity not yet isolated in simulation; flagged for v1.1 |
 
 ### 7.2 Experimental Conditions (scenarios)
 
@@ -725,6 +737,9 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 | Date | Version | Change | ADR(s) |
 |---|---|---|---|
+| 2026-05-21 | 1.0.5 | Full audit remediation: added §3.7 limitations table; updated hypothesis status (H1–H4) with confirmed/rejected/inconclusive; added OAT tornado chart; fixed payback and IRR calculation; added transfer factor and operational realism to config; added ADR-0005 and ADR-0006; added data lineage diagram; added Docker CI job; uv.lock committed; README humanized with "Why this project" and decision-language results. | ADR-0005, ADR-0006 |
+| 2026-05-21 | 1.0.4 | Monte Carlo sensitivity analysis (10,000 samples) complete. NPV P50 = €-1,084,673 ± €414K. OAT 5-parameter sweep complete. Sensitivity report in `reports/sensitivity_analysis_report.json`. | — |
+| 2026-05-21 | 1.0.3 | Full pipeline executed on 2,359 real episodes from 5 Unitree UnifoLM datasets. Simulation increased to 15 replicas per scenario (75 total). All module outputs regenerated on real data. CI badges added. | — |
 | 2026-05-21 | 1.0.2 | Added §8.7 Data Profiling & Documentation. Modules 1–3 pipelines complete and tested on synthetic data. Module 1 full data download in progress (1.4GB/5 datasets). Auto-generated profiling notebook `01_data_profile_summary.ipynb` required for: raw dataset samples, Module 1 capabilities summary (detailed), Module 2 simulation runs (medium), Module 3 TCO scenarios (medium). All visualizations (histograms, box plots, bar charts, sensitivity heatmap) to be generated automatically via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` on every `make all` run. | — |
 | 2026-05-21 | 1.0.1 | Module 0 de-risk complete. Data sources updated to actual UnifoLM collection: 3 WBT datasets (spatial awareness) + 2 DiverseManip datasets (object variety). All 5 datasets accessible, SHAs pinned. Created `config/dataset_manifest.yaml` and updated download.py for multi-dataset support. | — |
 | 2026-05-20 | 1.0.0 | Initial SSOT charter created. Combines Charter, CRISP-DM, Requirements, Data Requirements, Experiment Design, SRS into one document. | ADR-0001 |
