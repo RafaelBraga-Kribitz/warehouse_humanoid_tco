@@ -19,6 +19,7 @@ from warehouse_humanoid_tco.features.parsers import (
     load_wbt_parquets,
     load_diversemanip_episodes_jsonl,
     load_diversemanip_parquets,
+    resolve_nested_dataset,
 )
 
 
@@ -87,12 +88,25 @@ def extract_episode_features(
 
 def extract_dataset_episodes(
     dataset_path: Path,
-    fps: float = 10.0,
+    fps: float | None = None,
 ) -> pl.DataFrame:
     """Extract features from all episodes in a dataset.
 
     Returns polars DataFrame with episode_id, cycle_time, reach, energy, n_frames, success_inferred.
+    If fps is None, attempts to infer from dataset metadata (default 10.0 if not found).
     """
+    dataset_path = resolve_nested_dataset(dataset_path)
+
+    # Try to infer FPS from info.json if not provided
+    if fps is None:
+        fps = 10.0  # default
+        info_path = dataset_path / "meta" / "info.json"
+        if info_path.exists():
+            import json
+            with open(info_path) as f:
+                info = json.load(f)
+            fps = info.get("fps", 10.0)
+
     dataset_type = infer_dataset_type(dataset_path)
 
     if dataset_type == "wbt":

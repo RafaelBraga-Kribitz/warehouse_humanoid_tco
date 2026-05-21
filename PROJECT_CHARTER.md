@@ -21,14 +21,14 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 -->
 
 <!-- SSOT_METADATA_START
-version: 1.0.1
+version: 1.0.2
 status: draft
 last_updated: 2026-05-21
 last_reviewed: 2026-05-21
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
 crisp_dm_phase: data_understanding
-module_status: Module 0 (de-risk) complete — all datasets accessible
+module_status: Modules 0–3 complete (M1–M3 tested on synthetic data, M1 full download in progress)
 SSOT_METADATA_END -->
 
 # Project Charter: Warehouse Humanoid TCO Analyzer
@@ -474,9 +474,10 @@ warehouse_humanoid_tco/
 │           └── logging.py        # Structured logging
 ├── notebooks/
 │   ├── 00_derisk_dataset_inspection.py   # jupytext .py source
-│   ├── 01_taxonomy_calibration.py
-│   ├── 02_simulation_exploration.py
-│   └── 03_tco_what_if.py
+│   ├── 01_data_profile_summary.py        # Auto-generated: data profiling for all modules
+│   ├── 02_taxonomy_calibration.py
+│   ├── 03_simulation_exploration.py
+│   └── 04_tco_what_if.py
 ├── scripts/
 │   ├── run_module_01.py
 │   ├── run_module_02.py
@@ -554,7 +555,85 @@ Per user's master prompt:
 
 Structured JSON logging via `src/warehouse_humanoid_tco/utils/logging.py`. Fields: `timestamp`, `level`, `module`, `event`, `context`. Logs to stdout; downstream tools can ingest.
 
-### 8.7 CLI Interface (Should, not Must)
+### 8.7 Data Profiling & Documentation (Notebooks)
+
+All module outputs shall be profiled and documented for stakeholder visibility. Profiling is **auto-generated** via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` and embedded in `notebooks/01_data_profile_summary.ipynb`.
+
+#### 8.7.1 Raw Datasets (Quick Reference)
+
+For each of the 5 raw datasets (WBT phases 1–3, DiverseManip phases 1–2):
+- Table: name | row count | column count | size | SHA256 | accessibility status
+- Link to `reports/derisk_inspection_report.json`
+- 2–3 sample rows per dataset (proof of structure)
+- Data types for each column
+
+#### 8.7.2 Module 1 Output: `humanoid_capabilities_summary.parquet` (DETAILED)
+
+**Structure:**
+- Full schema table (col name | dtype | non-null count | sample values)
+- Shape: 8 rows (task categories) × 11 columns
+
+**Descriptive Statistics:**
+- `cycle_time_*` columns: mean, std, min, max, quantiles (0.25, 0.5, 0.75)
+- `reach_*` columns: mean, max, distribution shape
+- `success_rate`: min, max, mean across categories
+- `n_episodes`: total episodes per category
+
+**Visualizations:**
+- Histogram: cycle_time_mean by task_category
+- Box plot: cycle_time distribution by category (flagging outliers)
+- Bar chart: n_episodes by category (highlight insufficient_sample=true)
+
+**Data Quality:**
+- Missing values map: show null counts per column
+- Uniqueness: distinct values in categorical columns
+- Outliers: flag any category with insufficient_sample=true or success_rate extremes
+
+#### 8.7.3 Module 2 Output: `simulation_runs.parquet` (MEDIUM)
+
+**Structure:**
+- Shape: N rows (simulation runs) × 7 columns
+- Schema table
+
+**Descriptive Statistics:**
+- `throughput_orders_per_shift`: mean, std, min, max across all runs
+- `queue_length_mean`: mean, std across scenarios
+- Run variability: std within each scenario (across replicas)
+
+**Visualizations:**
+- Bar chart: mean throughput by scenario (with error bars for std)
+- Box plot: throughput distribution by scenario
+- Line plot: queue_length_mean trend across runs (if time-series)
+
+#### 8.7.4 Module 3 Output: `tco_scenarios.parquet` (MEDIUM)
+
+**Structure:**
+- Shape: 5 rows (scenarios) × 6 columns
+- Schema table
+
+**Descriptive Statistics:**
+- `npv_eur`: ranking by scenario (winner highlighted)
+- `total_capex_eur` vs `total_opex_5yr_eur`: cost breakdown per scenario
+- `payback_years`: ranking (lower = better)
+
+**Visualizations:**
+- Bar chart: NPV ranking (5 scenarios, highlight winner)
+- Stacked bar: capex + opex composition per scenario
+- Sensitivity heatmap: which scenario most sensitive to labor cost changes?
+
+#### 8.7.5 Automation
+
+Profile notebook is **auto-generated** on every `make all` run:
+1. Read processed parquets from `data/processed/`
+2. Compute stats, generate plots
+3. Write to `notebooks/01_data_profile_summary.ipynb`
+4. Commit to repo (so recruiters can view without running code)
+
+Code location: `src/warehouse_humanoid_tco/analysis/profile_outputs.py`
+
+---
+
+### 8.8 CLI Interface (Should, not Must)
 
 ```bash
 python -m warehouse_humanoid_tco extract --dataset-revision <sha>
@@ -647,6 +726,7 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 | Date | Version | Change | ADR(s) |
 |---|---|---|---|
+| 2026-05-21 | 1.0.2 | Added §8.7 Data Profiling & Documentation. Modules 1–3 pipelines complete and tested on synthetic data. Module 1 full data download in progress (1.4GB/5 datasets). Auto-generated profiling notebook `01_data_profile_summary.ipynb` required for: raw dataset samples, Module 1 capabilities summary (detailed), Module 2 simulation runs (medium), Module 3 TCO scenarios (medium). All visualizations (histograms, box plots, bar charts, sensitivity heatmap) to be generated automatically via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` on every `make all` run. | — |
 | 2026-05-21 | 1.0.1 | Module 0 de-risk complete. Data sources updated to actual UnifoLM collection: 3 WBT datasets (spatial awareness) + 2 DiverseManip datasets (object variety). All 5 datasets accessible, SHAs pinned. Created `config/dataset_manifest.yaml` and updated download.py for multi-dataset support. | — |
 | 2026-05-20 | 1.0.0 | Initial SSOT charter created. Combines Charter, CRISP-DM, Requirements, Data Requirements, Experiment Design, SRS into one document. | ADR-0001 |
 

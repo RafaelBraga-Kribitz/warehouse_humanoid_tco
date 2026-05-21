@@ -121,7 +121,21 @@ def module_01_main(
 
     # ========== Combine and Classify ==========
     print("\n[Classification] Mapping task descriptions to taxonomy...")
-    per_episode = pl.concat(all_episodes) if all_episodes else pl.DataFrame()
+    if all_episodes:
+        # Ensure consistent types before concat (cast to nullable numeric types)
+        normalized = []
+        for df in all_episodes:
+            df = df.with_columns(
+                pl.col("cycle_time_seconds").cast(pl.Float64),
+                pl.col("reach_meters_estimate").cast(pl.Float64),
+                pl.col("energy_proxy_joint_integral").cast(pl.Float64),
+                pl.col("n_frames").cast(pl.Int64),
+                pl.col("success_inferred").cast(pl.Boolean),
+            )
+            normalized.append(df)
+        per_episode = pl.concat(normalized, how="diagonal")
+    else:
+        per_episode = pl.DataFrame()
 
     if len(per_episode) > 0:
         per_episode = per_episode.with_columns(

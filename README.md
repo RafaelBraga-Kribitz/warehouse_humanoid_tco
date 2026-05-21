@@ -2,7 +2,7 @@
 
 A reproducible analytical framework for the Total Cost of Ownership of humanoid robots in Austrian intralogistics, built as a Data Analytics / Business Intelligence portfolio project.
 
-> **All authoritative project information lives in [`PROJECT_CHARTER.md`](./PROJECT_CHARTER.md).** This README intentionally does not duplicate it. If you want the goals, scope, requirements, design decisions, or anything else about the project, open the Charter.
+> **All authoritative project information lives in `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`.** This README intentionally does not duplicate it. If you want the goals, scope, requirements, design decisions, or anything else about the project, open the Charter.
 
 ## What it does (one paragraph)
 
@@ -30,10 +30,10 @@ make all
 
 ## Documentation entry points
 
-- [`PROJECT_CHARTER.md`](./PROJECT_CHARTER.md): the Single Source of Truth.
-- [`CONTRIBUTING.md`](./CONTRIBUTING.md): documentation discipline and ADR rules.
-- [`docs/ADR/`](./docs/ADR/): architecture decisions, append-only.
-- [`reports/`](./reports/): rendered audit reports for each module.
+- `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`: the Single Source of Truth.
+- `[CONTRIBUTING.md](./CONTRIBUTING.md)`: documentation discipline and ADR rules.
+- `[docs/ADR/](./docs/ADR/)`: architecture decisions, append-only.
+- `[reports/](./reports/)`: rendered audit reports for each module.
 
 ## License
 
@@ -41,4 +41,4 @@ MIT. See `LICENSE`.
 
 ## Author
 
-Rafael Braga, Seiersberg-Pirka, Austria. Portfolio project, 2026.
+Rafael Braga-Kribitz, Seiersberg-Pirka, Austria. Portfolio project, 2026.
