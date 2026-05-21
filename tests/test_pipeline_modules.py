@@ -3,18 +3,17 @@
 from __future__ import annotations
 
 import json
-import yaml
 from pathlib import Path
 
 import polars as pl
 import pytest
+import yaml
 
 from warehouse_humanoid_tco.pipelines.module_02_simulation import module_02_main
 from warehouse_humanoid_tco.pipelines.module_04_dashboards import (
     export_for_tableau,
     generate_executive_charts,
 )
-
 
 # ── Minimal config fixture ─────────────────────────────────────────────────────
 
@@ -32,8 +31,18 @@ def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
             "amr": {"cycle_time_mean_seconds": 35.0, "cycle_time_std_seconds": 5.0},
         },
         "scenarios": [
-            {"id": "S-baseline-human", "human_fraction": 1.0, "humanoid_fraction": 0.0, "amr_fraction": 0.0},
-            {"id": "S-hybrid-amr", "human_fraction": 0.6, "humanoid_fraction": 0.2, "amr_fraction": 0.2},
+            {
+                "id": "S-baseline-human",
+                "human_fraction": 1.0,
+                "humanoid_fraction": 0.0,
+                "amr_fraction": 0.0,
+            },
+            {
+                "id": "S-hybrid-amr",
+                "human_fraction": 0.6,
+                "humanoid_fraction": 0.2,
+                "amr_fraction": 0.2,
+            },
         ][:n_scenarios],
         "total_agents": 4,
     }

@@ -20,7 +20,6 @@ import numpy as np
 import polars as pl
 import yaml
 
-
 _BASELINE_ANNUAL_OPEX = 8 * (252 * 8) * 18.50 * 1.35  # 8 humans, full shift, KV Handel 2026
 
 
@@ -62,7 +61,7 @@ def compute_tco_scenario(
     elif "hybrid-amr" in scenario_id:
         human_fraction = 0.6
         humanoid_fraction = 0.2
-        amr_fraction = 0.2
+        _amr_fraction = 0.2  # Reserved for future use
     elif "future-2028" in scenario_id:
         human_fraction = 0.5
         humanoid_fraction = 0.5
@@ -118,7 +117,7 @@ def module_03_main(
 ) -> dict[str, Path]:
     """Run Module 3 end-to-end.
 
-    Returns dict mapping {'tco_scenarios': ..., 'sensitivity_analysis': ..., 'validation_report': ...}
+    Returns dict mapping tco_scenarios, sensitivity_analysis, validation_report.
     """
     # Load simulation runs
     if simulation_runs_path is None:
@@ -139,16 +138,16 @@ def module_03_main(
         sim_df = pl.read_parquet(simulation_runs_path)
         print(f"  ✓ Loaded {len(sim_df)} simulation runs")
     else:
-        print(f"  ⚠ Simulation runs not found. Creating empty TCO.")
+        print("  ⚠ Simulation runs not found. Creating empty TCO.")
         sim_df = pl.DataFrame()
 
     print(f"[Setup] Loading TCO assumptions from {assumptions_path}...")
     if assumptions_path.exists():
         with open(assumptions_path) as f:
             assumptions = yaml.safe_load(f)
-        print(f"  ✓ Loaded assumptions")
+        print("  ✓ Loaded assumptions")
     else:
-        print(f"  ⚠ Assumptions file not found. Using defaults.")
+        print("  ⚠ Assumptions file not found. Using defaults.")
         assumptions = {
             "humanoid_capex_eur": 120000,
             "human_hourly_wage_eur": 18.50,
@@ -197,7 +196,10 @@ def module_03_main(
             result["n_runs"] = len(npv_per_run)
 
             tco_results.append(result)
-            print(f"  {scenario_id}: NPV = €{npv_mean:.0f} ± €{npv_std:.0f} (90% CI: [€{ci_lower:.0f}, €{ci_upper:.0f}])")
+            print(
+                f"  {scenario_id}: NPV = €{npv_mean:.0f} ± €{npv_std:.0f} "
+                f"(90% CI: [€{ci_lower:.0f}, €{ci_upper:.0f}])"
+            )
 
     # ========== Export ==========
     print("\n[Export] Writing parquets...")

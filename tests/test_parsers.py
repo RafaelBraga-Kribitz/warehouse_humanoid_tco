@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import tempfile
 from pathlib import Path
 
 import polars as pl
@@ -17,7 +16,6 @@ from warehouse_humanoid_tco.features.parsers import (
     load_wbt_parquets,
     resolve_nested_dataset,
 )
-
 
 # ── helpers to build fixture datasets ─────────────────────────────────────────
 

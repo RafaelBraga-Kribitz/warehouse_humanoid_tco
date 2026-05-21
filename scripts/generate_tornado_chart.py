@@ -48,7 +48,9 @@ def main() -> None:
 
     y_pos = range(len(params))
 
-    for i, (low, high, label) in enumerate(zip(npv_low, npv_high, labels)):
+    for i, (low, high, _label) in enumerate(
+        zip(npv_low, npv_high, labels, strict=True)
+    ):
         # Low side (more negative = higher cost)
         ax.barh(i, low - BASELINE_NPV, left=BASELINE_NPV, color="#E07B39", alpha=0.85, height=0.5)
         # High side (less negative = lower cost)

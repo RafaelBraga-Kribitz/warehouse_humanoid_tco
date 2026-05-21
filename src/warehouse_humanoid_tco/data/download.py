@@ -1,13 +1,13 @@
 """Dataset download utilities.
 
-Downloads UnifoLM-WBT and DiverseManip datasets from Hugging Face Hub with reproducibility guarantees.
-See PROJECT_CHARTER.md §6.1 for data source requirements and config/dataset_manifest.yaml for collection.
+Downloads UnifoLM-WBT and DiverseManip datasets from Hugging Face Hub with
+reproducibility guarantees. See PROJECT_CHARTER.md §6.1 for data source
+requirements and config/dataset_manifest.yaml for collection.
 """
 
 from __future__ import annotations
 
 import hashlib
-import json
 from pathlib import Path
 from typing import Any
 

@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
-
 from warehouse_humanoid_tco.analysis.sensitivity import (
     compute_tco_for_params,
     run_monte_carlo_sensitivity,
     run_oat_sensitivity,
 )
 from warehouse_humanoid_tco.evaluation.validation import validate_human_baseline_throughput
-
 
 # ── compute_tco_for_params ─────────────────────────────────────────────────────
 

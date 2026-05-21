@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from warehouse_humanoid_tco.models.simulation import (
     AgentProfile,
     WarehouseScenario,

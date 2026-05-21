@@ -8,7 +8,6 @@ See PROJECT_CHARTER.md §6.3 Schema Contracts.
 from __future__ import annotations
 
 import pandera.polars as pa
-import polars as pl
 
 
 class HumanoidCapabilitySummarySchema(pa.DataFrameModel):

@@ -7,23 +7,19 @@ Marked @pytest.mark.integration where they test full pipeline paths.
 from __future__ import annotations
 
 import json
-import tempfile
+import json as _json
 from pathlib import Path
 
 import polars as pl
 import pytest
 
-import json as _json
-
 from warehouse_humanoid_tco.analysis.sensitivity import run_sensitivity_analysis
 from warehouse_humanoid_tco.features.extraction import (
     compute_energy_proxy,
-    compute_reach_estimate,
     extract_dataset_episodes,
     extract_episode_features,
 )
 from warehouse_humanoid_tco.pipelines.module_03_tco import module_03_main
-
 
 # ── features/extraction.py ────────────────────────────────────────────────────
 

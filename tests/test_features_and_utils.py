@@ -3,23 +3,23 @@
 from __future__ import annotations
 
 import json
-import tempfile
 from pathlib import Path
 
 import polars as pl
-import pytest
 
-from warehouse_humanoid_tco.features.aggregation import aggregate_capabilities, MIN_EPISODES_PER_CATEGORY
+from warehouse_humanoid_tco.features.aggregation import (
+    MIN_EPISODES_PER_CATEGORY,
+    aggregate_capabilities,
+)
 from warehouse_humanoid_tco.features.extraction import (
     compute_cycle_time,
     compute_energy_proxy,
     compute_reach_estimate,
 )
 from warehouse_humanoid_tco.models.sensitivity import monte_carlo, one_at_a_time
-from warehouse_humanoid_tco.utils.logging import get_logger, JsonFormatter
+from warehouse_humanoid_tco.utils.logging import JsonFormatter, get_logger
 from warehouse_humanoid_tco.utils.reproducibility import seed_all
-from warehouse_humanoid_tco.visualization.exports import export_for_tableau, export_for_powerbi
-
+from warehouse_humanoid_tco.visualization.exports import export_for_powerbi, export_for_tableau
 
 # ── features/extraction.py ────────────────────────────────────────────────────
 

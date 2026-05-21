@@ -60,7 +60,7 @@ def module_02_main(
         summary_df = pl.read_parquet(capability_summary_path)
         print(f"  ✓ Loaded capability summary for {len(summary_df)} task categories")
     else:
-        print(f"  ⚠ Capability summary not found. Using placeholder values.")
+        print("  ⚠ Capability summary not found. Using placeholder values.")
         summary_df = pl.DataFrame()
 
     # Extract humanoid cycle time from summary (using first row with valid std)
@@ -92,7 +92,10 @@ def module_02_main(
         throughput_mult = scenario_config.get("humanoid_throughput_multiplier", 1.0)
 
         print(f"\n[Scenario] {scenario_id}")
-        print(f"  Composition: {human_frac:.1%} human, {humanoid_frac:.1%} humanoid, {amr_frac:.1%} AMR")
+        print(
+            f"  Composition: {human_frac:.1%} human, "
+            f"{humanoid_frac:.1%} humanoid, {amr_frac:.1%} AMR"
+        )
 
         # Create agent profiles
         agent_profiles = []
