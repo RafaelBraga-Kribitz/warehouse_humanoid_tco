@@ -70,6 +70,9 @@ venv = ".venv"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=src/warehouse_humanoid_tco --cov-report=term-missing --cov-fail-under=70"
+markers = [
+    "integration: marks tests that require file fixtures or full pipeline execution",
+]
 
 [tool.coverage.run]
 source = ["src/warehouse_humanoid_tco"]
