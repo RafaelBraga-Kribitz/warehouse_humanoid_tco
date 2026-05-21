@@ -1,7 +1,7 @@
-"""Per-episode feature extraction from UnifoLM-WBT parquet files.
+"""Per-episode feature extraction from UnifoLM dataset collections.
 
-Computes cycle_time, reach_estimate, energy_proxy, and phase breakdown
-from raw joint state time-series.
+Computes cycle_time, reach_estimate, energy_proxy from joint state time-series.
+Handles both WBT and DiverseManip dataset structures.
 See PROJECT_CHARTER.md §4 Module 1, Steps 6-7.
 """
 
@@ -12,6 +12,14 @@ from typing import Any
 
 import numpy as np
 import polars as pl
+
+from warehouse_humanoid_tco.features.parsers import (
+    infer_dataset_type,
+    load_wbt_episodes_jsonl,
+    load_wbt_parquets,
+    load_diversemanip_episodes_jsonl,
+    load_diversemanip_parquets,
+)
 
 
 def compute_cycle_time(df: pl.DataFrame, fps: float) -> float:
@@ -75,3 +83,46 @@ def extract_episode_features(
         "energy_proxy_joint_integral": compute_energy_proxy(df, action_col),
         "n_frames": len(df),
     }
+
+
+def extract_dataset_episodes(
+    dataset_path: Path,
+    fps: float = 10.0,
+) -> pl.DataFrame:
+    """Extract features from all episodes in a dataset.
+
+    Returns polars DataFrame with episode_id, cycle_time, reach, energy, n_frames, success_inferred.
+    """
+    dataset_type = infer_dataset_type(dataset_path)
+
+    if dataset_type == "wbt":
+        episodes_meta = load_wbt_episodes_jsonl(dataset_path)
+        episode_dfs = load_wbt_parquets(dataset_path)
+    else:
+        episodes_meta = load_diversemanip_episodes_jsonl(dataset_path)
+        episode_dfs = load_diversemanip_parquets(dataset_path)
+
+    # Create metadata lookup
+    meta_by_id = {ep.get("episode_index", i): ep for i, ep in enumerate(episodes_meta)}
+
+    features = []
+    for episode_id, df in episode_dfs.items():
+        try:
+            feature_row = {
+                "episode_id": episode_id,
+                "cycle_time_seconds": compute_cycle_time(df, fps),
+                "reach_meters_estimate": compute_reach_estimate(df),
+                "energy_proxy_joint_integral": compute_energy_proxy(df),
+                "n_frames": len(df),
+            }
+
+            # Add metadata from episodes.jsonl if available
+            meta = meta_by_id.get(episode_id, {})
+            feature_row["success_inferred"] = meta.get("success", None)
+            feature_row["task_description"] = meta.get("task", "")
+
+            features.append(feature_row)
+        except Exception:
+            continue
+
+    return pl.DataFrame(features)
