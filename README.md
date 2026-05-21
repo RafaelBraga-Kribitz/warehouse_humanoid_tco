@@ -81,6 +81,8 @@ make all
 
 ## For Recruiters
 
+**Austrian hiring managers:** → **[Kurzfassung auf Deutsch](./reports/Executive_Summary_DE.qmd)** — Analyse unter österreichischen Kollektivvertragslöhnen und Betriebsratsanforderungen
+
 **What this shows:**
 
 1. ✓ Data pipeline rigor: end-to-end extraction, validation, profiling
