@@ -21,13 +21,14 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 -->
 
 <!-- SSOT_METADATA_START
-version: 1.0.0
+version: 1.0.1
 status: draft
-last_updated: 2026-05-20
-last_reviewed: 2026-05-20
+last_updated: 2026-05-21
+last_reviewed: 2026-05-21
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
-crisp_dm_phase: business_understanding
+crisp_dm_phase: data_understanding
+module_status: Module 0 (de-risk) complete — all datasets accessible
 SSOT_METADATA_END -->
 
 # Project Charter: Warehouse Humanoid TCO Analyzer
@@ -283,15 +284,31 @@ Anything that is not in §5.1 but might be considered later goes here. Items mov
 
 ### 6.1 Data Sources (authoritative list)
 
+#### Phase 1: Whole-Body Teleoperation (WBT) Datasets — Spatial Awareness
+
+| Source | Type | License | Pinned SHA | Episodes | Use |
+|---|---|---|---|---|---|
+| G1_WBT_Inspire_Pickup_Pillow_MainCamOnly | HF dataset | Per Unitree | 24e3e4d88a5020bdb4b3046ec09b09dc56f8d1f1 | 715 | Reach, grasp, soft objects |
+| G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly | HF dataset | Per Unitree | c0a5fb0992a0f2a2b9df3493d27c2d670a4b1c36 | ~500 | Placement into constrained space |
+| G1_WBT_Brainco_Collect_Plates_Into_Dishwasher | HF dataset | Per Unitree | 16c01dbfcb2159783ea575acd42d1cec9b69e311 | 1460 | Transport + placement, stackable items |
+
+#### Phase 2: Dexterous Manipulation (DiverseManip) Datasets — Object Variety
+
+| Source | Type | License | Pinned SHA | Arm Config | Use |
+|---|---|---|---|---|---|
+| G1_Dex1_DiverseManip_SingleArm_256x256 | HF dataset | Per Unitree | adfe712e2ac801ca7ba18c0da79e39483975cc1f | Single arm | Grasp stability, object types |
+| G1_Dex1_DiverseManip_DualArm_256x256 | HF dataset | Per Unitree | 50ea572ea5f225e30e7c9116ab814a2efd73060a | Dual arm | Larger/heavier object handling |
+
+#### Reference Data
+
 | Source | Type | License | Pinned Version | Use |
 |---|---|---|---|---|
-| UnifoLM-WBT-Dataset | Hugging Face dataset | Per Unitree license, verified in Module 0 | TBD after de-risk notebook, recorded as SHA | Humanoid capability extraction |
-| Statistik Austria wage tables | Public CSV | Open Government Data (CC BY 4.0) | Year-pinned snapshot in `data/raw/at_wages/` | Labor cost in TCO |
-| WKO Kollektivvertrag data | Public PDF / web | Public domain | Snapshot date recorded in manifest | Sector-specific wage rates |
-| Knapp AG public case studies | Public web | Cited under fair use, not redistributed | URL + access date | Throughput benchmarks for validation |
-| AutoStore reference architecture specs | Public web | Cited, not redistributed | URL + access date | Simulation layout parameters |
+| Statistik Austria wage tables | Public CSV | CC BY 4.0 | Year-pinned snapshot in `data/raw/at_wages/` | Labor cost in TCO |
+| WKO Kollektivvertrag data | Public PDF/web | Public domain | Snapshot date in manifest | Sector-specific wage rates |
+| Knapp AG case studies | Public web | Fair use, not redistributed | URL + access date | Throughput benchmarks |
+| AutoStore reference specs | Public web | Cited, not redistributed | URL + access date | Simulation layout |
 
-**Rule:** no dataset enters the project without an entry in this table.
+**Rule:** No dataset enters the project without an entry in this table. All HF datasets pinned by SHA for reproducibility. See `config/dataset_manifest.yaml` for full metadata.
 
 ### 6.2 Data Storage Layout
 
@@ -630,6 +647,7 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 | Date | Version | Change | ADR(s) |
 |---|---|---|---|
+| 2026-05-21 | 1.0.1 | Module 0 de-risk complete. Data sources updated to actual UnifoLM collection: 3 WBT datasets (spatial awareness) + 2 DiverseManip datasets (object variety). All 5 datasets accessible, SHAs pinned. Created `config/dataset_manifest.yaml` and updated download.py for multi-dataset support. | — |
 | 2026-05-20 | 1.0.0 | Initial SSOT charter created. Combines Charter, CRISP-DM, Requirements, Data Requirements, Experiment Design, SRS into one document. | ADR-0001 |
 
 ---

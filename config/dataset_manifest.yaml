@@ -1,0 +1,52 @@
+# Dataset manifest for Module 1: Capability Extraction
+# Organizes datasets by task category for spatial awareness and manipulation analysis
+
+# Phase 1: Whole-body teleop (WBT) datasets
+# Validates: gross movements, spatial reach, placement accuracy, transport coordination
+wbt_datasets:
+  - repo_id: "unitreerobotics/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly"
+    task_category: "pick_medium"
+    phase: 1
+    description: "Spatial reach + grasp (pillow = soft, deformable object)"
+    episodes_count: 715
+
+  - repo_id: "unitreerobotics/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly"
+    task_category: "place_general"
+    phase: 1
+    description: "Placement into constrained space (washing machine opening)"
+    episodes_count: 465
+
+  - repo_id: "unitreerobotics/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher"
+    task_category: "place_general"
+    phase: 1
+    description: "Transport + placement with multiple objects (stackable items)"
+    episodes_count: 1460
+
+# Phase 2: Diverse manipulation (DiverseManip) datasets
+# Validates: fine manipulation, object variety, grip types, error modes
+# Using 256x256 resolution for fidelity; 128x128 available as alternatives
+diversemanip_datasets:
+  - repo_id: "unitreerobotics/G1_Dex1_DiverseManip_SingleArm_256x256"
+    task_category: "manipulate_diverse"
+    phase: 2
+    description: "Single-arm dexterous manipulation across object types/weights"
+    arm_config: "single_arm"
+    resolution: "256x256"
+
+  - repo_id: "unitreerobotics/G1_Dex1_DiverseManip_DualArm_256x256"
+    task_category: "manipulate_diverse"
+    phase: 2
+    description: "Dual-arm coordination for larger/heavier objects"
+    arm_config: "dual_arm"
+    resolution: "256x256"
+
+# Processing strategy
+processing:
+  # Phase 1: Extract spatial/kinematic features (reach, cycle time, success rate)
+  phase_1_scope: "Episode-level: success/failure, cycle time, reach distance, gripper state transitions"
+
+  # Phase 2: Layer in manipulation features (grasp stability, object handling variety)
+  phase_2_scope: "Episode + per-frame: object type, grasp stability, force/torque proxies, manipulation error modes"
+
+  # All phases share: deterministic episode sampling, schema validation, provenance tracking
+  common_requirement: "Reproducible seeded sampling, Pandera schema contracts, SHA pinning per dataset revision"

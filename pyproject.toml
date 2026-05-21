@@ -9,9 +9,9 @@ description = "Humanoid robot TCO analyzer for Austrian intralogistics — portf
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Rafael Braga" }]
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
-    "polars>=0.20",
+    "polars[rtcompat]>=0.20",
     "pyarrow>=15.0",
     "duckdb>=0.10",
     "pandera>=0.18",
