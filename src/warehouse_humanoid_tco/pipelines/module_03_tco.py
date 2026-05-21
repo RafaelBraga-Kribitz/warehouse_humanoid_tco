@@ -3,7 +3,7 @@
 Orchestrates:
 1. Load simulation runs from Module 2
 2. Load TCO assumptions (capex, opex, labor costs)
-3. Compute 5-year NPV, IRR, payback period for each scenario
+3. Compute 5-year NPV, cost reduction vs baseline, and payback period for each scenario
 4. Run sensitivity analysis on key drivers
 5. Export tco_scenarios parquet
 
@@ -21,19 +21,25 @@ import polars as pl
 import yaml
 
 
+_BASELINE_ANNUAL_OPEX = 8 * (252 * 8) * 18.50 * 1.35  # 8 humans, full shift, KV Handel 2026
+
+
 def compute_tco_scenario(
     scenario_id: str,
     simulation_data: dict,
     assumptions: dict,
     years: int = 5,
     discount_rate: float = 0.08,
+    baseline_annual_opex: float = _BASELINE_ANNUAL_OPEX,
 ) -> dict:
     """Compute TCO metrics for a single scenario.
 
-    Returns dict with npv_eur, irr, payback_years.
+    Returns dict with npv_eur, cost_reduction_vs_baseline_pct, payback_years.
+    IRR is omitted: this is a pure-cost model with no revenue, making IRR undefined.
+    payback_years = capex / annual_opex_savings_vs_baseline (inf if no savings).
     """
     # Extract agent counts from simulation data
-    total_throughput = simulation_data.get("throughput_orders_per_shift", 0)
+    total_throughput = simulation_data.get("throughput_orders_per_shift", 0)  # noqa: F841
 
     # Assumptions
     humanoid_capex = assumptions.get("humanoid_capex_eur", 120000)
@@ -44,9 +50,8 @@ def compute_tco_scenario(
     # Scenario composition
     human_fraction = 0.0
     humanoid_fraction = 0.0
-    amr_fraction = 0.0
+    amr_fraction = 0.0  # noqa: F841
 
-    # Parse scenario ID to estimate composition
     if "baseline-human" in scenario_id:
         human_fraction = 1.0
     elif "pure-humanoid" in scenario_id:
@@ -72,29 +77,34 @@ def compute_tco_scenario(
     # Annual operating costs
     annual_labor_cost = n_human * annual_hours_per_worker * human_hourly_wage * human_overhead
 
-    # Simple 5-year NPV calculation
-    cash_flows = [-capex_year0]  # Year 0: capex outflow
+    # 5-year discounted NPV (cost model: all flows negative)
+    cash_flows = [-capex_year0]
     for year in range(1, years + 1):
-        cf = -annual_labor_cost
-        cash_flows.append(cf / ((1 + discount_rate) ** year))
+        cash_flows.append(-annual_labor_cost / ((1 + discount_rate) ** year))
 
     npv = sum(cash_flows)
 
-    # Simplified IRR: solve for r where NPV = 0
-    # For now, return NPV as a proxy
-    irr = None
+    # Cost reduction vs all-human baseline (positive = cheaper than baseline)
+    cost_reduction_pct = (
+        (baseline_annual_opex - annual_labor_cost) / baseline_annual_opex * 100
+        if baseline_annual_opex > 0
+        else 0.0
+    )
 
-    # Simplified payback: years to recover capex
-    if capex_year0 > 0 and annual_labor_cost > 0:
-        payback_years = capex_year0 / annual_labor_cost
+    # Payback: years until cumulative opex savings offset capex
+    annual_savings = max(0.0, baseline_annual_opex - annual_labor_cost)
+    if capex_year0 <= 0:
+        payback_years = 0.0  # no capex to recover
+    elif annual_savings <= 0:
+        payback_years = float("inf")  # opex savings never offset capex
     else:
-        payback_years = None
+        payback_years = round(capex_year0 / annual_savings, 1)
 
     return {
         "scenario_id": scenario_id,
         "npv_eur": float(npv),
-        "irr": irr,
-        "payback_years": payback_years,
+        "cost_reduction_vs_baseline_pct": round(cost_reduction_pct, 1),
+        "payback_years": payback_years if payback_years != float("inf") else None,
         "total_capex_eur": float(capex_year0),
         "total_opex_5yr_eur": float(annual_labor_cost * years),
         "pipeline_version": "0.1.0",
@@ -174,9 +184,10 @@ def module_03_main(
             ci_upper = float(np.percentile(npv_array, 95))
 
             # Use mean for base result, add CI fields
+            throughput_mean = float(scenario_data["throughput_orders_per_shift"].mean())
             result = compute_tco_scenario(
                 scenario_id,
-                {"throughput_orders_per_shift": float(np.mean(scenario_data["throughput_orders_per_shift"]))},
+                {"throughput_orders_per_shift": throughput_mean},
                 assumptions,
             )
             result["npv_mean_eur"] = npv_mean
