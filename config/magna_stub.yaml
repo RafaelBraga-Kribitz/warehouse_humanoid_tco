@@ -1,0 +1,23 @@
+# Magna automotive line stub — v1.0 NOT CALIBRATED
+# See ADR-0003: full calibration deferred to v1.1
+# DO NOT use for production simulation in v1.0
+
+architecture: automotive_line
+version: "stub-1.0"
+status: stub  # not validated; do not run simulation against this
+
+layout:
+  # TODO v1.1: source from Magna Steyr public production data
+  stations: null
+  takt_time_seconds: null
+  line_length_m: null
+
+agents:
+  human: {}
+  humanoid: {}
+  cobot: {}
+
+note: >
+  Magna automotive line config is scaffolded to demonstrate framework generalizability.
+  Full calibration requires Magna-specific takt-time and ergonomic benchmarks.
+  Planned for v1.1 per PROJECT_CHARTER.md §5.1 FR-10.

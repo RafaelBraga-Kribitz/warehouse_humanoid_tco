@@ -1,0 +1,75 @@
+# AutoStore reference architecture — v1.0 (FULLY CALIBRATED)
+# See PROJECT_CHARTER.md §7.3 Controlled Variables
+# See ADR-0003 for why AutoStore is the only fully calibrated architecture in v1.0
+
+architecture: autostore
+version: "1.0"
+status: calibrated
+
+layout:
+  grid_columns: 10
+  grid_rows: 10
+  bin_depth: 10                    # bins stacked vertically
+  total_bins: 10000
+  ports: 4                         # pick stations
+  robots_per_port: 1               # robots servicing each port
+
+operations:
+  shift_hours: 8
+  operating_days_per_year: 252
+  order_arrival_rate_per_hour: 120 # Poisson lambda; from Knapp public benchmarks
+  pick_lines_per_order: 2.5        # mean pick lines per order
+
+agents:
+  human:
+    cycle_time_mean_seconds: 25    # seconds per pick line (Knapp benchmark)
+    cycle_time_std_seconds: 8
+    error_rate: 0.002
+    hourly_wage_eur: 18.50         # base; KV Handel 2026 estimate
+    overhead_multiplier: 1.35      # social contributions, benefits
+    absence_rate_per_shift: 0.05
+
+  humanoid:
+    # Populated from Module 1 output: data/processed/humanoid_capabilities_summary.parquet
+    # Placeholder values — overwritten at runtime
+    cycle_time_mean_seconds: null
+    cycle_time_std_seconds: null
+    error_rate: null
+    capex_eur: 120000              # 2026 market estimate; configurable in tco_assumptions.yaml
+    mtbf_hours: 2000               # mean time between failures
+    mttr_hours: 4                  # mean time to repair
+    energy_kwh_per_shift: 8.0
+
+  amr:
+    cycle_time_mean_seconds: 35
+    cycle_time_std_seconds: 5
+    error_rate: 0.001
+    capex_eur: 65000
+    mtbf_hours: 4000
+    mttr_hours: 2
+    energy_kwh_per_shift: 4.0
+
+scenarios:
+  - id: S-baseline-human
+    human_fraction: 1.0
+    humanoid_fraction: 0.0
+    amr_fraction: 0.0
+  - id: S-pure-humanoid
+    human_fraction: 0.0
+    humanoid_fraction: 1.0
+    amr_fraction: 0.0
+  - id: S-hybrid-5050
+    human_fraction: 0.5
+    humanoid_fraction: 0.5
+    amr_fraction: 0.0
+  - id: S-hybrid-amr
+    human_fraction: 0.6
+    humanoid_fraction: 0.2
+    amr_fraction: 0.2
+  - id: S-future-2028
+    human_fraction: 0.5
+    humanoid_fraction: 0.5
+    amr_fraction: 0.0
+    humanoid_throughput_multiplier: 1.30
+
+total_agents: 8                    # total workforce units per scenario

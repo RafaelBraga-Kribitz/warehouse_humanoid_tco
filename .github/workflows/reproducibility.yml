@@ -1,0 +1,38 @@
+name: Reproducibility Check
+
+on:
+  schedule:
+    # Weekly: Mondays at 07:00 UTC
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+jobs:
+  reproducibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Run pipeline (run 1)
+        run: make all
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Hash outputs (run 1)
+        run: |
+          find data/processed -name "*.parquet" | sort | xargs sha256sum > /tmp/hashes_run1.txt
+          cat /tmp/hashes_run1.txt
+      - name: Clear processed data
+        run: find data/processed -name "*.parquet" -delete
+      - name: Run pipeline (run 2)
+        run: make all
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Hash outputs (run 2) and compare
+        run: |
+          find data/processed -name "*.parquet" | sort | xargs sha256sum > /tmp/hashes_run2.txt
+          diff /tmp/hashes_run1.txt /tmp/hashes_run2.txt && echo "REPRODUCIBILITY PASS" || (echo "REPRODUCIBILITY FAIL" && exit 1)

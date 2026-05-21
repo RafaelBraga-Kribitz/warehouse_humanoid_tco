@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  pipeline:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../data:/app/data
+      - ../reports:/app/reports
+      - ../config:/app/config
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    command: ["make", "all"]

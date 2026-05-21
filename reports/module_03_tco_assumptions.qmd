@@ -1,0 +1,25 @@
+---
+title: "Module 3 TCO Assumptions Catalog"
+author: "Rafael Braga"
+date: today
+format:
+  html:
+    toc: true
+    code-fold: true
+    theme: cosmo
+---
+
+## Purpose
+
+Every assumption in the TCO financial model is documented here with its source.
+No undocumented magic numbers exist in the model.
+See PROJECT_CHARTER.md §3.3 analytical credibility criterion.
+
+## Status
+
+**NOT YET RUN.** Populate after executing `scripts/run_module_03.py`.
+
+## Assumptions Source Index
+
+All assumptions come from `config/tco_assumptions.yaml`.
+Every assumption in that file has a `# Source:` annotation.

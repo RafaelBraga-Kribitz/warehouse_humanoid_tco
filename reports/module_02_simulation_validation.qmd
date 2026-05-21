@@ -1,0 +1,21 @@
+---
+title: "Module 2 Validation: Simulation vs. Knapp AutoStore Benchmark"
+author: "Rafael Braga"
+date: today
+format:
+  html:
+    toc: true
+    code-fold: true
+    theme: cosmo
+---
+
+## Purpose
+
+Validates the SimPy simulation human-only baseline against published Knapp AutoStore throughput benchmarks.
+See PROJECT_CHARTER.md §7.5.
+
+Pass criterion: simulated throughput within 20% of Knapp reference (960 orders/8h shift).
+
+## Status
+
+**NOT YET RUN.** Populate after executing `scripts/run_module_02.py`.
