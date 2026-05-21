@@ -28,12 +28,62 @@ jupyter notebook notebooks/00_derisk_dataset_inspection.ipynb
 make all
 ```
 
+## Results Summary
+
+**Pipeline Status:** ✓ All 4 modules complete with real data (2026-05-21).
+
+### Data
+- **2,359 episodes** extracted from 5 UnifoLM datasets (WBT + DiverseManip)
+- **Capabilities profiled:** cycle time, reach, energy, success rate by task category
+- **Validation:** Full data profiling notebook in `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)` (stakeholder transparency)
+
+### Simulation
+- **15 runs** across 5 warehouse scenarios (3 replicas each)
+- **Scenarios:** baseline human, pure humanoid, hybrid (50/50), hybrid + AMR, future 2028
+- **Metrics:** orders per shift, queue length, utilization (5 scenarios ranked by throughput)
+
+### Financial Analysis (5-year horizon, 8% discount)
+| Scenario | NPV | Capex | Opex 5yr |
+|----------|-----|-------|----------|
+| S-baseline-human | €-1,608,251 | €0 | €2,014,000 |
+| **S-hybrid-amr** | **€-924,125** | **€120K** | **€1,007K** |
+| S-hybrid-5050 | €-1,284,125 | €480K | €1,007K |
+| S-pure-humanoid | €-960,000 | €960K | €0 |
+| S-future-2028 | €-1,284,125 | €480K | €1,007K |
+
+**Winner:** S-hybrid-amr (20% humanoid + 20% AMR minimizes total cost).
+
+### Executive Charts
+- [TCO NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png)
+- [Cost Breakdown](./reports/executive_charts/02_cost_breakdown.png)
+- [Simulation Throughput](./reports/executive_charts/03_simulation_throughput.png)
+
+### Dashboards (In Progress)
+- **Tableau Public:** CSVs ready in `exports/tableau_public/` → [create public dashboard](#for-recruiters)
+- **Power BI:** exported data ready for `.pbix` creation
+
+## For Recruiters
+
+**What this shows:**
+1. ✓ Data pipeline rigor: end-to-end extraction, validation, profiling
+2. ✓ Statistical modeling: SimPy discrete-event simulation with empirical inputs
+3. ✓ Financial analysis: NPV, sensitivity, payback period for business decisions
+4. ✓ Reproducibility: every result is version-controlled and auditable
+
+**How to explore:**
+1. Read `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)` for methodology + assumptions
+2. Review `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)` for data validation
+3. Check `[reports/](./reports/)` for Module 0–4 validation reports
+4. View executive charts in `[reports/executive_charts/](./reports/executive_charts/)`
+5. (Coming soon) Tableau Public dashboards + Power BI `.pbix` file
+
 ## Documentation entry points
 
 - `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`: the Single Source of Truth.
 - `[CONTRIBUTING.md](./CONTRIBUTING.md)`: documentation discipline and ADR rules.
 - `[docs/ADR/](./docs/ADR/)`: architecture decisions, append-only.
-- `[reports/](./reports/)`: rendered audit reports for each module.
+- `[reports/](./reports/)`: rendered audit reports + executive charts for each module.
+- `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)`: data transparency + stakeholder briefing.
 
 ## License
 
