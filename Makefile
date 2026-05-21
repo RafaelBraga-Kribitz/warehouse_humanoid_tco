@@ -34,10 +34,9 @@ help:
 # ── Bootstrap ────────────────────────────────────────────────────────────────
 
 setup:
-	python -m venv venv
-	$(VENV) pip install --upgrade pip setuptools wheel
-	$(VENV) pip install -e ".[dev]"
-	$(VENV) pip install nbformat
+	uv venv .venv
+	uv sync --frozen --extra dev
+	@echo "✓ Environment ready (locked)"
 
 # ── Quality gates ─────────────────────────────────────────────────────────────
 
