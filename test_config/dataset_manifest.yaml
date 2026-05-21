@@ -1,0 +1,5 @@
+diversemanip_datasets: []
+wbt_datasets:
+- phase: 1
+  repo_id: test/wbt_sample
+  task_category: test

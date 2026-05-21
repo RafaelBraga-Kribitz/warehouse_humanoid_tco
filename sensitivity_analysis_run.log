@@ -1,0 +1,11 @@
+[Sensitivity] Running OAT + Monte Carlo analysis...
+  OAT sensitivity for 5 parameters...
+  Monte Carlo: 10000 samples...
+  ✓ OAT: /Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet
+  ✓ MC samples: /Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet
+  ✓ Report: /Users/rbk/warehouse_humanoid_tco/reports/sensitivity_analysis_report.json
+
+  MC Summary: NPV = €-1084673 ± €414024
+    Range: €-1815005 (p5) to €-463193 (p95)
+
+✓ Success. Outputs: {'oat_results': PosixPath('/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet'), 'mc_samples': PosixPath('/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet'), 'report': PosixPath('/Users/rbk/warehouse_humanoid_tco/reports/sensitivity_analysis_report.json')}

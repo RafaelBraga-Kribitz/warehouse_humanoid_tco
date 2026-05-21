@@ -1,0 +1,313 @@
+{
+    "codebase_version": "v3.0",
+    "robot_type": "unitree_g1",
+    "total_episodes": 300,
+    "total_frames": 426897,
+    "total_tasks": 1,
+    "chunks_size": 1000,
+    "data_files_size_in_mb": 100,
+    "video_files_size_in_mb": 200,
+    "fps": 30,
+    "splits": {
+        "train": "0:300"
+    },
+    "data_path": "data/chunk-{chunk_index:03d}/file-{file_index:03d}.parquet",
+    "video_path": "videos/{video_key}/chunk-{chunk_index:03d}/file-{file_index:03d}.mp4",
+    "features": {
+        "observation.images.head_stereo_left": {
+            "dtype": "video",
+            "shape": [
+                480,
+                640,
+                3
+            ],
+            "names": [
+                "height",
+                "width",
+                "channel"
+            ],
+            "info": {
+                "video.height": 480,
+                "video.width": 640,
+                "video.codec": "av1",
+                "video.pix_fmt": "yuv420p",
+                "video.is_depth_map": false,
+                "video.fps": 30,
+                "video.channels": 3,
+                "has_audio": false
+            }
+        },
+        "observation.images.head_stereo_right": {
+            "dtype": "video",
+            "shape": [
+                480,
+                640,
+                3
+            ],
+            "names": [
+                "height",
+                "width",
+                "channel"
+            ],
+            "info": {
+                "video.height": 480,
+                "video.width": 640,
+                "video.codec": "av1",
+                "video.pix_fmt": "yuv420p",
+                "video.is_depth_map": false,
+                "video.fps": 30,
+                "video.channels": 3,
+                "has_audio": false
+            }
+        },
+        "observation.images.wrist_left": {
+            "dtype": "video",
+            "shape": [
+                480,
+                640,
+                3
+            ],
+            "names": [
+                "height",
+                "width",
+                "channel"
+            ],
+            "info": {
+                "video.height": 480,
+                "video.width": 640,
+                "video.codec": "av1",
+                "video.pix_fmt": "yuv420p",
+                "video.is_depth_map": false,
+                "video.fps": 30,
+                "video.channels": 3,
+                "has_audio": false
+            }
+        },
+        "observation.images.wrist_right": {
+            "dtype": "video",
+            "shape": [
+                480,
+                640,
+                3
+            ],
+            "names": [
+                "height",
+                "width",
+                "channel"
+            ],
+            "info": {
+                "video.height": 480,
+                "video.width": 640,
+                "video.codec": "av1",
+                "video.pix_fmt": "yuv420p",
+                "video.is_depth_map": false,
+                "video.fps": 30,
+                "video.channels": 3,
+                "has_audio": false
+            }
+        },
+        "observation.state.ee_state": {
+            "dtype": "float32",
+            "shape": [
+                12
+            ],
+            "names": [
+                "ee_state_0",
+                "ee_state_1",
+                "ee_state_2",
+                "ee_state_3",
+                "ee_state_4",
+                "ee_state_5",
+                "ee_state_6",
+                "ee_state_7",
+                "ee_state_8",
+                "ee_state_9",
+                "ee_state_10",
+                "ee_state_11"
+            ]
+        },
+        "observation.state.hand_state": {
+            "dtype": "float32",
+            "shape": [
+                12
+            ],
+            "names": [
+                "hand_state_0",
+                "hand_state_1",
+                "hand_state_2",
+                "hand_state_3",
+                "hand_state_4",
+                "hand_state_5",
+                "hand_state_6",
+                "hand_state_7",
+                "hand_state_8",
+                "hand_state_9",
+                "hand_state_10",
+                "hand_state_11"
+            ]
+        },
+        "observation.state.robot_q_current": {
+            "dtype": "float32",
+            "shape": [
+                36
+            ],
+            "names": [
+                "robot_q_current_0",
+                "robot_q_current_1",
+                "robot_q_current_2",
+                "robot_q_current_3",
+                "robot_q_current_4",
+                "robot_q_current_5",
+                "robot_q_current_6",
+                "robot_q_current_7",
+                "robot_q_current_8",
+                "robot_q_current_9",
+                "robot_q_current_10",
+                "robot_q_current_11",
+                "robot_q_current_12",
+                "robot_q_current_13",
+                "robot_q_current_14",
+                "robot_q_current_15",
+                "robot_q_current_16",
+                "robot_q_current_17",
+                "robot_q_current_18",
+                "robot_q_current_19",
+                "robot_q_current_20",
+                "robot_q_current_21",
+                "robot_q_current_22",
+                "robot_q_current_23",
+                "robot_q_current_24",
+                "robot_q_current_25",
+                "robot_q_current_26",
+                "robot_q_current_27",
+                "robot_q_current_28",
+                "robot_q_current_29",
+                "robot_q_current_30",
+                "robot_q_current_31",
+                "robot_q_current_32",
+                "robot_q_current_33",
+                "robot_q_current_34",
+                "robot_q_current_35"
+            ]
+        },
+        "action.ee_action": {
+            "dtype": "float32",
+            "shape": [
+                12
+            ],
+            "names": [
+                "ee_action_0",
+                "ee_action_1",
+                "ee_action_2",
+                "ee_action_3",
+                "ee_action_4",
+                "ee_action_5",
+                "ee_action_6",
+                "ee_action_7",
+                "ee_action_8",
+                "ee_action_9",
+                "ee_action_10",
+                "ee_action_11"
+            ]
+        },
+        "action.hand_cmd": {
+            "dtype": "float32",
+            "shape": [
+                12
+            ],
+            "names": [
+                "hand_cmd_0",
+                "hand_cmd_1",
+                "hand_cmd_2",
+                "hand_cmd_3",
+                "hand_cmd_4",
+                "hand_cmd_5",
+                "hand_cmd_6",
+                "hand_cmd_7",
+                "hand_cmd_8",
+                "hand_cmd_9",
+                "hand_cmd_10",
+                "hand_cmd_11"
+            ]
+        },
+        "action.robot_q_desired": {
+            "dtype": "float32",
+            "shape": [
+                36
+            ],
+            "names": [
+                "robot_q_desired_0",
+                "robot_q_desired_1",
+                "robot_q_desired_2",
+                "robot_q_desired_3",
+                "robot_q_desired_4",
+                "robot_q_desired_5",
+                "robot_q_desired_6",
+                "robot_q_desired_7",
+                "robot_q_desired_8",
+                "robot_q_desired_9",
+                "robot_q_desired_10",
+                "robot_q_desired_11",
+                "robot_q_desired_12",
+                "robot_q_desired_13",
+                "robot_q_desired_14",
+                "robot_q_desired_15",
+                "robot_q_desired_16",
+                "robot_q_desired_17",
+                "robot_q_desired_18",
+                "robot_q_desired_19",
+                "robot_q_desired_20",
+                "robot_q_desired_21",
+                "robot_q_desired_22",
+                "robot_q_desired_23",
+                "robot_q_desired_24",
+                "robot_q_desired_25",
+                "robot_q_desired_26",
+                "robot_q_desired_27",
+                "robot_q_desired_28",
+                "robot_q_desired_29",
+                "robot_q_desired_30",
+                "robot_q_desired_31",
+                "robot_q_desired_32",
+                "robot_q_desired_33",
+                "robot_q_desired_34",
+                "robot_q_desired_35"
+            ]
+        },
+        "timestamp": {
+            "dtype": "float32",
+            "shape": [
+                1
+            ],
+            "names": null
+        },
+        "frame_index": {
+            "dtype": "int64",
+            "shape": [
+                1
+            ],
+            "names": null
+        },
+        "episode_index": {
+            "dtype": "int64",
+            "shape": [
+                1
+            ],
+            "names": null
+        },
+        "index": {
+            "dtype": "int64",
+            "shape": [
+                1
+            ],
+            "names": null
+        },
+        "task_index": {
+            "dtype": "int64",
+            "shape": [
+                1
+            ],
+            "names": null
+        }
+    }
+}
