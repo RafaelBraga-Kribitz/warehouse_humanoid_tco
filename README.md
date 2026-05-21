@@ -57,6 +57,13 @@ make all
 
 > **Real data execution:** Results computed from 2,359 episodes across 5 Unitree UnifoLM datasets (WBT + DiverseManip). Financial model uses 15 simulation replicas per scenario with Austrian labor cost inputs (€18.50/hr + 1.35× overhead).
 
+### Sensitivity Analysis
+- **Monte Carlo (10,000 runs):** NPV = €-1,084,673 ± €414,024
+  - 90% confidence interval: [€-1.8M, €-463k]
+  - Varies humanoid capex, labor costs, overhead, and agent counts
+- **One-at-a-time (OAT):** Identifies top parameter drivers
+- **Report:** `[reports/sensitivity_analysis_report.json](./reports/sensitivity_analysis_report.json)`
+
 ### Executive Charts
 - [TCO NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png)
 - [Cost Breakdown](./reports/executive_charts/02_cost_breakdown.png)
