@@ -43,4 +43,5 @@ jobs:
             reports/*.json
             exports/tableau_public/*.csv
             reports/executive_charts/*.png
+          if-no-files-found: warn
           retention-days: 30
