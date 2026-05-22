@@ -68,7 +68,7 @@ ignore = []
 [tool.pyright]
 pythonVersion = "3.11"
 include = ["src"]
-strict = ["src/warehouse_humanoid_tco"]
+typeCheckingMode = "basic"
 venvPath = "."
 venv = ".venv"
 

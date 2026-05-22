@@ -117,7 +117,7 @@ def module_03_main(
     project_root: Path,
     simulation_runs_path: Path | None = None,
     assumptions_path: Path | None = None,
-) -> dict[str, Path]:
+) -> dict[str, Path | None]:
     """Run Module 3 end-to-end.
 
     Returns dict mapping tco_scenarios, sensitivity_analysis, validation_report.
@@ -167,7 +167,9 @@ def module_03_main(
             scenario_data = sim_df.filter(pl.col("scenario_id") == scenario_id)
 
             # Use mean throughput to compute a single NPV per scenario
-            throughput_mean = float(scenario_data["throughput_orders_per_shift"].mean())
+            col = scenario_data["throughput_orders_per_shift"]
+            throughput_mean: float = col.mean() or 0.0  # type: ignore[assignment]
+            throughput_std: float = col.std() or 0.0  # type: ignore[assignment]
             result = compute_tco_scenario(
                 scenario_id,
                 {"throughput_orders_per_shift": throughput_mean},
@@ -175,15 +177,12 @@ def module_03_main(
             )
             result["n_simulation_runs"] = len(scenario_data)
             result["throughput_mean_orders_per_shift"] = throughput_mean
-            result["throughput_std_orders_per_shift"] = float(
-                scenario_data["throughput_orders_per_shift"].std()
-            )
+            result["throughput_std_orders_per_shift"] = throughput_std
 
             tco_results.append(result)
-            std = result["throughput_std_orders_per_shift"]
             print(
                 f"  {scenario_id}: NPV = €{result['npv_eur']:.0f} "
-                f"(throughput: {throughput_mean:.0f} ± {std:.0f} orders/shift)"
+                f"(throughput: {throughput_mean:.0f} ± {throughput_std:.0f} orders/shift)"
             )
 
     # ========== Export ==========

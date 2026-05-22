@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install uv
 
-COPY pyproject.toml LICENSE ./
+COPY pyproject.toml LICENSE README.md ./
 RUN uv pip install -e ".[dev]" --system
 
 FROM base AS runtime

@@ -39,7 +39,7 @@ jobs:
       - run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
       - run: python -m warehouse_humanoid_tco.pipelines.module_03_tco
       - run: python -m warehouse_humanoid_tco.pipelines.module_04_dashboards
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: outputs
           path: |
