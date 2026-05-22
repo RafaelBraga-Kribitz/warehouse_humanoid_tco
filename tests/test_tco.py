@@ -87,6 +87,7 @@ def test_irr_no_positive_flows_returns_none_or_negative() -> None:
 
 # ── pipelines/module_03_tco.py ──────────────────────────────────────────────
 
+
 def test_baseline_annual_opex_constant() -> None:
     expected = 8 * (252 * 8) * 18.50 * 1.35
     assert abs(_BASELINE_ANNUAL_OPEX - expected) < 1.0
@@ -124,16 +125,25 @@ def test_tco_scenario_no_irr_field() -> None:
 
 def test_tco_scenario_required_keys() -> None:
     result = compute_tco_scenario("S-hybrid-amr", {}, {})
-    required = {"scenario_id", "npv_eur", "cost_reduction_vs_baseline_pct",
-                "payback_years", "total_capex_eur", "total_opex_5yr_eur",
-                "pipeline_version"}
+    required = {
+        "scenario_id",
+        "npv_eur",
+        "cost_reduction_vs_baseline_pct",
+        "payback_years",
+        "total_capex_eur",
+        "total_opex_5yr_eur",
+        "pipeline_version",
+    }
     assert required.issubset(result.keys())
 
 
 def test_tco_scenario_all_five_scenarios() -> None:
     scenarios = [
-        "S-baseline-human", "S-pure-humanoid",
-        "S-hybrid-5050", "S-hybrid-amr", "S-future-2028",
+        "S-baseline-human",
+        "S-pure-humanoid",
+        "S-hybrid-5050",
+        "S-hybrid-amr",
+        "S-future-2028",
     ]
     results = [compute_tco_scenario(s, {}, {}) for s in scenarios]
     for r in results:

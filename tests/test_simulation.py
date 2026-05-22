@@ -43,8 +43,14 @@ def test_simulation_throughput_positive() -> None:
 
 def test_simulation_result_schema() -> None:
     result = run_scenario(_human_scenario(), run_id=0)
-    required = {"scenario_id", "run_id", "throughput_orders_per_shift",
-                "queue_length_mean", "pipeline_version", "seed"}
+    required = {
+        "scenario_id",
+        "run_id",
+        "throughput_orders_per_shift",
+        "queue_length_mean",
+        "pipeline_version",
+        "seed",
+    }
     assert required.issubset(result.keys())
 
 
@@ -86,3 +92,43 @@ def test_simulation_multi_agent_type() -> None:
 def test_simulation_queue_length_nonnegative() -> None:
     result = run_scenario(_human_scenario(shift_hours=8.0), run_id=0)
     assert result["queue_length_mean"] >= 0.0
+
+
+def test_scenarios_with_different_agent_mixes_produce_different_throughput() -> None:
+    """Regression test for the agent routing bug.
+
+    A hybrid scenario with very slow humanoids should produce lower throughput
+    than a human-only scenario, because some orders are handled by slow humanoids.
+    If this test fails, simulation.pick_order() is routing all orders to the
+    first profile (the original v0.1.0 bug).
+    """
+    human_only = WarehouseScenario(
+        scenario_id="S-baseline-human",
+        architecture="autostore",
+        total_agents=8,
+        agent_profiles=[
+            AgentProfile("human", 25.0, 8.0, count=8, seed=42),
+        ],
+        order_arrival_rate_per_hour=120.0,
+        shift_hours=1.0,
+        seed=42,
+    )
+    hybrid_slow = WarehouseScenario(
+        scenario_id="S-test-hybrid",
+        architecture="autostore",
+        total_agents=8,
+        agent_profiles=[
+            AgentProfile("human", 25.0, 8.0, count=4, seed=42),
+            AgentProfile("very_slow_humanoid", 250.0, 80.0, count=4, seed=42),
+        ],
+        order_arrival_rate_per_hour=120.0,
+        shift_hours=1.0,
+        seed=42,
+    )
+    h_thru = run_scenario(human_only, run_id=0)["throughput_orders_per_shift"]
+    x_thru = run_scenario(hybrid_slow, run_id=0)["throughput_orders_per_shift"]
+    assert h_thru > x_thru, (
+        f"Hybrid scenario with very slow humanoids ({x_thru:.0f}) should produce "
+        f"lower throughput than human-only ({h_thru:.0f}). "
+        f"Equal throughput = agent routing bug."
+    )

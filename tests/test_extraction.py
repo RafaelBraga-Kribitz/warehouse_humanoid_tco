@@ -13,11 +13,14 @@ from warehouse_humanoid_tco.features.extraction import (
 
 def make_mock_episode(n_frames: int = 100, n_joints: int = 37) -> pl.DataFrame:
     import numpy as np
+
     rng = np.random.default_rng(42)
-    return pl.DataFrame({
-        "observation.state": [rng.uniform(-1, 1, n_joints).tolist() for _ in range(n_frames)],
-        "action": [rng.uniform(-0.1, 0.1, n_joints).tolist() for _ in range(n_frames)],
-    })
+    return pl.DataFrame(
+        {
+            "observation.state": [rng.uniform(-1, 1, n_joints).tolist() for _ in range(n_frames)],
+            "action": [rng.uniform(-0.1, 0.1, n_joints).tolist() for _ in range(n_frames)],
+        }
+    )
 
 
 def test_cycle_time_basic() -> None:

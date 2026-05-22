@@ -23,6 +23,7 @@ from warehouse_humanoid_tco.visualization.exports import export_for_powerbi, exp
 
 # ── features/extraction.py ────────────────────────────────────────────────────
 
+
 def test_compute_cycle_time_basic() -> None:
     df = pl.DataFrame({"col": range(30)})
     assert compute_cycle_time(df, fps=30.0) == 1.0
@@ -59,14 +60,17 @@ def test_compute_energy_proxy_missing_col() -> None:
 
 # ── features/aggregation.py ───────────────────────────────────────────────────
 
+
 def _make_episodes(n: int, category: str = "pick_small_object") -> pl.DataFrame:
-    return pl.DataFrame({
-        "task_category": [category] * n,
-        "cycle_time_seconds": [float(i + 10) for i in range(n)],
-        "reach_meters_estimate": [0.5] * n,
-        "energy_proxy_joint_integral": [1.0] * n,
-        "success_inferred": [True] * n,
-    })
+    return pl.DataFrame(
+        {
+            "task_category": [category] * n,
+            "cycle_time_seconds": [float(i + 10) for i in range(n)],
+            "reach_meters_estimate": [0.5] * n,
+            "energy_proxy_joint_integral": [1.0] * n,
+            "success_inferred": [True] * n,
+        }
+    )
 
 
 def test_aggregate_capabilities_basic() -> None:
@@ -96,6 +100,7 @@ def test_aggregate_capabilities_multiple_categories() -> None:
 
 
 # ── models/sensitivity.py ─────────────────────────────────────────────────────
+
 
 def _simple_model(x: float, y: float = 1.0) -> float:
     return x * y
@@ -155,6 +160,7 @@ def test_monte_carlo_deterministic() -> None:
 
 # ── utils/reproducibility.py ──────────────────────────────────────────────────
 
+
 def test_seed_all_runs_without_error() -> None:
     seed_all(42)
     seed_all(0)
@@ -162,6 +168,7 @@ def test_seed_all_runs_without_error() -> None:
 
 def test_seed_all_deterministic() -> None:
     import numpy as np
+
     seed_all(123)
     a = np.random.uniform()
     seed_all(123)
@@ -171,8 +178,10 @@ def test_seed_all_deterministic() -> None:
 
 # ── utils/logging.py ──────────────────────────────────────────────────────────
 
+
 def test_get_logger_returns_logger() -> None:
     import logging
+
     logger = get_logger("test_module")
     assert isinstance(logger, logging.Logger)
 
@@ -185,6 +194,7 @@ def test_get_logger_idempotent() -> None:
 
 def test_json_formatter_output() -> None:
     import logging
+
     fmt = JsonFormatter()
     record = logging.LogRecord("test", logging.INFO, "", 0, "hello world", None, None)
     output = fmt.format(record)
@@ -195,6 +205,7 @@ def test_json_formatter_output() -> None:
 
 
 # ── visualization/exports.py ──────────────────────────────────────────────────
+
 
 def test_export_for_tableau_creates_csv(tmp_path: Path) -> None:
     df = pl.DataFrame({"a": [1, 2], "b": [3, 4]})

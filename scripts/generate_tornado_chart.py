@@ -32,9 +32,7 @@ def main() -> None:
             pl.col("npv_eur").min().alias("npv_low"),
             pl.col("npv_eur").max().alias("npv_high"),
         )
-        .with_columns(
-            (pl.col("npv_high") - pl.col("npv_low")).abs().alias("npv_range")
-        )
+        .with_columns((pl.col("npv_high") - pl.col("npv_low")).abs().alias("npv_range"))
         .sort("npv_range", descending=True)
     )
 
@@ -48,9 +46,7 @@ def main() -> None:
 
     y_pos = range(len(params))
 
-    for i, (low, high, _label) in enumerate(
-        zip(npv_low, npv_high, labels, strict=True)
-    ):
+    for i, (low, high, _label) in enumerate(zip(npv_low, npv_high, labels, strict=True)):
         # Low side (more negative = higher cost)
         ax.barh(i, low - BASELINE_NPV, left=BASELINE_NPV, color="#E07B39", alpha=0.85, height=0.5)
         # High side (less negative = lower cost)
@@ -68,7 +64,8 @@ def main() -> None:
         pad=12,
     )
     ax.text(
-        0.5, 1.01,
+        0.5,
+        1.01,
         "S-hybrid-amr scenario · OAT ±20% from baseline · baseline NPV = €-924K",
         transform=ax.transAxes,
         ha="center",
@@ -77,11 +74,10 @@ def main() -> None:
     )
 
     # Format x-axis in EUR millions
-    ax.xaxis.set_major_formatter(
-        plt.FuncFormatter(lambda x, _: f"€{x/1e6:.1f}M")
-    )
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"€{x/1e6:.1f}M"))
 
     from matplotlib.patches import Patch
+
     legend_elements = [
         Patch(facecolor="#E07B39", alpha=0.85, label="Parameter at low end (higher cost)"),
         Patch(facecolor="#4A90D9", alpha=0.85, label="Parameter at high end (lower cost)"),

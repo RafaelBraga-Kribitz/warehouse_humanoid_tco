@@ -371,7 +371,7 @@ The project tests four hypotheses. Each is falsifiable and has a pre-registered 
 
 | ID | Hypothesis | Decision rule | Status | Evidence |
 |---|---|---|---|---|
-| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **CONFIRMED** | S-baseline-human NPV €-1,608K vs S-pure-humanoid €-960K; human is more expensive — H1 REJECTED as stated; humanoid is cheaper at 2026 prices due to zero opex |
+| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **REJECTED** | S-baseline-human NPV €-1,608K vs S-pure-humanoid €-960K; human is more expensive (lower NPV = higher cost in this model). Pure-humanoid is cheaper at 2026 prices due to zero opex assumption. **Caveat:** This assumes zero operational humanoid costs (maintenance, energy, supervision overhead). See `config/autostore_baseline.yaml::humanoid_operational` — future versions should flow these costs through TCO model. |
 | H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs | **CONFIRMED** | S-hybrid-amr NPV €-924K, lower than both pure scenarios |
 | H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | OAT: human_count drives ±€602K NPV range vs humanoid_capex ±€96K; see `reports/executive_charts/04_sensitivity_tornado.png` |
 | H4 | Humanoid throughput at 2026 capabilities is the binding constraint on hybrid scenarios | Simulation: removing humanoid throughput cap raises hybrid NPV by > 10% | **INCONCLUSIVE** | Transfer factor sensitivity not yet isolated in simulation; flagged for v1.1 |
@@ -536,7 +536,7 @@ warehouse_humanoid_tco/
 
 | Layer | Tool | Version Strategy |
 |---|---|---|
-| Language | Python 3.12 | Pinned in `pyproject.toml` |
+| Language | Python 3.11 | Pinned in `pyproject.toml` |
 | Package mgmt | uv (preferred) or pip + venv | Lockfile committed |
 | Data | polars, pyarrow, duckdb | Pinned minor version |
 | Schemas | pandera | Pinned minor version |

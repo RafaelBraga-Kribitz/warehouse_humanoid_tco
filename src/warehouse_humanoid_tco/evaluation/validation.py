@@ -30,8 +30,9 @@ def validate_human_baseline_throughput(
         "passed": passed,
         "status": "PASS" if passed else "FAIL",
         "note": (
-            "Within tolerance." if passed
+            "Within tolerance."
+            if passed
             else f"Relative error {rel_error:.1%} exceeds {tolerance:.0%} threshold. "
-                 "Recalibrate simulation parameters."
+            "Recalibrate simulation parameters."
         ),
     }

@@ -28,6 +28,12 @@ The format detection is now data-driven, not filename-driven. Both parsers are e
 
 After refactor: 2,359 episodes classified across all 5 datasets. DiverseManip contributed 1,715 episodes, nearly 3× the WBT count.
 
+## Consequences
+
+- Both LeRobot V1.0 (WBT flat format) and V2.0 (DiverseManip nested format) are supported.
+- 2,359 episodes classified across all 5 datasets instead of 644.
+- Future parsers in this project must use schema-presence detection rather than filename conventions.
+
 ## Lesson
 
 Relying on a single dataset structure assumption across a multi-dataset pipeline will silently produce zero-output for formats that differ. The fix is schema-presence detection, not filename or convention matching. Applied to all future multi-dataset parsers in this project.

@@ -23,6 +23,7 @@ from warehouse_humanoid_tco.pipelines.module_03_tco import module_03_main
 
 # ── features/extraction.py ────────────────────────────────────────────────────
 
+
 def test_compute_energy_proxy_valid() -> None:
     df = pl.DataFrame({"action": [[0.1, 0.2, 0.3], [-0.1, 0.2, 0.0], [0.5, 0.0, 0.1]]})
     result = compute_energy_proxy(df)
@@ -43,11 +44,13 @@ def _make_wbt_dataset_for_extraction(root: Path, n_episodes: int = 3) -> Path:
     data.mkdir()
     info = {"total_episodes": n_episodes, "fps": 30, "total_tasks": 1}
     (meta / "info.json").write_text(_json.dumps(info))
-    df = pl.DataFrame({
-        "episode_index": [i for i in range(n_episodes) for _ in range(10)],
-        "action": [[0.1, 0.2, 0.3]] * (n_episodes * 10),
-        "observation.state": [[0.0, 0.0, 0.0]] * (n_episodes * 10),
-    })
+    df = pl.DataFrame(
+        {
+            "episode_index": [i for i in range(n_episodes) for _ in range(10)],
+            "action": [[0.1, 0.2, 0.3]] * (n_episodes * 10),
+            "observation.state": [[0.0, 0.0, 0.0]] * (n_episodes * 10),
+        }
+    )
     df.write_parquet(data / "chunk-000.parquet")
     return root
 
@@ -61,9 +64,11 @@ def _make_diversemanip_dataset_for_extraction(root: Path, n_episodes: int = 3) -
         for i in range(n_episodes):
             f.write(_json.dumps({"episode_index": i, "task_index": 0}) + "\n")
     for i in range(n_episodes):
-        pl.DataFrame({
-            "action": [[0.1, 0.2, 0.3]] * 10,
-        }).write_parquet(data / f"episode_{i:06d}.parquet")
+        pl.DataFrame(
+            {
+                "action": [[0.1, 0.2, 0.3]] * 10,
+            }
+        ).write_parquet(data / f"episode_{i:06d}.parquet")
     return root
 
 
@@ -94,10 +99,12 @@ def test_extract_dataset_episodes_infers_fps(tmp_path: Path) -> None:
 
 
 def test_extract_episode_features(tmp_path: Path) -> None:
-    df = pl.DataFrame({
-        "observation.state": [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]] * 10,
-        "action": [[0.1, 0.2, 0.3]] * 20,
-    })
+    df = pl.DataFrame(
+        {
+            "observation.state": [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]] * 10,
+            "action": [[0.1, 0.2, 0.3]] * 20,
+        }
+    )
     parquet_path = tmp_path / "ep.parquet"
     df.write_parquet(parquet_path)
     result = extract_episode_features(str(parquet_path), "ep_0", fps=30.0)
@@ -107,6 +114,7 @@ def test_extract_episode_features(tmp_path: Path) -> None:
 
 
 # ── analysis/sensitivity.py run_sensitivity_analysis ─────────────────────────
+
 
 @pytest.mark.integration
 def test_run_sensitivity_analysis_creates_outputs(tmp_path: Path) -> None:
@@ -149,6 +157,7 @@ def test_run_sensitivity_oat_parquet_schema(tmp_path: Path) -> None:
 
 # ── pipelines/module_03_tco.py module_03_main ─────────────────────────────────
 
+
 @pytest.mark.integration
 def test_module03_main_empty_no_sim_data(tmp_path: Path) -> None:
     """module_03_main should handle missing simulation data gracefully."""
@@ -174,18 +183,18 @@ def test_module03_main_with_sim_data(tmp_path: Path) -> None:
     (tmp_path / "config").mkdir(parents=True)
 
     # Create synthetic simulation runs
-    sim_df = pl.DataFrame({
-        "scenario_id": (
-            ["S-baseline-human"] * 5
-            + ["S-hybrid-amr"] * 5
-            + ["S-pure-humanoid"] * 5
-        ),
-        "run_id": list(range(5)) * 3,
-        "throughput_orders_per_shift": [900.0 + i for i in range(15)],
-        "queue_length_mean": [0.5] * 15,
-        "pipeline_version": ["0.1.0"] * 15,
-        "seed": [42] * 15,
-    })
+    sim_df = pl.DataFrame(
+        {
+            "scenario_id": (
+                ["S-baseline-human"] * 5 + ["S-hybrid-amr"] * 5 + ["S-pure-humanoid"] * 5
+            ),
+            "run_id": list(range(5)) * 3,
+            "throughput_orders_per_shift": [900.0 + i for i in range(15)],
+            "queue_length_mean": [0.5] * 15,
+            "pipeline_version": ["0.1.0"] * 15,
+            "seed": [42] * 15,
+        }
+    )
     sim_path = tmp_path / "data" / "processed" / "simulation_runs.parquet"
     sim_df.write_parquet(sim_path)
 
@@ -205,14 +214,16 @@ def test_module03_main_tco_parquet_has_npv(tmp_path: Path) -> None:
     (tmp_path / "reports").mkdir(parents=True)
     (tmp_path / "config").mkdir(parents=True)
 
-    sim_df = pl.DataFrame({
-        "scenario_id": ["S-hybrid-amr"] * 3,
-        "run_id": [0, 1, 2],
-        "throughput_orders_per_shift": [900.0, 950.0, 920.0],
-        "queue_length_mean": [0.5, 0.4, 0.6],
-        "pipeline_version": ["0.1.0"] * 3,
-        "seed": [42, 43, 44],
-    })
+    sim_df = pl.DataFrame(
+        {
+            "scenario_id": ["S-hybrid-amr"] * 3,
+            "run_id": [0, 1, 2],
+            "throughput_orders_per_shift": [900.0, 950.0, 920.0],
+            "queue_length_mean": [0.5, 0.4, 0.6],
+            "pipeline_version": ["0.1.0"] * 3,
+            "seed": [42, 43, 44],
+        }
+    )
     sim_path = tmp_path / "data" / "processed" / "simulation_runs.parquet"
     sim_df.write_parquet(sim_path)
 
@@ -224,6 +235,7 @@ def test_module03_main_tco_parquet_has_npv(tmp_path: Path) -> None:
 
 
 # ── Real Data Integration Tests ──────────────────────────────────────────────
+
 
 @pytest.mark.integration
 def test_extract_episode_features_on_real_data(
