@@ -1,7 +1,8 @@
 # ADR-0006: Synthetic Data Cycle Time Artifact in Simulation
 
 **Date:** 2026-05-21  
-**Status:** Resolved  
+**Status:** Superseded  
+**Superseded by:** ADR-0007 (root cause was simulation routing bug, not synthetic data)  
 **Decider:** Rafael Braga
 
 ## Context
