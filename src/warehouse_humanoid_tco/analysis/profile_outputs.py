@@ -30,11 +30,13 @@ def generate_profile_notebook(
     nb = nbf.v4.new_notebook()
 
     # === TITLE ===
-    nb.cells.append(nbf.v4.new_markdown_cell(
-        "# Data Profiling Summary\n\n"
-        "Complete transparency on dataset structure, quality, and pipeline outputs. "
-        "Auto-generated for stakeholder visibility and reproducibility assurance."
-    ))
+    nb.cells.append(
+        nbf.v4.new_markdown_cell(
+            "# Data Profiling Summary\n\n"
+            "Complete transparency on dataset structure, quality, and pipeline outputs. "
+            "Auto-generated for stakeholder visibility and reproducibility assurance."
+        )
+    )
 
     # === RAW DATASETS SECTION ===
     nb.cells.append(nbf.v4.new_markdown_cell("## Raw Datasets (De-Risk Validation)"))
@@ -44,12 +46,14 @@ def generate_profile_notebook(
             _derisk_data = json.load(f)  # noqa: F841
 
     # Add de-risk summary as code cell
-    nb.cells.append(nbf.v4.new_code_cell(
-        "import json\nfrom pathlib import Path\n"
-        f"derisk_report = json.loads(Path('{derisk_report}').read_text())\n"
-        "# Raw dataset validation summary\n"
-        "print(json.dumps(derisk_report, indent=2))"
-    ))
+    nb.cells.append(
+        nbf.v4.new_code_cell(
+            "import json\nfrom pathlib import Path\n"
+            f"derisk_report = json.loads(Path('{derisk_report}').read_text())\n"
+            "# Raw dataset validation summary\n"
+            "print(json.dumps(derisk_report, indent=2))"
+        )
+    )
 
     # === MODULE 1 OUTPUT ===
     nb.cells.append(nbf.v4.new_markdown_cell("## Module 1: Humanoid Capability Summary"))
@@ -61,8 +65,7 @@ def generate_profile_notebook(
         # Schema
         nb.cells.append(nbf.v4.new_markdown_cell("### Schema"))
         schema_md = (
-            "| Column | Type | Non-Null | Example |\n"
-            "|--------|------|----------|----------|\n"
+            "| Column | Type | Non-Null | Example |\n" "|--------|------|----------|----------|\n"
         )
         for col in summary_df.columns:
             dtype = summary_df.schema[col]
@@ -73,52 +76,58 @@ def generate_profile_notebook(
 
         # Descriptive stats
         nb.cells.append(nbf.v4.new_markdown_cell("### Descriptive Statistics"))
-        nb.cells.append(nbf.v4.new_code_cell(
-            f"import polars as pl\n"
-            f"summary = pl.read_parquet('{summary_path}')\n"
-            f"print(summary.describe())"
-        ))
+        nb.cells.append(
+            nbf.v4.new_code_cell(
+                f"import polars as pl\n"
+                f"summary = pl.read_parquet('{summary_path}')\n"
+                f"print(summary.describe())"
+            )
+        )
 
         # Missing values
         nb.cells.append(nbf.v4.new_markdown_cell("### Data Quality"))
-        nb.cells.append(nbf.v4.new_code_cell(
-            "# Missing values per column\n"
-            "missing = {col: summary[col].null_count() for col in summary.columns}\n"
-            "print('Missing values:', missing)\n"
-            "print('Categories with insufficient_sample=True:', "
-            "summary.filter(pl.col('insufficient_sample') == True).shape[0])"
-        ))
+        nb.cells.append(
+            nbf.v4.new_code_cell(
+                "# Missing values per column\n"
+                "missing = {col: summary[col].null_count() for col in summary.columns}\n"
+                "print('Missing values:', missing)\n"
+                "print('Categories with insufficient_sample=True:', "
+                "summary.filter(pl.col('insufficient_sample') == True).shape[0])"
+            )
+        )
 
         # Summary table
         nb.cells.append(nbf.v4.new_markdown_cell("### Full Summary Table"))
-        nb.cells.append(nbf.v4.new_code_cell(
-            "summary.to_pandas()"
-        ))
+        nb.cells.append(nbf.v4.new_code_cell("summary.to_pandas()"))
 
     # === MODULE 1 PER-EPISODE ===
     nb.cells.append(nbf.v4.new_markdown_cell("## Module 1: Per-Episode Features"))
 
     per_episode_path = processed_dir / "humanoid_capabilities_per_episode.parquet"
     if per_episode_path.exists():
-        nb.cells.append(nbf.v4.new_code_cell(
-            f"import polars as pl\n"
-            f"per_episode = pl.read_parquet('{per_episode_path}')\n"
-            f"print(f'Shape: {{per_episode.shape}}')\n"
-            f"print(f'Columns: {{per_episode.columns}}')\n"
-            f"print('\\nFirst 5 rows:')\n"
-            f"per_episode.head(5).to_pandas()"
-        ))
+        nb.cells.append(
+            nbf.v4.new_code_cell(
+                f"import polars as pl\n"
+                f"per_episode = pl.read_parquet('{per_episode_path}')\n"
+                f"print(f'Shape: {{per_episode.shape}}')\n"
+                f"print(f'Columns: {{per_episode.columns}}')\n"
+                f"print('\\nFirst 5 rows:')\n"
+                f"per_episode.head(5).to_pandas()"
+            )
+        )
 
     # === FOOTER ===
-    nb.cells.append(nbf.v4.new_markdown_cell(
-        "---\n\n"
-        "**Generated by:** `warehouse_humanoid_tco.analysis.profile_outputs`\n"
-        "**Purpose:** Transparency, reproducibility, stakeholder visibility"
-    ))
+    nb.cells.append(
+        nbf.v4.new_markdown_cell(
+            "---\n\n"
+            "**Generated by:** `warehouse_humanoid_tco.analysis.profile_outputs`\n"
+            "**Purpose:** Transparency, reproducibility, stakeholder visibility"
+        )
+    )
 
     # Write notebook
     output_notebook.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_notebook, 'w') as f:
+    with open(output_notebook, "w") as f:
         nbf.write(nb, f)
 
     print(f"✓ Profile notebook: {output_notebook}")

@@ -17,6 +17,7 @@ from warehouse_humanoid_tco.pipelines.module_04_dashboards import (
 
 # ── Minimal config fixture ─────────────────────────────────────────────────────
 
+
 def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
     config = {
         "architecture": "autostore",
@@ -51,6 +52,7 @@ def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
 
 
 # ── module_02_simulation.py ───────────────────────────────────────────────────
+
 
 @pytest.mark.integration
 def test_module02_main_runs_to_completion(tmp_path: Path) -> None:
@@ -96,11 +98,13 @@ def test_module02_main_with_capability_summary(tmp_path: Path) -> None:
     (tmp_path / "reports").mkdir(parents=True)
 
     # Create a minimal capability summary
-    summary = pl.DataFrame({
-        "task_category": ["pick_small_object"],
-        "cycle_time_mean": [35.0],
-        "cycle_time_std": [10.0],
-    })
+    summary = pl.DataFrame(
+        {
+            "task_category": ["pick_small_object"],
+            "cycle_time_mean": [35.0],
+            "cycle_time_std": [10.0],
+        }
+    )
     cap_path = tmp_path / "data" / "processed" / "humanoid_capabilities_summary.parquet"
     summary.write_parquet(cap_path)
 
@@ -109,42 +113,48 @@ def test_module02_main_with_capability_summary(tmp_path: Path) -> None:
     _make_minimal_config(config_path, n_scenarios=1)
 
     result = module_02_main(
-        tmp_path, config_path=config_path,
-        capability_summary_path=cap_path, n_runs=2
+        tmp_path, config_path=config_path, capability_summary_path=cap_path, n_runs=2
     )
     assert result["simulation_runs"] is not None
 
 
 # ── module_04_dashboards.py ───────────────────────────────────────────────────
 
+
 def _make_processed_data(processed_dir: Path) -> None:
     processed_dir.mkdir(parents=True, exist_ok=True)
 
-    pl.DataFrame({
-        "task_category": ["pick_small_object", "place_general"],
-        "n_episodes": [15, 10],
-        "cycle_time_mean": [25.0, 12.0],
-        "cycle_time_std": [5.0, 3.0],
-    }).write_parquet(processed_dir / "humanoid_capabilities_summary.parquet")
+    pl.DataFrame(
+        {
+            "task_category": ["pick_small_object", "place_general"],
+            "n_episodes": [15, 10],
+            "cycle_time_mean": [25.0, 12.0],
+            "cycle_time_std": [5.0, 3.0],
+        }
+    ).write_parquet(processed_dir / "humanoid_capabilities_summary.parquet")
 
-    pl.DataFrame({
-        "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
-        "run_id": [0, 0],
-        "throughput_orders_per_shift": [920.0, 880.0],
-        "queue_length_mean": [0.5, 0.3],
-        "pipeline_version": ["0.1.0", "0.1.0"],
-        "seed": [42, 42],
-    }).write_parquet(processed_dir / "simulation_runs.parquet")
+    pl.DataFrame(
+        {
+            "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
+            "run_id": [0, 0],
+            "throughput_orders_per_shift": [920.0, 880.0],
+            "queue_length_mean": [0.5, 0.3],
+            "pipeline_version": ["0.1.0", "0.1.0"],
+            "seed": [42, 42],
+        }
+    ).write_parquet(processed_dir / "simulation_runs.parquet")
 
-    pl.DataFrame({
-        "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
-        "npv_eur": [-1608300.0, -924125.0],
-        "total_capex_eur": [0.0, 120000.0],
-        "total_opex_5yr_eur": [2014000.0, 1007000.0],
-        "cost_reduction_vs_baseline_pct": [0.0, 50.0],
-        "payback_years": [None, 2.4],
-        "pipeline_version": ["0.1.0", "0.1.0"],
-    }).write_parquet(processed_dir / "tco_scenarios.parquet")
+    pl.DataFrame(
+        {
+            "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
+            "npv_eur": [-1608300.0, -924125.0],
+            "total_capex_eur": [0.0, 120000.0],
+            "total_opex_5yr_eur": [2014000.0, 1007000.0],
+            "cost_reduction_vs_baseline_pct": [0.0, 50.0],
+            "payback_years": [None, 2.4],
+            "pipeline_version": ["0.1.0", "0.1.0"],
+        }
+    ).write_parquet(processed_dir / "tco_scenarios.parquet")
 
 
 @pytest.mark.integration

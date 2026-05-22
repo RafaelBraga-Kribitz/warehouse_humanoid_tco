@@ -19,6 +19,7 @@ from warehouse_humanoid_tco.features.parsers import (
 
 # ── helpers to build fixture datasets ─────────────────────────────────────────
 
+
 def _make_wbt_dataset(root: Path, n_episodes: int = 3) -> Path:
     """Create a minimal WBT (Unitree chunked) dataset structure."""
     meta = root / "meta"
@@ -30,11 +31,13 @@ def _make_wbt_dataset(root: Path, n_episodes: int = 3) -> Path:
     (meta / "info.json").write_text(json.dumps(info))
 
     # Single chunked parquet with episode_index column
-    df = pl.DataFrame({
-        "episode_index": [i for i in range(n_episodes) for _ in range(10)],
-        "frame_index": list(range(10)) * n_episodes,
-        "action": [[0.1, 0.2, 0.3]] * (n_episodes * 10),
-    })
+    df = pl.DataFrame(
+        {
+            "episode_index": [i for i in range(n_episodes) for _ in range(10)],
+            "frame_index": list(range(10)) * n_episodes,
+            "action": [[0.1, 0.2, 0.3]] * (n_episodes * 10),
+        }
+    )
     df.write_parquet(data / "chunk-000.parquet")
     return root
 
@@ -52,16 +55,19 @@ def _make_diversemanip_dataset(root: Path, n_episodes: int = 3) -> Path:
             f.write(json.dumps({"episode_index": i, "task_index": 0, "length": 10}) + "\n")
 
     for i in range(n_episodes):
-        df = pl.DataFrame({
-            "frame_index": list(range(10)),
-            "action": [[0.1, 0.2, 0.3]] * 10,
-        })
+        df = pl.DataFrame(
+            {
+                "frame_index": list(range(10)),
+                "action": [[0.1, 0.2, 0.3]] * 10,
+            }
+        )
         df.write_parquet(data / f"episode_{i:06d}.parquet")
 
     return root
 
 
 # ── resolve_nested_dataset ────────────────────────────────────────────────────
+
 
 def test_resolve_nested_no_nesting(tmp_path: Path) -> None:
     (tmp_path / "meta").mkdir()
@@ -78,6 +84,7 @@ def test_resolve_nested_with_nesting(tmp_path: Path) -> None:
 
 
 # ── load_wbt_episodes_jsonl ───────────────────────────────────────────────────
+
 
 def test_load_wbt_episodes_from_info_json(tmp_path: Path) -> None:
     _make_wbt_dataset(tmp_path, n_episodes=5)
@@ -103,6 +110,7 @@ def test_load_wbt_episodes_not_found(tmp_path: Path) -> None:
 
 # ── load_wbt_parquets ─────────────────────────────────────────────────────────
 
+
 def test_load_wbt_parquets_chunked(tmp_path: Path) -> None:
     _make_wbt_dataset(tmp_path, n_episodes=3)
     result = load_wbt_parquets(tmp_path)
@@ -118,6 +126,7 @@ def test_load_wbt_parquets_no_data_dir(tmp_path: Path) -> None:
 
 # ── load_diversemanip_episodes_jsonl ──────────────────────────────────────────
 
+
 def test_load_diversemanip_episodes(tmp_path: Path) -> None:
     _make_diversemanip_dataset(tmp_path, n_episodes=6)
     episodes = load_diversemanip_episodes_jsonl(tmp_path)
@@ -130,6 +139,7 @@ def test_load_diversemanip_episodes_not_found(tmp_path: Path) -> None:
 
 
 # ── load_diversemanip_parquets ────────────────────────────────────────────────
+
 
 def test_load_diversemanip_parquets(tmp_path: Path) -> None:
     _make_diversemanip_dataset(tmp_path, n_episodes=4)
@@ -144,6 +154,7 @@ def test_load_diversemanip_no_data_dir(tmp_path: Path) -> None:
 
 
 # ── infer_dataset_type ────────────────────────────────────────────────────────
+
 
 def test_infer_wbt(tmp_path: Path) -> None:
     meta = tmp_path / "meta"

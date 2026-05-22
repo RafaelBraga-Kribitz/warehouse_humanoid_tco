@@ -103,10 +103,7 @@ def check_charter_staleness(metadata: dict[str, str]) -> None:
     try:
         last_updated = datetime.fromisoformat(last_updated_raw).date()
     except ValueError:
-        fail(
-            f"PROJECT_CHARTER.md 'last_updated' is not a valid ISO date: "
-            f"{last_updated_raw!r}"
-        )
+        fail(f"PROJECT_CHARTER.md 'last_updated' is not a valid ISO date: " f"{last_updated_raw!r}")
         return
 
     latest_commit_date = get_latest_commit_date_for_watched_paths()
@@ -133,19 +130,13 @@ def check_adrs() -> None:
 
     for adr_path in sorted(ADR_DIR.glob("*.md")):
         if not filename_pattern.match(adr_path.name):
-            fail(
-                f"ADR filename violates the pattern NNNN-kebab-case.md: "
-                f"{adr_path.name}"
-            )
+            fail(f"ADR filename violates the pattern NNNN-kebab-case.md: " f"{adr_path.name}")
             continue
 
         content = adr_path.read_text(encoding="utf-8")
         for heading in REQUIRED_ADR_HEADINGS:
             if heading not in content:
-                fail(
-                    f"ADR {adr_path.name} is missing required content: "
-                    f"{heading!r}"
-                )
+                fail(f"ADR {adr_path.name} is missing required content: " f"{heading!r}")
 
 
 def check_change_log_present(charter_text: str) -> None:

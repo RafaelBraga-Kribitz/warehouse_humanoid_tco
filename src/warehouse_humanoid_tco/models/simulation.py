@@ -68,9 +68,7 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
         with res.request() as req:
             queue_lengths.append(len(res.queue))
             yield req
-            cycle_time = float(
-                rng.normal(profile.cycle_time_mean, profile.cycle_time_std)
-            )
+            cycle_time = float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std))
             cycle_time = max(cycle_time, 1.0)
             yield env.timeout(cycle_time)
         completed_orders.append(env.now)

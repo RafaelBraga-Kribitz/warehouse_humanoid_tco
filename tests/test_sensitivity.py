@@ -11,18 +11,25 @@ from warehouse_humanoid_tco.evaluation.validation import validate_human_baseline
 
 # ── compute_tco_for_params ─────────────────────────────────────────────────────
 
+
 def test_compute_tco_all_human_no_capex() -> None:
     npv = compute_tco_for_params(
-        humanoid_count=0, human_count=8,
-        humanoid_capex=120000, human_wage=18.50, human_overhead=1.35,
+        humanoid_count=0,
+        human_count=8,
+        humanoid_capex=120000,
+        human_wage=18.50,
+        human_overhead=1.35,
     )
     assert npv < 0
 
 
 def test_compute_tco_no_workers_no_capex() -> None:
     npv = compute_tco_for_params(
-        humanoid_count=0, human_count=0,
-        humanoid_capex=0, human_wage=0, human_overhead=1.0,
+        humanoid_count=0,
+        human_count=0,
+        humanoid_capex=0,
+        human_wage=0,
+        human_overhead=1.0,
     )
     assert npv == 0.0
 
@@ -40,6 +47,7 @@ def test_compute_tco_higher_capex_more_negative() -> None:
 
 
 # ── run_oat_sensitivity ────────────────────────────────────────────────────────
+
 
 def _base_params() -> dict:
     return {
@@ -84,6 +92,7 @@ def test_oat_npv_monotonic_with_capex() -> None:
 
 
 # ── run_monte_carlo_sensitivity ────────────────────────────────────────────────
+
 
 def _mc_distributions() -> dict:
     return {
@@ -132,6 +141,7 @@ def test_mc_p5_less_than_p95() -> None:
 
 
 # ── validate_human_baseline_throughput ────────────────────────────────────────
+
 
 def test_validation_pass_within_tolerance() -> None:
     result = validate_human_baseline_throughput(simulated_throughput=900.0)

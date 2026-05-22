@@ -43,8 +43,14 @@ def test_simulation_throughput_positive() -> None:
 
 def test_simulation_result_schema() -> None:
     result = run_scenario(_human_scenario(), run_id=0)
-    required = {"scenario_id", "run_id", "throughput_orders_per_shift",
-                "queue_length_mean", "pipeline_version", "seed"}
+    required = {
+        "scenario_id",
+        "run_id",
+        "throughput_orders_per_shift",
+        "queue_length_mean",
+        "pipeline_version",
+        "seed",
+    }
     assert required.issubset(result.keys())
 
 

@@ -22,9 +22,7 @@ def export_for_tableau(processed_dir: Path, export_dir: Path) -> None:
     export_dir.mkdir(parents=True, exist_ok=True)
 
     # Load all outputs
-    capabilities_summary = pl.read_parquet(
-        processed_dir / "humanoid_capabilities_summary.parquet"
-    )
+    capabilities_summary = pl.read_parquet(processed_dir / "humanoid_capabilities_summary.parquet")
     simulation_runs = pl.read_parquet(processed_dir / "simulation_runs.parquet")
     tco_scenarios = pl.read_parquet(processed_dir / "tco_scenarios.parquet")
 
@@ -77,10 +75,14 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
 
     # Chart 3: Simulation Throughput by Scenario
     sim = pl.read_parquet(processed_dir / "simulation_runs.parquet")
-    sim_summary = sim.group_by("scenario_id").agg(
-        pl.col("throughput_orders_per_shift").mean().alias("mean_throughput"),
-        pl.col("throughput_orders_per_shift").std().alias("std_throughput"),
-    ).sort("mean_throughput")
+    sim_summary = (
+        sim.group_by("scenario_id")
+        .agg(
+            pl.col("throughput_orders_per_shift").mean().alias("mean_throughput"),
+            pl.col("throughput_orders_per_shift").std().alias("std_throughput"),
+        )
+        .sort("mean_throughput")
+    )
 
     fig, ax = plt.subplots(figsize=(10, 6))
     scenarios = sim_summary["scenario_id"].to_list()
@@ -151,5 +153,6 @@ def module_04_main(
 
 if __name__ == "__main__":
     from pathlib import Path
+
     project_root = Path(__file__).parent.parent.parent.parent
     module_04_main(project_root)

@@ -25,6 +25,12 @@ The system was working correctly — it was the test inputs that masked scenario
 
 After switching to real empirical inputs, throughput variance across scenarios increased substantially, and the sensitivity analysis became meaningful. The S-hybrid-amr advantage over S-pure-humanoid became explainable by task mix assignment, not cycle time noise.
 
+## Consequences
+
+- Synthetic fixtures are kept for smoke tests only; integration tests require real data.
+- `@pytest.mark.integration` marker added to all scenario-differentiation tests.
+- **Superseded by ADR-0007**: the actual cause of p=1.0 was a simulation routing bug, not synthetic data.
+
 ## Lesson
 
 Synthetic test fixtures are useful for structural validation (does the pipeline run?) but should never be used to validate analytical results (do the numbers make sense?). The distinction is `@pytest.mark.unit` vs. `@pytest.mark.integration`. Document this boundary explicitly in `tests/conftest.py`.

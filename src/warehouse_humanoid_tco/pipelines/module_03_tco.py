@@ -16,7 +16,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
 import polars as pl
 import yaml
 
@@ -41,8 +40,8 @@ def compute_tco_scenario(
     workforce) but does NOT scale NPV in this model because labor cost is fixed per FTE,
     not per order. Future: consider energy cost per order or maintenance cost per throughput.
     """
-    # Extract throughput from simulation (may affect future cost drivers)
-    total_throughput = simulation_data.get("throughput_orders_per_shift", 0)
+    # Throughput passed in but not yet wired to cost drivers (fixed-cost model)
+    _ = simulation_data.get("throughput_orders_per_shift", 0)
 
     # Assumptions
     humanoid_capex = assumptions.get("humanoid_capex_eur", 120000)
@@ -125,9 +124,7 @@ def module_03_main(
     """
     # Load simulation runs
     if simulation_runs_path is None:
-        simulation_runs_path = (
-            project_root / "data" / "processed" / "simulation_runs.parquet"
-        )
+        simulation_runs_path = project_root / "data" / "processed" / "simulation_runs.parquet"
 
     # Load assumptions
     if assumptions_path is None:
@@ -165,9 +162,7 @@ def module_03_main(
 
     tco_results = []
     if len(sim_df) > 0:
-        # Group by scenario and compute NPV
-        # Note: NPV is deterministic per scenario (depends only on agent composition, not throughput)
-        # Throughput variation across runs does not affect NPV in this fixed-cost model
+        # NPV deterministic per scenario (agent composition only, not throughput)
         for scenario_id in sim_df.select(pl.col("scenario_id").unique()).to_series():
             scenario_data = sim_df.filter(pl.col("scenario_id") == scenario_id)
 
@@ -185,9 +180,10 @@ def module_03_main(
             )
 
             tco_results.append(result)
+            std = result["throughput_std_orders_per_shift"]
             print(
                 f"  {scenario_id}: NPV = €{result['npv_eur']:.0f} "
-                f"(throughput: {throughput_mean:.0f} ± {result['throughput_std_orders_per_shift']:.0f} orders/shift)"
+                f"(throughput: {throughput_mean:.0f} ± {std:.0f} orders/shift)"
             )
 
     # ========== Export ==========

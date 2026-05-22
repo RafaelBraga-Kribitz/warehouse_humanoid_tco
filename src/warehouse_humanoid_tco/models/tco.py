@@ -29,9 +29,7 @@ def compute_humanoid_capex(
     training_cost_per_unit_eur: float,
 ) -> float:
     total_cost_per_unit = (
-        unit_capex_eur
-        + installation_cost_per_unit_eur
-        + training_cost_per_unit_eur
+        unit_capex_eur + installation_cost_per_unit_eur + training_cost_per_unit_eur
     )
     return n_humanoids * total_cost_per_unit
 
