@@ -36,9 +36,13 @@ def compute_tco_scenario(
     Returns dict with npv_eur, cost_reduction_vs_baseline_pct, payback_years.
     IRR is omitted: this is a pure-cost model with no revenue, making IRR undefined.
     payback_years = capex / annual_opex_savings_vs_baseline (inf if no savings).
+
+    Note: throughput affects scenario comparison (higher throughput = more productive
+    workforce) but does NOT scale NPV in this model because labor cost is fixed per FTE,
+    not per order. Future: consider energy cost per order or maintenance cost per throughput.
     """
-    # Extract agent counts from simulation data
-    total_throughput = simulation_data.get("throughput_orders_per_shift", 0)  # noqa: F841
+    # Extract throughput from simulation (may affect future cost drivers)
+    total_throughput = simulation_data.get("throughput_orders_per_shift", 0)
 
     # Assumptions
     humanoid_capex = assumptions.get("humanoid_capex_eur", 120000)
@@ -161,44 +165,29 @@ def module_03_main(
 
     tco_results = []
     if len(sim_df) > 0:
-        # Group by scenario and compute per-run NPVs
+        # Group by scenario and compute NPV
+        # Note: NPV is deterministic per scenario (depends only on agent composition, not throughput)
+        # Throughput variation across runs does not affect NPV in this fixed-cost model
         for scenario_id in sim_df.select(pl.col("scenario_id").unique()).to_series():
             scenario_data = sim_df.filter(pl.col("scenario_id") == scenario_id)
 
-            # Compute NPV for each run individually
-            npv_per_run = []
-            for throughput in scenario_data["throughput_orders_per_shift"]:
-                result = compute_tco_scenario(
-                    scenario_id,
-                    {"throughput_orders_per_shift": float(throughput)},
-                    assumptions,
-                )
-                npv_per_run.append(result["npv_eur"])
-
-            # Aggregate: mean, std, 90% CI
-            npv_array = np.array(npv_per_run)
-            npv_mean = float(np.mean(npv_array))
-            npv_std = float(np.std(npv_array, ddof=1)) if len(npv_array) > 1 else 0.0
-            ci_lower = float(np.percentile(npv_array, 5))
-            ci_upper = float(np.percentile(npv_array, 95))
-
-            # Use mean for base result, add CI fields
+            # Use mean throughput to compute a single NPV per scenario
             throughput_mean = float(scenario_data["throughput_orders_per_shift"].mean())
             result = compute_tco_scenario(
                 scenario_id,
                 {"throughput_orders_per_shift": throughput_mean},
                 assumptions,
             )
-            result["npv_mean_eur"] = npv_mean
-            result["npv_std_eur"] = npv_std
-            result["npv_ci_lower_90_eur"] = ci_lower
-            result["npv_ci_upper_90_eur"] = ci_upper
-            result["n_runs"] = len(npv_per_run)
+            result["n_simulation_runs"] = len(scenario_data)
+            result["throughput_mean_orders_per_shift"] = throughput_mean
+            result["throughput_std_orders_per_shift"] = float(
+                scenario_data["throughput_orders_per_shift"].std()
+            )
 
             tco_results.append(result)
             print(
-                f"  {scenario_id}: NPV = €{npv_mean:.0f} ± €{npv_std:.0f} "
-                f"(90% CI: [€{ci_lower:.0f}, €{ci_upper:.0f}])"
+                f"  {scenario_id}: NPV = €{result['npv_eur']:.0f} "
+                f"(throughput: {throughput_mean:.0f} ± {result['throughput_std_orders_per_shift']:.0f} orders/shift)"
             )
 
     # ========== Export ==========
