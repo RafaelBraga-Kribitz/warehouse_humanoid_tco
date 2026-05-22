@@ -14,7 +14,7 @@ The results surprised me.
 
 2. **The transfer factor problem:** Robot vendors show lab demos. Real warehouses are messier. I explicitly modeled a 70% WBT-to-production transfer factor (with sensitivity from 50-90%) because that's the honest acknowledgment. Most analyses skip this and pretend lab=production.
 
-3. **The cycle time variance trap:** I initially used mean cycle times in the simulation. This masked all inter-scenario differences because arrival-process variance dominated. Only when I switched to empirical per-episode distributions did realistic differentiation appear. One line of code changed everything.
+3. **The simulation debugging moment:** My pre-registered hypothesis test (Kruskal-Wallis) came back with p=1.0 across all five scenarios, even after switching to real UnifoLM cycle times with 3× variance across task categories. I assumed it was a data problem. It wasn't. The actual issue was a single-line routing bug in the SimPy simulation: a `return` statement inside the agent-selection loop meant *all* orders went to the first profile (humans), and humanoids/AMRs never processed anything. I found it by manually testing an extreme case (humanoids 10× slower than humans, still same throughput = bug). Fixed it, added a regression test, re-ran everything. The lesson: when your statistical test gives you a surprising result in "genuinely different" conditions, debug your code before blaming your data. (Documented in ADR-0007.)
 
 The full analysis is open-source and reproducible: every assumption is documented, every calculation is auditable, and every result is version-controlled.
 
@@ -40,7 +40,7 @@ Die Ergebnisse waren überraschend.
 
 2. **Das Transferfaktor-Problem:** Roboterhersteller zeigen Lab-Demos. Reale Lager sind chaotischer. Ich habe explizit einen 70%-Transferfaktor modelliert (mit Sensitivität von 50-90%), weil das die ehrliche Anerkennung ist. Die meisten Analysen überspringen das und tun so, als ob Lab=Produktion.
 
-3. **Die Zykluszeit-Varianz-Falle:** Ich habe zunächst durchschnittliche Zykluszeiten in der Simulation verwendet. Dies maskierte alle Szenario-Unterschiede, da die Ankunftsprozess-Varianz dominierte. Nur als ich zu empirischen Episode-Verteilungen wechselte, erschien realistische Differenzierung. Eine Codezeile änderte alles.
+3. **Der Simulationsdebugging-Moment:** Mein vorab registrierter Hypothesentest (Kruskal-Wallis) kam mit p=1.0 über alle fünf Szenarien zurück, selbst nachdem ich auf echte UnifoLM-Zykluszeiten mit 3× Varianz über Aufgabenkategorien umgeschaltet hatte. Ich nahm an, es sei ein Datenproblem. Es war nicht. Das tatsächliche Problem war ein einzelnes-Zeile-Routing-Fehler in der SimPy-Simulation: eine `return`-Anweisung in der Agent-Auswahlschleife bedeutete, dass *alle* Orders zum ersten Profil (Menschen) gingen, und Humanoide/AMRs verarbeiteten niemals etwas. Ich fand es, indem ich manuell einen extremen Fall testete (Humanoide 10× langsamer als Menschen, immer noch gleicher Durchsatz = Fehler). Ich habe es behoben, einen Regressiontest hinzugefügt und alles erneut ausgeführt. Die Lektion: Wenn Ihr statistischer Test unter „genuinely different" Bedingungen ein überraschendes Ergebnis liefert, debuggen Sie Ihren Code, bevor Sie Ihre Daten beschuldigen. (Dokumentiert in ADR-0007.)
 
 Die vollständige Analyse ist Open-Source und reproduzierbar: Jede Annahme ist dokumentiert, jede Berechnung ist nachprüfbar, und jedes Ergebnis ist versionskontrolliert.
 
