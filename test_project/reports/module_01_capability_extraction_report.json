@@ -1,8 +1,0 @@
-{
-  "phase": "module_01_capability_extraction",
-  "total_episodes_extracted": 5,
-  "total_task_categories": 3,
-  "datasets_processed": 1,
-  "per_episode_path": "test_project/data/processed/humanoid_capabilities_per_episode.parquet",
-  "summary_path": "test_project/data/processed/humanoid_capabilities_summary.parquet"
-}

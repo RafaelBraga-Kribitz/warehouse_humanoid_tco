@@ -10,17 +10,19 @@ from warehouse_humanoid_tco.data.schemas import HumanoidCapabilitySummarySchema
 
 
 def make_valid_summary() -> pl.DataFrame:
-    return pl.DataFrame({
-        "task_category": ["pick_small_object"],
-        "n_episodes": [15],
-        "cycle_time_p50": [12.5],
-        "cycle_time_p95": [28.0],
-        "cycle_time_mean": [14.0],
-        "cycle_time_std": [3.5],
-        "success_rate": [0.87],
-        "insufficient_sample": [False],
-        "pipeline_version": ["0.1.0"],
-    })
+    return pl.DataFrame(
+        {
+            "task_category": ["pick_small_object"],
+            "n_episodes": [15],
+            "cycle_time_p50": [12.5],
+            "cycle_time_p95": [28.0],
+            "cycle_time_mean": [14.0],
+            "cycle_time_std": [3.5],
+            "success_rate": [0.87],
+            "insufficient_sample": [False],
+            "pipeline_version": ["0.1.0"],
+        }
+    )
 
 
 def test_summary_schema_valid() -> None:

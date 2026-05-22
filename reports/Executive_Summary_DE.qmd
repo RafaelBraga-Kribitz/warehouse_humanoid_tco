@@ -36,17 +36,17 @@ wie sie bei Knapp AG und TGW Logistics eingesetzt werden.
 
 ## Wichtigste Erkenntnisse
 
-### Gewinner-Szenario: S-hybrid-amr
+### Optimales Szenario unter den modellierten Annahmen: S-hybrid-amr
 
 Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlichen Arbeitskräften, 20% Humanoid und 20% AMR die 5-Jahres-Gesamtbetriebskosten (TCO):
 
 | Szenario | 5-Jahr NPV | Kostenersparnis vs. Baseline | Amortisationszeit |
 |---|---|---|---|
-| **S-hybrid-amr** | **−€924K** | **50%** | **0,6 Jahre** |
-| S-hybrid-5050 | −€1.284M | 50% | 2,4 Jahre |
+| **S-hybrid-amr** | **−€924K** | **43%** | **0,6 Jahre** |
+| S-hybrid-5050 | −€1.284M | 20% | 2,4 Jahre |
 | S-baseline-human | −€1.608M | — | — |
-| S-pure-humanoid | −€960K | 100% | 2,4 Jahre |
-| S-future-2028 | −€1.284M | 50% | 2,4 Jahre |
+| S-pure-humanoid | −€960K | 40% | ∞ |
+| S-future-2028 | −€1.284M | 20% | 2,4 Jahre |
 
 ### Kritische Erkenntnisse
 

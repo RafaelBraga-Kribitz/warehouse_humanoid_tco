@@ -65,11 +65,13 @@ def run_oat_sensitivity(
                 human_overhead=float(test_params.get("human_overhead_mult", 1.35)),
             )
 
-            results.append({
-                "parameter": param_name,
-                "parameter_value": float(param_val),
-                "npv_eur": npv,
-            })
+            results.append(
+                {
+                    "parameter": param_name,
+                    "parameter_value": float(param_val),
+                    "npv_eur": npv,
+                }
+            )
 
     return results
 
@@ -114,11 +116,13 @@ def run_monte_carlo_sensitivity(
         )
         npv_array.append(npv)
 
-        samples.append({
-            "sample_id": len(samples),
-            "npv_eur": npv,
-            **{f"{k}_sampled": v for k, v in sample.items()},
-        })
+        samples.append(
+            {
+                "sample_id": len(samples),
+                "npv_eur": npv,
+                **{f"{k}_sampled": v for k, v in sample.items()},
+            }
+        )
 
     npv_array = np.array(npv_array)
     summary = {
@@ -154,7 +158,7 @@ def run_sensitivity_analysis(
     # Base parameters for S-hybrid-amr scenario
     base_params = {
         "humanoid_count": 2,  # 20% of 8 agents
-        "human_count": 6,     # 60% of 8 agents
+        "human_count": 6,  # 60% of 8 agents
         "humanoid_capex_eur": 120000.0,
         "human_wage_eur": 18.50,
         "human_overhead_mult": 1.35,

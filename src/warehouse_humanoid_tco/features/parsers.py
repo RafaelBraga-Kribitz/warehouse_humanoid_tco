@@ -21,7 +21,7 @@ def resolve_nested_dataset(dataset_path: Path) -> Path:
 
     Returns the actual dataset directory.
     """
-    subdirs = [d for d in dataset_path.iterdir() if d.is_dir() and not d.name.startswith('.')]
+    subdirs = [d for d in dataset_path.iterdir() if d.is_dir() and not d.name.startswith(".")]
     if len(subdirs) == 1 and (subdirs[0] / "meta").exists():
         return subdirs[0]
     return dataset_path
@@ -45,11 +45,13 @@ def load_wbt_episodes_jsonl(dataset_path: Path) -> list[dict[str, Any]]:
         # Create synthetic episode metadata from info.json
         total_episodes = info.get("total_episodes", 0)
         for i in range(total_episodes):
-            episodes.append({
-                "episode_index": i,
-                "task": info.get("total_tasks", 1) > 0 and "task" or "unknown",
-                "success": True,
-            })
+            episodes.append(
+                {
+                    "episode_index": i,
+                    "task": info.get("total_tasks", 1) > 0 and "task" or "unknown",
+                    "success": True,
+                }
+            )
         return episodes
 
     # Try LeRobot V2.0+ format (episodes.jsonl)
@@ -182,7 +184,7 @@ def infer_dataset_type(dataset_path: Path) -> str:
     Returns 'wbt' (chunked), 'diversemanip' (LeRobot), or 'unknown'.
     """
     # Check for nested dataset directory (WBT structure)
-    subdirs = [d for d in dataset_path.iterdir() if d.is_dir() and not d.name.startswith('.')]
+    subdirs = [d for d in dataset_path.iterdir() if d.is_dir() and not d.name.startswith(".")]
     if len(subdirs) == 1:
         nested_dir = subdirs[0]
         # Check if nested dir has the actual dataset structure

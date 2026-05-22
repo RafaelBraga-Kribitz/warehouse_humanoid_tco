@@ -31,12 +31,14 @@ def one_at_a_time(
         for value in np.linspace(low, high, n_steps):
             params = {**base_params, param_name: float(value)}
             output = model_fn(**params)
-            records.append({
-                "parameter": param_name,
-                "value": float(value),
-                "output": output,
-                "delta_vs_base": output - base_output,
-            })
+            records.append(
+                {
+                    "parameter": param_name,
+                    "value": float(value),
+                    "output": output,
+                    "delta_vs_base": output - base_output,
+                }
+            )
 
     return pl.DataFrame(records)
 

@@ -4,10 +4,10 @@ All categoricals use explicit enums — no bare strings in business logic.
 See PROJECT_CHARTER.md §6.4 Data Quality Rules.
 """
 
-from enum import Enum
+from enum import StrEnum
 
 
-class TaskCategory(str, Enum):
+class TaskCategory(StrEnum):
     """Warehouse-relevant task taxonomy for UnifoLM-WBT episodes."""
 
     PICK_SMALL_OBJECT = "pick_small_object"
@@ -21,19 +21,19 @@ class TaskCategory(str, Enum):
     UNCLASSIFIED = "unclassified"
 
 
-class RobotPlatform(str, Enum):
+class RobotPlatform(StrEnum):
     G1 = "G1"
     H1_2 = "H1_2"
     UNKNOWN = "unknown"
 
 
-class AgentType(str, Enum):
+class AgentType(StrEnum):
     HUMAN = "human"
     HUMANOID = "humanoid"
     AMR = "amr"
 
 
-class ScenarioId(str, Enum):
+class ScenarioId(StrEnum):
     BASELINE_HUMAN = "S-baseline-human"
     PURE_HUMANOID = "S-pure-humanoid"
     HYBRID_5050 = "S-hybrid-5050"
@@ -41,7 +41,7 @@ class ScenarioId(str, Enum):
     FUTURE_2028 = "S-future-2028"
 
 
-class ArchitectureType(str, Enum):
+class ArchitectureType(StrEnum):
     AUTOSTORE = "autostore"
     STINGRAY = "stingray"
     AUTOMOTIVE_LINE = "automotive_line"

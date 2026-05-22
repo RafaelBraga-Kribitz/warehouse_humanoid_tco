@@ -1,7 +1,8 @@
 # ADR-0006: Synthetic Data Cycle Time Artifact in Simulation
 
 **Date:** 2026-05-21  
-**Status:** Resolved  
+**Status:** Superseded  
+**Superseded by:** ADR-0007 (root cause was simulation routing bug, not synthetic data)  
 **Decider:** Rafael Braga
 
 ## Context
@@ -23,6 +24,12 @@ The system was working correctly — it was the test inputs that masked scenario
 ## Outcome
 
 After switching to real empirical inputs, throughput variance across scenarios increased substantially, and the sensitivity analysis became meaningful. The S-hybrid-amr advantage over S-pure-humanoid became explainable by task mix assignment, not cycle time noise.
+
+## Consequences
+
+- Synthetic fixtures are kept for smoke tests only; integration tests require real data.
+- `@pytest.mark.integration` marker added to all scenario-differentiation tests.
+- **Superseded by ADR-0007**: the actual cause of p=1.0 was a simulation routing bug, not synthetic data.
 
 ## Lesson
 

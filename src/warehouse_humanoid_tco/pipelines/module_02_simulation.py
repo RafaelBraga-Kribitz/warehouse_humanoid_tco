@@ -32,7 +32,7 @@ def module_02_main(
     capability_summary_path: Path | None = None,
     n_runs: int = 15,
     seed: int = 42,
-) -> dict[str, Path]:
+) -> dict[str, Path | None]:
     """Run Module 2 end-to-end.
 
     Returns dict mapping {'simulation_runs': ..., 'validation_report': ...}

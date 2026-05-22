@@ -139,18 +139,14 @@ def module_01_main(
 
     if len(per_episode) > 0:
         per_episode = per_episode.with_columns(
-            pl.col("task_description").map_elements(
-                lambda desc: classify_task(desc).value, return_dtype=pl.Utf8
-            ).alias("task_category")
+            pl.col("task_description")
+            .map_elements(lambda desc: classify_task(desc).value, return_dtype=pl.Utf8)
+            .alias("task_category")
         )
 
     # ========== Aggregate ==========
     print("[Aggregation] Computing summary statistics per task category...")
-    summary = (
-        aggregate_capabilities(per_episode)
-        if len(per_episode) > 0
-        else pl.DataFrame()
-    )
+    summary = aggregate_capabilities(per_episode) if len(per_episode) > 0 else pl.DataFrame()
 
     # ========== Export ==========
     print("[Export] Writing parquets...")

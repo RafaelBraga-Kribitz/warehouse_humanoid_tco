@@ -106,9 +106,10 @@ def extract_dataset_episodes(
         info_path = dataset_path / "meta" / "info.json"
         if info_path.exists():
             import json
+
             with open(info_path) as f:
                 info = json.load(f)
-            fps = info.get("fps", 10.0)
+            fps = float(info.get("fps", 10.0))
 
     dataset_type = infer_dataset_type(dataset_path)
 

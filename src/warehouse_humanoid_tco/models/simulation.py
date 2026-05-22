@@ -55,20 +55,23 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
     }
 
     def pick_order(order_id: int) -> Any:
-        for profile in scenario.agent_profiles:
-            if profile.count == 0:
-                continue
-            res = resources[profile.agent_type]
-            with res.request() as req:
-                queue_lengths.append(len(res.queue))
-                yield req
-                cycle_time = float(
-                    rng.normal(profile.cycle_time_mean, profile.cycle_time_std)
-                )
-                cycle_time = max(cycle_time, 1.0)
-                yield env.timeout(cycle_time)
-            completed_orders.append(env.now)
+        eligible = [p for p in scenario.agent_profiles if p.count > 0]
+        if not eligible:
             return
+
+        weights = np.array([p.count for p in eligible], dtype=float)
+        weights /= weights.sum()
+        chosen_idx = int(rng.choice(len(eligible), p=weights))
+        profile = eligible[chosen_idx]
+
+        res = resources[profile.agent_type]
+        with res.request() as req:
+            queue_lengths.append(len(res.queue))
+            yield req
+            cycle_time = float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std))
+            cycle_time = max(cycle_time, 1.0)
+            yield env.timeout(cycle_time)
+        completed_orders.append(env.now)
 
     def order_generator() -> Any:
         order_id = 0
