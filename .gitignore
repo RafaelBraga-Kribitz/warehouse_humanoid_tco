@@ -51,3 +51,12 @@ docs/todo/
 
 # Large Files
 *.mp4
+
+# Stray test and run artifacts
+*_run.log
+*_rerun.log
+/test_config/
+/test_data/
+/test_project/
+/test_reports/
+/graphify-out/
