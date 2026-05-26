@@ -34,7 +34,8 @@ notebooks/*.ipynb
 reports/*.html
 !reports/Executive_Summary_DE.html
 reports/*.pdf
-reports/derisk_inspection_report.json
+reports/*_files/
+# derisk_inspection_report.json IS committed — it pins dataset SHAs for reproducibility
 
 # OS
 .DS_Store
