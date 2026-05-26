@@ -28,6 +28,7 @@ data/processed/*.csv
 
 # Notebooks — .ipynb is generated from .py source via jupytext
 notebooks/*.ipynb
+!notebooks/01_data_profile_summary.ipynb
 
 # Reports — rendered outputs are not committed; sources (.qmd) are
 reports/*.html
@@ -48,6 +49,8 @@ Thumbs.db
 
 # Internal Docs
 docs/todo/
+docs/audit_response*.md
+docs/internal/
 
 # Large Files
 *.mp4
