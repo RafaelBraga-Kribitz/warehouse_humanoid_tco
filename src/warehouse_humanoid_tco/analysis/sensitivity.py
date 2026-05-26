@@ -86,7 +86,7 @@ def run_monte_carlo_sensitivity(
 
     Returns tuple of (samples_list, summary_stats).
     """
-    npr.seed(seed)
+    rng = np.random.default_rng(seed)
     samples = []
     npv_array = []
 
@@ -98,11 +98,11 @@ def run_monte_carlo_sensitivity(
             if dist_type == "normal":
                 mean = dist_config["mean"]
                 std = dist_config["std"]
-                sample[param_name] = npr.normal(mean, std)
+                sample[param_name] = rng.normal(mean, std)
             elif dist_type == "uniform":
                 low = dist_config["low"]
                 high = dist_config["high"]
-                sample[param_name] = npr.uniform(low, high)
+                sample[param_name] = rng.uniform(low, high)
             else:
                 sample[param_name] = dist_config.get("default", base_params.get(param_name, 0))
 

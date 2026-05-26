@@ -1,0 +1,81 @@
+{
+  "run_timestamp_utc": "2026-05-21T10:00:28.498452+00:00",
+  "manifest_path": "/Users/rbk/warehouse_humanoid_tco/config/dataset_manifest.yaml",
+  "dataset_count": 5,
+  "datasets_accessible": 5,
+  "datasets_inaccessible": 0,
+  "datasets": {
+    "unitreerobotics/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly": {
+      "sha": "24e3e4d88a5020bdb4b3046ec09b09dc56f8d1f1",
+      "last_modified": "2026-03-27T12:03:23+00:00",
+      "files_count": 34,
+      "accessible": true,
+      "error": null
+    },
+    "unitreerobotics/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly": {
+      "sha": "c0a5fb0992a0f2a2b9df3493d27c2d670a4b1c36",
+      "last_modified": "2026-03-27T12:03:44+00:00",
+      "files_count": 24,
+      "accessible": true,
+      "error": null
+    },
+    "unitreerobotics/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher": {
+      "sha": "16c01dbfcb2159783ea575acd42d1cec9b69e311",
+      "last_modified": "2026-03-27T12:04:41+00:00",
+      "files_count": 114,
+      "accessible": true,
+      "error": null
+    },
+    "unitreerobotics/G1_Dex1_DiverseManip_SingleArm_256x256": {
+      "sha": "adfe712e2ac801ca7ba18c0da79e39483975cc1f",
+      "last_modified": "2026-03-18T13:22:34+00:00",
+      "files_count": 15,
+      "accessible": true,
+      "error": null
+    },
+    "unitreerobotics/G1_Dex1_DiverseManip_DualArm_256x256": {
+      "sha": "50ea572ea5f225e30e7c9116ab814a2efd73060a",
+      "last_modified": "2026-03-18T13:25:30+00:00",
+      "files_count": 17,
+      "accessible": true,
+      "error": null
+    }
+  },
+  "file_structure": {
+    "unitreerobotics/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly": {
+      "meta": 0,
+      "data": 0,
+      "videos": 0,
+      "other": 34
+    },
+    "unitreerobotics/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly": {
+      "meta": 0,
+      "data": 0,
+      "videos": 0,
+      "other": 24
+    },
+    "unitreerobotics/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher": {
+      "meta": 4,
+      "data": 3,
+      "videos": 105,
+      "other": 2
+    },
+    "unitreerobotics/G1_Dex1_DiverseManip_SingleArm_256x256": {
+      "meta": 4,
+      "data": 1,
+      "videos": 4,
+      "other": 6
+    },
+    "unitreerobotics/G1_Dex1_DiverseManip_DualArm_256x256": {
+      "meta": 4,
+      "data": 1,
+      "videos": 6,
+      "other": 6
+    }
+  },
+  "notes": [
+    "This report validates dataset accessibility and structure only.",
+    "Full data download is deferred to Module 1 production pipeline.",
+    "SHAs are pinned for reproducibility."
+  ]
+}

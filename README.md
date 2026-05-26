@@ -33,6 +33,12 @@ jupyter notebook notebooks/00_derisk_dataset_inspection.ipynb
 make all
 ```
 
+**For users without `uv`:** Generate a requirements.txt from `uv.lock`:
+```bash
+uv export --format requirements-txt > requirements.txt
+pip install -r requirements.txt
+```
+
 ## Results Summary
 
 **Pipeline Status:** ✓ All modules complete with real data (2026-05-21). Modules 1–3 executed on 2,359 real humanoid episodes from Unitree UnifoLM datasets.

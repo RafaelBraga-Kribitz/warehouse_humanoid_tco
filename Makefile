@@ -1,7 +1,8 @@
 .PHONY: all setup lint test module-01 module-02 module-03 module-04 profile dashboards ci-local clean help
 
-PYTHON := python
-VENV := . venv/bin/activate &&
+PYTHON ?= python
+# Use ?= so env override (VENV="" in CI workflows) takes precedence over default
+VENV ?= . .venv/bin/activate &&
 
 # ── Help ──────────────────────────────────────────────────────────────────────
 
@@ -87,7 +88,7 @@ dashboards: module-01 module-02 module-03 module-04
 	@echo "✓ Dashboard data ready"
 	@echo "  Tableau: exports/tableau_public/*.csv"
 	@echo "  Charts: reports/executive_charts/*.png"
-	@echo "  Setup: see DASHBOARD_SETUP.md"
+	@echo "  Setup: see docs/DASHBOARD_SETUP.md"
 
 # ── Notebooks ─────────────────────────────────────────────────────────────────
 
