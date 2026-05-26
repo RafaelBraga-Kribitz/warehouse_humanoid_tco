@@ -64,7 +64,10 @@ def compute_irr(cash_flows: list[float]) -> float | None:
 
 
 def compute_payback_years(cash_flows: list[float]) -> float | None:
-    """Simple payback: first year cumulative cash flow turns positive."""
+    """Simple payback: first year cumulative cash flow turns positive.
+
+    Note: Uses undiscounted sum of cash flows. For discounted payback, use NPV-based calculation.
+    """
     cumulative = 0.0
     for year, cf in enumerate(cash_flows):
         cumulative += cf
