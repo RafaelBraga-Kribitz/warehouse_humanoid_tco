@@ -40,7 +40,7 @@ def module_01_main(
         manifest = yaml.safe_load(f)
 
     derisk_report = {}
-    if derisk_report_path:
+    if derisk_report_path and derisk_report_path.exists():
         with open(derisk_report_path) as f:
             derisk_report = json.load(f)
 

@@ -175,18 +175,6 @@ The project succeeds if **all four** of these are true at completion:
 | Substitution-framing causes backlash | Low (mitigated by framing) | Critical | Framing locked: "augmentation + ROI", never "replacement"; Betriebsrat-aware language audit at every doc commit |
 | Project becomes too ambitious mid-flight | High | High | Scope Guardrails §9 enforced ruthlessly |
 
-### 3.7 Known Limitations and External Validity Boundaries
-
-| Limitation | Impact | Mitigation |
-|---|---|---|
-| WBT teleoperation cycle times ≠ production throughput | Overestimates humanoid speed by unknown factor | Applied 0.70× transfer factor (configurable; see `config/autostore_baseline.yaml`); Monte Carlo range covers 0.50–0.90× |
-| 15-replica simulation runs | Moderate variance in scenario comparison | 90% CI reported on all throughput metrics; sufficient for portfolio-level comparison |
-| No real warehouse telemetry | Cannot validate against actual Knapp operations | Baseline calibrated against public Knapp AutoStore throughput benchmarks (§7.5) |
-| Humanoid capex from public pricing, not contracts | ±40% cost uncertainty | Full Monte Carlo range €80K–€200K/unit; tornado chart shows sensitivity |
-| Austrian Kollektivvertrag 2026 estimated, not official | ±10% labor cost uncertainty | Documented range in `config/tco_assumptions.yaml`; dominant sensitivity driver |
-| No human fatigue modeling | Overestimates human baseline throughput | Acknowledged; absence_rate_per_shift partially compensates |
-| WBT dataset is teleoperation demos, not autonomous ops | Transfer to autonomous production unknown | 0.70× factor; this is the single largest assumption — see §2A |
-
 ### 3.6 Out of Scope (v1.0)
 
 The following are explicitly excluded from v1.0. Adding any of these requires an ADR and a scope-change review:
@@ -200,6 +188,18 @@ The following are explicitly excluded from v1.0. Adding any of these requires an
 - Live integration with company systems (SAP, ERP, WMS)
 - Mobile app
 - Web service deployment of the model (it ships as a repo + dashboards only)
+
+### 3.7 Known Limitations and External Validity Boundaries
+
+| Limitation | Impact | Mitigation |
+|---|---|---|
+| WBT teleoperation cycle times ≠ production throughput | Overestimates humanoid speed by unknown factor | Applied 0.70× transfer factor (configurable; see `config/autostore_baseline.yaml`); Monte Carlo range covers 0.50–0.90× |
+| 15-replica simulation runs | Moderate variance in scenario comparison | 90% CI reported on all throughput metrics; sufficient for portfolio-level comparison |
+| No real warehouse telemetry | Cannot validate against actual Knapp operations | Baseline calibrated against public Knapp AutoStore throughput benchmarks (§7.5) |
+| Humanoid capex from public pricing, not contracts | ±40% cost uncertainty | Full Monte Carlo range €80K–€200K/unit; tornado chart shows sensitivity |
+| Austrian Kollektivvertrag 2026 estimated, not official | ±10% labor cost uncertainty | Documented range in `config/tco_assumptions.yaml`; dominant sensitivity driver |
+| No human fatigue modeling | Overestimates human baseline throughput | Acknowledged; absence_rate_per_shift partially compensates |
+| WBT dataset is teleoperation demos, not autonomous ops | Transfer to autonomous production unknown | 0.70× factor; this is the single largest assumption — see §2A |
 
 ---
 
@@ -252,13 +252,13 @@ Requirements use MoSCoW prioritization. **Must** requirements are v1.0 release b
 | FR-02 | Must | Map tasks to a warehouse-relevant taxonomy with documented inter-rater methodology |
 | FR-03 | Must | Simulate AutoStore-style warehouse throughput with configurable agent mix (human, AMR, humanoid) |
 | FR-04 | Must | Compute TCO over 5-year horizon with Austrian labor cost inputs (Kollektivvertrag-based) |
-| FR-05 | Must | Compute NPV, IRR, payback period for each staffing scenario |
+| FR-05 | Must | Compute NPV, cost reduction vs baseline, and payback period for each staffing scenario (IRR omitted; pure-cost model with no revenue makes IRR undefined — see module_03_tco.py docstring) |
 | FR-06 | Must | Sensitivity analysis identifying top 5 cost drivers via tornado chart |
 | FR-07 | Must | Publish results to Tableau Public AND ship `.pbix` Power BI file in repo |
 | FR-08 | Must | Generate Quarto audit reports for each module |
 | FR-09 | Must | Provide a one-page German executive summary as PDF |
 | FR-10 | Should | Provide stub configurations for Stingray and Magna line architectures |
-| FR-11 | Should | LinkedIn-ready launch post template in `reports/` |
+| FR-11 | Should | LinkedIn-ready launch post in `docs/LINKEDIN_POST_DRAFT.md` |
 | FR-12 | Could | CLI entry point (`python -m warehouse_humanoid_tco run --config ...`) |
 | FR-13 | Could | Streamlit demo as secondary dashboard |
 | FR-14 | Won't | Real-time data ingestion |
@@ -525,8 +525,7 @@ warehouse_humanoid_tco/
 │   ├── module_02_simulation_validation.qmd
 │   ├── module_03_tco_assumptions.qmd
 │   ├── module_03_external_review.md
-│   ├── Executive_Summary_DE.qmd          # One-page German exec summary
-│   └── linkedin_launch_post.md
+│   └── Executive_Summary_DE.qmd          # One-page German exec summary
 └── docker/
     ├── Dockerfile
     └── docker-compose.yml

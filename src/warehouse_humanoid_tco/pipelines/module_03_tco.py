@@ -189,7 +189,8 @@ def module_03_main(
     print("\n[Export] Writing parquets...")
 
     if tco_results:
-        tco_df = pl.DataFrame(tco_results)
+        # Sort by scenario_id for deterministic output (pl.unique() order is not guaranteed)
+        tco_df = pl.DataFrame(tco_results).sort("scenario_id")
         tco_path = data_processed / "tco_scenarios.parquet"
         tco_df.write_parquet(tco_path)
         print(f"  ✓ {tco_path}")

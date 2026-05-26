@@ -12,12 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: pip install -e ".[dev]"
-      - run: ruff check src/
-      - run: pytest tests/ -v 2>/dev/null || echo "No tests"
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Ruff
+        run: ruff check src/
+      - name: Pytest
+        run: pytest tests/ -v 2>/dev/null || echo "No tests"
 
   modules:
     name: Run Pipeline
@@ -26,15 +31,25 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: pip install -e ".[dev]"
-      - run: mkdir -p data/raw data/processed
-      - run: python -m warehouse_humanoid_tco.pipelines.module_01_capability_extraction
-      - run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
-      - run: python -m warehouse_humanoid_tco.pipelines.module_03_tco
-      - run: python -m warehouse_humanoid_tco.pipelines.module_04_dashboards
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Prepare data dirs
+        run: mkdir -p data/raw data/processed
+      - name: Module 1 (capability extraction)
+        run: python -m warehouse_humanoid_tco.pipelines.module_01_capability_extraction
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Module 2 (simulation)
+        run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
+      - name: Module 3 (TCO)
+        run: python -m warehouse_humanoid_tco.pipelines.module_03_tco
+      - name: Module 4 (dashboards)
+        run: python -m warehouse_humanoid_tco.pipelines.module_04_dashboards
       - uses: actions/upload-artifact@v4
         with:
           name: outputs

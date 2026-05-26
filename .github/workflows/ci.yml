@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
       - name: Install uv
         run: pip install uv
       - name: Install dependencies
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
       - name: Install uv
         run: pip install uv
       - name: Install dependencies
@@ -46,4 +46,4 @@ jobs:
       - name: Build Docker image
         run: docker build -f docker/Dockerfile -t warehouse-humanoid-tco:test .
       - name: Smoke test in container
-        run: docker run --rm warehouse-humanoid-tco:test python -c "import warehouse_humanoid_tco; print('ok')"
+        run: docker run --rm --entrypoint python warehouse-humanoid-tco:test -c "import warehouse_humanoid_tco; print('ok')"
