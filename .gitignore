@@ -32,6 +32,7 @@ notebooks/*.ipynb
 
 # Reports — rendered outputs are not committed; sources (.qmd) are
 reports/*.html
+!reports/Executive_Summary_DE.html
 reports/*.pdf
 reports/derisk_inspection_report.json
 
