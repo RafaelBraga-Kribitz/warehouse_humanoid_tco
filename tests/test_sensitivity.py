@@ -117,6 +117,14 @@ def test_mc_summary_has_percentiles() -> None:
         assert key in summary
 
 
+def test_mc_npv_variance_nonzero() -> None:
+    # Catches parameter collapse (e.g. if distributions stop varying → all NPVs identical)
+    _, summary = run_monte_carlo_sensitivity(
+        _base_params(), _mc_distributions(), n_samples=50, seed=42
+    )
+    assert summary["npv_std"] > 0, "MC collapsed: npv_std=0 means parameters are not varying"
+
+
 def test_mc_deterministic_with_seed() -> None:
     _, s1 = run_monte_carlo_sensitivity(_base_params(), _mc_distributions(), n_samples=50, seed=7)
     _, s2 = run_monte_carlo_sensitivity(_base_params(), _mc_distributions(), n_samples=50, seed=7)
