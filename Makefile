@@ -1,7 +1,8 @@
 .PHONY: all setup lint test module-01 module-02 module-03 module-04 profile dashboards ci-local clean help
 
-PYTHON := python
-VENV := . .venv/bin/activate &&
+PYTHON ?= python
+# Use ?= so env override (VENV="" in CI workflows) takes precedence over default
+VENV ?= . .venv/bin/activate &&
 
 # ── Help ──────────────────────────────────────────────────────────────────────
 
