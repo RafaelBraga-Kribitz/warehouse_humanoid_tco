@@ -9,9 +9,9 @@ import polars as pl
 
 PARAM_LABELS = {
     "humanoid_capex_eur": "Humanoid Capex (€/unit)",
-    "labor_cost_hourly": "Labor Cost (€/hr)",
+    "human_wage_eur": "Labor Cost (€/hr)",
     "human_count": "Human Headcount",
-    "overhead_multiplier": "Labor Overhead Multiplier",
+    "human_overhead_mult": "Labor Overhead Multiplier",
     "humanoid_count": "Humanoid Count",
 }
 
