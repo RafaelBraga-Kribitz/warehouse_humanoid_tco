@@ -2,7 +2,7 @@
 
 Implements:
 1. One-at-a-time (OAT) sensitivity for top 10 parameters
-2. Monte Carlo (10,000 runs) for top 5 parameters with empirical distributions
+2. Monte Carlo (10,000 runs) for top 6 parameters with empirical distributions
 3. Tornado chart generation
 4. Results export to parquet + JSON report
 
@@ -18,6 +18,8 @@ import numpy as np
 import polars as pl
 from numpy import random as npr
 
+from warehouse_humanoid_tco.models.tco import compute_npv
+
 
 def compute_tco_for_params(
     humanoid_count: int,
@@ -31,11 +33,8 @@ def compute_tco_for_params(
     """Compute NPV for given parameters."""
     capex = humanoid_count * humanoid_capex
     annual_opex = human_count * (252 * 8) * human_wage * human_overhead
-    cash_flows = [-capex]
-    for year in range(1, years + 1):
-        cf = -annual_opex / ((1 + discount_rate) ** year)
-        cash_flows.append(cf)
-    return sum(cash_flows)
+    cash_flows = [-capex] + [-annual_opex] * years
+    return compute_npv(cash_flows, discount_rate)
 
 
 def run_oat_sensitivity(
@@ -113,6 +112,7 @@ def run_monte_carlo_sensitivity(
             humanoid_capex=float(sample.get("humanoid_capex_eur", 120000)),
             human_wage=float(sample.get("human_wage_eur", 18.50)),
             human_overhead=float(sample.get("human_overhead_mult", 1.35)),
+            discount_rate=float(sample.get("discount_rate", 0.08)),
         )
         npv_array.append(npv)
 
@@ -164,22 +164,24 @@ def run_sensitivity_analysis(
         "human_overhead_mult": 1.35,
     }
 
-    # OAT parameter ranges (±50% from base)
+    # OAT parameter ranges — from config/tco_assumptions.yaml sensitivity_parameters
     param_ranges = {
         "humanoid_capex_eur": (60000, 180000),
         "human_wage_eur": (9.25, 27.75),
         "human_overhead_mult": (0.67, 2.02),
         "humanoid_count": (0, 4),
         "human_count": (2, 8),
+        "discount_rate": (0.04, 0.12),  # Source: config/tco_assumptions.yaml
     }
 
-    # Monte Carlo distributions (top 5 parameters)
+    # Monte Carlo distributions (top 6 parameters, including discount rate per README)
     param_distributions = {
         "humanoid_capex_eur": {"type": "normal", "mean": 120000, "std": 30000},
         "human_wage_eur": {"type": "normal", "mean": 18.50, "std": 2.0},
         "human_overhead_mult": {"type": "uniform", "low": 1.0, "high": 1.7},
         "humanoid_count": {"type": "uniform", "low": 0, "high": 4},
         "human_count": {"type": "uniform", "low": 2, "high": 8},
+        "discount_rate": {"type": "uniform", "low": 0.04, "high": 0.12},
     }
 
     # Run OAT
