@@ -31,15 +31,11 @@ def test_resolve_revision_sha_returns_sha() -> None:
     mock_api = MagicMock()
     mock_api.dataset_info.return_value = fake_info
 
-    with patch(
-        "warehouse_humanoid_tco.data.download.HfApi", return_value=mock_api
-    ):
+    with patch("warehouse_humanoid_tco.data.download.HfApi", return_value=mock_api):
         result = resolve_revision_sha("org/dataset", revision="main")
 
     assert result == FAKE_SHA
-    mock_api.dataset_info.assert_called_once_with(
-        repo_id="org/dataset", revision="main"
-    )
+    mock_api.dataset_info.assert_called_once_with(repo_id="org/dataset", revision="main")
 
 
 def test_resolve_revision_sha_raises_when_sha_is_none() -> None:
@@ -47,9 +43,7 @@ def test_resolve_revision_sha_raises_when_sha_is_none() -> None:
     mock_api = MagicMock()
     mock_api.dataset_info.return_value = fake_info
 
-    with patch(
-        "warehouse_humanoid_tco.data.download.HfApi", return_value=mock_api
-    ):
+    with patch("warehouse_humanoid_tco.data.download.HfApi", return_value=mock_api):
         with pytest.raises(ValueError, match="Could not resolve SHA"):
             resolve_revision_sha("org/dataset", revision="main")
 
@@ -57,6 +51,7 @@ def test_resolve_revision_sha_raises_when_sha_is_none() -> None:
 # ---------------------------------------------------------------------------
 # download_dataset
 # ---------------------------------------------------------------------------
+
 
 def test_download_dataset_calls_snapshot_download(tmp_path: Path) -> None:
     local_dir = tmp_path / "datasets"
@@ -103,6 +98,7 @@ def test_download_dataset_rejects_non_hex_sha(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 # download_dataset_collection
 # ---------------------------------------------------------------------------
+
 
 def test_download_dataset_collection_processes_all_entries(tmp_path: Path) -> None:
     sha_a = "a" * 40
@@ -172,6 +168,7 @@ def test_download_dataset_collection_uses_dataset_name_as_subdir(tmp_path: Path)
 # ---------------------------------------------------------------------------
 # sha256_file
 # ---------------------------------------------------------------------------
+
 
 def test_sha256_file_known_content(tmp_path: Path) -> None:
     content = b"warehouse humanoid tco test content"

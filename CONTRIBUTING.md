@@ -27,6 +27,7 @@ CI enforces this list. Anything else fails the build.
 ```
 README.md
 PROJECT_CHARTER.md
+CHANGELOG.md
 CONTRIBUTING.md
 LICENSE
 docs/ADR/NNNN-*.md          # ADRs only

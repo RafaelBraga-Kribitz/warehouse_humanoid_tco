@@ -127,10 +127,15 @@ def check_adrs() -> None:
         return
 
     filename_pattern = re.compile(r"^\d{4}-[a-z0-9-]+\.md$")
+    translation_suffix = re.compile(r"-[a-z]{2}$")
 
     for adr_path in sorted(ADR_DIR.glob("*.md")):
         if not filename_pattern.match(adr_path.name):
             fail(f"ADR filename violates the pattern NNNN-kebab-case.md: " f"{adr_path.name}")
+            continue
+
+        # Translations (e.g. -de, -fr) carry localized headings; canonical ADR enforces structure.
+        if translation_suffix.search(adr_path.stem):
             continue
 
         content = adr_path.read_text(encoding="utf-8")

@@ -93,7 +93,9 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
     for profile in scenario.agent_profiles:
         key = f"utilization_{profile.agent_type}"
         total_capacity = profile.count * shift_seconds
-        utilizations[key] = busy_time[profile.agent_type] / total_capacity if total_capacity > 0 else 0.0
+        utilizations[key] = (
+            busy_time[profile.agent_type] / total_capacity if total_capacity > 0 else 0.0
+        )
 
     return {
         "scenario_id": scenario.scenario_id,
