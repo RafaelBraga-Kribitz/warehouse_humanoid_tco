@@ -151,7 +151,7 @@ The project succeeds if **all four** of these are true at completion:
 | Criterion | Measurement |
 |---|---|
 | Reproducibility | A stranger can clone the repo, run `make all`, and reproduce every artifact bit-for-bit. CI proves this. |
-| Analytical credibility | The TCO model exposes every assumption as a configurable parameter; sensitivity analysis identifies the top 5 drivers. |
+| Analytical credibility | The TCO model exposes every assumption as a configurable parameter; sensitivity analysis identifies the top 6 drivers. |
 | Austrian-market signal | At least 1 documented response from an Austrian industrial company (LinkedIn engagement, recruiter contact, or interview) within 4 weeks of public release. |
 | Documentation quality | This SSOT remains the only authoritative document. CI passes for at least 30 days post-release with no sprawl violations. |
 
@@ -227,7 +227,7 @@ flowchart LR
 | Data Understanding | Module 0 (de-risk notebook) | `reports/derisk_inspection_report.json` | All 7 questions in the de-risk decision checklist answered |
 | Data Preparation | Module 1 (capability extraction) | `data/processed/humanoid_capabilities_*.parquet` | Pandera schema passes; audit report Quarto-renders |
 | Modeling | Module 2 (SimPy simulation) | `data/processed/simulation_runs.parquet` | Throughput within 20% of published Knapp AutoStore benchmarks for human-only baseline |
-| Evaluation | Module 3 (TCO + sensitivity) | `data/processed/tco_scenarios.parquet` + sensitivity report | Top 5 sensitivity drivers identified; assumptions catalog complete |
+| Evaluation | Module 3 (TCO + sensitivity) | `data/processed/tco_scenarios.parquet` + sensitivity report | Top 6 sensitivity drivers identified; assumptions catalog complete |
 | Deployment | Module 4 (Tableau Public + Power BI) | Published dashboard URL + `.pbix` in repo | Both dashboards render; LinkedIn launch post live |
 
 ### 4.3 Iteration Policy
@@ -253,7 +253,7 @@ Requirements use MoSCoW prioritization. **Must** requirements are v1.0 release b
 | FR-03 | Must | Simulate AutoStore-style warehouse throughput with configurable agent mix (human, AMR, humanoid) |
 | FR-04 | Must | Compute TCO over 5-year horizon with Austrian labor cost inputs (Kollektivvertrag-based) |
 | FR-05 | Must | Compute NPV, cost reduction vs baseline, and payback period for each staffing scenario (IRR omitted; pure-cost model with no revenue makes IRR undefined — see module_03_tco.py docstring) |
-| FR-06 | Must | Sensitivity analysis identifying top 5 cost drivers via tornado chart |
+| FR-06 | Must | Sensitivity analysis identifying top 6 cost drivers via tornado chart |
 | FR-07 | Must | Publish results to Tableau Public AND ship `.pbix` Power BI file in repo |
 | FR-08 | Must | Generate Quarto audit reports for each module |
 | FR-09 | Must | Provide a one-page German executive summary as PDF |
@@ -373,7 +373,7 @@ The project tests four hypotheses. Each is falsifiable and has a pre-registered 
 |---|---|---|---|---|
 | H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **REJECTED** | S-baseline-human NPV €-1,608K vs S-pure-humanoid €-960K; human is more expensive (lower NPV = higher cost in this model). Pure-humanoid is cheaper at 2026 prices due to zero opex assumption. **Caveat:** This assumes zero operational humanoid costs (maintenance, energy, supervision overhead). See `config/autostore_baseline.yaml::humanoid_operational` — future versions should flow these costs through TCO model. |
 | H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs | **CONFIRMED** | S-hybrid-amr NPV €-924K, lower than both pure scenarios |
-| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | OAT: human_count drives ±€602K NPV range vs humanoid_capex ±€96K; see `reports/executive_charts/04_sensitivity_tornado.png` |
+| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | OAT: human_wage / human_overhead / human_count each drive a €1.21M NPV swing vs €240K for humanoid_capex (~5×); see `reports/executive_charts/04_sensitivity_tornado.png` |
 | H4 | Humanoid throughput at 2026 capabilities is the binding constraint on hybrid scenarios | Simulation: removing humanoid throughput cap raises hybrid NPV by > 10% | **INCONCLUSIVE** | Transfer factor sensitivity not yet isolated in simulation; flagged for v1.1 |
 
 ### 7.2 Experimental Conditions (scenarios)
@@ -413,7 +413,7 @@ Module 3 TCO model is validated by external sanity check: hire an Austrian frien
 
 - One-at-a-time (OAT) sensitivity for top 10 parameters: labor cost, humanoid capex, humanoid lifespan, throughput, energy cost, financing rate, discount rate, downtime, training cost, residual value
 - Tornado chart visualization
-- Monte Carlo (10,000 runs) for top 5 parameters with empirical or assumed distributions
+- Monte Carlo (10,000 runs) for top 6 parameters with empirical or assumed distributions
 - Results in `data/processed/sensitivity_results.parquet` + Module 4 dashboard
 
 ### 7.7 References
@@ -757,7 +757,8 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 | 2026-05-21 | 1.1.0 | All P0–P3 audit items resolved. Linting cleaned (ruff compliance across all modules, 33 errors fixed). Import sorting fixed. Logging added to exception handlers. Line length constraints enforced. pyproject.toml per-file-ignores configured. Clone URL placeholder fixed in README. Charter Quick Facts updated to v1.0 complete. All 26 commits have descriptive, scope-prefixed messages. | — |
 | 2026-05-21 | 1.0.6 | Audit remediation phase 2: added §7.7 bibliography (7 peer-reviewed + public sources grounding assumptions); updated module_02_simulation_validation.qmd with Kruskal-Wallis test (p=1.0, scenarios indistinguishable) + Knapp benchmark validation (S-baseline = 959.4 ± 43.4 orders/shift, -0.06% deviation, PASS); added reproducibility badge to README; fixed README badge format (CI + reproducibility); expanded CHANGELOG to show dev progression; verified .github/workflows/reproducibility.yml scheduled correctly (Mondays 07:00 UTC). Test suite now 108 tests across 6 files, 70.5% coverage. | — |
 | 2026-05-21 | 1.0.5 | Full audit remediation: added §3.7 limitations table; updated hypothesis status (H1–H4) with confirmed/rejected/inconclusive; added OAT tornado chart; fixed payback and IRR calculation; added transfer factor and operational realism to config; added ADR-0005 and ADR-0006; added data lineage diagram; added Docker CI job; uv.lock committed; README humanized with "Why this project" and decision-language results. | ADR-0005, ADR-0006 |
-| 2026-05-21 | 1.0.4 | Monte Carlo sensitivity analysis (10,000 samples) complete. NPV P50 = €-1,084,673 ± €414K. OAT 5-parameter sweep complete. Sensitivity report in `reports/sensitivity_analysis_report.json`. | — |
+| 2026-05-21 | 1.0.4 | Monte Carlo sensitivity analysis (10,000 samples) complete. NPV mean = €-1,084,673 ± €414K (initial run, 5-parameter MC). OAT 5-parameter sweep complete. Sensitivity report in `reports/sensitivity_analysis_report.json`. | — |
+| 2026-05-27 | 1.0.5 | Wired discount_rate through both OAT and Monte Carlo (was previously in `param_ranges`/`param_distributions` but not passed to `compute_tco_for_params` in the OAT loop, so it silently used the default 0.08). Re-ran sensitivity: NPV mean = €-1,091,914 ± €418,038, median = €-1,061,736, 90% CI [€-1.83M, €-460K]. H3 verified with full-range OAT swings (labor ~€1.21M vs capex €240K). | — |
 | 2026-05-21 | 1.0.3 | Full pipeline executed on 2,359 real episodes from 5 Unitree UnifoLM datasets. Simulation increased to 15 replicas per scenario (75 total). All module outputs regenerated on real data. CI badges added. | — |
 | 2026-05-21 | 1.0.2 | Added §8.7 Data Profiling & Documentation. Modules 1–3 pipelines complete and tested on synthetic data. Module 1 full data download in progress (1.4GB/5 datasets). Auto-generated profiling notebook `01_data_profile_summary.ipynb` required for: raw dataset samples, Module 1 capabilities summary (detailed), Module 2 simulation runs (medium), Module 3 TCO scenarios (medium). All visualizations (histograms, box plots, bar charts, sensitivity heatmap) to be generated automatically via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` on every `make all` run. | — |
 | 2026-05-21 | 1.0.1 | Module 0 de-risk complete. Data sources updated to actual UnifoLM collection: 3 WBT datasets (spatial awareness) + 2 DiverseManip datasets (object variety). All 5 datasets accessible, SHAs pinned. Created `config/dataset_manifest.yaml` and updated download.py for multi-dataset support. | — |

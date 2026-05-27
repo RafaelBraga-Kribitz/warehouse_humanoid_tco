@@ -61,6 +61,7 @@ def run_oat_sensitivity(
                 humanoid_capex=float(test_params.get("humanoid_capex_eur", 120000)),
                 human_wage=float(test_params.get("human_wage_eur", 18.50)),
                 human_overhead=float(test_params.get("human_overhead_mult", 1.35)),
+                discount_rate=float(test_params.get("discount_rate", 0.08)),
             )
 
             results.append(

@@ -73,10 +73,10 @@ pip install -r requirements.txt
 
 ### Sensitivity Analysis
 
-- **Monte Carlo (10,000 runs):** NPV P50 = €-1,084,673 ± €414,024 (1σ)
-  - 90% CI: [€-1.81M, €-463K]
-  - Parameters varied: humanoid capex, labor costs, overhead, agent counts, discount rate
-- **OAT Tornado:** Labor headcount and humanoid capex are the two dominant drivers
+- **Monte Carlo (10,000 runs):** NPV mean = €-1,091,914 ± €418,038 (1σ); median = €-1,061,736
+  - 90% CI: [€-1.83M, €-460K]
+  - Parameters varied: humanoid capex, labor wage, labor overhead, agent counts, discount rate (6 parameters)
+- **OAT Tornado:** Labor variables dominate — wage, overhead, and headcount each drive a €1.21M NPV swing, vs. €240K for humanoid capex (~5× larger labor sensitivity)
 - **Charts:** [NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png) · [Cost Breakdown](./reports/executive_charts/02_cost_breakdown.png) · [Simulation Throughput](./reports/executive_charts/03_simulation_throughput.png) · [Sensitivity Tornado](./reports/executive_charts/04_sensitivity_tornado.png)
 - **Report:** `[reports/sensitivity_analysis_report.json](./reports/sensitivity_analysis_report.json)`
 

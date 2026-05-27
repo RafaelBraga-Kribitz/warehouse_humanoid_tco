@@ -93,8 +93,8 @@ ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 
-# **Interpretation:** The distribution is left-skewed — the downside tail (P5 = €-1.8M) is wider
-# than the upside (P95 = €-426k vs baseline €-1.6M). This reflects the asymmetric risk profile:
+# **Interpretation:** The distribution is left-skewed — the downside tail (P5 = €-1.83M) is wider
+# than the upside (P95 = €-460k vs baseline €-1.6M). This reflects the asymmetric risk profile:
 # labor cost increases hurt more than humanoid capex reductions help.
 
 # ## 4. Scenario Comparison
@@ -124,9 +124,9 @@ plt.show()
 # | Finding | Implication |
 # |---|---|
 # | Labor overhead swing = 5× humanoid capex swing | Wage negotiations matter more than hardware deals |
-# | P95 NPV = €-426k (vs baseline €-1.6M) | Best-case scenario achieves 74% cost reduction |
+# | P95 NPV = €-460k (vs baseline €-1.6M) | Best-case scenario achieves ~71% cost reduction |
 # | S-hybrid-amr beats S-pure-humanoid by €36k/5yr | Full automation is not the optimum |
-# | MC σ = €427k on a €924k NPV | Wide uncertainty band — assumptions drive the result |
+# | MC σ = €418k on a €924k NPV | Wide uncertainty band — assumptions drive the result |
 #
 # All numbers are model outputs from public assumptions. See `config/tco_assumptions.yaml`
 # for sources and `docs/ADR/0007` for the simulation validation story.
