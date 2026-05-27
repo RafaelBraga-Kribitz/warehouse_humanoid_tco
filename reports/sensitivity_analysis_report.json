@@ -1,20 +1,20 @@
 {
   "phase": "sensitivity_analysis",
   "scenario_id": "S-hybrid-amr",
-  "oat_parameters": 5,
+  "oat_parameters": 6,
   "mc_samples": 10000,
-  "oat_results_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet",
-  "mc_samples_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet",
+  "oat_results_path": "data/processed/sensitivity_oat_results.parquet",
+  "mc_samples_path": "data/processed/sensitivity_mc_samples.parquet",
   "mc_summary": {
     "n_samples": 10000,
-    "npv_mean": -1084673.4720102819,
-    "npv_std": 414024.1686308601,
-    "npv_min": -2496594.326926855,
-    "npv_max": -212930.65653727026,
-    "npv_p5": -1815004.969958326,
-    "npv_p25": -1370228.362387103,
-    "npv_p50": -1053835.9516426884,
-    "npv_p75": -760945.4160544986,
-    "npv_p95": -463192.8389178496
+    "npv_mean": -1091914.1839761578,
+    "npv_std": 418038.21076772775,
+    "npv_min": -2729769.961668743,
+    "npv_max": -238153.209763437,
+    "npv_p5": -1827412.654756877,
+    "npv_p25": -1380623.3273555627,
+    "npv_p50": -1061735.8435552209,
+    "npv_p75": -770607.3068053055,
+    "npv_p95": -460321.76905281673
   }
 }
