@@ -16,7 +16,6 @@ from pathlib import Path
 
 import numpy as np
 import polars as pl
-from numpy import random as npr
 
 from warehouse_humanoid_tco.models.tco import compute_npv
 
