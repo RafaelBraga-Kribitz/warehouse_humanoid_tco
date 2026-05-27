@@ -7,7 +7,7 @@
 
 A reproducible analytical framework for the Total Cost of Ownership of humanoid robots in Austrian intralogistics, built as a Data Analytics / Business Intelligence portfolio project.
 
-> **All authoritative project information lives in `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`.** This README intentionally does not duplicate it. If you want the goals, scope, requirements, design decisions, or anything else about the project, open the Charter.
+> **All authoritative project information lives in [📋 PROJECT_CHARTER.md](./PROJECT_CHARTER.md).** This README intentionally does not duplicate it. If you want the goals, scope, requirements, design decisions, or anything else about the project, open the Charter.
 
 ## Demo
 
@@ -51,7 +51,7 @@ pip install -r requirements.txt
 
 - **2,359 episodes** extracted from 5 UnifoLM datasets (WBT + DiverseManip)
 - **Capabilities profiled:** cycle time, reach, energy, success rate by task category
-- **Validation:** Full data profiling notebook in `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)` (stakeholder transparency)
+- **Validation:** Full data profiling notebook in [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) (stakeholder transparency)
 
 ### Simulation
 
@@ -81,8 +81,17 @@ pip install -r requirements.txt
   - 90% CI: [€-1.83M, €-460K]
   - Parameters varied: humanoid capex, labor wage, labor overhead, agent counts, discount rate (6 parameters)
 - **OAT Tornado:** Labor variables dominate — wage, overhead, and headcount each drive a €1.21M NPV swing, vs. €240K for humanoid capex (~5× larger labor sensitivity)
-- **Charts:** [NPV Ranking](./reports/executive_charts/01_tco_npv_ranking.png) · [Cost Breakdown](./reports/executive_charts/02_cost_breakdown.png) · [Simulation Throughput](./reports/executive_charts/03_simulation_throughput.png) · [Sensitivity Tornado](./reports/executive_charts/04_sensitivity_tornado.png)
-- **Report:** `[reports/sensitivity_analysis_report.json](./reports/sensitivity_analysis_report.json)`
+
+#### Executive Charts
+
+| Chart | View | Data |
+|-------|------|------|
+| **NPV Ranking** | ![](./reports/executive_charts/01_tco_npv_ranking.png) | [📥 01_tco_npv_ranking.png](./reports/executive_charts/01_tco_npv_ranking.png) |
+| **Cost Breakdown** | ![](./reports/executive_charts/02_cost_breakdown.png) | [📥 02_cost_breakdown.png](./reports/executive_charts/02_cost_breakdown.png) |
+| **Simulation Throughput** | ![](./reports/executive_charts/03_simulation_throughput.png) | [📥 03_simulation_throughput.png](./reports/executive_charts/03_simulation_throughput.png) |
+| **Sensitivity Tornado** | ![](./reports/executive_charts/04_sensitivity_tornado.png) | [📥 04_sensitivity_tornado.png](./reports/executive_charts/04_sensitivity_tornado.png) |
+
+**Full Report:** [📄 reports/sensitivity_analysis_report.json](./reports/sensitivity_analysis_report.json)
 
 ### Dashboards
 
@@ -102,21 +111,23 @@ pip install -r requirements.txt
 
 **How to explore:**
 
-1. Read `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)` for methodology + assumptions
-2. Review `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)` for data validation
-3. Check `[reports/](./reports/)` for Module 0–4 validation reports
-4. View executive charts in `[reports/executive_charts/](./reports/executive_charts/)`
-5. Dashboard publication pending — see `exports/tableau_public/` for CSVs
+1. Read [📋 PROJECT_CHARTER.md](./PROJECT_CHARTER.md) for methodology + assumptions
+2. Review [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) for data validation
+3. Check [📁 reports/](./reports/) for Module 0–4 validation reports
+4. View [📈 executive_charts/](./reports/executive_charts/) (NPV, Cost, Throughput, Sensitivity)
+5. Dashboard publication pending — see [📊 exports/tableau_public/](./exports/tableau_public/) for CSVs
 
-## Documentation entry points
+## Documentation Entry Points
 
-- `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`: the Single Source of Truth.
-- `[CONTRIBUTING.md](./CONTRIBUTING.md)`: documentation discipline and ADR rules.
-- `[docs/ADR/](./docs/ADR/)`: architecture decisions, append-only.
-- `[reports/](./reports/)`: rendered audit reports + executive charts for each module.
-- `[notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)`: data transparency + stakeholder briefing.
-- `[docs/data_lineage.md](./docs/data_lineage.md)`: data flow diagram (Mermaid).
-- `[reports/executive_charts/04_sensitivity_tornado.png](./reports/executive_charts/04_sensitivity_tornado.png)`: OAT sensitivity tornado chart.
+| Document | Purpose |
+|----------|---------|
+| [📋 PROJECT_CHARTER.md](./PROJECT_CHARTER.md) | **SSOT.** Goals, scope, requirements, decisions, change log |
+| [📝 CONTRIBUTING.md](./CONTRIBUTING.md) | Discipline rules: ADRs, Markdown allowlist, coding standards |
+| [🏛️ docs/ADR/](./docs/ADR/) | Architecture Decision Records (append-only log) |
+| [📊 reports/](./reports/) | Audit + validation reports + executive charts (all modules) |
+| [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) | Data validation + stakeholder transparency |
+| [📐 docs/data_lineage.md](./docs/data_lineage.md) | Pipeline data flow diagram (Mermaid) |
+| [📈 reports/executive_charts/](./reports/executive_charts/) | 4 finalized business charts (ranking, cost, throughput, sensitivity) |
 
 ## Why this project
 
@@ -128,7 +139,7 @@ The second surprise was the 3× variance in cycle time across task categories in
 
 ## License
 
-MIT. See `LICENSE`.
+[📄 MIT](./LICENSE)
 
 ## Author
 
