@@ -31,27 +31,29 @@ crisp_dm_phase: evaluation
 module_status: Modules 0–4 complete on real data (2,359 episodes); Tableau Public and LinkedIn outreach pending
 SSOT_METADATA_END -->
 
-# Project Charter: Warehouse Humanoid TCO Analyzer
+# 📋 Project Charter: Warehouse Humanoid TCO Analyzer
 
-> **This is the Single Source of Truth (SSOT)** for the project. If you are looking for what the project is, what it does, what it does not do, or why a decision was made, the answer is here or it is in `docs/ADR/`. Nowhere else.
+> **🎯 This is the Single Source of Truth (SSOT)** for the project. If you are looking for what the project is, what it does, what it does not do, or why a decision was made, **the answer is here or it is in [`docs/ADR/`](./docs/ADR/).** Nowhere else. CI enforces this discipline.
 
 ## Table of Contents
 
-1. [Quick Facts](#1-quick-facts)
-2. [Documentation Discipline (read this first)](#2-documentation-discipline-read-this-first)
-3. [Business Case / Project Charter](#3-business-case--project-charter)
-4. [CRISP-DM Framework Application](#4-crisp-dm-framework-application)
-5. [Requirements Specification](#5-requirements-specification)
-6. [Data Requirements](#6-data-requirements)
-7. [Experiment Design Specification](#7-experiment-design-specification)
-8. [Software Requirements Specification (SRS)](#8-software-requirements-specification-srs)
-9. [Scope Guardrails (anti-creep)](#9-scope-guardrails-anti-creep)
-10. [Glossary](#10-glossary)
-11. [Change Log](#11-change-log)
+| # | Section | Purpose |
+|---|---------|---------|
+| 1 | [⚡ Quick Facts](#1-quick-facts) | Project metadata at a glance |
+| 2 | [📋 Documentation Discipline](#2-documentation-discipline-read-this-first) | SSOT rules, CI enforcement, ADR format |
+| 3 | [🎯 Business Case / Charter](#3-business-case--project-charter) | Goals, success criteria, stakeholders, risks |
+| 4 | [🔄 CRISP-DM Framework](#4-crisp-dm-framework-application) | Phase mapping, iteration policy |
+| 5 | [✅ Requirements Specification](#5-requirements-specification) | Functional/NFRs, MoSCoW, backlog |
+| 6 | [📊 Data Requirements](#6-data-requirements) | Sources, schemas, layout, quality rules |
+| 7 | [🧪 Experiment Design](#7-experiment-design-specification) | Hypotheses, scenarios, validation, sensitivity |
+| 8 | [💻 SRS (Software)](#8-software-requirements-specification-srs) | Repo structure, tech stack, coding standards |
+| 9 | [🛡️ Scope Guardrails](#9-scope-guardrails-anti-creep) | What's in/out, creep prevention |
+| 10 | [📖 Glossary](#10-glossary) | German-English-Portuguese terms |
+| 11 | [📝 Change Log](#11-change-log) | Version history and decisions |
 
 ---
 
-## 1. Quick Facts
+## 1. ⚡ Quick Facts
 
 | Field | Value |
 |---|---|
@@ -65,11 +67,11 @@ SSOT_METADATA_END -->
 
 ---
 
-## 2. Documentation Discipline (read this first)
+## 2. 📋 Documentation Discipline (read this first)
 
-### 2.1 Single Source of Truth (SSOT) Rule
+### 2.1 🎯 Single Source of Truth (SSOT) Rule
 
-**This file is the SSOT.** The README, notebooks, and code comments may reference it, but must not duplicate it. Duplication creates drift. Drift creates lies.
+**This file is the SSOT.** The README, notebooks, and code comments may reference it, but must not duplicate it. **Duplication creates drift. Drift creates lies.**
 
 Allowed:
 - `README.md` may quote 1 to 2 sentences from this file and link to the relevant section.
@@ -91,17 +93,17 @@ Every change to this file requires:
 
 Trivial fixes (typos, formatting, link repair) do not require an ADR but DO require a Change Log entry.
 
-### 2.3 ADR Format
+### 2.3 🏛️ ADR Format (Immutable Decision Log)
 
-ADRs are numbered, dated, immutable, and append-only. Format:
+ADRs are numbered, dated, **immutable**, and **append-only**. Format:
 
 ```
-docs/ADR/000N-short-title.md
+docs/ADR/NNNN-kebab-case-title.md
 ```
 
-Each ADR has: Title, Date, Status (proposed/accepted/superseded), Context, Decision, Consequences, References.
+**Required sections:** Title, Date, Status (`proposed`/`accepted`/`superseded`), Context, Decision, Consequences, References.
 
-Once accepted, an ADR is never edited. If superseded, a new ADR references the old one. This preserves decision history, which is what recruiters and future-you actually need.
+**Key rule:** Once accepted, an ADR is **never edited**. If superseded, write a **new** ADR referencing the old one. This preserves decision history for recruiters and your future self.
 
 ### 2.4 Anti-Sprawl Rules
 
@@ -116,20 +118,22 @@ If you catch yourself doing any of these, stop:
 | Storing tribal knowledge in your head | Write it here within 24 hours or it does not exist |
 | Adding a "TODO" comment | Add it to the [Backlog](#52-backlog) section here |
 
-### 2.5 Automated Enforcement
+### 2.5 🤖 Automated Enforcement via CI
 
-CI runs `.github/workflows/docs-ssot-check.yml` on every push. It checks:
+CI runs [`.github/workflows/docs-ssot-check.yml`](./.github/workflows/docs-ssot-check.yml) on **every push**:
 
-1. `last_updated` in this file is within 14 days of the latest commit touching `src/`, `notebooks/`, or `docs/ADR/`. Stale SSOT fails the build.
-2. No `.md` files exist outside the allowed set (`README.md`, `CONTRIBUTING.md`, `PROJECT_CHARTER.md`, anything under `docs/`, anything under `.github/`).
-3. Every ADR has the required headings.
-4. The Change Log has an entry for the latest commit that modified this file.
+| Check | Rule | Failure |
+|-------|------|---------|
+| **Staleness** | `last_updated` ≤ 14 days old | Build fails |
+| **Sprawl** | No `.md` files outside allowlist | Build fails |
+| **ADR structure** | Every ADR has required headings | Build fails |
+| **Change Log** | Every SSOT edit has a log entry | Build fails |
 
-The CI is the SSOT's immune system. Do not disable it.
+**Philosophy:** The CI is the SSOT's immune system. Do not disable it. If CI is blocking you, the block is telling you something true about your change.
 
 ---
 
-## 3. Business Case / Project Charter
+## 3. 🎯 Business Case / Project Charter
 
 ### 3.1 Problem Statement
 
@@ -144,16 +148,16 @@ Austrian intralogistics and manufacturing leaders (Knapp AG, TGW Logistics, voes
 
 Build that framework, end-to-end, using only public data sources, and publish it as open-source under MIT license.
 
-### 3.3 Success Criteria
+### 3.3 ✅ Success Criteria
 
 The project succeeds if **all four** of these are true at completion:
 
-| Criterion | Measurement |
-|---|---|
-| Reproducibility | A stranger can clone the repo, run `make all`, and reproduce every artifact bit-for-bit. CI proves this. |
-| Analytical credibility | The TCO model exposes every assumption as a configurable parameter; sensitivity analysis identifies the top 6 drivers. |
-| Austrian-market signal | At least 1 documented response from an Austrian industrial company (LinkedIn engagement, recruiter contact, or interview) within 4 weeks of public release. |
-| Documentation quality | This SSOT remains the only authoritative document. CI passes for at least 30 days post-release with no sprawl violations. |
+| Criterion | Measurement | Verification |
+|---|---|---|
+| **Reproducibility** | Stranger clones repo, runs `make all`, reproduces every artifact bit-for-bit | CI weekly determinism test |
+| **Analytical Credibility** | TCO model exposes every assumption as configurable param; top 6 drivers identified | `reports/sensitivity_analysis_report.json` + tornado chart |
+| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of release | Tracked in Change Log §11 |
+| **Doc Quality** | SSOT is sole authority; CI passes ≥30 days post-release with zero sprawl | CI stats in weekly reproducibility report |
 
 ### 3.4 Stakeholders
 
@@ -203,9 +207,9 @@ The following are explicitly excluded from v1.0. Adding any of these requires an
 
 ---
 
-## 4. CRISP-DM Framework Application
+## 4. 🔄 CRISP-DM Framework Application
 
-CRISP-DM (Cross-Industry Standard Process for Data Mining) is the methodological backbone. Every milestone maps to a CRISP-DM phase.
+**CRISP-DM** (Cross-Industry Standard Process for Data Mining) is the methodological backbone. Every milestone maps to a CRISP-DM phase, ensuring the analysis is rigorous, repeatable, and business-focused.
 
 ### 4.1 Phase Mapping
 
@@ -240,9 +244,9 @@ CRISP-DM is iterative, but for this 10-week project, iteration is bounded:
 
 ---
 
-## 5. Requirements Specification
+## 5. ✅ Requirements Specification
 
-### 5.1 Functional Requirements
+### 5.1 🎯 Functional Requirements
 
 Requirements use MoSCoW prioritization. **Must** requirements are v1.0 release blockers.
 
@@ -264,7 +268,7 @@ Requirements use MoSCoW prioritization. **Must** requirements are v1.0 release b
 | FR-14 | Won't | Real-time data ingestion |
 | FR-15 | Won't | ML capability prediction |
 
-### 5.2 Non-Functional Requirements
+### 5.2 ⚙️ Non-Functional Requirements
 
 | ID | Category | Requirement |
 |---|---|---|
@@ -279,7 +283,7 @@ Requirements use MoSCoW prioritization. **Must** requirements are v1.0 release b
 | NFR-09 | Documentation | CI enforces SSOT staleness ≤ 14 days |
 | NFR-10 | Ethics | No human activity sensing, no surveillance framing, all framing audited for Betriebsrat-compatibility |
 
-### 5.3 Backlog
+### 5.3 📦 Backlog (Future Scope)
 
 Anything that is not in §5.1 but might be considered later goes here. Items move from Backlog to a numbered FR via ADR.
 
@@ -291,9 +295,9 @@ Anything that is not in §5.1 but might be considered later goes here. Items mov
 
 ---
 
-## 6. Data Requirements
+## 6. 📊 Data Requirements
 
-### 6.1 Data Sources (authoritative list)
+### 6.1 📥 Data Sources (authoritative list)
 
 #### Phase 1: Whole-Body Teleoperation (WBT) Datasets — Spatial Awareness
 
@@ -363,9 +367,9 @@ There is no PII in the project. There never will be. If a future contributor pro
 
 ---
 
-## 7. Experiment Design Specification
+## 7. 🧪 Experiment Design Specification
 
-### 7.1 Hypotheses
+### 7.1 🔬 Hypotheses
 
 The project tests four hypotheses. Each is falsifiable and has a pre-registered decision rule.
 
@@ -436,9 +440,9 @@ This analysis is grounded in published literature and public sources. The follow
 
 ---
 
-## 8. Software Requirements Specification (SRS)
+## 8. 💻 Software Requirements Specification (SRS)
 
-### 8.1 Repository Structure (canonical, do not deviate)
+### 8.1 📂 Repository Structure (canonical, do not deviate)
 
 ```
 warehouse_humanoid_tco/
@@ -531,7 +535,7 @@ warehouse_humanoid_tco/
     └── docker-compose.yml
 ```
 
-### 8.2 Technology Stack (locked)
+### 8.2 🔧 Technology Stack (locked)
 
 | Layer | Tool | Version Strategy |
 |---|---|---|
@@ -550,7 +554,7 @@ warehouse_humanoid_tco/
 | Tests | pytest, pytest-cov | Pinned |
 | Containers | Docker, multi-stage | n/a |
 
-### 8.3 Coding Standards (enforced by CI)
+### 8.3 ✍️ Coding Standards (enforced by CI)
 
 Per user's master prompt:
 
@@ -563,14 +567,14 @@ Per user's master prompt:
 - No hidden state; functions accept and return explicit data.
 - Notebooks contain no business logic; logic lives in `src/`.
 
-### 8.4 Determinism Requirements
+### 8.4 🔐 Determinism Requirements
 
 - Every random operation uses an explicitly seeded RNG.
 - Seeds live in `config/seeds.yaml`.
 - The same seed and the same input always produce the same output, byte-for-byte (for non-floating-point) or within 1e-9 (for floating-point).
 - CI runs `make all` twice and compares output hashes weekly.
 
-### 8.5 Testing Strategy
+### 8.5 🧪 Testing Strategy
 
 | Test Type | Location | Coverage Target |
 |---|---|---|
@@ -579,11 +583,11 @@ Per user's master prompt:
 | Reproducibility | `tests/test_reproducibility.py` | At least 1 end-to-end determinism test |
 | Smoke | `scripts/run_module_*.py` | Each must run on a small fixture in CI under 2 min |
 
-### 8.6 Logging
+### 8.6 📝 Logging
 
 Structured JSON logging via `src/warehouse_humanoid_tco/utils/logging.py`. Fields: `timestamp`, `level`, `module`, `event`, `context`. Logs to stdout; downstream tools can ingest.
 
-### 8.7 Data Profiling & Documentation (Notebooks)
+### 8.7 📚 Data Profiling & Documentation (Notebooks)
 
 All module outputs shall be profiled and documented for stakeholder visibility. Profiling is **auto-generated** via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` and embedded in `notebooks/01_data_profile_summary.ipynb`.
 
@@ -673,9 +677,9 @@ python -m warehouse_humanoid_tco export --target powerbi
 
 ---
 
-## 9. Scope Guardrails (anti-creep)
+## 9. 🛡️ Scope Guardrails (anti-creep)
 
-### 9.1 The Three Locks
+### 9.1 🔒 The Three Locks
 
 These are **hard locks**. Breaking them requires an ADR explicitly named `ADR-XXXX-scope-lock-override.md` and a 48-hour cool-down period before merge.
 
@@ -685,7 +689,7 @@ These are **hard locks**. Breaking them requires an ADR explicitly named `ADR-XX
 | L2 (sensing) | No human activity sensing. No RuView. No CSI. No surveillance framing. |
 | L3 (modeling) | Capabilities are extracted empirically, never predicted by ML. |
 
-### 9.2 The Scope Creep Checklist
+### 9.2 ✅ The Scope Creep Checklist
 
 Before adding any feature, work item, or document, answer all five:
 
@@ -697,7 +701,7 @@ Before adding any feature, work item, or document, answer all five:
 
 If you cannot answer all five with a clear yes/no, the work does not start.
 
-### 9.3 The "Shiny New Thing" Rule
+### 9.3 ✨ The "Shiny New Thing" Rule
 
 If during the project a new tool, paper, dataset, or technique appears (Unitree releases UnifoLM-VLA-1, a new humanoid robot launches, a new BI tool gets hot), the protocol is:
 
@@ -731,7 +735,7 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 ---
 
-## 10. Glossary
+## 10. 📖 Glossary
 
 (Lives in `docs/glossary.md` for length, but the most critical terms are listed here for inline reference.)
 
@@ -750,7 +754,7 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 ---
 
-## 11. Change Log
+## 11. 📝 Change Log
 
 | Date | Version | Change | ADR(s) |
 |---|---|---|---|
