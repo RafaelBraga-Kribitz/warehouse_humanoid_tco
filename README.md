@@ -9,6 +9,10 @@ A reproducible analytical framework for the Total Cost of Ownership of humanoid 
 
 > **All authoritative project information lives in `[PROJECT_CHARTER.md](./PROJECT_CHARTER.md)`.** This README intentionally does not duplicate it. If you want the goals, scope, requirements, design decisions, or anything else about the project, open the Charter.
 
+## Demo
+
+![60-second demo: clean history, Monte Carlo, scenario ranking, test suite](./docs/assets/demo.gif)
+
 ## What it does
 
 Extracts humanoid robot task capabilities from the open Unitree UnifoLM-WBT dataset, simulates an AutoStore-style warehouse with configurable workforce mixes (human, humanoid, AMR), computes Total Cost of Ownership over 5 years using Austrian labor cost inputs, and publishes results to Tableau Public and Power BI. The entire pipeline is reproducible; the entire methodology is documented.
