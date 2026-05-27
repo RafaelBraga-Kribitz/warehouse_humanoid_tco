@@ -19,6 +19,12 @@ from pathlib import Path
 import polars as pl
 import yaml
 
+from warehouse_humanoid_tco.models.tco import (
+    compute_annual_humanoid_opex,
+    compute_annual_labor_cost,
+    compute_humanoid_capex,
+)
+
 _BASELINE_ANNUAL_OPEX = 8 * (252 * 8) * 18.50 * 1.35  # 8 humans, full shift, KV Handel 2026
 
 
@@ -32,27 +38,40 @@ def compute_tco_scenario(
 ) -> dict:
     """Compute TCO metrics for a single scenario.
 
+    Annual opex = human labor + humanoid (maintenance + energy) + AMR (maintenance + energy)
+                  + supervision labor (fraction of human FTE per humanoid).
     Returns dict with npv_eur, cost_reduction_vs_baseline_pct, payback_years.
     IRR is omitted: this is a pure-cost model with no revenue, making IRR undefined.
     payback_years = capex / annual_opex_savings_vs_baseline (inf if no savings).
-
-    Note: throughput affects scenario comparison (higher throughput = more productive
-    workforce) but does NOT scale NPV in this model because labor cost is fixed per FTE,
-    not per order. Future: consider energy cost per order or maintenance cost per throughput.
     """
     # Throughput passed in but not yet wired to cost drivers (fixed-cost model)
     _ = simulation_data.get("throughput_orders_per_shift", 0)
 
-    # Assumptions
-    humanoid_capex = assumptions.get("humanoid_capex_eur", 120000)
+    # Human labor assumptions
     human_hourly_wage = assumptions.get("human_hourly_wage_eur", 18.50)
     human_overhead = assumptions.get("human_overhead_multiplier", 1.35)
-    annual_hours_per_worker = assumptions.get("annual_hours_per_worker", 252 * 8)
+    operating_days = assumptions.get("operating_days", 252)
+    shift_hours = assumptions.get("shift_hours", 8.0)
+
+    # Humanoid capex + opex assumptions
+    humanoid_capex_unit = assumptions.get("humanoid_capex_eur", 120000)
+    humanoid_install_cost = assumptions.get("humanoid_installation_cost_eur", 8000)
+    humanoid_training_cost = assumptions.get("humanoid_training_cost_eur", 5000)
+    humanoid_maint_fraction = assumptions.get("humanoid_annual_maintenance_fraction", 0.08)
+    humanoid_energy_kwh = assumptions.get("humanoid_energy_kwh_per_shift", 8.0)
+    humanoid_supervision_ratio = assumptions.get("humanoid_supervision_ratio", 0.10)
+
+    # AMR capex + opex assumptions
+    amr_capex_unit = assumptions.get("amr_capex_eur", 65000)
+    amr_maint_fraction = assumptions.get("amr_annual_maintenance_fraction", 0.06)
+    amr_energy_kwh = assumptions.get("amr_energy_kwh_per_shift", 4.0)
+
+    energy_cost_eur_per_kwh = assumptions.get("energy_cost_eur_per_kwh", 0.22)
 
     # Scenario composition
     human_fraction = 0.0
     humanoid_fraction = 0.0
-    amr_fraction = 0.0  # noqa: F841
+    amr_fraction = 0.0
 
     if "baseline-human" in scenario_id:
         human_fraction = 1.0
@@ -64,7 +83,7 @@ def compute_tco_scenario(
     elif "hybrid-amr" in scenario_id:
         human_fraction = 0.6
         humanoid_fraction = 0.2
-        _amr_fraction = 0.2  # Reserved for future use
+        amr_fraction = 0.2
     elif "future-2028" in scenario_id:
         human_fraction = 0.5
         humanoid_fraction = 0.5
@@ -72,29 +91,60 @@ def compute_tco_scenario(
     total_agents = assumptions.get("total_agents", 8)
     n_humanoid = max(0, int(total_agents * humanoid_fraction))
     n_human = max(0, int(total_agents * human_fraction))
+    n_amr = max(0, int(total_agents * amr_fraction))
 
-    # Capital costs (first year only)
-    capex_year0 = n_humanoid * humanoid_capex
+    # Supervision: each humanoid consumes supervision_ratio of a human FTE
+    supervision_ftes = humanoid_supervision_ratio * n_humanoid
+
+    # Year-0 capex: humanoid (unit + install + training) + AMR units
+    humanoid_capex_total = compute_humanoid_capex(
+        n_humanoid, humanoid_capex_unit, humanoid_install_cost, humanoid_training_cost
+    )
+    amr_capex_total = n_amr * amr_capex_unit
+    capex_year0 = humanoid_capex_total + amr_capex_total
 
     # Annual operating costs
-    annual_labor_cost = n_human * annual_hours_per_worker * human_hourly_wage * human_overhead
+    annual_labor_cost = compute_annual_labor_cost(
+        n_human + supervision_ftes,  # type: ignore[arg-type]
+        human_hourly_wage,
+        human_overhead,
+        operating_days,
+        shift_hours,
+    )
+    annual_humanoid_opex = compute_annual_humanoid_opex(
+        n_humanoid,
+        humanoid_capex_unit,
+        humanoid_maint_fraction,
+        humanoid_energy_kwh,
+        energy_cost_eur_per_kwh,
+        operating_days,
+    )
+    annual_amr_opex = compute_annual_humanoid_opex(
+        n_amr,
+        amr_capex_unit,
+        amr_maint_fraction,
+        amr_energy_kwh,
+        energy_cost_eur_per_kwh,
+        operating_days,
+    )
+    annual_opex = annual_labor_cost + annual_humanoid_opex + annual_amr_opex
 
     # 5-year discounted NPV (cost model: all flows negative)
     cash_flows = [-capex_year0]
     for year in range(1, years + 1):
-        cash_flows.append(-annual_labor_cost / ((1 + discount_rate) ** year))
+        cash_flows.append(-annual_opex / ((1 + discount_rate) ** year))
 
     npv = sum(cash_flows)
 
     # Cost reduction vs all-human baseline (positive = cheaper than baseline)
     cost_reduction_pct = (
-        (baseline_annual_opex - annual_labor_cost) / baseline_annual_opex * 100
+        (baseline_annual_opex - annual_opex) / baseline_annual_opex * 100
         if baseline_annual_opex > 0
         else 0.0
     )
 
     # Payback: years until cumulative opex savings offset capex
-    annual_savings = max(0.0, baseline_annual_opex - annual_labor_cost)
+    annual_savings = max(0.0, baseline_annual_opex - annual_opex)
     if capex_year0 <= 0:
         payback_years = 0.0  # no capex to recover
     elif annual_savings <= 0:
@@ -108,8 +158,8 @@ def compute_tco_scenario(
         "cost_reduction_vs_baseline_pct": round(cost_reduction_pct, 1),
         "payback_years": payback_years if payback_years != float("inf") else None,
         "total_capex_eur": float(capex_year0),
-        "total_opex_5yr_eur": float(annual_labor_cost * years),
-        "pipeline_version": "0.1.0",
+        "total_opex_5yr_eur": float(annual_opex * years),
+        "pipeline_version": "0.2.0",
     }
 
 

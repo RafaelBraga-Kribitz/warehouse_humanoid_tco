@@ -1,20 +1,137 @@
 {
   "phase": "sensitivity_analysis",
   "scenario_id": "S-hybrid-amr",
-  "oat_parameters": 6,
+  "oat_parameters": [
+    "humanoid_capex_eur",
+    "human_wage_eur",
+    "human_overhead_mult",
+    "discount_rate",
+    "transfer_factor"
+  ],
+  "oat_parameter_ranges": {
+    "humanoid_capex_eur": [
+      60000,
+      180000
+    ],
+    "human_wage_eur": [
+      9.25,
+      27.75
+    ],
+    "human_overhead_mult": [
+      1.0,
+      1.7
+    ],
+    "discount_rate": [
+      0.04,
+      0.12
+    ],
+    "transfer_factor": [
+      0.5,
+      0.9
+    ]
+  },
+  "mc_param_distributions": {
+    "humanoid_capex_eur": {
+      "type": "normal",
+      "mean": 120000,
+      "std": 30000
+    },
+    "human_wage_eur": {
+      "type": "normal",
+      "mean": 18.5,
+      "std": 2.0
+    },
+    "human_overhead_mult": {
+      "type": "uniform",
+      "low": 1.0,
+      "high": 1.7
+    },
+    "discount_rate": {
+      "type": "uniform",
+      "low": 0.04,
+      "high": 0.12
+    },
+    "transfer_factor": {
+      "type": "uniform",
+      "low": 0.5,
+      "high": 0.9
+    }
+  },
   "mc_samples": 10000,
-  "oat_results_path": "data/processed/sensitivity_oat_results.parquet",
-  "mc_samples_path": "data/processed/sensitivity_mc_samples.parquet",
+  "oat_results_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet",
+  "mc_samples_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet",
   "mc_summary": {
     "n_samples": 10000,
-    "npv_mean": -1091914.1839761578,
-    "npv_std": 418038.21076772775,
-    "npv_min": -2729769.961668743,
-    "npv_max": -238153.209763437,
-    "npv_p5": -1827412.654756877,
-    "npv_p25": -1380623.3273555627,
-    "npv_p50": -1061735.8435552209,
-    "npv_p75": -770607.3068053055,
-    "npv_p95": -460321.76905281673
+    "npv_mean": -1088956.5078413468,
+    "npv_std": 171317.12594932655,
+    "npv_min": -1841149.93224966,
+    "npv_max": -600321.7435017757,
+    "npv_p5": -1385864.3949313716,
+    "npv_p25": -1206580.0780355148,
+    "npv_p50": -1078927.5122228288,
+    "npv_p75": -959824.0936656609,
+    "npv_p95": -829949.7711794513
+  },
+  "mc_summary_per_scenario": {
+    "S-baseline-human": {
+      "n_samples": 10000,
+      "npv_mean": -1618163.66866686,
+      "npv_std": 316769.8648562773,
+      "npv_min": -2884123.8376292954,
+      "npv_max": -811966.169043128,
+      "npv_p5": -2174365.869862373,
+      "npv_p25": -1835889.5379467884,
+      "npv_p50": -1599385.0402254805,
+      "npv_p75": -1373894.1987633475,
+      "npv_p95": -1143461.3181371728
+    },
+    "S-pure-humanoid": {
+      "n_samples": 10000,
+      "npv_mean": -1586969.3383335196,
+      "npv_std": 428306.9213536018,
+      "npv_min": -3359914.824823786,
+      "npv_max": -121469.07296538325,
+      "npv_p5": -2363939.365261189,
+      "npv_p25": -1853288.9894030825,
+      "npv_p50": -1541291.8205145854,
+      "npv_p75": -1284855.4303077455,
+      "npv_p95": -960844.6833698289
+    },
+    "S-hybrid-5050": {
+      "n_samples": 10000,
+      "npv_mean": -1602566.5035001899,
+      "npv_std": 275880.91570701747,
+      "npv_min": -2706671.5844387184,
+      "npv_max": -789114.2831771694,
+      "npv_p5": -2080925.6561196346,
+      "npv_p25": -1781747.997052259,
+      "npv_p50": -1585748.7695344854,
+      "npv_p75": -1406186.1151681393,
+      "npv_p95": -1184471.1653242519
+    },
+    "S-hybrid-amr": {
+      "n_samples": 10000,
+      "npv_mean": -1088956.5078413468,
+      "npv_std": 171317.12594932655,
+      "npv_min": -1841149.93224966,
+      "npv_max": -600321.7435017757,
+      "npv_p5": -1385864.3949313716,
+      "npv_p25": -1206580.0780355148,
+      "npv_p50": -1078927.5122228288,
+      "npv_p75": -959824.0936656609,
+      "npv_p95": -829949.7711794513
+    },
+    "S-future-2028": {
+      "n_samples": 10000,
+      "npv_mean": -1602566.5035001899,
+      "npv_std": 275880.91570701747,
+      "npv_min": -2706671.5844387184,
+      "npv_max": -789114.2831771694,
+      "npv_p5": -2080925.6561196346,
+      "npv_p25": -1781747.997052259,
+      "npv_p50": -1585748.7695344854,
+      "npv_p75": -1406186.1151681393,
+      "npv_p95": -1184471.1653242519
+    }
   }
 }

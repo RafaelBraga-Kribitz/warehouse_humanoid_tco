@@ -139,9 +139,23 @@ def module_01_main(
 
     if len(per_episode) > 0:
         per_episode = per_episode.with_columns(
-            pl.col("task_description")
-            .map_elements(lambda desc: classify_task(desc).value, return_dtype=pl.Utf8)
-            .alias("task_category")
+            pl.struct(["task_description", "dataset_repo_id", "task_category_source"])
+            .map_elements(
+                lambda row: [
+                    c.value
+                    for c in classify_task(
+                        row["task_description"],
+                        row["dataset_repo_id"],
+                        row["task_category_source"],
+                    )
+                ],
+                return_dtype=pl.List(pl.Utf8),
+            )
+            .alias("task_categories")
+        )
+        # Primary category (first match) preserved for single-label consumers
+        per_episode = per_episode.with_columns(
+            pl.col("task_categories").list.first().alias("task_category")
         )
 
     # ========== Aggregate ==========
@@ -162,10 +176,34 @@ def module_01_main(
         print(f"  ✓ {summary_path}")
 
     # ========== Validation Report ==========
+    category_episode_counts: dict[str, int] = {}
+    multi_label_episode_count = 0
+    avg_labels_per_episode = 0.0
+    if len(per_episode) > 0 and "task_categories" in per_episode.columns:
+        # Count categories across multi-label list column
+        exploded = per_episode.explode("task_categories")
+        category_episode_counts = {
+            row["task_categories"]: int(row["n"])
+            for row in (
+                exploded.group_by("task_categories")
+                .agg(pl.len().alias("n"))
+                .sort("n", descending=True)
+                .iter_rows(named=True)
+            )
+        }
+        label_counts = per_episode.with_columns(
+            pl.col("task_categories").list.len().alias("n_labels")
+        )["n_labels"]
+        multi_label_episode_count = int((label_counts > 1).sum())
+        avg_labels_per_episode = float(label_counts.mean() or 0.0)
+
     validation_report = {
         "phase": "module_01_capability_extraction",
         "total_episodes_extracted": len(per_episode),
         "total_task_categories": len(summary) if len(summary) > 0 else 0,
+        "category_episode_counts": category_episode_counts,
+        "multi_label_episode_count": multi_label_episode_count,
+        "avg_labels_per_episode": round(avg_labels_per_episode, 3),
         "datasets_processed": len(all_episodes),
         "per_episode_path": str(per_episode_path),
         "summary_path": str(summary_path),

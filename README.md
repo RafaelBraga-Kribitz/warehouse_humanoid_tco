@@ -51,6 +51,7 @@ pip install -r requirements.txt
 
 - **2,359 episodes** extracted from 5 UnifoLM datasets (WBT + DiverseManip)
 - **Capabilities profiled:** cycle time, reach, energy, success rate by task category
+- **Multi-label taxonomy:** every episode is tagged with all applicable categories (avg 2.29 labels/episode; 1,750 / 2,359 = 74% multi-labeled). Coverage: `pick_medium_object` 2,359 · `place_general` 1,750 · `transport_short` 757 · `bimanual_handling` 525 episodes
 - **Validation:** Full data profiling notebook in [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) (stakeholder transparency)
 
 ### Simulation
@@ -62,25 +63,26 @@ pip install -r requirements.txt
 ### Financial Analysis (5-year horizon, 8% discount)
 
 
-| Scenario         | NPV           | Capex     | Opex 5yr    |
-| ---------------- | ------------- | --------- | ----------- |
-| S-baseline-human | €-1,608,300   | €0        | €2,014,000  |
-| **S-hybrid-amr** | **€-924,125** | **€120K** | **€1,007K** |
-| S-hybrid-5050    | €-1,284,100   | €480K     | €1,007K     |
-| S-pure-humanoid  | €-960,000     | €960K     | €0          |
-| S-future-2028    | €-1,284,100   | €480K     | €1,007K     |
+| Scenario         | NPV             | Capex      | Opex 5yr      |
+| ---------------- | --------------- | ---------- | ------------- |
+| S-baseline-human | €-1,608,251     | €0         | €2,013,984    |
+| S-future-2028    | €-1,576,941     | €532K      | €1,308,562    |
+| S-hybrid-5050    | €-1,576,941     | €532K      | €1,308,562    |
+| S-pure-humanoid  | €-1,545,632     | €1,064K    | €603,139      |
+| **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**|
 
 
-**Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~43% vs. the human baseline.** This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
+**Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~33% vs. the human baseline.** Annual opex now includes humanoid maintenance (8% of capex), energy, and a 0.10 FTE supervision overhead per humanoid; AMR scenarios also include AMR capex and opex. This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
 
 > **Real data execution:** Results computed from 2,359 episodes across 5 Unitree UnifoLM datasets (WBT + DiverseManip). Financial model uses 15 simulation replicas per scenario with Austrian labor cost inputs (€18.50/hr + 1.35× overhead).
 
 ### Sensitivity Analysis
 
-- **Monte Carlo (10,000 runs):** NPV mean = €-1,091,914 ± €418,038 (1σ); median = €-1,061,736
-  - 90% CI: [€-1.83M, €-460K]
-  - Parameters varied: humanoid capex, labor wage, labor overhead, agent counts, discount rate (6 parameters)
-- **OAT Tornado:** Labor variables dominate — wage, overhead, and headcount each drive a €1.21M NPV swing, vs. €240K for humanoid capex (~5× larger labor sensitivity)
+- **Monte Carlo (10,000 runs × 5 scenarios = 50,000 samples, all persisted):** S-hybrid-amr NPV mean = €-1,088,957 ± €171,317 (1σ); median = €-1,078,928
+  - 90% CI: [€-1.39M, €-830K]
+  - Per-scenario MC with **agent counts fixed**; samples only continuous params: humanoid capex, labor wage, labor overhead, discount rate, WBT→production transfer factor (5 parameters)
+  - S-hybrid-amr is the only scenario whose p95 (€-830K) doesn't overlap with the baseline mean (€-1.62M) — it is robustly the cheapest under uncertainty
+- **OAT Tornado:** Labor variables dominate — wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity vs €158K for humanoid capex and €120K for transfer factor (~8× labor:capex ratio at full config ranges)
 
 #### Executive Charts
 

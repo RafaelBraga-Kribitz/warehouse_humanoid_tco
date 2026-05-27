@@ -21,10 +21,10 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 -->
 
 <!-- SSOT_METADATA_START
-version: 1.1.0
+version: 1.1.4
 status: active
-last_updated: 2026-05-21
-last_reviewed: 2026-05-21
+last_updated: 2026-05-27
+last_reviewed: 2026-05-27
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
 crisp_dm_phase: evaluation
@@ -168,6 +168,7 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters at TGW Logistics | Primary audience for portfolio | Targeted via LinkedIn post + repo link |
 | Recruiters at Magna Steyr | Secondary audience | Reached via LinkedIn organic |
 | Robotics Network Austria (JOANNEUM RESEARCH, Graz) | Potential amplifier | Direct outreach after v1.0 |
+| Betriebsrat (Works Council) — *simulated* | Co-determination authority over deployment of worker-monitoring or workforce-substitution technology under **ArbVG §96 (1) 3**. No active engagement in v1.0 (simulated stakeholder); model framing and language audit (§NFR-10) treats Betriebsrat sign-off as a deployment precondition. | Simulated review at every doc commit |
 
 ### 3.5 Business Risks
 
@@ -177,6 +178,7 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters do not engage | Medium | High | LinkedIn-first launch strategy; German one-pager; direct outreach to specific company recruiters |
 | Dataset proves insufficient | Medium | High | Module 0 de-risk notebook validates before commit; fallback to synthetic supplementation with full disclosure |
 | Substitution-framing causes backlash | Low (mitigated by framing) | Critical | Framing locked: "augmentation + ROI", never "replacement"; Betriebsrat-aware language audit at every doc commit |
+| **Deployment blocked by Betriebsrat veto under ArbVG §96 (1) 3** (Austrian Labour Constitution Act — co-determination rights over the introduction of control / monitoring systems affecting worker dignity, and over workforce-substitution measures) | Medium | **Critical** | (1) No worker-monitoring features in v1.0 (Out-of-Scope §3.6); (2) framing locked to "augmentation, not replacement"; (3) deployment plan assumes Betriebsrat consultation phase BEFORE any pilot; (4) TCO model surfaces labor-cost-share alongside humanoid-capex so the works council can verify no net headcount cut is required for the business case to hold |
 | Project becomes too ambitious mid-flight | High | High | Scope Guardrails §9 enforced ruthlessly |
 
 ### 3.6 Out of Scope (v1.0)
@@ -375,9 +377,9 @@ The project tests four hypotheses. Each is falsifiable and has a pre-registered 
 
 | ID | Hypothesis | Decision rule | Status | Evidence |
 |---|---|---|---|---|
-| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **REJECTED** | S-baseline-human NPV €-1,608K vs S-pure-humanoid €-960K; human is more expensive (lower NPV = higher cost in this model). Pure-humanoid is cheaper at 2026 prices due to zero opex assumption. **Caveat:** This assumes zero operational humanoid costs (maintenance, energy, supervision overhead). See `config/autostore_baseline.yaml::humanoid_operational` — future versions should flow these costs through TCO model. |
-| H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs | **CONFIRMED** | S-hybrid-amr NPV €-924K, lower than both pure scenarios |
-| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | OAT: human_wage / human_overhead / human_count each drive a €1.21M NPV swing vs €240K for humanoid_capex (~5×); see `reports/executive_charts/04_sensitivity_tornado.png` |
+| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **INCONCLUSIVE** | After wiring humanoid opex (8%/yr maintenance + energy + 0.10 FTE supervision per humanoid), S-baseline-human NPV €-1,608K vs S-pure-humanoid NPV €-1,546K. Pure-humanoid is now only marginally cheaper (~4%) — well within the OAT swing for humanoid capex. Decision rule "difference > 0 at 5-year horizon" technically holds, but the gap is small enough that the hypothesis is best read as INCONCLUSIVE at the 2026 capex point estimate. |
+| H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs | **CONFIRMED** | S-hybrid-amr NPV €-1,079K, lower than S-baseline-human (€-1,608K), S-pure-humanoid (€-1,546K), and S-hybrid-5050 (€-1,577K). ~33% NPV improvement vs baseline. |
+| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | Post T0.2 fix (per-scenario MC with agent counts fixed, transfer factor added): OAT wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity, vs €158K humanoid_capex and €120K transfer factor (~8× labor:capex ratio); see `reports/executive_charts/04_sensitivity_tornado.png` |
 | H4 | Humanoid throughput at 2026 capabilities is the binding constraint on hybrid scenarios | Simulation: removing humanoid throughput cap raises hybrid NPV by > 10% | **INCONCLUSIVE** | Transfer factor sensitivity not yet isolated in simulation; flagged for v1.1 |
 
 ### 7.2 Experimental Conditions (scenarios)
@@ -415,10 +417,10 @@ Module 3 TCO model is validated by external sanity check: hire an Austrian frien
 
 ### 7.6 Sensitivity Analysis Protocol
 
-- One-at-a-time (OAT) sensitivity for top 10 parameters: labor cost, humanoid capex, humanoid lifespan, throughput, energy cost, financing rate, discount rate, downtime, training cost, residual value
+- One-at-a-time (OAT) sensitivity on the leading scenario (S-hybrid-amr) across 5 continuous parameters: humanoid capex, human wage, human overhead multiplier, discount rate, WBT→production transfer factor
 - Tornado chart visualization
-- Monte Carlo (10,000 runs) for top 6 parameters with empirical or assumed distributions
-- Results in `data/processed/sensitivity_results.parquet` + Module 4 dashboard
+- Monte Carlo (10,000 runs **per scenario**, agent counts fixed, all 50,000 samples persisted) sampling the same 5 continuous parameters with common random numbers across scenarios for variance reduction
+- Results in `data/processed/sensitivity_oat_results.parquet`, `data/processed/sensitivity_mc_samples.parquet`, and `reports/sensitivity_analysis_report.json`
 
 ### 7.7 References
 
@@ -603,7 +605,7 @@ For each of the 5 raw datasets (WBT phases 1–3, DiverseManip phases 1–2):
 
 **Structure:**
 - Full schema table (col name | dtype | non-null count | sample values)
-- Shape: 8 rows (task categories) × 11 columns
+- Shape: 4 rows on current corpus (task categories with ≥1 episode after multi-label explode) × 11 columns. Schema reserves up to 8 categories from `TaskCategory` enum.
 
 **Descriptive Statistics:**
 - `cycle_time_*` columns: mean, std, min, max, quantiles (0.25, 0.5, 0.75)
@@ -758,11 +760,15 @@ The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
 
 | Date | Version | Change | ADR(s) |
 |---|---|---|---|
+| 2026-05-27 | 1.1.4 | §3.4 Stakeholders → added **Betriebsrat (Works Council)** as a *simulated* stakeholder with co-determination authority under **ArbVG §96 (1) 3** (Austrian Labour Constitution Act). §3.5 Business Risks → added new Critical-impact row covering Betriebsrat veto risk and the 4-part mitigation (no monitoring features in v1.0; augmentation framing; pre-pilot consultation; labor-cost transparency in TCO model so the works council can verify no net headcount cut is required for the business case to hold). Companion `CONTRIBUTING.md` cleanup: dropped historical AI-workflow notes so the file reflects an independent-author workflow. | — |
+| 2026-05-27 | 1.1.3 | T0.4 audit fix: broadened `taxonomy.classify_task()` from single-label string to **multi-label list** with three signal sources (manifest `task_category_source`, `dataset_repo_id` substring, free-text `description`). Root cause: every UnifoLM episode's `task` metadata field is literally the string `"task"`, so the prior description-only classifier produced 100% `UNCLASSIFIED`. New per-episode parquet carries `task_categories: list[str]`; aggregation explodes so an episode contributes to every category whose skill it exercises. Coverage on the 2,359-episode corpus: `pick_medium_object` 2,359 · `place_general` 1,750 · `transport_short` 757 · `bimanual_handling` 525 (avg 2.29 labels/episode, 74% multi-labeled — up from 1 category to 4). `humanoid_capabilities_summary.parquet` regenerated. 46 tests pass (16 taxonomy + 30 features/pipeline/schema). | — |
+| 2026-05-27 | 1.1.2 | T0.2 + T0.3 + T0.5 audit fix: refactored sensitivity analysis to run Monte Carlo **per-scenario** with agent counts fixed (was previously sampling agent counts as uniform distributions, collapsing scenario identity). Continuous params only: humanoid capex, wage, overhead, discount rate, and new **transfer_factor Uniform(0.50, 0.90)** wired through `compute_tco_for_params` via an effective-humanoid multiplier (T0.5). All 50,000 MC samples (10K × 5 scenarios) persisted to `data/processed/sensitivity_mc_samples.parquet` — no subsampling (T0.3). New shared-draws design uses common random numbers across scenarios for variance reduction. New S-hybrid-amr MC: NPV mean €-1,088,957 ± €171,317; 90% CI [€-1.39M, €-830K]; the only scenario whose p95 doesn't overlap with baseline mean. H3 confirmed at €1.25M combined labor swing vs €158K humanoid capex. | — |
+| 2026-05-27 | 1.1.1 | T0.1 audit fix: wired `compute_annual_humanoid_opex` into TCO cash flows (was defined but never called). Annual opex now includes humanoid maintenance (8%/yr of capex) + energy + AMR capex/opex + 0.10 FTE supervision per humanoid. NPVs re-computed: S-hybrid-amr €-1,078,786 (was €-924K, still winner at ~33% vs baseline), S-pure-humanoid €-1,545,632 (was €-960K — prior result reflected a zero-opex bug). H1 status revised REJECTED → INCONCLUSIVE; H2 confirmation strengthened. README NPV table, `data/processed/tco_scenarios.parquet`, and `exports/tableau_public/tco_scenarios.csv` regenerated. Test `test_tco_scenario_pure_humanoid_no_opex` renamed to `_has_opex` and assertions flipped. | — |
 | 2026-05-21 | 1.1.0 | All P0–P3 audit items resolved. Linting cleaned (ruff compliance across all modules, 33 errors fixed). Import sorting fixed. Logging added to exception handlers. Line length constraints enforced. pyproject.toml per-file-ignores configured. Clone URL placeholder fixed in README. Charter Quick Facts updated to v1.0 complete. All 26 commits have descriptive, scope-prefixed messages. | — |
+| 2026-05-27 | 1.0.7 | Wired discount_rate through both OAT and Monte Carlo (was previously in `param_ranges`/`param_distributions` but not passed to `compute_tco_for_params` in the OAT loop, so it silently used the default 0.08). Re-ran sensitivity: NPV mean = €-1,091,914 ± €418,038, median = €-1,061,736, 90% CI [€-1.83M, €-460K]. H3 verified with full-range OAT swings (labor ~€1.21M vs capex €240K). | — |
 | 2026-05-21 | 1.0.6 | Audit remediation phase 2: added §7.7 bibliography (7 peer-reviewed + public sources grounding assumptions); updated module_02_simulation_validation.qmd with Kruskal-Wallis test (p=1.0, scenarios indistinguishable) + Knapp benchmark validation (S-baseline = 959.4 ± 43.4 orders/shift, -0.06% deviation, PASS); added reproducibility badge to README; fixed README badge format (CI + reproducibility); expanded CHANGELOG to show dev progression; verified .github/workflows/reproducibility.yml scheduled correctly (Mondays 07:00 UTC). Test suite now 108 tests across 6 files, 70.5% coverage. | — |
 | 2026-05-21 | 1.0.5 | Full audit remediation: added §3.7 limitations table; updated hypothesis status (H1–H4) with confirmed/rejected/inconclusive; added OAT tornado chart; fixed payback and IRR calculation; added transfer factor and operational realism to config; added ADR-0005 and ADR-0006; added data lineage diagram; added Docker CI job; uv.lock committed; README humanized with "Why this project" and decision-language results. | ADR-0005, ADR-0006 |
 | 2026-05-21 | 1.0.4 | Monte Carlo sensitivity analysis (10,000 samples) complete. NPV mean = €-1,084,673 ± €414K (initial run, 5-parameter MC). OAT 5-parameter sweep complete. Sensitivity report in `reports/sensitivity_analysis_report.json`. | — |
-| 2026-05-27 | 1.0.5 | Wired discount_rate through both OAT and Monte Carlo (was previously in `param_ranges`/`param_distributions` but not passed to `compute_tco_for_params` in the OAT loop, so it silently used the default 0.08). Re-ran sensitivity: NPV mean = €-1,091,914 ± €418,038, median = €-1,061,736, 90% CI [€-1.83M, €-460K]. H3 verified with full-range OAT swings (labor ~€1.21M vs capex €240K). | — |
 | 2026-05-21 | 1.0.3 | Full pipeline executed on 2,359 real episodes from 5 Unitree UnifoLM datasets. Simulation increased to 15 replicas per scenario (75 total). All module outputs regenerated on real data. CI badges added. | — |
 | 2026-05-21 | 1.0.2 | Added §8.7 Data Profiling & Documentation. Modules 1–3 pipelines complete and tested on synthetic data. Module 1 full data download in progress (1.4GB/5 datasets). Auto-generated profiling notebook `01_data_profile_summary.ipynb` required for: raw dataset samples, Module 1 capabilities summary (detailed), Module 2 simulation runs (medium), Module 3 TCO scenarios (medium). All visualizations (histograms, box plots, bar charts, sensitivity heatmap) to be generated automatically via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` on every `make all` run. | — |
 | 2026-05-21 | 1.0.1 | Module 0 de-risk complete. Data sources updated to actual UnifoLM collection: 3 WBT datasets (spatial awareness) + 2 DiverseManip datasets (object variety). All 5 datasets accessible, SHAs pinned. Created `config/dataset_manifest.yaml` and updated download.py for multi-dataset support. | — |

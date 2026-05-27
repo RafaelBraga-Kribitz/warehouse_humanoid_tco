@@ -10,12 +10,12 @@ import polars as pl
 PARAM_LABELS = {
     "humanoid_capex_eur": "Humanoid Capex (€/unit)",
     "human_wage_eur": "Labor Cost (€/hr)",
-    "human_count": "Human Headcount",
     "human_overhead_mult": "Labor Overhead Multiplier",
-    "humanoid_count": "Humanoid Count",
+    "discount_rate": "Discount Rate",
+    "transfer_factor": "WBT→Production Transfer Factor",
 }
 
-BASELINE_NPV = -924125.0  # S-hybrid-amr central estimate
+BASELINE_NPV = -1078786.0  # S-hybrid-amr central estimate (post T0.1 opex fix)
 
 
 def main() -> None:
@@ -66,7 +66,7 @@ def main() -> None:
     ax.text(
         0.5,
         1.01,
-        "S-hybrid-amr scenario · OAT ±20% from baseline · baseline NPV = €-924K",
+        "S-hybrid-amr scenario · OAT across config ranges · baseline NPV = €-1,079K",
         transform=ax.transAxes,
         ha="center",
         fontsize=9,

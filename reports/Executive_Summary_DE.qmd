@@ -50,7 +50,7 @@ Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlich
 
 ### Kritische Erkenntnisse
 
-1. **Arbeitskostendomäne:** Das Kostenmodell wird von Personalkostenreduktion, nicht von Roboter-Capex, dominiert. Der Tornado-Chart in `reports/executive_charts/04_sensitivity_tornado.png` zeigt, dass eine 10%-Änderung der Arbeitskosten ±€340K NPV-Bewegung erzeugt.
+1. **Arbeitskostendomäne:** Das Kostenmodell wird von Personalkostenreduktion, nicht von Roboter-Capex, dominiert. OAT-Sensitivität (`data/processed/sensitivity_oat_results.parquet`, Szenario S-hybrid-amr) zeigt: Stundensätze (€9,25–€27,75/h) bewegen NPV um **€824K**, der Overhead-Multiplikator (1,0–1,7) um weitere **€427K** — kombiniert ~**€1,25M** Arbeitskosten-Bandbreite gegenüber nur **€158K** für Humanoid-Capex (€60K–€180K/Einheit). Verhältnis ≈ **8:1** Arbeit-zu-Capex.
 
 2. **Humanoid-Sensitivität:** Bei einem Capex > €180K pro Roboter verschwindet der Vorteil des S-hybrid-amr. Siehe Empfindlichkeitsanalyse (`reports/sensitivity_analysis_report.json`).
 

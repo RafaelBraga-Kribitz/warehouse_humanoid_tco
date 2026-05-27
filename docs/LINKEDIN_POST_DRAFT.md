@@ -10,7 +10,7 @@ The results surprised me.
 
 **The winner scenario:** A hybrid workforce (60% human + 20% humanoid + 20% AMR) minimizes 5-year total cost of ownership by €684K (43% reduction) compared to all-human baseline. But here's what actually mattered:
 
-1. **Labor cost dominance:** A 10% change in hourly wages swings the NPV by ±€340K. The humanoid capex? It matters, but it's secondary. If you're evaluating robotics for your warehouse, headcount assumptions matter more than purchase price.
+1. **Labor cost dominance:** OAT sensitivity on S-hybrid-amr (source: `data/processed/sensitivity_oat_results.parquet`) shows wages (€9.25–€27.75/hr) swing NPV by **€824K** and the overhead multiplier (1.0–1.7) by another **€427K** — a combined labor swing of ~**€1.25M**, vs. just **€158K** for humanoid capex (€60K–€180K/unit). That is roughly an **8:1 labor-to-capex sensitivity ratio**. If you're evaluating robotics for your warehouse, headcount assumptions matter more than purchase price.
 
 2. **The transfer factor problem:** Robot vendors show lab demos. Real warehouses are messier. I explicitly modeled a 70% WBT-to-production transfer factor (with sensitivity from 50-90%) because that's the honest acknowledgment. Most analyses skip this and pretend lab=production.
 
@@ -36,7 +36,7 @@ Die Ergebnisse waren überraschend.
 
 **Das beste Szenario:** Eine Hybrid-Belegschaft (60% menschlich + 20% Humanoid + 20% AMR) minimiert die 5-Jahres-Gesamtbetriebskosten um €684K (43% Einsparung) gegenüber einem reinen Humanarbeiter-Baseline. Aber das Wichtigste:
 
-1. **Arbeitskosten dominieren:** Eine 10%-Änderung der Stundensätze verursacht ±€340K NPV-Bewegung. Die Humanoid-Capex? Relevant, aber sekundär. Bei der Bewertung von Robotik für Ihr Lager sind Kopfzahllen-Annahmen wichtiger als der Kaufpreis.
+1. **Arbeitskosten dominieren:** OAT-Sensitivität auf S-hybrid-amr (Quelle: `data/processed/sensitivity_oat_results.parquet`) zeigt: Stundensätze (€9.25–€27.75/h) bewegen NPV um **€824K**, der Overhead-Multiplikator (1,0–1,7) um weitere **€427K** — kombiniert ~**€1,25M** Arbeitskosten-Bandbreite gegenüber nur **€158K** für Humanoid-Capex (€60K–€180K/Einheit). Das entspricht etwa einem **8:1 Verhältnis Arbeit-zu-Capex-Sensitivität**. Bei der Bewertung von Robotik für Ihr Lager sind Kopfzahl-Annahmen wichtiger als der Kaufpreis.
 
 2. **Das Transferfaktor-Problem:** Roboterhersteller zeigen Lab-Demos. Reale Lager sind chaotischer. Ich habe explizit einen 70%-Transferfaktor modelliert (mit Sensitivität von 50-90%), weil das die ehrliche Anerkennung ist. Die meisten Analysen überspringen das und tun so, als ob Lab=Produktion.
 

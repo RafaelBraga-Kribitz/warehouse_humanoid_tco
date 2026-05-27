@@ -1,7 +1,15 @@
 {
   "phase": "module_01_capability_extraction",
   "total_episodes_extracted": 2359,
-  "total_task_categories": 1,
+  "total_task_categories": 4,
+  "category_episode_counts": {
+    "pick_medium_object": 2359,
+    "place_general": 1750,
+    "transport_short": 757,
+    "bimanual_handling": 525
+  },
+  "multi_label_episode_count": 1750,
+  "avg_labels_per_episode": 2.285,
   "datasets_processed": 5,
   "per_episode_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_per_episode.parquet",
   "summary_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_summary.parquet"

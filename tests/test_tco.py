@@ -102,12 +102,14 @@ def test_tco_scenario_baseline_human() -> None:
     assert result["payback_years"] == 0.0  # no capex to recover
 
 
-def test_tco_scenario_pure_humanoid_no_opex() -> None:
+def test_tco_scenario_pure_humanoid_has_opex() -> None:
+    """Pure humanoid scenario has nonzero opex: maintenance (8%/yr of capex) + energy."""
     result = compute_tco_scenario("S-pure-humanoid", {}, {})
-    assert result["total_opex_5yr_eur"] == 0.0
+    assert result["total_opex_5yr_eur"] > 0  # maintenance + energy, not zero
     assert result["total_capex_eur"] > 0
-    assert result["cost_reduction_vs_baseline_pct"] == 100.0
-    assert result["payback_years"] is not None and result["payback_years"] > 0
+    # Cost reduction below 100% because humanoid opex offsets labor savings
+    assert result["cost_reduction_vs_baseline_pct"] < 100.0
+    assert result["cost_reduction_vs_baseline_pct"] > 0.0
 
 
 def test_tco_scenario_hybrid_amr_lowest_npv() -> None:

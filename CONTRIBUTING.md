@@ -1,6 +1,6 @@
 # Contributing to warehouse_humanoid_tco
 
-This is a single-contributor portfolio project. "Contributing" here means: rules future-you (or Claude Code in any session) must follow when working on this repo.
+This is a single-contributor portfolio project. "Contributing" here means: rules future-you must follow when working on this repo.
 
 ## The Single Source of Truth Rule
 
@@ -72,12 +72,6 @@ Before adding any feature or task, run through PROJECT_CHARTER.md §9.2 Scope Cr
 The "I will just add one thing" rule (§9.4): when you catch yourself thinking it, stop and apply §9.2.
 
 The "Shiny new thing" rule (§9.3): add it to the Backlog, do not start coding.
-
-## Working with Claude Code
-
-When using Claude Code in this repo, paste this at the start of any new session:
-
-> Read `PROJECT_CHARTER.md` and `CONTRIBUTING.md` before any other action. Follow the SSOT rule and ADR discipline. If a request would require updating the SSOT or creating an ADR, do that first before any code changes. Honor the locks in PROJECT_CHARTER.md §9.1 unless an ADR override exists.
 
 ## Daily Discipline
 
