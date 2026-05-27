@@ -146,12 +146,24 @@ def check_adrs() -> None:
 
 def check_change_log_present(charter_text: str) -> None:
     """Rule 3: the Change Log section exists and has at least one entry."""
-    if "## 11. Change Log" not in charter_text:
+    if "## 11." not in charter_text or "Change Log" not in charter_text:
+        fail("PROJECT_CHARTER.md is missing section '## 11. Change Log'.")
+        return
+
+    # Find the Change Log section by looking for ## 11. followed by "Change Log" on the same line
+    lines = charter_text.split("\n")
+    change_log_idx = None
+    for i, line in enumerate(lines):
+        if line.startswith("## 11.") and "Change Log" in line:
+            change_log_idx = i
+            break
+
+    if change_log_idx is None:
         fail("PROJECT_CHARTER.md is missing section '## 11. Change Log'.")
         return
 
     # Take everything after the Change Log heading
-    change_log_section = charter_text.split("## 11. Change Log", 1)[1]
+    change_log_section = "\n".join(lines[change_log_idx + 1 :])
 
     # Look for at least one table row with an ISO date
     iso_date_pattern = re.compile(r"\|\s*\d{4}-\d{2}-\d{2}\s*\|")
