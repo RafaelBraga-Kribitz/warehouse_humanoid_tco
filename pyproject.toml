@@ -17,6 +17,7 @@ dependencies = [
     "pandera>=0.18",
     "simpy>=4.1",
     "numpy>=1.26",
+    "scipy>=1.12",
     "numpy-financial>=1.0",
     "huggingface-hub>=0.22",
     "matplotlib>=3.8",
