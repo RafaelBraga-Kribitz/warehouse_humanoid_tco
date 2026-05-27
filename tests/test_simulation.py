@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import numpy as np
+
+from warehouse_humanoid_tco.evaluation.validation import compare_throughput_distributions
 from warehouse_humanoid_tco.models.simulation import (
     AgentProfile,
     WarehouseScenario,
@@ -132,3 +135,45 @@ def test_scenarios_with_different_agent_mixes_produce_different_throughput() -> 
         f"lower throughput than human-only ({h_thru:.0f}). "
         f"Equal throughput = agent routing bug."
     )
+
+
+# ---------------------------------------------------------------------------
+# Kruskal-Wallis cross-scenario throughput comparison tests
+# ---------------------------------------------------------------------------
+
+
+def test_kruskal_detects_identical_scenarios() -> None:
+    """3 scenarios sampled from the same distribution should not be rejected."""
+    rng = np.random.default_rng(seed=0)
+    scenario_runs = {
+        "S-A": rng.normal(loc=120.0, scale=10.0, size=20).tolist(),
+        "S-B": rng.normal(loc=120.0, scale=10.0, size=20).tolist(),
+        "S-C": rng.normal(loc=120.0, scale=10.0, size=20).tolist(),
+    }
+    result = compare_throughput_distributions(scenario_runs, alpha=0.05)
+    assert result["rejected"] is False
+    assert result["p_value"] > 0.05
+    assert result["n_scenarios"] == 3
+    assert "homogeneous" in result["note"]
+
+
+def test_kruskal_detects_different_scenarios() -> None:
+    """2 scenarios from very different distributions should be rejected."""
+    rng = np.random.default_rng(seed=1)
+    scenario_runs = {
+        "S-high": rng.normal(loc=200.0, scale=5.0, size=20).tolist(),
+        "S-low": rng.normal(loc=50.0, scale=5.0, size=20).tolist(),
+    }
+    result = compare_throughput_distributions(scenario_runs, alpha=0.05)
+    assert result["rejected"] is True
+    assert result["p_value"] < 0.05
+    assert result["n_scenarios"] == 2
+    assert "routing divergence" in result["note"]
+
+
+def test_kruskal_raises_on_single_scenario() -> None:
+    """ValueError must be raised when fewer than 2 scenarios are provided."""
+    import pytest
+
+    with pytest.raises(ValueError, match="At least 2 scenarios"):
+        compare_throughput_distributions({"S-only": [100.0, 110.0, 105.0]})

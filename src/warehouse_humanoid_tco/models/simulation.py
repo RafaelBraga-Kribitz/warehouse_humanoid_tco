@@ -45,6 +45,7 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
 
     completed_orders: list[float] = []
     queue_lengths: list[float] = []
+    busy_time: dict[str, float] = {p.agent_type: 0.0 for p in scenario.agent_profiles}
 
     arrival_rate_per_second = scenario.order_arrival_rate_per_hour / 3600
     shift_seconds = scenario.shift_hours * 3600
@@ -70,6 +71,7 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
             yield req
             cycle_time = float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std))
             cycle_time = max(cycle_time, 1.0)
+            busy_time[profile.agent_type] += cycle_time
             yield env.timeout(cycle_time)
         completed_orders.append(env.now)
 
@@ -87,10 +89,11 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
     throughput = len(completed_orders)
     queue_mean = float(np.mean(queue_lengths)) if queue_lengths else 0.0
 
-    utilizations: dict[str, float | None] = {}
+    utilizations: dict[str, float] = {}
     for profile in scenario.agent_profiles:
         key = f"utilization_{profile.agent_type}"
-        utilizations[key] = None
+        total_capacity = profile.count * shift_seconds
+        utilizations[key] = busy_time[profile.agent_type] / total_capacity if total_capacity > 0 else 0.0
 
     return {
         "scenario_id": scenario.scenario_id,
