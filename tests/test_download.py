@@ -43,9 +43,11 @@ def test_resolve_revision_sha_raises_when_sha_is_none() -> None:
     mock_api = MagicMock()
     mock_api.dataset_info.return_value = fake_info
 
-    with patch("warehouse_humanoid_tco.data.download.HfApi", return_value=mock_api):
-        with pytest.raises(ValueError, match="Could not resolve SHA"):
-            resolve_revision_sha("org/dataset", revision="main")
+    with (
+        patch("warehouse_humanoid_tco.data.download.HfApi", return_value=mock_api),
+        pytest.raises(ValueError, match="Could not resolve SHA"),
+    ):
+        resolve_revision_sha("org/dataset", revision="main")
 
 
 # ---------------------------------------------------------------------------
@@ -79,10 +81,10 @@ def test_download_dataset_passes_token(tmp_path: Path) -> None:
         "warehouse_humanoid_tco.data.download.snapshot_download",
         return_value=str(tmp_path),
     ) as mock_snap:
-        download_dataset("org/dataset", FAKE_SHA, tmp_path, token="hf_secret")
+        download_dataset("org/dataset", FAKE_SHA, tmp_path, token="hf_secret")  # noqa: S106
 
     _, kwargs = mock_snap.call_args
-    assert kwargs["token"] == "hf_secret"
+    assert kwargs["token"] == "hf_secret"  # noqa: S105
 
 
 def test_download_dataset_rejects_main_as_revision(tmp_path: Path) -> None:
