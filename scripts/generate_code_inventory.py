@@ -53,7 +53,10 @@ def main() -> int:
 
     if diff_mode:
         if not OUT.exists():
-            print("[FAIL] generate_code_inventory.py: CODE_INVENTORY.yaml missing — run without --diff first")
+            print(
+                "[FAIL] generate_code_inventory.py: CODE_INVENTORY.yaml missing"
+                " — run without --diff first"
+            )
             return 1
         existing = OUT.read_text()
         # Compare module keys and public symbols only (ignore generated_at date)
@@ -65,16 +68,28 @@ def main() -> int:
         for k in sorted(set(existing_modules) | set(new_modules)):
             old = existing_modules.get(k, {})
             new = new_modules.get(k, {})
-            if old.get("public_functions") != new.get("public_functions") or old.get("classes") != new.get("classes"):
+            old_sym = (old.get("public_functions"), old.get("classes"))
+            new_sym = (new.get("public_functions"), new.get("classes"))
+            if old_sym != new_sym:
                 diffs.append(k)
         if diffs:
-            print(f"[FAIL] generate_code_inventory.py: API drift in {len(diffs)} module(s): {'; '.join(diffs[:5])}")
+            joined = "; ".join(diffs[:5])
+            print(
+                f"[FAIL] generate_code_inventory.py: API drift in"
+                f" {len(diffs)} module(s): {joined}"
+            )
             return 1
-        print(f"[PASS] generate_code_inventory.py: CODE_INVENTORY.yaml matches source ({len(new_modules)} modules)")
+        n = len(new_modules)
+        print(
+            f"[PASS] generate_code_inventory.py:"
+            f" CODE_INVENTORY.yaml matches source ({n} modules)"
+        )
         return 0
 
     OUT.write_text(content)
-    print(f"[PASS] generate_code_inventory.py: wrote {len(inventory['modules'])} modules → {OUT.relative_to(REPO_ROOT)}")
+    n_mods = len(inventory["modules"])
+    out_rel = OUT.relative_to(REPO_ROOT)
+    print(f"[PASS] generate_code_inventory.py: wrote {n_mods} modules → {out_rel}")
     return 0
 
 

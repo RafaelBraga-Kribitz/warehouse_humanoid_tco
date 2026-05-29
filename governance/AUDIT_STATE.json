@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T18:47:08.235866+00:00",
+  "generated_at": "2026-05-29T19:20:42.030789+00:00",
   "git_branch": "governance/phase-2-charter-decomposition",
-  "git_head_sha": "e0f34276ae503456c8ccc8d7d68181b7a14b1aec",
+  "git_head_sha": "3cffc94c9453401da8bfb22b172b8c0be32246f3",
   "migrations": [
     {
       "linked_finding": "F-003",
