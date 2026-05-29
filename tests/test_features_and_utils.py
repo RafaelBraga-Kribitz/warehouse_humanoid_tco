@@ -19,7 +19,7 @@ from warehouse_humanoid_tco.features.extraction import (
 from warehouse_humanoid_tco.models.sensitivity import monte_carlo, one_at_a_time
 from warehouse_humanoid_tco.utils.logging import JsonFormatter, get_logger
 from warehouse_humanoid_tco.utils.reproducibility import seed_all
-from warehouse_humanoid_tco.visualization.exports import export_for_powerbi, export_for_tableau
+from warehouse_humanoid_tco.visualization.exports import export_for_tableau
 
 # ── features/extraction.py ────────────────────────────────────────────────────
 
@@ -212,15 +212,6 @@ def test_export_for_tableau_creates_csv(tmp_path: Path) -> None:
     out = export_for_tableau(df, tmp_path, "test.csv")
     assert out.exists()
     assert out.suffix == ".csv"
-
-
-def test_export_for_powerbi_creates_parquet(tmp_path: Path) -> None:
-    df = pl.DataFrame({"a": [1, 2], "b": [3, 4]})
-    out = export_for_powerbi(df, tmp_path, "test.parquet")
-    assert out.exists()
-    assert out.suffix == ".parquet"
-    loaded = pl.read_parquet(out)
-    assert loaded.shape == df.shape
 
 
 def test_export_creates_dir_if_missing(tmp_path: Path) -> None:

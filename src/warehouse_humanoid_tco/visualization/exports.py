@@ -1,8 +1,7 @@
-"""Export processed data for Tableau Public and Power BI consumption.
+"""Export processed data for Tableau Public consumption.
 
-Writes CSV and parquet exports to reports/ directory.
-Both BI tools consume the same data layer — no logic divergence.
-See ADR-0004 for dual-publish rationale.
+Writes CSV exports to reports/ directory. See ADR-0004 (Tableau half) and
+ADR-0008 (Power BI deprecation) for the dashboard-surface decision history.
 """
 
 from __future__ import annotations
@@ -21,12 +20,4 @@ def export_for_tableau(df: pl.DataFrame, output_dir: Path, filename: str) -> Pat
     output_dir.mkdir(parents=True, exist_ok=True)
     out_path = output_dir / filename
     df.write_csv(out_path)
-    return out_path
-
-
-def export_for_powerbi(df: pl.DataFrame, output_dir: Path, filename: str) -> Path:
-    """Write DataFrame to parquet for Power BI Desktop consumption."""
-    output_dir.mkdir(parents=True, exist_ok=True)
-    out_path = output_dir / filename
-    df.write_parquet(out_path)
     return out_path

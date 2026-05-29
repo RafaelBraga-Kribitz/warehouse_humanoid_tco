@@ -2,9 +2,9 @@ id: F-004
 title: export_for_powerbi is dead code with no sunset
 category: dead_artifacts
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   src/warehouse_humanoid_tco/visualization/exports.py:27 defines export_for_powerbi;
