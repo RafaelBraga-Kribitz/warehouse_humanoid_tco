@@ -1,7 +1,10 @@
 ---
 title: "Module 3 TCO Model: Assumptions Catalog"
 author: "Rafael Braga"
-date: today
+date: "2026-05-29"
+params:
+  tco_assumptions: "config/tco_assumptions.yaml"
+  tco_report: "reports/module_03_tco_report.json"
 format:
   html:
     toc: true

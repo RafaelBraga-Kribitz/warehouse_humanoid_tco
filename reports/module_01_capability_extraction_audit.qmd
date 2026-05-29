@@ -2,7 +2,10 @@
 title: "Module 1 Audit: Capability Extraction"
 subtitle: "UnifoLM-WBT-Dataset → humanoid_capabilities.parquet"
 author: "Rafael Braga"
-date: today
+date: "2026-05-29"
+params:
+  inspection_report: "reports/derisk_inspection_report.json"
+  capabilities_parquet: "data/processed/humanoid_capabilities_summary.parquet"
 format:
   html:
     toc: true
