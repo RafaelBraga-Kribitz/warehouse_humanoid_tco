@@ -1,6 +1,7 @@
 name: sensitivity-merge
-status: in_progress
+status: complete
 started_at: 2026-05-20          # earliest commit touching either module on this branch
+completed_at: 2026-05-29
 max_days_in_progress: 45
 linked_finding: F-003
 rollback: |
@@ -12,22 +13,22 @@ phases:
     completion_criterion: |
       governance/SSOT_REGISTRY.yaml has an entry naming exactly one of
       analysis/sensitivity.py or models/sensitivity.py as canonical.
-    done: false
+    done: true
   - id: move-primitives
     completion_criterion: |
       One of src/warehouse_humanoid_tco/analysis/sensitivity.py or
       src/warehouse_humanoid_tco/models/sensitivity.py is absent.
       Shell: test ! -f src/warehouse_humanoid_tco/models/sensitivity.py
-    done: false
+    done: true
   - id: redirect-imports
     completion_criterion: |
       No file under src/ or tests/ imports from the deprecated path.
       Shell: ! grep -rn "from warehouse_humanoid_tco.models.sensitivity\|warehouse_humanoid_tco.models.sensitivity" src/ tests/
-    done: false
+    done: true
   - id: regression-test
     completion_criterion: |
       tests/governance/test_f003_sensitivity_single_module.py exists and passes.
-    done: false
+    done: true
 
 notes: |
   Today both modules exist and both are imported by tests/test_sensitivity.py.

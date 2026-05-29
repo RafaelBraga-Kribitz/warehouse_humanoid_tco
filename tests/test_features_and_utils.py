@@ -7,6 +7,7 @@ from pathlib import Path
 
 import polars as pl
 
+from warehouse_humanoid_tco.analysis.sensitivity import monte_carlo, one_at_a_time
 from warehouse_humanoid_tco.features.aggregation import (
     MIN_EPISODES_PER_CATEGORY,
     aggregate_capabilities,
@@ -16,7 +17,6 @@ from warehouse_humanoid_tco.features.extraction import (
     compute_energy_proxy,
     compute_reach_estimate,
 )
-from warehouse_humanoid_tco.models.sensitivity import monte_carlo, one_at_a_time
 from warehouse_humanoid_tco.utils.logging import JsonFormatter, get_logger
 from warehouse_humanoid_tco.utils.reproducibility import seed_all
 from warehouse_humanoid_tco.visualization.exports import export_for_tableau

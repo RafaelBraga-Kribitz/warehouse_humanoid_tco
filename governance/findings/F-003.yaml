@@ -2,9 +2,9 @@ id: F-003
 title: Dual sensitivity modules (models/sensitivity.py and analysis/sensitivity.py)
 category: partial_migration
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   src/warehouse_humanoid_tco/models/sensitivity.py and
