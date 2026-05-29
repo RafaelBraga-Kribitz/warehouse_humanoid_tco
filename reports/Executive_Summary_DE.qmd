@@ -2,8 +2,11 @@
 title: "Humanoid-Roboter in der österreichischen Intralogistik: Eine Rentabilitätsanalyse"
 subtitle: "Executive Summary"
 author: "Rafael Braga"
-date: today
+date: "2026-05-29"
 lang: de
+params:
+  tco_report: "reports/module_03_tco_report.json"
+  sensitivity_report: "reports/sensitivity_analysis_report.json"
 format:
   pdf:
     documentclass: article

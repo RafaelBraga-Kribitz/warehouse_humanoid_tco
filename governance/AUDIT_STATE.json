@@ -46,12 +46,12 @@
     },
     {
       "category": "stale_generated_outputs",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-005",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-005.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Generated reports have no freshness contract (date: today, no mtime check, no prefix-collision check)",
       "verification_script": "tests/governance/test_f005_report_freshness.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T22:14:31.906903+00:00",
-  "git_branch": "governance/phase-5-passing-findings-cleanup",
-  "git_head_sha": "7c9f428486e5c910ab42f63bb26c29e75ab401e9",
+  "generated_at": "2026-05-29T22:20:28.684773+00:00",
+  "git_branch": "governance/phase-5-f005-report-freshness",
+  "git_head_sha": "520710da37f48db445dd2984901044d37db69918",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,17 +235,16 @@
     }
   ],
   "summary": {
-    "findings_closed": 17,
+    "findings_closed": 18,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 2,
+    "findings_open": 1,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
     "open_by_category": {
-      "fake_completion": 1,
-      "stale_generated_outputs": 1
+      "fake_completion": 1
     }
   },
   "validation_errors": [],

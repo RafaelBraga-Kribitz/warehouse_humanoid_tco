@@ -1,7 +1,10 @@
 ---
 title: "Module 2 Validation: Simulation vs. Knapp AutoStore Benchmark"
 author: "Rafael Braga"
-date: today
+date: "2026-05-29"
+params:
+  simulation_runs: "data/processed/simulation_runs.parquet"
+  baseline_config: "config/autostore_baseline.yaml"
 format:
   html:
     toc: true
