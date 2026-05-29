@@ -54,8 +54,9 @@ bootstrap: setup
 
 # ── Governance — see governance/AUDIT_PROCEDURE.md ───────────────────────────
 
-# Phase 0 audit pipeline: every check_*.py is currently a stub that exits 0
-# and logs a marker line. Phase 1 replaces each stub with the real check.
+# Phase 1 audit pipeline: every check_*.py runs the real invariant. Open findings
+# print [GAP] and exit 0 (ratchet); they flip to [FAIL] when their finding closes.
+# See scripts/_governance_check.py for the ratchet contract.
 audit:
 	@echo "── make audit ─────────────────────────────────────────────"
 	@$(PYTHON) scripts/check_ssot_registry.py

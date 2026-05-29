@@ -2,9 +2,9 @@ id: F-013
 title: Pre-commit hooks not installed locally
 category: fake_pre_commit
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   .pre-commit-config.yaml defines black, ruff, ssot-check. .git/hooks/pre-commit

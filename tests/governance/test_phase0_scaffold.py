@@ -77,15 +77,20 @@ def test_audit_state_writer_emits_valid_json() -> None:
     assert "validation_errors" in state
 
 
-def test_all_check_stubs_exit_zero() -> None:
-    # Iterate only files that import the Phase 0 stub helper. This excludes
-    # pre-existing real implementations like scripts/check_ssot.py.
-    stubs = [p for p in sorted(SCRIPTS.glob("check_*.py")) if "_governance_stub" in p.read_text()]
-    assert stubs, "Phase 0 must seed check_*.py stubs"
-    for stub in stubs:
-        result = _run(sys.executable, str(stub))
-        assert result.returncode == 0, f"{stub.name} returned {result.returncode}: {result.stderr}"
-        assert "[stub]" in result.stdout, f"{stub.name} should print stub marker"
+def test_all_audit_checks_exit_zero() -> None:
+    # Phase 1 replaced the stubs with real checks built on _governance_check.
+    # In the ratchet model every check exits 0 today (open findings measure;
+    # structural invariants pass), so `make audit` stays green.
+    checks = [p for p in sorted(SCRIPTS.glob("check_*.py")) if "_governance_check" in p.read_text()]
+    assert checks, "Phase 1 must provide real check_*.py implementations"
+    for check in checks:
+        result = _run(sys.executable, str(check))
+        assert (
+            result.returncode == 0
+        ), f"{check.name} returned {result.returncode}: {result.stdout}\n{result.stderr}"
+        assert any(
+            marker in result.stdout for marker in ("[PASS]", "[GAP]", "[INFO]")
+        ), f"{check.name} should print a ratchet marker"
 
 
 def test_session_start_renders_handout() -> None:

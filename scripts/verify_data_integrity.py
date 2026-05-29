@@ -35,14 +35,17 @@ def main() -> None:
     with open(manifest_path) as f:
         manifest = yaml.safe_load(f)
 
-    datasets = manifest.get("datasets", [])
+    # Datasets live under wbt_datasets + diversemanip_datasets, not "datasets".
+    # Reading the wrong key previously made this script a silent no-op (F-007).
+    dataset_keys = ("wbt_datasets", "diversemanip_datasets")
+    datasets = [ds for key in dataset_keys for ds in (manifest.get(key) or [])]
     if not datasets:
         print("No datasets listed in manifest — nothing to verify")
         sys.exit(0)
 
     failures: list[str] = []
     for ds in datasets:
-        name = ds.get("name", "unknown")
+        name = ds.get("repo_id", ds.get("name", "unknown"))
         pinned_sha = ds.get("sha256")
         rel_path = ds.get("local_path")
 

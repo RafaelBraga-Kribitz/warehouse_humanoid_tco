@@ -134,12 +134,12 @@
     },
     {
       "category": "fake_pre_commit",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-013",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-013.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Pre-commit hooks not installed locally",
       "verification_script": "tests/governance/test_f013_bootstrap_documented.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T12:08:44.980761+00:00",
-  "git_branch": "claude/meta-audit-prompt-harmonic-liskov-WD8iB",
-  "git_head_sha": "472906f02c2ce0840894bb50c91eedf9fee14754",
+  "generated_at": "2026-05-29T17:20:30.116563+00:00",
+  "git_branch": "governance/phase-1-invariant-checks",
+  "git_head_sha": "983515f99a7556756bca729c407070216c1486af",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 0,
+    "findings_closed": 1,
     "findings_closed_historical": 1,
     "findings_in_progress": 2,
-    "findings_open": 17,
+    "findings_open": 16,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -250,7 +250,6 @@
       "dead_artifacts": 1,
       "documentation_entropy": 1,
       "fake_completion": 1,
-      "fake_pre_commit": 1,
       "fragmented_standards": 3,
       "governance_gaps": 1,
       "methodology_drift": 1,
