@@ -200,12 +200,12 @@
     },
     {
       "category": "fragmented_standards",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-019",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-019.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "README synthetic-vs-real-data narrative needs single canonical statement",
       "verification_script": "tests/governance/test_f019_data_provenance_statement.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T21:00:37.385584+00:00",
-  "git_branch": "governance/phase-5-f006-pyright-reconcile",
-  "git_head_sha": "031a4e7ccab72672994eeef508487a982087aced",
+  "generated_at": "2026-05-29T21:07:45.144044+00:00",
+  "git_branch": "governance/phase-5-f019-readme-provenance",
+  "git_head_sha": "d9bc050e160d9e28517ea5342ebbf0a57c180c3d",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 8,
+    "findings_closed": 9,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 10,
+    "findings_open": 9,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -248,7 +248,7 @@
       "cross_session_amnesia": 1,
       "dead_artifacts": 1,
       "fake_completion": 1,
-      "fragmented_standards": 2,
+      "fragmented_standards": 1,
       "numeric_drift": 1,
       "partial_migration": 1,
       "stale_generated_outputs": 2,
