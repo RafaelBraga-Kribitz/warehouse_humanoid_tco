@@ -12,7 +12,7 @@ This directory is the project's persistent, machine-checkable record of:
 - **the audit procedure itself** (`AUDIT_PROCEDURE.md` — Steward / Remediator / Adversary role contracts),
 - **the auto-computed state** (`AUDIT_STATE.json` — machine-emitted; never hand-edited).
 
-It exists because the prior operating model — narrative audits in dated markdown — could not survive `/clear`, ENOSPC, or context compaction. Each session re-derived findings, invented new scoring frameworks, and produced new artifacts that joined the pile without retiring the old. See `AUDIT_PROCEDURE.md` and `/root/.claude/plans/system-reminder-you-re-running-in-glistening-frog.md` for the full rationale.
+It exists because the prior operating model — narrative audits in dated markdown — could not survive context loss between sessions. Each session re-derived findings, invented new scoring frameworks, and produced new artifacts that joined the pile without retiring the old. See `AUDIT_PROCEDURE.md` for the full role contracts and finding lifecycle.
 
 ## Lifecycle commands
 

@@ -8,8 +8,8 @@ This shared helper avoids 15 near-identical files and gives the Phase 1 author
 a single place to see all the stubs to implement.
 
 Phase 1 plan reference:
-  /root/.claude/plans/system-reminder-you-re-running-in-glistening-frog.md
   governance/AUDIT_PROCEDURE.md
+  governance/findings/F-*.yaml (each finding's verification_script field)
 """
 
 from __future__ import annotations
