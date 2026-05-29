@@ -52,6 +52,7 @@ pip install -r requirements.txt
 - **2,359 episodes** extracted from 5 UnifoLM datasets (WBT + DiverseManip)
 - **Capabilities profiled:** cycle time, reach, energy, success rate by task category
 - **Multi-label taxonomy:** every episode is tagged with all applicable categories (avg 2.29 labels/episode; 1,750 / 2,359 = 74% multi-labeled). Coverage: `pick_medium_object` 2,359 · `place_general` 1,750 · `transport_short` 757 · `bimanual_handling` 525 episodes
+- **Provenance:** every claim about dataset accessibility, episode counts, and SHA-pinned revisions traces to [`reports/derisk_inspection_report.json`](./reports/derisk_inspection_report.json) (the Module 0 de-risk audit, run before pipeline execution). This is the single authoritative source for "what data is real vs. synthetic" in this project.
 - **Validation:** Full data profiling notebook in [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) (stakeholder transparency)
 
 ### Simulation
