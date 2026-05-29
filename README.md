@@ -98,7 +98,7 @@ pip install -r requirements.txt
 
 ### Dashboards
 
-- **Tableau Public:** CSVs ready in `exports/tableau_public/` — dashboard publication pending
+- **Tableau Public:** export CSVs available in `exports/tableau_public/`; hosted dashboard deferred to a future release (see `governance/SSOT_REGISTRY.yaml` `tableau_status`)
 - **Power BI:** exported data ready for `.pbix` creation
 
 ## For Recruiters
@@ -118,7 +118,7 @@ pip install -r requirements.txt
 2. Review [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) for data validation
 3. Check [📁 reports/](./reports/) for Module 0–4 validation reports
 4. View [📈 executive_charts/](./reports/executive_charts/) (NPV, Cost, Throughput, Sensitivity)
-5. Dashboard publication pending — see [📊 exports/tableau_public/](./exports/tableau_public/) for CSVs
+5. Browse the dashboard data: [📊 exports/tableau_public/](./exports/tableau_public/) (CSVs ready for Tableau / Power BI import)
 
 ## Documentation Entry Points
 

@@ -178,12 +178,12 @@
     },
     {
       "category": "unverifiable_navigation_claim",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-017",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-017.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "README Tableau Public \"publication pending\" claim is unverifiable",
       "verification_script": "tests/governance/test_f017_tableau_status.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T21:23:20.496372+00:00",
-  "git_branch": "governance/phase-5-f018-mtbf-consistency",
-  "git_head_sha": "7c2c1b88d15cedc272a566286e759bd32d8fdb78",
+  "generated_at": "2026-05-29T21:36:46.982003+00:00",
+  "git_branch": "governance/phase-5-f017-tableau-claim",
+  "git_head_sha": "f5c70278fb1d1f41a7fc341614425ee3e2382174",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 10,
+    "findings_closed": 11,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 8,
+    "findings_open": 7,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -250,8 +250,7 @@
       "fake_completion": 1,
       "numeric_drift": 1,
       "partial_migration": 1,
-      "stale_generated_outputs": 2,
-      "unverifiable_navigation_claim": 1
+      "stale_generated_outputs": 2
     }
   },
   "validation_errors": [],
