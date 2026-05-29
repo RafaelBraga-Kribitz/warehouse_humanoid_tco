@@ -189,12 +189,12 @@
     },
     {
       "category": "fragmented_standards",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-018",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-018.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "autostore_baseline.yaml carries contradictory humanoid MTBF (2000h vs 40h)",
       "verification_script": "tests/governance/test_f018_mtbf_consistency.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T21:07:45.144044+00:00",
-  "git_branch": "governance/phase-5-f019-readme-provenance",
-  "git_head_sha": "d9bc050e160d9e28517ea5342ebbf0a57c180c3d",
+  "generated_at": "2026-05-29T21:23:20.496372+00:00",
+  "git_branch": "governance/phase-5-f018-mtbf-consistency",
+  "git_head_sha": "7c2c1b88d15cedc272a566286e759bd32d8fdb78",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 9,
+    "findings_closed": 10,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 9,
+    "findings_open": 8,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -248,7 +248,6 @@
       "cross_session_amnesia": 1,
       "dead_artifacts": 1,
       "fake_completion": 1,
-      "fragmented_standards": 1,
       "numeric_drift": 1,
       "partial_migration": 1,
       "stale_generated_outputs": 2,
