@@ -65,3 +65,8 @@ docs/internal/
 /test_project/
 /test_reports/
 /graphify-out/
+
+# Governance — session-local handout is regenerated each `make session-start`.
+# AUDIT_STATE.json and SESSION_END.md ARE committed (Adversary uses them for
+# cross-session memory).
+governance/SESSION_HANDOUT.md

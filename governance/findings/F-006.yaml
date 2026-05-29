@@ -1,0 +1,16 @@
+id: F-006
+title: CONTRIBUTING.md claims "pyright strict" but pyproject.toml is typeCheckingMode = "basic"
+category: fragmented_standards
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  CONTRIBUTING.md:56 — "All src/ code passes Ruff, Black, and pyright strict."
+  pyproject.toml:72 — typeCheckingMode = "basic"
+verification_script: scripts/check_contributing_claims.py
+notes: |
+  Phase 5 default: tighten pyproject.toml to strict and fix new errors, because
+  the public claim is portfolio-credibility-load-bearing. Alternative: relax the
+  claim in CONTRIBUTING.md.

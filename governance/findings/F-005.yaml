@@ -1,0 +1,19 @@
+id: F-005
+title: "Generated reports have no freshness contract (date: today, no mtime check, no prefix-collision check)"
+category: stale_generated_outputs
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  reports/*.qmd files have not been audited for `date: today`; reports/executive_charts/
+  PNGs use NN_*.png pattern with no collision check; numeric literals in QMDs
+  are not cross-checked against module_03_tco_report.json.
+verification_script: tests/governance/test_f005_report_freshness.py
+notes: |
+  Closure requires three scripts wired into make audit:
+    - scripts/check_qmd_dates.py
+    - scripts/check_png_prefix_collisions.py
+    - scripts/check_report_data.py  (params: input + mtime + numeric literal check)
+  Phase 5 also adds scripts/render_reports.py emitting ISO dates at render time.

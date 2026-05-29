@@ -1,0 +1,17 @@
+id: F-004
+title: export_for_powerbi is dead code with no sunset
+category: dead_artifacts
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/visualization/exports.py:27 defines export_for_powerbi;
+  no caller in src/ or tests/. Tableau Public is the published dashboard surface.
+verification_script: scripts/check_deprecations.py
+linked_deprecation: governance/DEPRECATIONS.yaml#export_for_powerbi
+notes: |
+  Closure path: author ADR-0008 documenting PowerBI deprecation rationale
+  (Phase 5), then delete the function. Until then DEPRECATIONS.yaml carries
+  sunset_date 2026-06-30.

@@ -1,0 +1,16 @@
+id: F-017
+title: README Tableau Public "publication pending" claim is unverifiable
+category: unverifiable_navigation_claim
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  README historically claims "Tableau Public publication pending" without a
+  due date or link to track. Confirm exact line at Phase 5 execution.
+verification_script: tests/governance/test_f017_tableau_status.py
+notes: |
+  Closure path (Phase 5): publish the Tableau workbook and replace the claim
+  with a link, OR remove the claim entirely and rely on
+  governance/SSOT_REGISTRY.yaml#tableau_status to track the decision.

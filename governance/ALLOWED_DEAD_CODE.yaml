@@ -1,0 +1,19 @@
+# Allowlist for `vulture src/` output.
+#
+# Each entry permits a specific symbol to be unused for a bounded time.
+# Enforced by scripts/check_deprecations.py (Phase 1 stub; real in Phase 1):
+#   - vulture output minus this allowlist must be empty
+#   - any entry where today > sunset_date fails CI
+#
+# DO NOT add entries without a sunset_date and justification.
+
+entries: []
+
+# Example (template — do not uncomment until a real entry exists):
+#
+# entries:
+#   - symbol: warehouse_humanoid_tco.visualization.exports.export_for_powerbi
+#     justification: Pending PowerBI deprecation rationale (ADR-0008 to be authored Phase 5).
+#     sunset_date: 2026-06-30
+#     finding: F-004
+#     opened_at: 2026-05-29

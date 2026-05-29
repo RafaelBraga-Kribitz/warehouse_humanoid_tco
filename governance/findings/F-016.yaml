@@ -1,0 +1,17 @@
+id: F-016
+title: Notebook sequence — missing 02_*; jupytext discipline unverified
+category: stale_generated_outputs    # related to F-005 but scoped to notebooks
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  notebooks/ contains only 01_data_profile_summary.ipynb (per Makefile profile
+  target). No 02_/03_/04_. jupytext sync is invoked in Makefile but with an
+  `|| echo` escape hatch (notebooks target at Makefile:96).
+verification_script: scripts/check_notebook_sequence.py
+notes: |
+  Closure (Phase 5): either add notebooks 02–04 OR author ADR documenting why
+  absent. Remove jupytext escape hatch (covered by F-007's workflow-escapes
+  scan since the Makefile invocation pattern is similar).

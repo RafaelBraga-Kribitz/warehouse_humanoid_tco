@@ -1,0 +1,65 @@
+# Workflow Registry — every GitHub Actions workflow + its declared gates.
+#
+# Enforced by scripts/check_workflow_registry.py (Phase 1 stub; real in Phase 4):
+#   - every file under .github/workflows/ must have an entry here
+#   - entries must list at least one item in `gates:`
+#   - orphaned workflows (added without an entry) fail CI
+#
+# Phase 4 will add the `adversary` workflow and reconcile pipeline.yml's
+# workflow_dispatch-only trigger via ADR.
+
+workflows:
+
+  ci.yml:
+    purpose: Per-PR lint, type-check, test, Docker smoke.
+    triggers: [push: main+develop, pull_request: main+develop]
+    gates:
+      - black --check src/ tests/ scripts/
+      - ruff check src/ tests/ scripts/
+      - pyright src/
+      - pytest tests/ -v --tb=short
+      - docker build smoke
+    owner: portfolio author
+    phase_4_additions:
+      - make verify
+      - adversary job (clean checkout + closed-finding re-verification)
+
+  pipeline.yml:
+    purpose: Run modules 01–04 against real HuggingFace data.
+    triggers: [workflow_dispatch]
+    gates:
+      - ruff check src/
+      - pytest tests/ -v          # line 25 escape hatch (`|| echo "No tests"`) to be removed in Phase 4
+      - modules 01–04 sequential run
+    owner: portfolio author
+    known_issues:
+      - F-007  # workflow_dispatch-only + pytest escape hatch
+    phase_4_decision: |
+      Retain workflow_dispatch trigger (HF data dep is real). Add ADR documenting
+      the constraint. Add a separate gated `pipeline-fixture` job that runs the
+      pipeline against a checked-in synthetic fixture so CI exercises the code.
+
+  docs-ssot-check.yml:
+    purpose: SSOT freshness check + markdown allowlist enforcement.
+    triggers: [push: main+develop, pull_request: main+develop, schedule: weekly Mon 06:00 UTC]
+    gates:
+      - scripts/check_ssot.py (date-based staleness)
+      - markdown allowlist regex
+    owner: portfolio author
+    known_issues:
+      - F-009  # ssot-check files scope too narrow
+    phase_2_additions:
+      - allow `governance/adrs/.*\.md` in allowlist
+      - deny `docs/todo/.*`
+
+  reproducibility.yml:
+    purpose: Weekly reproducibility check — run pipeline twice, diff hashes.
+    triggers: [schedule: weekly Mon 07:00 UTC, workflow_dispatch]
+    gates:
+      - make all (twice; hash sha256 outputs; diff)
+    owner: portfolio author
+    known_issues:
+      - F-008  # cron-only; never blocks a PR
+    phase_4_decision: |
+      Keep weekly schedule but also gate a sample (single module re-run) on PR
+      to make reproducibility a per-PR claim, not just a weekly assertion.

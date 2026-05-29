@@ -1,0 +1,18 @@
+id: F-012
+title: Audit-doc accumulation (CHARTER §11 acts as journal; no retirement rule)
+category: audit_doc_accumulation
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  PROJECT_CHARTER.md §11 contains 13 dated entries spanning 2026-05-20 to
+  2026-05-27. The plan's prediction that this pattern would also manifest as
+  docs/todo/ accumulation has not yet materialized (docs/todo/ absent), but the
+  CHARTER §11 case is sufficient evidence.
+verification_script: scripts/check_todo_dir.py
+notes: |
+  Closure path (Phase 2): delete §11; migrate entries into
+  governance/findings/F-1NN.yaml (historical). Forward gate: check_todo_dir.py
+  asserts docs/todo/ absent or empty.

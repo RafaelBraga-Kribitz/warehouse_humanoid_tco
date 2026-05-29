@@ -1,4 +1,5 @@
-.PHONY: all setup lint test module-01 module-02 module-03 module-04 profile dashboards ci-local clean help
+.PHONY: all setup bootstrap lint test module-01 module-02 module-03 module-04 profile dashboards ci-local clean help \
+        audit verify session-start session-end
 
 PYTHON ?= python
 # Use ?= so env override (VENV="" in CI workflows) takes precedence over default
@@ -11,6 +12,13 @@ help:
 	@echo ""
 	@echo "Setup:"
 	@echo "  make setup          Install dependencies + venv"
+	@echo "  make bootstrap      Install pre-commit hooks (one-time per clone)"
+	@echo ""
+	@echo "Governance (see governance/AUDIT_PROCEDURE.md):"
+	@echo "  make session-start  Generate governance/SESSION_HANDOUT.md (read first each session)"
+	@echo "  make audit          Run all check_*.py + write governance/AUDIT_STATE.json"
+	@echo "  make verify         audit + tests + closed-finding re-verification"
+	@echo "  make session-end    Write governance/SESSION_END.md for next-session handoff"
 	@echo ""
 	@echo "Pipeline (full run):"
 	@echo "  make all            Run modules 0-4 (data → dashboards)"
@@ -38,6 +46,56 @@ setup:
 	uv venv .venv
 	uv sync --frozen --extra dev
 	@echo "✓ Environment ready (locked)"
+
+bootstrap: setup
+	$(VENV) pre-commit install
+	$(VENV) pre-commit run --all-files || true
+	@echo "✓ pre-commit hooks installed (.git/hooks/pre-commit)"
+
+# ── Governance — see governance/AUDIT_PROCEDURE.md ───────────────────────────
+
+# Phase 0 audit pipeline: every check_*.py is currently a stub that exits 0
+# and logs a marker line. Phase 1 replaces each stub with the real check.
+audit:
+	@echo "── make audit ─────────────────────────────────────────────"
+	@$(PYTHON) scripts/check_ssot_registry.py
+	@$(PYTHON) scripts/check_charter_size.py
+	@$(PYTHON) scripts/check_contributing_claims.py
+	@$(PYTHON) scripts/check_migrations.py
+	@$(PYTHON) scripts/check_deprecations.py
+	@$(PYTHON) scripts/check_adr_linkage.py
+	@$(PYTHON) scripts/check_todo_dir.py
+	@$(PYTHON) scripts/check_makefile_numerics.py
+	@$(PYTHON) scripts/check_claude_md.py
+	@$(PYTHON) scripts/check_workflow_registry.py
+	@$(PYTHON) scripts/check_workflow_escapes.py
+	@$(PYTHON) scripts/check_manifest_sha256.py
+	@$(PYTHON) scripts/check_png_prefix_collisions.py
+	@$(PYTHON) scripts/check_qmd_dates.py
+	@$(PYTHON) scripts/check_notebook_sequence.py
+	@$(PYTHON) scripts/check_ssot_scope.py
+	@$(PYTHON) scripts/check_finding_coverage.py
+	@$(PYTHON) scripts/check_report_data.py
+	@$(PYTHON) scripts/write_audit_state.py
+	@echo "✓ audit complete — see governance/AUDIT_STATE.json"
+
+# verify = audit + tests + closed-finding re-verification
+verify: audit
+	@echo "── make verify ────────────────────────────────────────────"
+	$(VENV) pytest tests/ -v --tb=short
+	@$(PYTHON) scripts/check_closed_findings.py
+	@echo "✓ verify complete"
+
+session-start: audit
+	@$(PYTHON) scripts/session_start.py
+	@echo ""
+	@echo "→ Read governance/SESSION_HANDOUT.md before choosing work."
+
+session-end:
+	@$(PYTHON) scripts/write_audit_state.py
+	@$(PYTHON) scripts/session_end.py
+	@echo ""
+	@echo "→ Edit free-text fields in governance/SESSION_END.md, then commit."
 
 # ── Quality gates ─────────────────────────────────────────────────────────────
 

@@ -57,12 +57,8 @@ def test_compute_tco_higher_capex_more_negative() -> None:
 
 def test_compute_tco_lower_transfer_factor_more_negative() -> None:
     """Lower transfer factor → more effective humanoids needed → higher cost."""
-    npv_high_transfer = compute_tco_for_params(
-        n_human=4, n_humanoid=4, transfer_factor=0.90
-    )
-    npv_low_transfer = compute_tco_for_params(
-        n_human=4, n_humanoid=4, transfer_factor=0.50
-    )
+    npv_high_transfer = compute_tco_for_params(n_human=4, n_humanoid=4, transfer_factor=0.90)
+    npv_low_transfer = compute_tco_for_params(n_human=4, n_humanoid=4, transfer_factor=0.50)
     assert npv_low_transfer < npv_high_transfer  # more negative
 
 
@@ -165,12 +161,8 @@ def test_mc_npv_variance_nonzero() -> None:
 
 
 def test_mc_deterministic_with_seed() -> None:
-    _, s1 = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=50, seed=7
-    )
-    _, s2 = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=50, seed=7
-    )
+    _, s1 = run_monte_carlo_sensitivity("S-hybrid-amr", _mc_distributions(), n_samples=50, seed=7)
+    _, s2 = run_monte_carlo_sensitivity("S-hybrid-amr", _mc_distributions(), n_samples=50, seed=7)
     assert abs(s1["npv_mean"] - s2["npv_mean"]) < 0.01
 
 
@@ -208,9 +200,7 @@ def test_mc_does_not_sample_agent_counts() -> None:
 
 
 def test_per_scenario_returns_all_five() -> None:
-    samples, summary = run_monte_carlo_per_scenario(
-        _mc_distributions(), n_samples=30, seed=42
-    )
+    samples, summary = run_monte_carlo_per_scenario(_mc_distributions(), n_samples=30, seed=42)
     assert set(summary.keys()) == set(SCENARIO_COMPOSITIONS.keys())
     # samples = 30 × 5 scenarios = 150 rows
     assert len(samples) == 30 * len(SCENARIO_COMPOSITIONS)
@@ -221,9 +211,7 @@ def test_per_scenario_shared_draws_same_seed() -> None:
 
     This is a common variance-reduction trick (common random numbers).
     """
-    samples, _ = run_monte_carlo_per_scenario(
-        _mc_distributions(), n_samples=10, seed=42
-    )
+    samples, _ = run_monte_carlo_per_scenario(_mc_distributions(), n_samples=10, seed=42)
     by_scenario: dict[str, list[dict]] = {}
     for s in samples:
         by_scenario.setdefault(s["scenario_id"], []).append(s)
@@ -236,9 +224,7 @@ def test_per_scenario_shared_draws_same_seed() -> None:
 
 def test_per_scenario_hybrid_amr_leads() -> None:
     """Under T0.1+T0.2 model, S-hybrid-amr should lead by mean NPV."""
-    _, summary = run_monte_carlo_per_scenario(
-        _mc_distributions(), n_samples=500, seed=42
-    )
+    _, summary = run_monte_carlo_per_scenario(_mc_distributions(), n_samples=500, seed=42)
     means = {sid: summary[sid]["npv_mean"] for sid in summary}
     # Less negative = better
     best = max(means, key=lambda k: means[k])

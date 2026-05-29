@@ -1,0 +1,25 @@
+id: F-007
+title: Fake completion — pipeline.yml escape hatch + hollow verify-integrity
+category: fake_completion
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  (1) .github/workflows/pipeline.yml:25 — `pytest tests/ -v 2>/dev/null || echo "No tests"`.
+      Trigger is workflow_dispatch-only; CI never exercises the pipeline on push/PR.
+  (2) scripts/verify_data_integrity.py reads manifest.get("datasets", []) but
+      config/dataset_manifest.yaml keys are wbt_datasets + diversemanip_datasets.
+      Script always prints "No datasets listed" and exits 0. Even if the key
+      matched, entries carry no sha256 field.
+verification_script: tests/governance/test_f007_no_fake_completion.py
+notes: |
+  Closure requires Phase 1 + Phase 4:
+    - scripts/check_workflow_escapes.py — `grep -rn '|| echo\|2>/dev/null'
+      .github/workflows/` must be empty.
+    - scripts/check_manifest_sha256.py — manifest entries (under correct keys)
+      must each carry a non-empty sha256.
+    - Fix scripts/verify_data_integrity.py key bug in Phase 1.
+    - Phase 5 populates real sha256 values; Phase 4 adds gated fixture-driven
+      pipeline job per ADR.
