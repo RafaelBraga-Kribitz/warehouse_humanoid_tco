@@ -68,12 +68,12 @@
     },
     {
       "category": "fake_completion",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-007",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-007.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Fake completion \u2014 pipeline.yml escape hatch + hollow verify-integrity",
       "verification_script": "tests/governance/test_f007_no_fake_completion.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T22:20:28.684773+00:00",
-  "git_branch": "governance/phase-5-f005-report-freshness",
-  "git_head_sha": "520710da37f48db445dd2984901044d37db69918",
+  "generated_at": "2026-05-29T22:29:04.949103+00:00",
+  "git_branch": "governance/phase-5-f007-manifest-sha",
+  "git_head_sha": "7bd3c882dcd132a52bee2fd4963173ad1f287b6d",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,17 +235,15 @@
     }
   ],
   "summary": {
-    "findings_closed": 18,
+    "findings_closed": 19,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 1,
+    "findings_open": 0,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
-    "open_by_category": {
-      "fake_completion": 1
-    }
+    "open_by_category": {}
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"
