@@ -53,7 +53,7 @@ ADRs are append-only and immutable.
 See `PROJECT_CHARTER.md` §8.3. CI enforces.
 
 - Python: snake_case for variables/functions/modules, PascalCase for classes, SCREAMING_SNAKE_CASE for constants. **No camelCase in Python.**
-- All `src/` code passes Ruff, Black, and pyright strict.
+- All `src/` code passes Ruff, Black, and pyright basic.
 - Tests required for new logic in `src/features/` and `src/models/`.
 - No magic numbers; constants live in `config/*.yaml`.
 - No business logic in notebooks; notebooks call `src/` functions only.

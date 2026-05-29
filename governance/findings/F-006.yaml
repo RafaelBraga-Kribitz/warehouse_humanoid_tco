@@ -2,15 +2,21 @@ id: F-006
 title: CONTRIBUTING.md claims "pyright strict" but pyproject.toml is typeCheckingMode = "basic"
 category: fragmented_standards
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   CONTRIBUTING.md:56 — "All src/ code passes Ruff, Black, and pyright strict."
   pyproject.toml:72 — typeCheckingMode = "basic"
 verification_script: scripts/check_contributing_claims.py
 notes: |
-  Phase 5 default: tighten pyproject.toml to strict and fix new errors, because
-  the public claim is portfolio-credibility-load-bearing. Alternative: relax the
-  claim in CONTRIBUTING.md.
+  Closed Phase 5 by relaxing the CONTRIBUTING.md claim from "pyright strict" to
+  "pyright basic" to match pyproject.toml. The strict-mode pyright run produces
+  268 errors (mostly reportUnknownMemberType from matplotlib + other third-party
+  libs without type stubs); reconciling those would be a separate, much larger
+  PR than the one-finding-per-PR rule allows. If portfolio credibility requires
+  the strict claim, the path is: (1) add `reportUnknownMemberType: "none"` to
+  pyright config to suppress library noise, (2) tighten to strict, (3) fix
+  remaining first-party errors. Tracked as future work; for now, the public
+  claim is honest.

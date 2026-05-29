@@ -57,12 +57,12 @@
     },
     {
       "category": "fragmented_standards",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-006",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-006.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "CONTRIBUTING.md claims \"pyright strict\" but pyproject.toml is typeCheckingMode = \"basic\"",
       "verification_script": "scripts/check_contributing_claims.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T20:33:36.924603+00:00",
-  "git_branch": "governance/phase-4-ci-hardening",
-  "git_head_sha": "e3b5424bcfe784fc597e1ea07d2f7fcf33da615c",
+  "generated_at": "2026-05-29T21:00:37.385584+00:00",
+  "git_branch": "governance/phase-5-f006-pyright-reconcile",
+  "git_head_sha": "031a4e7ccab72672994eeef508487a982087aced",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 7,
+    "findings_closed": 8,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 11,
+    "findings_open": 10,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -248,7 +248,7 @@
       "cross_session_amnesia": 1,
       "dead_artifacts": 1,
       "fake_completion": 1,
-      "fragmented_standards": 3,
+      "fragmented_standards": 2,
       "numeric_drift": 1,
       "partial_migration": 1,
       "stale_generated_outputs": 2,
