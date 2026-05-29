@@ -101,12 +101,12 @@
     },
     {
       "category": "cross_session_amnesia",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-010",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-010.yaml",
-      "status": "in_progress",
+      "status": "closed",
       "title": "No persistent machine-readable audit state",
       "verification_script": "tests/governance/test_f010_audit_state_present.py"
     },
@@ -123,12 +123,12 @@
     },
     {
       "category": "audit_doc_accumulation",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-012",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-012.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Audit-doc accumulation (CHARTER \u00a711 acts as journal; no retirement rule)",
       "verification_script": "scripts/check_todo_dir.py"
     },
@@ -145,12 +145,12 @@
     },
     {
       "category": "numeric_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-014",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-014.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Makefile help text duplicates simulation n_runs (forward gate; currently in sync)",
       "verification_script": "scripts/check_makefile_numerics.py"
     },
@@ -167,12 +167,12 @@
     },
     {
       "category": "stale_generated_outputs",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-016",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-016.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Notebook sequence \u2014 missing 02_*; jupytext discipline unverified",
       "verification_script": "scripts/check_notebook_sequence.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T22:11:43.415254+00:00",
-  "git_branch": "governance/phase-5-f003-sensitivity-merge",
-  "git_head_sha": "c2b7200bc3ea3816bb95e973de42fe17740bcfd4",
+  "generated_at": "2026-05-29T22:14:31.906903+00:00",
+  "git_branch": "governance/phase-5-passing-findings-cleanup",
+  "git_head_sha": "7c9f428486e5c910ab42f63bb26c29e75ab401e9",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,20 +235,17 @@
     }
   ],
   "summary": {
-    "findings_closed": 13,
+    "findings_closed": 17,
     "findings_closed_historical": 1,
-    "findings_in_progress": 1,
-    "findings_open": 5,
+    "findings_in_progress": 0,
+    "findings_open": 2,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
     "open_by_category": {
-      "audit_doc_accumulation": 1,
-      "cross_session_amnesia": 1,
       "fake_completion": 1,
-      "numeric_drift": 1,
-      "stale_generated_outputs": 2
+      "stale_generated_outputs": 1
     }
   },
   "validation_errors": [],
