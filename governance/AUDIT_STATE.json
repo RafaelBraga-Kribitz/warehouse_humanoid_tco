@@ -112,12 +112,12 @@
     },
     {
       "category": "methodology_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-011",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-011.yaml",
-      "status": "in_progress",
+      "status": "closed",
       "title": "Methodology drift \u2014 TIER0/1/2 \u2192 11-dim \u2192 12-dim \u2192 adversarial-Explore across sessions",
       "verification_script": "tests/governance/test_f011_methodology_canonical.py"
     },
@@ -156,12 +156,12 @@
     },
     {
       "category": "unverifiable_navigation_claim",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-015",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-015.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "CLAUDE.md missing \u2014 no agent protocol; meta-plan predicted graphify claim must be banned at creation",
       "verification_script": "scripts/check_claude_md.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T19:20:42.030789+00:00",
-  "git_branch": "governance/phase-2-charter-decomposition",
-  "git_head_sha": "3cffc94c9453401da8bfb22b172b8c0be32246f3",
+  "generated_at": "2026-05-29T20:08:56.900876+00:00",
+  "git_branch": "governance/phase-3-agent-contracts",
+  "git_head_sha": "98a74f9ac24c715ba6d522b93da36a64e13a8a62",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 3,
+    "findings_closed": 5,
     "findings_closed_historical": 1,
-    "findings_in_progress": 2,
-    "findings_open": 14,
+    "findings_in_progress": 1,
+    "findings_open": 13,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -250,12 +250,11 @@
       "fake_completion": 1,
       "fragmented_standards": 3,
       "governance_gaps": 1,
-      "methodology_drift": 1,
       "numeric_drift": 1,
       "orphaned_workflows": 1,
       "partial_migration": 1,
       "stale_generated_outputs": 2,
-      "unverifiable_navigation_claim": 2
+      "unverifiable_navigation_claim": 1
     }
   },
   "validation_errors": [],

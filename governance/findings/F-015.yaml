@@ -2,9 +2,9 @@ id: F-015
 title: CLAUDE.md missing — no agent protocol; meta-plan predicted graphify claim must be banned at creation
 category: unverifiable_navigation_claim
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   CLAUDE.md does not exist. The meta-audit plan predicted a "graph rebuilt on
