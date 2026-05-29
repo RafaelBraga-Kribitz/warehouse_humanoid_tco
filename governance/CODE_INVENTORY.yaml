@@ -1,0 +1,150 @@
+generated_at: '2026-05-29'
+source: src/
+modules:
+  src.warehouse_humanoid_tco.__init__:
+    path: src/warehouse_humanoid_tco/__init__.py
+  src.warehouse_humanoid_tco.__main__:
+    path: src/warehouse_humanoid_tco/__main__.py
+    public_functions:
+    - main
+  src.warehouse_humanoid_tco.analysis.__init__:
+    path: src/warehouse_humanoid_tco/analysis/__init__.py
+  src.warehouse_humanoid_tco.analysis.profile_outputs:
+    path: src/warehouse_humanoid_tco/analysis/profile_outputs.py
+    public_functions:
+    - generate_profile_notebook
+  src.warehouse_humanoid_tco.analysis.sensitivity:
+    path: src/warehouse_humanoid_tco/analysis/sensitivity.py
+    public_functions:
+    - compute_tco_for_params
+    - run_oat_sensitivity
+    - run_monte_carlo_sensitivity
+    - run_monte_carlo_per_scenario
+    - run_sensitivity_analysis
+  src.warehouse_humanoid_tco.data.__init__:
+    path: src/warehouse_humanoid_tco/data/__init__.py
+  src.warehouse_humanoid_tco.data.download:
+    path: src/warehouse_humanoid_tco/data/download.py
+    public_functions:
+    - resolve_revision_sha
+    - download_dataset
+    - download_dataset_collection
+    - sha256_file
+  src.warehouse_humanoid_tco.data.enums:
+    path: src/warehouse_humanoid_tco/data/enums.py
+    classes:
+    - TaskCategory
+    - RobotPlatform
+    - AgentType
+    - ScenarioId
+    - ArchitectureType
+  src.warehouse_humanoid_tco.data.manifest:
+    path: src/warehouse_humanoid_tco/data/manifest.py
+    public_functions:
+    - record_artifact
+  src.warehouse_humanoid_tco.data.schemas:
+    path: src/warehouse_humanoid_tco/data/schemas.py
+    classes:
+    - HumanoidCapabilitySummarySchema
+  src.warehouse_humanoid_tco.evaluation.__init__:
+    path: src/warehouse_humanoid_tco/evaluation/__init__.py
+  src.warehouse_humanoid_tco.evaluation.validation:
+    path: src/warehouse_humanoid_tco/evaluation/validation.py
+    public_functions:
+    - validate_human_baseline_throughput
+    - compare_throughput_distributions
+  src.warehouse_humanoid_tco.features.__init__:
+    path: src/warehouse_humanoid_tco/features/__init__.py
+  src.warehouse_humanoid_tco.features.aggregation:
+    path: src/warehouse_humanoid_tco/features/aggregation.py
+    public_functions:
+    - aggregate_capabilities
+  src.warehouse_humanoid_tco.features.extraction:
+    path: src/warehouse_humanoid_tco/features/extraction.py
+    public_functions:
+    - compute_cycle_time
+    - compute_reach_estimate
+    - compute_energy_proxy
+    - extract_episode_features
+    - extract_dataset_episodes
+  src.warehouse_humanoid_tco.features.parsers:
+    path: src/warehouse_humanoid_tco/features/parsers.py
+    public_functions:
+    - resolve_nested_dataset
+    - load_wbt_episodes_jsonl
+    - load_wbt_parquets
+    - load_diversemanip_episodes_jsonl
+    - load_diversemanip_parquets
+    - infer_dataset_type
+  src.warehouse_humanoid_tco.features.taxonomy:
+    path: src/warehouse_humanoid_tco/features/taxonomy.py
+    public_functions:
+    - classify_task
+    - needs_manual_review
+  src.warehouse_humanoid_tco.models.__init__:
+    path: src/warehouse_humanoid_tco/models/__init__.py
+  src.warehouse_humanoid_tco.models.sensitivity:
+    path: src/warehouse_humanoid_tco/models/sensitivity.py
+    public_functions:
+    - one_at_a_time
+    - monte_carlo
+  src.warehouse_humanoid_tco.models.simulation:
+    path: src/warehouse_humanoid_tco/models/simulation.py
+    classes:
+    - AgentProfile
+    - WarehouseScenario
+    public_functions:
+    - run_scenario
+    - pick_order
+    - order_generator
+  src.warehouse_humanoid_tco.models.tco:
+    path: src/warehouse_humanoid_tco/models/tco.py
+    public_functions:
+    - compute_annual_labor_cost
+    - compute_humanoid_capex
+    - compute_annual_humanoid_opex
+    - compute_npv
+    - compute_irr
+    - compute_payback_years
+  src.warehouse_humanoid_tco.pipelines.__init__:
+    path: src/warehouse_humanoid_tco/pipelines/__init__.py
+  src.warehouse_humanoid_tco.pipelines.module_01_capability_extraction:
+    path: src/warehouse_humanoid_tco/pipelines/module_01_capability_extraction.py
+    public_functions:
+    - module_01_main
+  src.warehouse_humanoid_tco.pipelines.module_02_simulation:
+    path: src/warehouse_humanoid_tco/pipelines/module_02_simulation.py
+    public_functions:
+    - module_02_main
+  src.warehouse_humanoid_tco.pipelines.module_03_tco:
+    path: src/warehouse_humanoid_tco/pipelines/module_03_tco.py
+    public_functions:
+    - compute_tco_scenario
+    - module_03_main
+  src.warehouse_humanoid_tco.pipelines.module_04_dashboards:
+    path: src/warehouse_humanoid_tco/pipelines/module_04_dashboards.py
+    public_functions:
+    - export_for_tableau
+    - generate_executive_charts
+    - module_04_main
+  src.warehouse_humanoid_tco.utils.__init__:
+    path: src/warehouse_humanoid_tco/utils/__init__.py
+  src.warehouse_humanoid_tco.utils.logging:
+    path: src/warehouse_humanoid_tco/utils/logging.py
+    classes:
+    - JsonFormatter
+    public_functions:
+    - get_logger
+    - format
+  src.warehouse_humanoid_tco.utils.reproducibility:
+    path: src/warehouse_humanoid_tco/utils/reproducibility.py
+    public_functions:
+    - seed_all
+  src.warehouse_humanoid_tco.visualization.__init__:
+    path: src/warehouse_humanoid_tco/visualization/__init__.py
+  src.warehouse_humanoid_tco.visualization.exports:
+    path: src/warehouse_humanoid_tco/visualization/exports.py
+    public_functions:
+    - export_for_tableau
+    - export_for_powerbi
+

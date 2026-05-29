@@ -2,9 +2,9 @@ id: F-001
 title: PROJECT_CHARTER.md exceeds 200-line scannable budget
 category: documentation_entropy
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0    # first formal recording; observed across many prior sessions
 evidence: PROJECT_CHARTER.md is 779 lines / 48 KB. No file has a line-count budget today.
 verification_script: scripts/check_charter_size.py

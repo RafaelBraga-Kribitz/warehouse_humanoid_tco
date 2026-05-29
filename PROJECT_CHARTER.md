@@ -42,7 +42,7 @@ SSOT_METADATA_END -->
 | 1 | [⚡ Quick Facts](#1-quick-facts) | Project metadata at a glance |
 | 2 | [📋 Documentation Discipline](#2-documentation-discipline-read-this-first) | SSOT rules, CI enforcement, ADR format |
 | 3 | [🎯 Business Case / Charter](#3-business-case--project-charter) | Goals, success criteria, stakeholders, risks |
-| 4 | [📚 Full Documentation Index](#4-full-documentation-index) | Where to find detailed specs, ADRs, and change log |
+| 4 | [📚 Full Documentation Index](#4-full-documentation-index) | Where to find detailed specs, ADRs, and version history |
 
 ---
 
@@ -60,69 +60,11 @@ SSOT_METADATA_END -->
 
 ---
 
-## 2. 📋 Documentation Discipline (read this first)
+## 2. 📋 Documentation Discipline
 
-### 2.1 🎯 Single Source of Truth (SSOT) Rule
+**This file is the SSOT.** No parallel requirements, spec, or design documents. State it once, link everywhere else. Every scope change needs an ADR in `governance/adrs/`. Every content change needs a `governance/CHANGELOG.md` entry and a `last_updated` bump. CI enforces staleness (≤14 days), Markdown sprawl, and ADR structure on every push.
 
-**This file is the SSOT.** The README, notebooks, and code comments may reference it, but must not duplicate it. **Duplication creates drift. Drift creates lies.**
-
-Allowed:
-- `README.md` may quote 1 to 2 sentences from this file and link to the relevant section.
-- Notebook markdown cells may state the objective of the notebook and link here for context.
-- Docstrings may reference function-level intent and link to relevant sections.
-
-Forbidden:
-- Standalone "requirements.md", "spec.md", "design.md", or any document that duplicates content present here.
-- Re-stating the project goal in multiple places. State it once, link everywhere else.
-
-### 2.2 Change Discipline
-
-Every change to this file requires:
-
-1. A new ADR in `docs/ADR/` if the change alters scope, requirements, or architecture.
-2. An entry in the [Change Log](#11-change-log) at the bottom of this file.
-3. An update of the `last_updated` metadata at the top of this file.
-4. A passing CI check (`.github/workflows/docs-ssot-check.yml`).
-
-Trivial fixes (typos, formatting, link repair) do not require an ADR but DO require a Change Log entry.
-
-### 2.3 🏛️ ADR Format (Immutable Decision Log)
-
-ADRs are numbered, dated, **immutable**, and **append-only**. Format:
-
-```
-docs/ADR/NNNN-kebab-case-title.md
-```
-
-**Required sections:** Title, Date, Status (`proposed`/`accepted`/`superseded`), Context, Decision, Consequences, References.
-
-**Key rule:** Once accepted, an ADR is **never edited**. If superseded, write a **new** ADR referencing the old one. This preserves decision history for recruiters and your future self.
-
-### 2.4 Anti-Sprawl Rules
-
-If you catch yourself doing any of these, stop:
-
-| Anti-pattern | What to do instead |
-|---|---|
-| Creating a new `.md` file for a new topic | Add a section to this file or write an ADR |
-| Repeating the project goal in 3 places | State it once here, link from elsewhere |
-| Putting design decisions in commit messages | Write an ADR |
-| Putting requirements in GitHub Issues | Write them here, link the issue |
-| Storing tribal knowledge in your head | Write it here within 24 hours or it does not exist |
-| Adding a "TODO" comment | Add it to the [Backlog](#52-backlog) section here |
-
-### 2.5 🤖 Automated Enforcement via CI
-
-CI runs [`.github/workflows/docs-ssot-check.yml`](./.github/workflows/docs-ssot-check.yml) on **every push**:
-
-| Check | Rule | Failure |
-|-------|------|---------|
-| **Staleness** | `last_updated` ≤ 14 days old | Build fails |
-| **Sprawl** | No `.md` files outside allowlist | Build fails |
-| **ADR structure** | Every ADR has required headings | Build fails |
-| **Change Log** | Every SSOT edit has a log entry | Build fails |
-
-**Philosophy:** The CI is the SSOT's immune system. Do not disable it. If CI is blocking you, the block is telling you something true about your change.
+Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
 ---
 
@@ -149,7 +91,7 @@ The project succeeds if **all four** of these are true at completion:
 |---|---|---|
 | **Reproducibility** | Stranger clones repo, runs `make all`, reproduces every artifact bit-for-bit | CI weekly determinism test |
 | **Analytical Credibility** | TCO model exposes every assumption as configurable param; top 6 drivers identified | `reports/sensitivity_analysis_report.json` + tornado chart |
-| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of release | Tracked in Change Log §11 |
+| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of release | Tracked in `governance/CHANGELOG.md` |
 | **Doc Quality** | SSOT is sole authority; CI passes ≥30 days post-release with zero sprawl | CI stats in weekly reproducibility report |
 
 ### 3.4 Stakeholders
@@ -161,7 +103,7 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters at TGW Logistics | Primary audience for portfolio | Targeted via LinkedIn post + repo link |
 | Recruiters at Magna Steyr | Secondary audience | Reached via LinkedIn organic |
 | Robotics Network Austria (JOANNEUM RESEARCH, Graz) | Potential amplifier | Direct outreach after v1.0 |
-| Betriebsrat (Works Council) — *simulated* | Co-determination authority over deployment of worker-monitoring or workforce-substitution technology under **ArbVG §96 (1) 3**. No active engagement in v1.0 (simulated stakeholder); model framing and language audit (§NFR-10) treats Betriebsrat sign-off as a deployment precondition. | Simulated review at every doc commit |
+| Betriebsrat (Works Council) — *simulated* | Co-determination authority under ArbVG §96 (1) 3; treats Betriebsrat sign-off as a deployment precondition | Simulated review at every doc commit |
 
 ### 3.5 Business Risks
 
@@ -171,34 +113,16 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters do not engage | Medium | High | LinkedIn-first launch strategy; German one-pager; direct outreach to specific company recruiters |
 | Dataset proves insufficient | Medium | High | Module 0 de-risk notebook validates before commit; fallback to synthetic supplementation with full disclosure |
 | Substitution-framing causes backlash | Low (mitigated by framing) | Critical | Framing locked: "augmentation + ROI", never "replacement"; Betriebsrat-aware language audit at every doc commit |
-| **Deployment blocked by Betriebsrat veto under ArbVG §96 (1) 3** (Austrian Labour Constitution Act — co-determination rights over the introduction of control / monitoring systems affecting worker dignity, and over workforce-substitution measures) | Medium | **Critical** | (1) No worker-monitoring features in v1.0 (Out-of-Scope §3.6); (2) framing locked to "augmentation, not replacement"; (3) deployment plan assumes Betriebsrat consultation phase BEFORE any pilot; (4) TCO model surfaces labor-cost-share alongside humanoid-capex so the works council can verify no net headcount cut is required for the business case to hold |
+| Betriebsrat veto under ArbVG §96 (1) 3 | Medium | **Critical** | No monitoring features; augmentation framing; pre-pilot consultation assumed; TCO surfaces labor-cost-share for council review |
 | Project becomes too ambitious mid-flight | High | High | Scope Guardrails §9 enforced ruthlessly |
 
 ### 3.6 Out of Scope (v1.0)
 
-The following are explicitly excluded from v1.0. Adding any of these requires an ADR and a scope-change review:
+No human activity sensing, RuView, or CSI. No Stingray / Magna full calibration (stubs only). No ML capability prediction, real-time data ingestion, or live system integrations. Adding any of these requires an ADR + scope-change review. Full list: `governance/SCOPE_LOCKS.md`.
 
-- Worker activity sensing (WiFi CSI, RuView integration, any human monitoring)
-- Stingray / FlashPick architecture full calibration (stub only)
-- Magna automotive line architecture full calibration (stub only)
-- Real-time data ingestion
-- Multi-language UI beyond English + a single-page German executive summary
-- ML-based capability prediction (capabilities are extracted empirically, not predicted)
-- Live integration with company systems (SAP, ERP, WMS)
-- Mobile app
-- Web service deployment of the model (it ships as a repo + dashboards only)
+### 3.7 Known Limitations
 
-### 3.7 Known Limitations and External Validity Boundaries
-
-| Limitation | Impact | Mitigation |
-|---|---|---|
-| WBT teleoperation cycle times ≠ production throughput | Overestimates humanoid speed by unknown factor | Applied 0.70× transfer factor (configurable; see `config/autostore_baseline.yaml`); Monte Carlo range covers 0.50–0.90× |
-| 15-replica simulation runs | Moderate variance in scenario comparison | 90% CI reported on all throughput metrics; sufficient for portfolio-level comparison |
-| No real warehouse telemetry | Cannot validate against actual Knapp operations | Baseline calibrated against public Knapp AutoStore throughput benchmarks (§7.5) |
-| Humanoid capex from public pricing, not contracts | ±40% cost uncertainty | Full Monte Carlo range €80K–€200K/unit; tornado chart shows sensitivity |
-| Austrian Kollektivvertrag 2026 estimated, not official | ±10% labor cost uncertainty | Documented range in `config/tco_assumptions.yaml`; dominant sensitivity driver |
-| No human fatigue modeling | Overestimates human baseline throughput | Acknowledged; absence_rate_per_shift partially compensates |
-| WBT dataset is teleoperation demos, not autonomous ops | Transfer to autonomous production unknown | 0.70× factor; this is the single largest assumption — see §2A |
+Key constraints: WBT cycle times are teleoperation demos (0.70× transfer factor applied; range 0.50–0.90× in Monte Carlo); 15 simulation replicas per scenario; no real warehouse telemetry (calibrated against Knapp public benchmarks); humanoid capex ±40% (public pricing, not contracts); Austrian KV 2026 estimated ±10%. Full table: `governance/LIMITATIONS.md`.
 
 ---
 
@@ -233,33 +157,19 @@ This section points to everything beyond the executive summary. **The SSOT rule 
 
 | Document | Purpose | Location |
 |---|---|---|
-| **Repository Structure (canonical)** | 500+ line canonical layout with every subdirectory explained | `governance/REPO_STRUCTURE.md` |
-| **SRS Module Descriptions** | Modules 0–4 with entry points and expected outputs | `governance/MODULE_SPECS.md` |
-| **CLI Interface (Should, not Must)** | Seven `python -m warehouse_humanoid_tco` commands | `governance/CLI_SPEC.md` |
-| **Testing Strategy** | Unit, schema, reproducibility, smoke tests; 70%+ coverage target | `governance/TESTING.md` |
-| **Logging & Observability** | Structured JSON logging via `utils/logging.py` | `governance/LOGGING.md` |
-| **Determinism Requirements** | Byte-for-byte reproducibility, seeded RNG, weekly hash comparison | `governance/DETERMINISM.md` |
+| **Repository Structure (canonical)** | Canonical layout with every subdirectory explained | `governance/REPO_STRUCTURE.md` |
+| **SRS + CLI + Testing + Logging** | Modules 0–4, CLI spec, test strategy, determinism requirements | `governance/MODULE_SPECS.md` |
 
 ### 4.4 🛡️ Governance & Scope
 
-| Document | Purpose | Location |
-|---|---|---|
-| **Scope Guardrails (L1–L3)** | Three hard locks: AutoStore-only, no sensing, empirical capabilities | `governance/SCOPE_LOCKS.md` |
-| **Anti-Creep Checklist** | 5-question checklist before adding any feature | `governance/SCOPE_LOCKS.md` |
-| **Shiny New Thing Rule** | When new tools/datasets appear: add to Backlog, don't code | `governance/SCOPE_LOCKS.md` |
-| **Documentation Sprawl Tripwire** | "Design doc" / "README subfolder" / "separate spec" = forbidden | `governance/SCOPE_LOCKS.md` |
+Three hard scope locks (L1: AutoStore-only; L2: no human sensing; L3: empirical capabilities). 5-question anti-creep checklist. Sprawl/shiny-new-thing tripwires. Full rules: `governance/SCOPE_LOCKS.md`.
 
-### 4.5 📝 Change Log & Decision History
+### 4.5 📝 Version History & ADRs
 
 | Document | Purpose | Location |
 |---|---|---|
-| **Project Change Log (v1.0.0–v1.1.4)** | Version history, audit fixes, module completions | `governance/CHANGELOG.md` |
-| **Architecture Decision Records (ADR-0001+)** | Immutable, append-only decision log with status & references | `governance/adrs/` |
-| **ADR-0001: Use SSOT Charter** | Why this document is the single source of truth | `governance/adrs/0001-use-ssot-charter.md` |
-| **ADR-0002: Ethics Boundary** | No PII, no human-activity sensing, Betriebsrat-aware framing | `governance/adrs/0002-ethics-boundary.md` |
-| **ADR-0003: AutoStore-Only v1.0** | Stingray & Magna as stubs only; scope lock L1 | `governance/adrs/0003-autostore-only-v1.md` |
-| **ADR-0004: Dual Publish (Tableau + Power BI)** | Why both dashboards; justification for upload overhead | `governance/adrs/0004-dual-publish-dashboards.md` |
-| **ADR-0005–0007** | Additional decisions as they arise (see `governance/adrs/` directory) | `governance/adrs/` |
+| **Project Change Log** | Version history, audit fixes, module completions | `governance/CHANGELOG.md` |
+| **ADRs (0001–0007+)** | Immutable, append-only decision log with status & YAML frontmatter | `governance/adrs/` |
 
 ### 4.6 📚 Quick Reference
 

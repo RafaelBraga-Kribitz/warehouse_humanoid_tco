@@ -2,23 +2,23 @@
   "findings": [
     {
       "category": "documentation_entropy",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-001",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-001.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "PROJECT_CHARTER.md exceeds 200-line scannable budget",
       "verification_script": "scripts/check_charter_size.py"
     },
     {
       "category": "charter_sprawl",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-002",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-002.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "PROJECT_CHARTER.md \u00a711 Change Log duplicates CHANGELOG.md",
       "verification_script": "scripts/check_charter_size.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T17:20:30.116563+00:00",
-  "git_branch": "governance/phase-1-invariant-checks",
-  "git_head_sha": "983515f99a7556756bca729c407070216c1486af",
+  "generated_at": "2026-05-29T18:47:08.235866+00:00",
+  "git_branch": "governance/phase-2-charter-decomposition",
+  "git_head_sha": "e0f34276ae503456c8ccc8d7d68181b7a14b1aec",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,20 +235,18 @@
     }
   ],
   "summary": {
-    "findings_closed": 1,
+    "findings_closed": 3,
     "findings_closed_historical": 1,
     "findings_in_progress": 2,
-    "findings_open": 16,
+    "findings_open": 14,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
     "migrations_total": 1,
     "open_by_category": {
       "audit_doc_accumulation": 1,
-      "charter_sprawl": 1,
       "cross_session_amnesia": 1,
       "dead_artifacts": 1,
-      "documentation_entropy": 1,
       "fake_completion": 1,
       "fragmented_standards": 3,
       "governance_gaps": 1,
