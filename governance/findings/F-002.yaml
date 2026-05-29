@@ -2,9 +2,9 @@ id: F-002
 title: PROJECT_CHARTER.md §11 Change Log duplicates CHANGELOG.md
 category: charter_sprawl
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: PROJECT_CHARTER.md lines 759-786 contain a Change Log table with 13 dated entries that overlap CHANGELOG.md.
 verification_script: scripts/check_charter_size.py    # also asserts §11 absent

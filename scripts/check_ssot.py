@@ -25,7 +25,9 @@ from pathlib import Path
 
 CHARTER_PATH = Path("PROJECT_CHARTER.md")
 ADR_DIR = Path("docs/ADR")
-WATCHED_DIRS = ("src", "notebooks", "docs/ADR")
+GOVERNANCE_ADR_DIR = Path("governance/adrs")
+GOVERNANCE_CHANGELOG = Path("governance/CHANGELOG.md")
+WATCHED_DIRS = ("src", "notebooks", "docs/ADR", "governance/adrs")
 STALENESS_THRESHOLD_DAYS = 14
 
 REQUIRED_ADR_HEADINGS = (
@@ -122,55 +124,53 @@ def check_charter_staleness(metadata: dict[str, str]) -> None:
 
 
 def check_adrs() -> None:
-    """Rule 2: every ADR has the required headings and a valid filename."""
-    if not ADR_DIR.exists():
-        return
+    """Rule 2: every ADR has the required headings and a valid filename.
 
+    Checks both docs/ADR/ (legacy location) and governance/adrs/ (Phase 2+).
+    """
     filename_pattern = re.compile(r"^\d{4}-[a-z0-9-]+\.md$")
     translation_suffix = re.compile(r"-[a-z]{2}$")
 
-    for adr_path in sorted(ADR_DIR.glob("*.md")):
-        if not filename_pattern.match(adr_path.name):
-            fail(f"ADR filename violates the pattern NNNN-kebab-case.md: " f"{adr_path.name}")
-            continue
+    adr_dirs = [d for d in (ADR_DIR, GOVERNANCE_ADR_DIR) if d.exists()]
+    if not adr_dirs:
+        return
 
-        # Translations (e.g. -de, -fr) carry localized headings; canonical ADR enforces structure.
-        if translation_suffix.search(adr_path.stem):
-            continue
+    for adr_dir in adr_dirs:
+        for adr_path in sorted(adr_dir.glob("*.md")):
+            if not filename_pattern.match(adr_path.name):
+                fail(f"ADR filename violates the pattern NNNN-kebab-case.md: " f"{adr_path.name}")
+                continue
 
-        content = adr_path.read_text(encoding="utf-8")
-        for heading in REQUIRED_ADR_HEADINGS:
-            if heading not in content:
-                fail(f"ADR {adr_path.name} is missing required content: " f"{heading!r}")
+            # Translations carry localized headings; skip structure check.
+            if translation_suffix.search(adr_path.stem):
+                continue
+
+            content = adr_path.read_text(encoding="utf-8")
+            for heading in REQUIRED_ADR_HEADINGS:
+                if heading not in content:
+                    fail(f"ADR {adr_path.name} is missing required content: " f"{heading!r}")
 
 
 def check_change_log_present(charter_text: str) -> None:
-    """Rule 3: the Change Log section exists and has at least one entry."""
-    if "## 11." not in charter_text or "Change Log" not in charter_text:
-        fail("PROJECT_CHARTER.md is missing section '## 11. Change Log'.")
-        return
+    """Rule 3: governance/CHANGELOG.md exists and has at least one version entry.
 
-    # Find the Change Log section by looking for ## 11. followed by "Change Log" on the same line
-    lines = charter_text.split("\n")
-    change_log_idx = None
-    for i, line in enumerate(lines):
-        if line.startswith("## 11.") and "Change Log" in line:
-            change_log_idx = i
-            break
-
-    if change_log_idx is None:
-        fail("PROJECT_CHARTER.md is missing section '## 11. Change Log'.")
-        return
-
-    # Take everything after the Change Log heading
-    change_log_section = "\n".join(lines[change_log_idx + 1 :])
-
-    # Look for at least one table row with an ISO date
-    iso_date_pattern = re.compile(r"\|\s*\d{4}-\d{2}-\d{2}\s*\|")
-    if not iso_date_pattern.search(change_log_section):
+    Phase 2 migrated §11 Change Log out of PROJECT_CHARTER.md into
+    governance/CHANGELOG.md.  The old §11-presence check is replaced by
+    verifying the new file exists and has dated content.
+    """
+    if not GOVERNANCE_CHANGELOG.exists():
         fail(
-            "PROJECT_CHARTER.md Change Log section has no dated entries. "
-            "Every charter change must log an entry with an ISO date."
+            "governance/CHANGELOG.md is missing. "
+            "The Phase-2 migration should have created this file."
+        )
+        return
+
+    content = GOVERNANCE_CHANGELOG.read_text(encoding="utf-8")
+    iso_date_pattern = re.compile(r"\d{4}-\d{2}-\d{2}")
+    if not iso_date_pattern.search(content):
+        fail(
+            "governance/CHANGELOG.md has no dated entries. "
+            "Every release must have a dated version entry."
         )
 
 

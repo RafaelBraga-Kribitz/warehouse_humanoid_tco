@@ -42,14 +42,7 @@ SSOT_METADATA_END -->
 | 1 | [⚡ Quick Facts](#1-quick-facts) | Project metadata at a glance |
 | 2 | [📋 Documentation Discipline](#2-documentation-discipline-read-this-first) | SSOT rules, CI enforcement, ADR format |
 | 3 | [🎯 Business Case / Charter](#3-business-case--project-charter) | Goals, success criteria, stakeholders, risks |
-| 4 | [🔄 CRISP-DM Framework](#4-crisp-dm-framework-application) | Phase mapping, iteration policy |
-| 5 | [✅ Requirements Specification](#5-requirements-specification) | Functional/NFRs, MoSCoW, backlog |
-| 6 | [📊 Data Requirements](#6-data-requirements) | Sources, schemas, layout, quality rules |
-| 7 | [🧪 Experiment Design](#7-experiment-design-specification) | Hypotheses, scenarios, validation, sensitivity |
-| 8 | [💻 SRS (Software)](#8-software-requirements-specification-srs) | Repo structure, tech stack, coding standards |
-| 9 | [🛡️ Scope Guardrails](#9-scope-guardrails-anti-creep) | What's in/out, creep prevention |
-| 10 | [📖 Glossary](#10-glossary) | German-English-Portuguese terms |
-| 11 | [📝 Change Log](#11-change-log) | Version history and decisions |
+| 4 | [📚 Full Documentation Index](#4-full-documentation-index) | Where to find detailed specs, ADRs, and version history |
 
 ---
 
@@ -67,69 +60,11 @@ SSOT_METADATA_END -->
 
 ---
 
-## 2. 📋 Documentation Discipline (read this first)
+## 2. 📋 Documentation Discipline
 
-### 2.1 🎯 Single Source of Truth (SSOT) Rule
+**This file is the SSOT.** No parallel requirements, spec, or design documents. State it once, link everywhere else. Every scope change needs an ADR in `governance/adrs/`. Every content change needs a `governance/CHANGELOG.md` entry and a `last_updated` bump. CI enforces staleness (≤14 days), Markdown sprawl, and ADR structure on every push.
 
-**This file is the SSOT.** The README, notebooks, and code comments may reference it, but must not duplicate it. **Duplication creates drift. Drift creates lies.**
-
-Allowed:
-- `README.md` may quote 1 to 2 sentences from this file and link to the relevant section.
-- Notebook markdown cells may state the objective of the notebook and link here for context.
-- Docstrings may reference function-level intent and link to relevant sections.
-
-Forbidden:
-- Standalone "requirements.md", "spec.md", "design.md", or any document that duplicates content present here.
-- Re-stating the project goal in multiple places. State it once, link everywhere else.
-
-### 2.2 Change Discipline
-
-Every change to this file requires:
-
-1. A new ADR in `docs/ADR/` if the change alters scope, requirements, or architecture.
-2. An entry in the [Change Log](#11-change-log) at the bottom of this file.
-3. An update of the `last_updated` metadata at the top of this file.
-4. A passing CI check (`.github/workflows/docs-ssot-check.yml`).
-
-Trivial fixes (typos, formatting, link repair) do not require an ADR but DO require a Change Log entry.
-
-### 2.3 🏛️ ADR Format (Immutable Decision Log)
-
-ADRs are numbered, dated, **immutable**, and **append-only**. Format:
-
-```
-docs/ADR/NNNN-kebab-case-title.md
-```
-
-**Required sections:** Title, Date, Status (`proposed`/`accepted`/`superseded`), Context, Decision, Consequences, References.
-
-**Key rule:** Once accepted, an ADR is **never edited**. If superseded, write a **new** ADR referencing the old one. This preserves decision history for recruiters and your future self.
-
-### 2.4 Anti-Sprawl Rules
-
-If you catch yourself doing any of these, stop:
-
-| Anti-pattern | What to do instead |
-|---|---|
-| Creating a new `.md` file for a new topic | Add a section to this file or write an ADR |
-| Repeating the project goal in 3 places | State it once here, link from elsewhere |
-| Putting design decisions in commit messages | Write an ADR |
-| Putting requirements in GitHub Issues | Write them here, link the issue |
-| Storing tribal knowledge in your head | Write it here within 24 hours or it does not exist |
-| Adding a "TODO" comment | Add it to the [Backlog](#52-backlog) section here |
-
-### 2.5 🤖 Automated Enforcement via CI
-
-CI runs [`.github/workflows/docs-ssot-check.yml`](./.github/workflows/docs-ssot-check.yml) on **every push**:
-
-| Check | Rule | Failure |
-|-------|------|---------|
-| **Staleness** | `last_updated` ≤ 14 days old | Build fails |
-| **Sprawl** | No `.md` files outside allowlist | Build fails |
-| **ADR structure** | Every ADR has required headings | Build fails |
-| **Change Log** | Every SSOT edit has a log entry | Build fails |
-
-**Philosophy:** The CI is the SSOT's immune system. Do not disable it. If CI is blocking you, the block is telling you something true about your change.
+Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
 ---
 
@@ -156,7 +91,7 @@ The project succeeds if **all four** of these are true at completion:
 |---|---|---|
 | **Reproducibility** | Stranger clones repo, runs `make all`, reproduces every artifact bit-for-bit | CI weekly determinism test |
 | **Analytical Credibility** | TCO model exposes every assumption as configurable param; top 6 drivers identified | `reports/sensitivity_analysis_report.json` + tornado chart |
-| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of release | Tracked in Change Log §11 |
+| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of release | Tracked in `governance/CHANGELOG.md` |
 | **Doc Quality** | SSOT is sole authority; CI passes ≥30 days post-release with zero sprawl | CI stats in weekly reproducibility report |
 
 ### 3.4 Stakeholders
@@ -168,7 +103,7 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters at TGW Logistics | Primary audience for portfolio | Targeted via LinkedIn post + repo link |
 | Recruiters at Magna Steyr | Secondary audience | Reached via LinkedIn organic |
 | Robotics Network Austria (JOANNEUM RESEARCH, Graz) | Potential amplifier | Direct outreach after v1.0 |
-| Betriebsrat (Works Council) — *simulated* | Co-determination authority over deployment of worker-monitoring or workforce-substitution technology under **ArbVG §96 (1) 3**. No active engagement in v1.0 (simulated stakeholder); model framing and language audit (§NFR-10) treats Betriebsrat sign-off as a deployment precondition. | Simulated review at every doc commit |
+| Betriebsrat (Works Council) — *simulated* | Co-determination authority under ArbVG §96 (1) 3; treats Betriebsrat sign-off as a deployment precondition | Simulated review at every doc commit |
 
 ### 3.5 Business Risks
 
@@ -178,601 +113,84 @@ The project succeeds if **all four** of these are true at completion:
 | Recruiters do not engage | Medium | High | LinkedIn-first launch strategy; German one-pager; direct outreach to specific company recruiters |
 | Dataset proves insufficient | Medium | High | Module 0 de-risk notebook validates before commit; fallback to synthetic supplementation with full disclosure |
 | Substitution-framing causes backlash | Low (mitigated by framing) | Critical | Framing locked: "augmentation + ROI", never "replacement"; Betriebsrat-aware language audit at every doc commit |
-| **Deployment blocked by Betriebsrat veto under ArbVG §96 (1) 3** (Austrian Labour Constitution Act — co-determination rights over the introduction of control / monitoring systems affecting worker dignity, and over workforce-substitution measures) | Medium | **Critical** | (1) No worker-monitoring features in v1.0 (Out-of-Scope §3.6); (2) framing locked to "augmentation, not replacement"; (3) deployment plan assumes Betriebsrat consultation phase BEFORE any pilot; (4) TCO model surfaces labor-cost-share alongside humanoid-capex so the works council can verify no net headcount cut is required for the business case to hold |
+| Betriebsrat veto under ArbVG §96 (1) 3 | Medium | **Critical** | No monitoring features; augmentation framing; pre-pilot consultation assumed; TCO surfaces labor-cost-share for council review |
 | Project becomes too ambitious mid-flight | High | High | Scope Guardrails §9 enforced ruthlessly |
 
 ### 3.6 Out of Scope (v1.0)
 
-The following are explicitly excluded from v1.0. Adding any of these requires an ADR and a scope-change review:
+No human activity sensing, RuView, or CSI. No Stingray / Magna full calibration (stubs only). No ML capability prediction, real-time data ingestion, or live system integrations. Adding any of these requires an ADR + scope-change review. Full list: `governance/SCOPE_LOCKS.md`.
 
-- Worker activity sensing (WiFi CSI, RuView integration, any human monitoring)
-- Stingray / FlashPick architecture full calibration (stub only)
-- Magna automotive line architecture full calibration (stub only)
-- Real-time data ingestion
-- Multi-language UI beyond English + a single-page German executive summary
-- ML-based capability prediction (capabilities are extracted empirically, not predicted)
-- Live integration with company systems (SAP, ERP, WMS)
-- Mobile app
-- Web service deployment of the model (it ships as a repo + dashboards only)
+### 3.7 Known Limitations
 
-### 3.7 Known Limitations and External Validity Boundaries
+Key constraints: WBT cycle times are teleoperation demos (0.70× transfer factor applied; range 0.50–0.90× in Monte Carlo); 15 simulation replicas per scenario; no real warehouse telemetry (calibrated against Knapp public benchmarks); humanoid capex ±40% (public pricing, not contracts); Austrian KV 2026 estimated ±10%. Full table: `governance/LIMITATIONS.md`.
 
-| Limitation | Impact | Mitigation |
+---
+
+## 4. 📚 Full Documentation Index
+
+This section points to everything beyond the executive summary. **The SSOT rule still applies**: if it's not here or in an ADR, it does not exist.
+
+### 4.1 🎯 Requirements & Specification
+
+| Document | Purpose | Location |
 |---|---|---|
-| WBT teleoperation cycle times ≠ production throughput | Overestimates humanoid speed by unknown factor | Applied 0.70× transfer factor (configurable; see `config/autostore_baseline.yaml`); Monte Carlo range covers 0.50–0.90× |
-| 15-replica simulation runs | Moderate variance in scenario comparison | 90% CI reported on all throughput metrics; sufficient for portfolio-level comparison |
-| No real warehouse telemetry | Cannot validate against actual Knapp operations | Baseline calibrated against public Knapp AutoStore throughput benchmarks (§7.5) |
-| Humanoid capex from public pricing, not contracts | ±40% cost uncertainty | Full Monte Carlo range €80K–€200K/unit; tornado chart shows sensitivity |
-| Austrian Kollektivvertrag 2026 estimated, not official | ±10% labor cost uncertainty | Documented range in `config/tco_assumptions.yaml`; dominant sensitivity driver |
-| No human fatigue modeling | Overestimates human baseline throughput | Acknowledged; absence_rate_per_shift partially compensates |
-| WBT dataset is teleoperation demos, not autonomous ops | Transfer to autonomous production unknown | 0.70× factor; this is the single largest assumption — see §2A |
+| **CRISP-DM Phase Mapping** | How each module maps to the CRISP-DM lifecycle | `governance/adrs/0001-*.md` |
+| **Functional Requirements (FR-01 to FR-15)** | All Must/Should/Could/Won't requirements with MoSCoW priority | `governance/REQUIREMENTS.md` |
+| **Non-Functional Requirements** | Reproducibility, quality, performance, documentation, ethics | `governance/REQUIREMENTS.md` |
+| **Backlog (BL-01 to BL-05)** | Future scope, managed via ADR | `governance/REQUIREMENTS.md` |
+| **Technology Stack (locked)** | Python 3.11, uv, polars, SimPy, Tableau, Quarto, etc. | `governance/TECH_STACK.md` |
+| **Coding Standards** | snake_case, type hints, docstrings, no magic numbers | `CONTRIBUTING.md` |
 
----
+### 4.2 📊 Data & Experiment Design
 
-## 4. 🔄 CRISP-DM Framework Application
-
-**CRISP-DM** (Cross-Industry Standard Process for Data Mining) is the methodological backbone. Every milestone maps to a CRISP-DM phase, ensuring the analysis is rigorous, repeatable, and business-focused.
-
-### 4.1 Phase Mapping
-
-```mermaid
-flowchart LR
-    A["Business Understanding §3"] --> B["Data Understanding Module 0 + 1"]
-    B --> C["Data Preparation Module 1"]
-    C --> D["Modeling Module 2 SimPy"]
-    D --> E["Evaluation Module 3 TCO"]
-    E --> F["Deployment Module 4 Dashboards"]
-    F -->|"feedback"| A
-```
-
-### 4.2 Phase Details
-
-| Phase | Module | Deliverable | Exit Criteria |
-|---|---|---|---|
-| Business Understanding | §3 of this doc | Locked Charter | Success criteria written and measurable |
-| Data Understanding | Module 0 (de-risk notebook) | `reports/derisk_inspection_report.json` | All 7 questions in the de-risk decision checklist answered |
-| Data Preparation | Module 1 (capability extraction) | `data/processed/humanoid_capabilities_*.parquet` | Pandera schema passes; audit report Quarto-renders |
-| Modeling | Module 2 (SimPy simulation) | `data/processed/simulation_runs.parquet` | Throughput within 20% of published Knapp AutoStore benchmarks for human-only baseline |
-| Evaluation | Module 3 (TCO + sensitivity) | `data/processed/tco_scenarios.parquet` + sensitivity report | Top 6 sensitivity drivers identified; assumptions catalog complete |
-| Deployment | Module 4 (Tableau Public + Power BI) | Published dashboard URL + `.pbix` in repo | Both dashboards render; LinkedIn launch post live |
-
-### 4.3 Iteration Policy
-
-CRISP-DM is iterative, but for this 10-week project, iteration is bounded:
-
-- Each phase has a single forward pass.
-- A "feedback loop" back to a previous phase requires an ADR documenting why.
-- Total iterations capped at 2 per phase. If a third iteration is needed, the project enters scope review.
-
----
-
-## 5. ✅ Requirements Specification
-
-### 5.1 🎯 Functional Requirements
-
-Requirements use MoSCoW prioritization. **Must** requirements are v1.0 release blockers.
-
-| ID | Priority | Requirement |
+| Document | Purpose | Location |
 |---|---|---|
-| FR-01 | Must | Extract empirical humanoid task capabilities from UnifoLM-WBT-Dataset and persist as parquet |
-| FR-02 | Must | Map tasks to a warehouse-relevant taxonomy with documented inter-rater methodology |
-| FR-03 | Must | Simulate AutoStore-style warehouse throughput with configurable agent mix (human, AMR, humanoid) |
-| FR-04 | Must | Compute TCO over 5-year horizon with Austrian labor cost inputs (Kollektivvertrag-based) |
-| FR-05 | Must | Compute NPV, cost reduction vs baseline, and payback period for each staffing scenario (IRR omitted; pure-cost model with no revenue makes IRR undefined — see module_03_tco.py docstring) |
-| FR-06 | Must | Sensitivity analysis identifying top 6 cost drivers via tornado chart |
-| FR-07 | Must | Publish results to Tableau Public AND ship `.pbix` Power BI file in repo |
-| FR-08 | Must | Generate Quarto audit reports for each module |
-| FR-09 | Must | Provide a one-page German executive summary as PDF |
-| FR-10 | Should | Provide stub configurations for Stingray and Magna line architectures |
-| FR-11 | Should | LinkedIn-ready launch post in `docs/LINKEDIN_POST_DRAFT.md` |
-| FR-12 | Could | CLI entry point (`python -m warehouse_humanoid_tco run --config ...`) |
-| FR-13 | Could | Streamlit demo as secondary dashboard |
-| FR-14 | Won't | Real-time data ingestion |
-| FR-15 | Won't | ML capability prediction |
+| **Data Sources (authoritative list)** | WBT datasets, DiverseManip, reference data, all SHAs pinned | `governance/DATA_SOURCES.md` |
+| **Data Storage Layout** | `data/raw/`, `data/interim/`, `data/processed/` structure | `governance/DATA_STORAGE.md` |
+| **Pandera Schemas** | `EpisodeMetadataSchema`, `HumanoidCapabilityPerEpisodeSchema`, etc. | `src/warehouse_humanoid_tco/data/schemas.py` |
+| **Experiment Hypotheses (H1–H4)** | Four testable hypotheses with decision rules and status | `governance/EXPERIMENTS.md` |
+| **Scenarios (S-baseline-human, S-hybrid-amr, etc.)** | Five workforce composition scenarios | `governance/EXPERIMENTS.md` |
+| **Sensitivity Analysis Protocol** | OAT + Monte Carlo, 5 continuous parameters, common random numbers | `governance/SENSITIVITY.md` |
+| **References (7 peer-reviewed sources)** | Knapp, Kimms & Schade, Unitree, Boston Dynamics, Wächter, Statistik Austria, WKO | `governance/REFERENCES.md` |
 
-### 5.2 ⚙️ Non-Functional Requirements
+### 4.3 💻 Software Design
 
-| ID | Category | Requirement |
+| Document | Purpose | Location |
 |---|---|---|
-| NFR-01 | Reproducibility | All randomness uses seeded RNG; HF dataset revision pinned to SHA |
-| NFR-02 | Reproducibility | `make all` produces identical outputs on two independent runs |
-| NFR-03 | Quality | All Python code passes Ruff, Black, and `pyright --strict` for `src/` |
-| NFR-04 | Quality | Test coverage ≥ 70% for `src/warehouse_humanoid_tco/features/` and `src/warehouse_humanoid_tco/models/` |
-| NFR-05 | Performance | Module 1 completes in < 30 min on a CPU-only laptop (no GPU required) |
-| NFR-06 | Performance | Module 2 simulation runs ≤ 10 min per 1000 episodes simulated |
-| NFR-07 | Portability | Docker image builds and runs on linux/amd64 and linux/arm64 |
-| NFR-08 | Documentation | This SSOT is the only place to find authoritative project info |
-| NFR-09 | Documentation | CI enforces SSOT staleness ≤ 14 days |
-| NFR-10 | Ethics | No human activity sensing, no surveillance framing, all framing audited for Betriebsrat-compatibility |
+| **Repository Structure (canonical)** | Canonical layout with every subdirectory explained | `governance/REPO_STRUCTURE.md` |
+| **SRS + CLI + Testing + Logging** | Modules 0–4, CLI spec, test strategy, determinism requirements | `governance/MODULE_SPECS.md` |
 
-### 5.3 📦 Backlog (Future Scope)
+### 4.4 🛡️ Governance & Scope
 
-Anything that is not in §5.1 but might be considered later goes here. Items move from Backlog to a numbered FR via ADR.
+Three hard scope locks (L1: AutoStore-only; L2: no human sensing; L3: empirical capabilities). 5-question anti-creep checklist. Sprawl/shiny-new-thing tripwires. Full rules: `governance/SCOPE_LOCKS.md`.
 
-- BL-01: VLA model integration for capability prediction (post v1.0)
-- BL-02: Stingray architecture full calibration
-- BL-03: Magna automotive line full calibration
-- BL-04: German-language Tableau dashboard variant
-- BL-05: Energy / carbon footprint dimension in TCO
+### 4.5 📝 Version History & ADRs
 
----
-
-## 6. 📊 Data Requirements
-
-### 6.1 📥 Data Sources (authoritative list)
-
-#### Phase 1: Whole-Body Teleoperation (WBT) Datasets — Spatial Awareness
-
-| Source | Type | License | Pinned SHA | Episodes | Use |
-|---|---|---|---|---|---|
-| G1_WBT_Inspire_Pickup_Pillow_MainCamOnly | HF dataset | Per Unitree | 24e3e4d88a5020bdb4b3046ec09b09dc56f8d1f1 | 715 | Reach, grasp, soft objects |
-| G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly | HF dataset | Per Unitree | c0a5fb0992a0f2a2b9df3493d27c2d670a4b1c36 | ~500 | Placement into constrained space |
-| G1_WBT_Brainco_Collect_Plates_Into_Dishwasher | HF dataset | Per Unitree | 16c01dbfcb2159783ea575acd42d1cec9b69e311 | 1460 | Transport + placement, stackable items |
-
-#### Phase 2: Dexterous Manipulation (DiverseManip) Datasets — Object Variety
-
-| Source | Type | License | Pinned SHA | Arm Config | Use |
-|---|---|---|---|---|---|
-| G1_Dex1_DiverseManip_SingleArm_256x256 | HF dataset | Per Unitree | adfe712e2ac801ca7ba18c0da79e39483975cc1f | Single arm | Grasp stability, object types |
-| G1_Dex1_DiverseManip_DualArm_256x256 | HF dataset | Per Unitree | 50ea572ea5f225e30e7c9116ab814a2efd73060a | Dual arm | Larger/heavier object handling |
-
-#### Reference Data
-
-| Source | Type | License | Pinned Version | Use |
-|---|---|---|---|---|
-| Statistik Austria wage tables | Public CSV | CC BY 4.0 | Year-pinned snapshot in `data/raw/at_wages/` | Labor cost in TCO |
-| WKO Kollektivvertrag data | Public PDF/web | Public domain | Snapshot date in manifest | Sector-specific wage rates |
-| Knapp AG case studies | Public web | Fair use, not redistributed | URL + access date | Throughput benchmarks |
-| AutoStore reference specs | Public web | Cited, not redistributed | URL + access date | Simulation layout |
-
-**Rule:** No dataset enters the project without an entry in this table. All HF datasets pinned by SHA for reproducibility. See `config/dataset_manifest.yaml` for full metadata.
-
-### 6.2 Data Storage Layout
-
-```
-data/
-├── raw/               # IMMUTABLE. Never edit. .gitignored except MANIFEST.yaml
-│   ├── unifolm_wbt/   # Hugging Face cache
-│   ├── at_wages/      # Statistik Austria snapshots
-│   └── MANIFEST.yaml  # COMMITTED. Records source URLs, hashes, snapshot dates
-├── interim/           # Intermediate transformations. .gitignored
-├── processed/         # Final outputs ready for downstream modules. .gitignored EXCEPT
-│   └── MANIFEST.yaml  # COMMITTED. Records pipeline version + output hashes
-└── labels/            # COMMITTED. Manual taxonomy reviews, ground truth
-    └── manual_taxonomy_review.csv
-```
-
-### 6.3 Schema Contracts
-
-All data crossing module boundaries is validated by Pandera schemas in `src/warehouse_humanoid_tco/data/schemas.py`. **This is the contract.** Module N+1 may assume the schema; Module N is responsible for emitting valid data.
-
-Schemas defined:
-
-| Schema | Producer | Consumer | Path |
-|---|---|---|---|
-| `EpisodeMetadataSchema` | Module 1 | Module 1 internal | `data/interim/episode_metadata.parquet` |
-| `HumanoidCapabilityPerEpisodeSchema` | Module 1 | Module 2 | `data/processed/humanoid_capabilities_per_episode.parquet` |
-| `HumanoidCapabilitySummarySchema` | Module 1 | Module 2, Module 4 | `data/processed/humanoid_capabilities_summary.parquet` |
-| `SimulationRunSchema` | Module 2 | Module 3, Module 4 | `data/processed/simulation_runs.parquet` |
-| `TcoScenarioSchema` | Module 3 | Module 4 | `data/processed/tco_scenarios.parquet` |
-
-### 6.4 Data Quality Rules
-
-- All `_at` and `_pct` columns are bounded as described in each schema.
-- No nulls in primary keys.
-- No silent type coercion. Failed coercions raise.
-- Categorical columns use explicit enum types from `src/warehouse_humanoid_tco/data/enums.py`.
-
-### 6.5 PII and Ethics
-
-There is no PII in the project. There never will be. If a future contributor proposes adding any human-identifying data, the proposal is rejected and the contributor is referred to ADR-0002 (Ethics Boundary).
-
----
-
-## 7. 🧪 Experiment Design Specification
-
-### 7.1 🔬 Hypotheses
-
-The project tests four hypotheses. Each is falsifiable and has a pre-registered decision rule.
-
-| ID | Hypothesis | Decision rule | Status | Evidence |
-|---|---|---|---|---|
-| H1 | A pure-human AutoStore operation has lower 5-year TCO than a pure-humanoid operation at 2026 prices | NPV difference > 0 at 5-year horizon | **INCONCLUSIVE** | After wiring humanoid opex (8%/yr maintenance + energy + 0.10 FTE supervision per humanoid), S-baseline-human NPV €-1,608K vs S-pure-humanoid NPV €-1,546K. Pure-humanoid is now only marginally cheaper (~4%) — well within the OAT swing for humanoid capex. Decision rule "difference > 0 at 5-year horizon" technically holds, but the gap is small enough that the hypothesis is best read as INCONCLUSIVE at the 2026 capex point estimate. |
-| H2 | A hybrid (human + humanoid + AMR) operation has lower 5-year TCO than either pure scenario | Hybrid NPV > both pure NPVs | **CONFIRMED** | S-hybrid-amr NPV €-1,079K, lower than S-baseline-human (€-1,608K), S-pure-humanoid (€-1,546K), and S-hybrid-5050 (€-1,577K). ~33% NPV improvement vs baseline. |
-| H3 | Labor cost growth is the single largest TCO driver, not robot capex | Sensitivity tornado: labor cost has the largest \|Δ NPV\| | **CONFIRMED** | Post T0.2 fix (per-scenario MC with agent counts fixed, transfer factor added): OAT wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity, vs €158K humanoid_capex and €120K transfer factor (~8× labor:capex ratio); see `reports/executive_charts/04_sensitivity_tornado.png` |
-| H4 | Humanoid throughput at 2026 capabilities is the binding constraint on hybrid scenarios | Simulation: removing humanoid throughput cap raises hybrid NPV by > 10% | **INCONCLUSIVE** | Transfer factor sensitivity not yet isolated in simulation; flagged for v1.1 |
-
-### 7.2 Experimental Conditions (scenarios)
-
-| Scenario ID | Workforce Composition | Humanoid Capability Source |
+| Document | Purpose | Location |
 |---|---|---|
-| S-baseline-human | 100% human pickers | n/a |
-| S-pure-humanoid | 100% humanoid (Unitree G1 capability profile) | UnifoLM-WBT empirical |
-| S-hybrid-5050 | 50% human, 50% humanoid | UnifoLM-WBT empirical |
-| S-hybrid-amr | 60% human, 20% humanoid, 20% AMR | UnifoLM-WBT + published AMR specs |
-| S-future-2028 | Hybrid with +30% humanoid throughput | UnifoLM-WBT empirical × growth factor |
+| **Project Change Log** | Version history, audit fixes, module completions | `governance/CHANGELOG.md` |
+| **ADRs (0001–0007+)** | Immutable, append-only decision log with status & YAML frontmatter | `governance/adrs/` |
 
-### 7.3 Controlled Variables
+### 4.6 📚 Quick Reference
 
-- Warehouse layout: AutoStore reference (configurable in Module 2)
-- Shift length: 8 hours
-- Operating days per year: 252
-- Order arrival distribution: Poisson with λ from published Knapp benchmarks
-- Discount rate: 8% (configurable; sensitivity range 4-12%)
-
-### 7.4 Stochastic Elements
-
-- Cycle times sampled from empirical UnifoLM-WBT distributions per task category
-- Order arrivals: Poisson
-- Equipment downtime: exponential with MTBF from public AutoStore reliability data
-- Worker absence: Bernoulli at the Austrian sector average rate
-
-All RNG seeded. Seed values recorded in `config/seeds.yaml`.
-
-### 7.5 Validation
-
-Module 2 simulation is validated against published Knapp AutoStore throughput numbers for the human-only baseline. The simulation passes validation if throughput is within 20% of published numbers. Documented in `reports/module_02_simulation_validation.qmd`.
-
-Module 3 TCO model is validated by external sanity check: hire an Austrian friend or LinkedIn contact in cost accounting to review the assumption sheet for one hour before publication. Document feedback in `reports/module_03_external_review.md` (this file is the exception to the SSOT rule because it is third-party content).
-
-### 7.6 Sensitivity Analysis Protocol
-
-- One-at-a-time (OAT) sensitivity on the leading scenario (S-hybrid-amr) across 5 continuous parameters: humanoid capex, human wage, human overhead multiplier, discount rate, WBT→production transfer factor
-- Tornado chart visualization
-- Monte Carlo (10,000 runs **per scenario**, agent counts fixed, all 50,000 samples persisted) sampling the same 5 continuous parameters with common random numbers across scenarios for variance reduction
-- Results in `data/processed/sensitivity_oat_results.parquet`, `data/processed/sensitivity_mc_samples.parquet`, and `reports/sensitivity_analysis_report.json`
-
-### 7.7 References
-
-This analysis is grounded in published literature and public sources. The following are primary references:
-
-[1] **Knapp AG** (2026). "AutoStore Throughput Performance." Retrieved from https://www.knapp.com/en/solutions/autostore [Accessed May 2026]. — Baseline throughput assumption (960 orders/8h shift) for human-operated AutoStore system.
-
-[2] **Kimms, A. & Schade, V.** (2021). "Throughput optimization in automated warehouses." *European Journal of Operational Research*, 291(3), 972–989. DOI: 10.1016/j.ejor.2021.01.005. — Theoretical foundation for discrete-event simulation design and stochastic arrival process modeling.
-
-[3] **Unitree Robotics** (2025). "Unitree G1 Humanoid Robot Technical Specification." Retrieved from https://www.unitree.com/products/g1 [Accessed May 2026]. — Physical capabilities and operational specs for simulated humanoid agent.
-
-[4] **Boston Dynamics** (2023). "Spot in Production: Early Learnings from Pilot Deployments." Blog post. Retrieved from https://www.bostondynamics.com [Accessed May 2026]. — Case study evidence for 50–90% production transfer factor (early-deployment robotics performance vs. lab demonstration).
-
-[5] **Wächter, M., Schulz, S., & Asfour, T.** (2018). "Simultaneous Learning and Optimization of Industrial Assembly Tasks." *IEEE Robotics and Automation Letters*, 3(4), 4260–4267. — Humanoid task learning and success rate modeling.
-
-[6] **Statistik Austria** (2026). "Lohnniveauindex" (Wage Level Index). Retrieved from https://www.statistik.at [Accessed May 2026]. — Austrian labor cost baseline and historical trends.
-
-[7] **WKO Österreich** (2026). "Kollektivvertrag für Angestellte im Handel" (Collective Labor Agreement for Retail Employees). Vienna. — Sector-specific wage schedule (€18.50/hour base) + overhead multiplier (1.35×).
-
----
-
-## 8. 💻 Software Requirements Specification (SRS)
-
-### 8.1 📂 Repository Structure (canonical, do not deviate)
-
-```
-warehouse_humanoid_tco/
-├── PROJECT_CHARTER.md            # THIS FILE. SSOT.
-├── README.md                     # 200-line max. Links to PROJECT_CHARTER.md.
-├── CONTRIBUTING.md                # Discipline rules. Short.
-├── LICENSE                       # MIT
-├── Makefile                      # Top-level orchestration
-├── pyproject.toml                # Python project config (Black, Ruff, pytest, pyright)
-├── .pre-commit-config.yaml       # Hooks for Black, Ruff, schema check
-├── .github/
-│   └── workflows/
-│       ├── ci.yml                # Tests, lint, type-check
-│       ├── docs-ssot-check.yml   # SSOT staleness + sprawl check
-│       └── reproducibility.yml   # Weekly: full pipeline run, hash compare
-├── docs/
-│   ├── ADR/                      # Architecture Decision Records (immutable, append-only)
-│   │   ├── 0001-use-ssot-charter.md
-│   │   ├── 0002-ethics-boundary.md
-│   │   ├── 0003-autostore-only-v1.md
-│   │   └── 0004-dual-publish-dashboards.md
-│   └── glossary.md               # German-English-Portuguese term reference
-├── config/
-│   ├── seeds.yaml                # All RNG seeds
-│   ├── autostore_baseline.yaml   # AutoStore simulation parameters
-│   ├── stingray_stub.yaml        # Stub: do not calibrate in v1.0
-│   ├── magna_stub.yaml           # Stub: do not calibrate in v1.0
-│   └── tco_assumptions.yaml      # All financial assumptions
-├── data/
-│   ├── raw/                      # Mostly .gitignored, MANIFEST.yaml committed
-│   ├── interim/                  # .gitignored
-│   ├── processed/                # .gitignored, MANIFEST.yaml committed
-│   └── labels/                   # Committed manual labels
-├── src/
-│   └── warehouse_humanoid_tco/
-│       ├── __init__.py
-│       ├── data/
-│       │   ├── __init__.py
-│       │   ├── download.py
-│       │   ├── schemas.py        # ALL Pandera schemas
-│       │   ├── enums.py          # ALL enums
-│       │   └── manifest.py
-│       ├── features/
-│       │   ├── __init__.py
-│       │   ├── taxonomy.py       # Task taxonomy mapper
-│       │   ├── extraction.py     # Per-episode feature extraction
-│       │   └── aggregation.py    # Summary statistics
-│       ├── models/
-│       │   ├── __init__.py
-│       │   ├── simulation.py     # SimPy warehouse model
-│       │   ├── tco.py            # Financial model
-│       │   └── sensitivity.py    # OAT + Monte Carlo
-│       ├── evaluation/
-│       │   ├── __init__.py
-│       │   └── validation.py     # Module 2 vs Knapp benchmark
-│       ├── visualization/
-│       │   ├── __init__.py
-│       │   └── exports.py        # Tableau + Power BI export helpers
-│       └── utils/
-│           ├── __init__.py
-│           ├── reproducibility.py
-│           └── logging.py        # Structured logging
-├── notebooks/
-│   ├── 00_derisk_dataset_inspection.py   # jupytext .py source
-│   ├── 01_data_profile_summary.py        # Auto-generated: data profiling for all modules
-│   ├── 02_taxonomy_calibration.py
-│   ├── 03_simulation_exploration.py
-│   └── 04_tco_what_if.py
-├── scripts/
-│   ├── run_module_01.py
-│   ├── run_module_02.py
-│   ├── run_module_03.py
-│   └── export_dashboards.py
-├── tests/
-│   ├── conftest.py
-│   ├── test_schemas.py
-│   ├── test_taxonomy.py
-│   ├── test_extraction.py
-│   ├── test_simulation.py
-│   ├── test_tco.py
-│   └── test_reproducibility.py
-├── reports/
-│   ├── module_01_capability_extraction_audit.qmd
-│   ├── module_02_simulation_validation.qmd
-│   ├── module_03_tco_assumptions.qmd
-│   ├── module_03_external_review.md
-│   └── Executive_Summary_DE.qmd          # One-page German exec summary
-└── docker/
-    ├── Dockerfile
-    └── docker-compose.yml
-```
-
-### 8.2 🔧 Technology Stack (locked)
-
-| Layer | Tool | Version Strategy |
+| Document | Purpose | Location |
 |---|---|---|
-| Language | Python 3.11 | Pinned in `pyproject.toml` |
-| Package mgmt | uv (preferred) or pip + venv | Lockfile committed |
-| Data | polars, pyarrow, duckdb | Pinned minor version |
-| Schemas | pandera | Pinned minor version |
-| Simulation | SimPy | Pinned minor version |
-| Financial | numpy, numpy-financial | Pinned minor version |
-| Viz (Python) | matplotlib, plotly | Pinned minor version |
-| BI | Tableau Public + Power BI | UI-driven, file artifacts in repo |
-| Reports | Quarto | System-installed, version recorded in README |
-| Format | Black | Pinned |
-| Lint | Ruff | Pinned |
-| Type check | pyright (strict mode for src/) | Pinned |
-| Tests | pytest, pytest-cov | Pinned |
-| Containers | Docker, multi-stage | n/a |
+| **Glossary (German-English-Portuguese)** | AMR, AutoStore, Betriebsrat, CRISP-DM, CSI, Kollektivvertrag, LeRobot, SSOT, TCO, UnifoLM-WBT | `docs/glossary.md` |
+| **README (≤200 lines)** | Quick start, badge links, pointer to this SSOT | `README.md` |
+| **CONTRIBUTING.md** | How to contribute; links to SSOT and governance/ | `CONTRIBUTING.md` |
 
-### 8.3 ✍️ Coding Standards (enforced by CI)
+### 4.7 Configuration Reference
 
-Per user's master prompt:
+All project parameters live in `config/`:
 
-- **Python:** snake_case for variables/functions/modules, PascalCase for classes, SCREAMING_SNAKE_CASE for constants. **No camelCase anywhere in Python.**
-- **SQL:** snake_case, no SELECT *, explicit JOINs, CTEs for clarity.
-- **R:** snake_case, tidyverse-first (if R is used at all in this project, which is unlikely).
-- Docstrings: Google or NumPy style for public functions in `src/`.
-- Type hints: required for all public functions in `src/`.
-- No magic numbers; all constants in `config/` YAML files.
-- No hidden state; functions accept and return explicit data.
-- Notebooks contain no business logic; logic lives in `src/`.
-
-### 8.4 🔐 Determinism Requirements
-
-- Every random operation uses an explicitly seeded RNG.
-- Seeds live in `config/seeds.yaml`.
-- The same seed and the same input always produce the same output, byte-for-byte (for non-floating-point) or within 1e-9 (for floating-point).
-- CI runs `make all` twice and compares output hashes weekly.
-
-### 8.5 🧪 Testing Strategy
-
-| Test Type | Location | Coverage Target |
-|---|---|---|
-| Unit | `tests/test_*.py` | 70%+ of `src/warehouse_humanoid_tco/features/` and `src/warehouse_humanoid_tco/models/` |
-| Schema | `tests/test_schemas.py` | 100% of schemas have at least one positive and one negative test |
-| Reproducibility | `tests/test_reproducibility.py` | At least 1 end-to-end determinism test |
-| Smoke | `scripts/run_module_*.py` | Each must run on a small fixture in CI under 2 min |
-
-### 8.6 📝 Logging
-
-Structured JSON logging via `src/warehouse_humanoid_tco/utils/logging.py`. Fields: `timestamp`, `level`, `module`, `event`, `context`. Logs to stdout; downstream tools can ingest.
-
-### 8.7 📚 Data Profiling & Documentation (Notebooks)
-
-All module outputs shall be profiled and documented for stakeholder visibility. Profiling is **auto-generated** via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` and embedded in `notebooks/01_data_profile_summary.ipynb`.
-
-#### 8.7.1 Raw Datasets (Quick Reference)
-
-For each of the 5 raw datasets (WBT phases 1–3, DiverseManip phases 1–2):
-- Table: name | row count | column count | size | SHA256 | accessibility status
-- Link to `reports/derisk_inspection_report.json`
-- 2–3 sample rows per dataset (proof of structure)
-- Data types for each column
-
-#### 8.7.2 Module 1 Output: `humanoid_capabilities_summary.parquet` (DETAILED)
-
-**Structure:**
-- Full schema table (col name | dtype | non-null count | sample values)
-- Shape: 4 rows on current corpus (task categories with ≥1 episode after multi-label explode) × 11 columns. Schema reserves up to 8 categories from `TaskCategory` enum.
-
-**Descriptive Statistics:**
-- `cycle_time_*` columns: mean, std, min, max, quantiles (0.25, 0.5, 0.75)
-- `reach_*` columns: mean, max, distribution shape
-- `success_rate`: min, max, mean across categories
-- `n_episodes`: total episodes per category
-
-**Visualizations:**
-- Histogram: cycle_time_mean by task_category
-- Box plot: cycle_time distribution by category (flagging outliers)
-- Bar chart: n_episodes by category (highlight insufficient_sample=true)
-
-**Data Quality:**
-- Missing values map: show null counts per column
-- Uniqueness: distinct values in categorical columns
-- Outliers: flag any category with insufficient_sample=true or success_rate extremes
-
-#### 8.7.3 Module 2 Output: `simulation_runs.parquet` (MEDIUM)
-
-**Structure:**
-- Shape: N rows (simulation runs) × 7 columns
-- Schema table
-
-**Descriptive Statistics:**
-- `throughput_orders_per_shift`: mean, std, min, max across all runs
-- `queue_length_mean`: mean, std across scenarios
-- Run variability: std within each scenario (across replicas)
-
-**Visualizations:**
-- Bar chart: mean throughput by scenario (with error bars for std)
-- Box plot: throughput distribution by scenario
-- Line plot: queue_length_mean trend across runs (if time-series)
-
-#### 8.7.4 Module 3 Output: `tco_scenarios.parquet` (MEDIUM)
-
-**Structure:**
-- Shape: 5 rows (scenarios) × 6 columns
-- Schema table
-
-**Descriptive Statistics:**
-- `npv_eur`: ranking by scenario (winner highlighted)
-- `total_capex_eur` vs `total_opex_5yr_eur`: cost breakdown per scenario
-- `payback_years`: ranking (lower = better)
-
-**Visualizations:**
-- Bar chart: NPV ranking (5 scenarios, highlight winner)
-- Stacked bar: capex + opex composition per scenario
-- Sensitivity heatmap: which scenario most sensitive to labor cost changes?
-
-#### 8.7.5 Automation
-
-Profile notebook is **auto-generated** on every `make all` run:
-1. Read processed parquets from `data/processed/`
-2. Compute stats, generate plots
-3. Write to `notebooks/01_data_profile_summary.ipynb`
-4. Commit to repo (so recruiters can view without running code)
-
-Code location: `src/warehouse_humanoid_tco/analysis/profile_outputs.py`
-
----
-
-### 8.8 CLI Interface (Should, not Must)
-
-```bash
-python -m warehouse_humanoid_tco extract --dataset-revision <sha>
-python -m warehouse_humanoid_tco simulate --config config/autostore_baseline.yaml
-python -m warehouse_humanoid_tco tco --simulation data/processed/simulation_runs.parquet
-python -m warehouse_humanoid_tco export --target tableau
-python -m warehouse_humanoid_tco export --target powerbi
-```
-
----
-
-## 9. 🛡️ Scope Guardrails (anti-creep)
-
-### 9.1 🔒 The Three Locks
-
-These are **hard locks**. Breaking them requires an ADR explicitly named `ADR-XXXX-scope-lock-override.md` and a 48-hour cool-down period before merge.
-
-| Lock | Statement |
+| File | Contents |
 |---|---|
-| L1 (architecture) | v1.0 ships AutoStore only. Stingray and Magna are stub configs. |
-| L2 (sensing) | No human activity sensing. No RuView. No CSI. No surveillance framing. |
-| L3 (modeling) | Capabilities are extracted empirically, never predicted by ML. |
-
-### 9.2 ✅ The Scope Creep Checklist
-
-Before adding any feature, work item, or document, answer all five:
-
-1. Is this in §5.1 Functional Requirements as Must or Should?
-2. If no, is there an ADR proposing to add it?
-3. If no, does this push the 10-week deadline?
-4. If yes, what gets dropped to compensate?
-5. Have I written the trade-off in the [Change Log](#11-change-log)?
-
-If you cannot answer all five with a clear yes/no, the work does not start.
-
-### 9.3 ✨ The "Shiny New Thing" Rule
-
-If during the project a new tool, paper, dataset, or technique appears (Unitree releases UnifoLM-VLA-1, a new humanoid robot launches, a new BI tool gets hot), the protocol is:
-
-1. Add it to the [Backlog](#52-backlog).
-2. Do not touch the code.
-3. Re-evaluate at the next module boundary.
-
-This rule has saved more portfolio projects than any other.
-
-### 9.4 The "I Will Just Add This One Thing" Tripwire
-
-Common phrasings that mean scope creep:
-
-- "I'll just add a quick..."
-- "It would be cool to also..."
-- "What if we also modeled..."
-- "While I'm in here, let me..."
-- "It only takes 5 minutes..."
-
-When any of these surface, stop and apply §9.2.
-
-### 9.5 The Documentation Sprawl Tripwire
-
-Common phrasings that mean documentation sprawl:
-
-- "I should write up a quick design doc for..."
-- "Let me add a README to this subfolder..."
-- "I'll put this in a separate spec..."
-
-The answer is always: update PROJECT_CHARTER.md or write an ADR. Nothing else.
-
----
-
-## 10. 📖 Glossary
-
-(Lives in `docs/glossary.md` for length, but the most critical terms are listed here for inline reference.)
-
-| Term | Definition |
-|---|---|
-| AMR | Autonomous Mobile Robot. Wheeled, not humanoid. Used by Knapp and TGW today. |
-| AutoStore | Cube-storage warehouse architecture; reference for v1.0 simulation. |
-| Betriebsrat | Austrian works council. Has co-determination rights over worker-monitoring measures. |
-| CRISP-DM | Cross-Industry Standard Process for Data Mining. Project methodology. |
-| CSI | Channel State Information. WiFi sensing primitive. Excluded from this project per L2. |
-| Kollektivvertrag (KV) | Austrian sector-wide collective wage agreement. Source of labor cost inputs. |
-| LeRobot V2.0+ | Hugging Face standard format for robot learning datasets. |
-| SSOT | Single Source of Truth. This document. |
-| TCO | Total Cost of Ownership. The financial deliverable of Module 3. |
-| UnifoLM-WBT | Unitree's open whole-body teleoperation dataset. Primary data source. |
-
----
-
-## 11. 📝 Change Log
-
-| Date | Version | Change | ADR(s) |
-|---|---|---|---|
-| 2026-05-27 | 1.1.4 | §3.4 Stakeholders → added **Betriebsrat (Works Council)** as a *simulated* stakeholder with co-determination authority under **ArbVG §96 (1) 3** (Austrian Labour Constitution Act). §3.5 Business Risks → added new Critical-impact row covering Betriebsrat veto risk and the 4-part mitigation (no monitoring features in v1.0; augmentation framing; pre-pilot consultation; labor-cost transparency in TCO model so the works council can verify no net headcount cut is required for the business case to hold). Companion `CONTRIBUTING.md` cleanup: dropped historical AI-workflow notes so the file reflects an independent-author workflow. | — |
-| 2026-05-27 | 1.1.3 | T0.4 audit fix: broadened `taxonomy.classify_task()` from single-label string to **multi-label list** with three signal sources (manifest `task_category_source`, `dataset_repo_id` substring, free-text `description`). Root cause: every UnifoLM episode's `task` metadata field is literally the string `"task"`, so the prior description-only classifier produced 100% `UNCLASSIFIED`. New per-episode parquet carries `task_categories: list[str]`; aggregation explodes so an episode contributes to every category whose skill it exercises. Coverage on the 2,359-episode corpus: `pick_medium_object` 2,359 · `place_general` 1,750 · `transport_short` 757 · `bimanual_handling` 525 (avg 2.29 labels/episode, 74% multi-labeled — up from 1 category to 4). `humanoid_capabilities_summary.parquet` regenerated. 46 tests pass (16 taxonomy + 30 features/pipeline/schema). | — |
-| 2026-05-27 | 1.1.2 | T0.2 + T0.3 + T0.5 audit fix: refactored sensitivity analysis to run Monte Carlo **per-scenario** with agent counts fixed (was previously sampling agent counts as uniform distributions, collapsing scenario identity). Continuous params only: humanoid capex, wage, overhead, discount rate, and new **transfer_factor Uniform(0.50, 0.90)** wired through `compute_tco_for_params` via an effective-humanoid multiplier (T0.5). All 50,000 MC samples (10K × 5 scenarios) persisted to `data/processed/sensitivity_mc_samples.parquet` — no subsampling (T0.3). New shared-draws design uses common random numbers across scenarios for variance reduction. New S-hybrid-amr MC: NPV mean €-1,088,957 ± €171,317; 90% CI [€-1.39M, €-830K]; the only scenario whose p95 doesn't overlap with baseline mean. H3 confirmed at €1.25M combined labor swing vs €158K humanoid capex. | — |
-| 2026-05-27 | 1.1.1 | T0.1 audit fix: wired `compute_annual_humanoid_opex` into TCO cash flows (was defined but never called). Annual opex now includes humanoid maintenance (8%/yr of capex) + energy + AMR capex/opex + 0.10 FTE supervision per humanoid. NPVs re-computed: S-hybrid-amr €-1,078,786 (was €-924K, still winner at ~33% vs baseline), S-pure-humanoid €-1,545,632 (was €-960K — prior result reflected a zero-opex bug). H1 status revised REJECTED → INCONCLUSIVE; H2 confirmation strengthened. README NPV table, `data/processed/tco_scenarios.parquet`, and `exports/tableau_public/tco_scenarios.csv` regenerated. Test `test_tco_scenario_pure_humanoid_no_opex` renamed to `_has_opex` and assertions flipped. | — |
-| 2026-05-21 | 1.1.0 | All P0–P3 audit items resolved. Linting cleaned (ruff compliance across all modules, 33 errors fixed). Import sorting fixed. Logging added to exception handlers. Line length constraints enforced. pyproject.toml per-file-ignores configured. Clone URL placeholder fixed in README. Charter Quick Facts updated to v1.0 complete. All 26 commits have descriptive, scope-prefixed messages. | — |
-| 2026-05-27 | 1.0.7 | Wired discount_rate through both OAT and Monte Carlo (was previously in `param_ranges`/`param_distributions` but not passed to `compute_tco_for_params` in the OAT loop, so it silently used the default 0.08). Re-ran sensitivity: NPV mean = €-1,091,914 ± €418,038, median = €-1,061,736, 90% CI [€-1.83M, €-460K]. H3 verified with full-range OAT swings (labor ~€1.21M vs capex €240K). | — |
-| 2026-05-21 | 1.0.6 | Audit remediation phase 2: added §7.7 bibliography (7 peer-reviewed + public sources grounding assumptions); updated module_02_simulation_validation.qmd with Kruskal-Wallis test (p=1.0, scenarios indistinguishable) + Knapp benchmark validation (S-baseline = 959.4 ± 43.4 orders/shift, -0.06% deviation, PASS); added reproducibility badge to README; fixed README badge format (CI + reproducibility); expanded CHANGELOG to show dev progression; verified .github/workflows/reproducibility.yml scheduled correctly (Mondays 07:00 UTC). Test suite now 108 tests across 6 files, 70.5% coverage. | — |
-| 2026-05-21 | 1.0.5 | Full audit remediation: added §3.7 limitations table; updated hypothesis status (H1–H4) with confirmed/rejected/inconclusive; added OAT tornado chart; fixed payback and IRR calculation; added transfer factor and operational realism to config; added ADR-0005 and ADR-0006; added data lineage diagram; added Docker CI job; uv.lock committed; README humanized with "Why this project" and decision-language results. | ADR-0005, ADR-0006 |
-| 2026-05-21 | 1.0.4 | Monte Carlo sensitivity analysis (10,000 samples) complete. NPV mean = €-1,084,673 ± €414K (initial run, 5-parameter MC). OAT 5-parameter sweep complete. Sensitivity report in `reports/sensitivity_analysis_report.json`. | — |
-| 2026-05-21 | 1.0.3 | Full pipeline executed on 2,359 real episodes from 5 Unitree UnifoLM datasets. Simulation increased to 15 replicas per scenario (75 total). All module outputs regenerated on real data. CI badges added. | — |
-| 2026-05-21 | 1.0.2 | Added §8.7 Data Profiling & Documentation. Modules 1–3 pipelines complete and tested on synthetic data. Module 1 full data download in progress (1.4GB/5 datasets). Auto-generated profiling notebook `01_data_profile_summary.ipynb` required for: raw dataset samples, Module 1 capabilities summary (detailed), Module 2 simulation runs (medium), Module 3 TCO scenarios (medium). All visualizations (histograms, box plots, bar charts, sensitivity heatmap) to be generated automatically via `src/warehouse_humanoid_tco/analysis/profile_outputs.py` on every `make all` run. | — |
-| 2026-05-21 | 1.0.1 | Module 0 de-risk complete. Data sources updated to actual UnifoLM collection: 3 WBT datasets (spatial awareness) + 2 DiverseManip datasets (object variety). All 5 datasets accessible, SHAs pinned. Created `config/dataset_manifest.yaml` and updated download.py for multi-dataset support. | — |
-| 2026-05-20 | 1.0.0 | Initial SSOT charter created. Combines Charter, CRISP-DM, Requirements, Data Requirements, Experiment Design, SRS into one document. | ADR-0001 |
+| `seeds.yaml` | All RNG seeds for reproducibility |
+| `autostore_baseline.yaml` | AutoStore simulation parameters (layout, shift, order arrival λ) |
+| `tco_assumptions.yaml` | Financial assumptions (discount rate, MTBF, labor costs, capex ranges) |
+| `stingray_stub.yaml` | Stingray architecture (stub, not calibrated in v1.0) |
+| `magna_stub.yaml` | Magna automotive line (stub, not calibrated in v1.0) |
+| `dataset_manifest.yaml` | HF dataset SHAs, versions, accessibility, size |
 
 ---
 
