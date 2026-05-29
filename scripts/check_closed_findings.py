@@ -1,10 +1,69 @@
-"""Closed-finding re-verification (Phase 1 stub).
+"""Adversary core — re-run every closed finding's verification_script.
 
-Will load every closed finding, run its verification_script, and reopen +
-fail CI on regression.
+Run by `make verify` and (Phase 4) by a clean-checkout CI job. For each finding
+with status `closed`, execute its verification_script and require exit 0. A
+non-zero result is a regression: the finding was declared fixed but its contract
+no longer holds. This is the mechanism that makes closure durable rather than a
+narrative claim.
+
+`closed_historical` findings are archival records and may carry a null script;
+they are skipped.
 """
 
-from _governance_stub import main_stub
+from __future__ import annotations
+
+import subprocess
+import sys
+
+import yaml
+from _governance_check import REPO_ROOT
+
+FINDINGS = REPO_ROOT / "governance" / "findings"
+
+
+def _run(script: str) -> tuple[int, str]:
+    path = REPO_ROOT / script
+    if not path.exists():
+        return 1, f"verification_script '{script}' not found"
+    if script.startswith("tests/"):
+        # `-o addopts=` neutralizes the repo's --cov-fail-under default, which
+        # would otherwise fail a single-file run that exercises little of src/.
+        cmd = [sys.executable, "-m", "pytest", str(path), "-q", "-o", "addopts="]
+    else:
+        cmd = [sys.executable, str(path)]
+    proc = subprocess.run(  # noqa: S603
+        cmd, cwd=REPO_ROOT, capture_output=True, text=True, check=False
+    )
+    return proc.returncode, (proc.stdout + proc.stderr).strip()
+
+
+def main() -> int:
+    closed = []
+    for path in sorted(FINDINGS.glob("F-*.yaml")):
+        data = yaml.safe_load(path.read_text()) or {}
+        if data.get("status") == "closed":
+            closed.append((data.get("id"), data.get("verification_script")))
+
+    regressions: list[str] = []
+    for fid, script in closed:
+        if not script:
+            print(f"[WARN] {fid}: closed but has no verification_script")
+            continue
+        rc, output = _run(script)
+        if rc == 0:
+            print(f"[PASS] {fid}: {script}")
+        else:
+            regressions.append(f"{fid} ({script}) -> rc={rc}")
+            print(f"[FAIL] {fid}: {script} regressed (rc={rc})")
+            for line in output.splitlines()[-10:]:
+                print(f"       {line}")
+
+    if regressions:
+        print(f"\n[FAIL] check_closed_findings.py: {len(regressions)} closed finding(s) regressed")
+        return 1
+    print(f"[PASS] check_closed_findings.py: {len(closed)} closed finding(s) re-verified")
+    return 0
+
 
 if __name__ == "__main__":
-    main_stub("check_closed_findings.py", finding_id=None)
+    sys.exit(main())
