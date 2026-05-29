@@ -35,12 +35,12 @@
     },
     {
       "category": "dead_artifacts",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-004",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-004.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "export_for_powerbi is dead code with no sunset",
       "verification_script": "scripts/check_deprecations.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T21:36:46.982003+00:00",
-  "git_branch": "governance/phase-5-f017-tableau-claim",
-  "git_head_sha": "f5c70278fb1d1f41a7fc341614425ee3e2382174",
+  "generated_at": "2026-05-29T21:51:47.331499+00:00",
+  "git_branch": "governance/phase-5-f004-powerbi-sunset",
+  "git_head_sha": "a443f1a47e56d05b700500df7e7be0d39117bb3b",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 11,
+    "findings_closed": 12,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 7,
+    "findings_open": 6,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -246,7 +246,6 @@
     "open_by_category": {
       "audit_doc_accumulation": 1,
       "cross_session_amnesia": 1,
-      "dead_artifacts": 1,
       "fake_completion": 1,
       "numeric_drift": 1,
       "partial_migration": 1,
