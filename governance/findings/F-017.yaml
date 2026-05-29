@@ -2,9 +2,9 @@ id: F-017
 title: README Tableau Public "publication pending" claim is unverifiable
 category: unverifiable_navigation_claim
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   README historically claims "Tableau Public publication pending" without a
