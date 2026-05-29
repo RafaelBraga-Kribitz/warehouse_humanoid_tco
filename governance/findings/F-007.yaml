@@ -2,9 +2,9 @@ id: F-007
 title: Fake completion — pipeline.yml escape hatch + hollow verify-integrity
 category: fake_completion
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-29
-closed_at: null
+closed_at: 2026-05-29
 recurrence_count: 0
 evidence: |
   (1) .github/workflows/pipeline.yml:25 — `pytest tests/ -v 2>/dev/null || echo "No tests"`.
