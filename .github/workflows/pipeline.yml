@@ -22,7 +22,7 @@ jobs:
       - name: Ruff
         run: ruff check src/
       - name: Pytest
-        run: pytest tests/ -v 2>/dev/null || echo "No tests"
+        run: pytest tests/ -v
 
   modules:
     name: Run Pipeline

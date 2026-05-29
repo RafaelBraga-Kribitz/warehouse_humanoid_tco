@@ -19,4 +19,6 @@ repos:
         language: system
         pass_filenames: false
         always_run: false
-        files: ^(src/|notebooks/|docs/ADR/)
+        # Must cover every canonical path in governance/SSOT_REGISTRY.yaml.
+        # Enforced by scripts/check_ssot_scope.py (F-009).
+        files: ^(\.github/workflows/|\.pre-commit-config\.yaml|CHANGELOG\.md|CLAUDE\.md|PROJECT_CHARTER\.md|README\.md|CONTRIBUTING\.md|config/|docs/ADR/|governance/|notebooks/|pyproject\.toml|reports/|scripts/|src/)

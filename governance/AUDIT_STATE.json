@@ -79,23 +79,23 @@
     },
     {
       "category": "orphaned_workflows",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-008",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-008.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Orphaned workflows \u2014 reproducibility.yml is cron-only, never gates a PR",
       "verification_script": "scripts/check_workflow_registry.py"
     },
     {
       "category": "governance_gaps",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-009",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-009.yaml",
-      "status": "open",
+      "status": "closed",
       "title": ".pre-commit-config.yaml ssot-check files pattern excludes CHARTER, config/, reports/",
       "verification_script": "scripts/check_ssot_scope.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T20:08:56.900876+00:00",
-  "git_branch": "governance/phase-3-agent-contracts",
-  "git_head_sha": "98a74f9ac24c715ba6d522b93da36a64e13a8a62",
+  "generated_at": "2026-05-29T20:33:36.924603+00:00",
+  "git_branch": "governance/phase-4-ci-hardening",
+  "git_head_sha": "e3b5424bcfe784fc597e1ea07d2f7fcf33da615c",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -235,10 +235,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 5,
+    "findings_closed": 7,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 13,
+    "findings_open": 11,
     "findings_total": 20,
     "findings_wont_fix": 0,
     "migrations_in_progress": 1,
@@ -249,9 +249,7 @@
       "dead_artifacts": 1,
       "fake_completion": 1,
       "fragmented_standards": 3,
-      "governance_gaps": 1,
       "numeric_drift": 1,
-      "orphaned_workflows": 1,
       "partial_migration": 1,
       "stale_generated_outputs": 2,
       "unverifiable_navigation_claim": 1
