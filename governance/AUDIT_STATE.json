@@ -24,12 +24,12 @@
     },
     {
       "category": "partial_migration",
-      "closed_at": null,
+      "closed_at": "2026-05-29",
       "id": "F-003",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
       "path": "governance/findings/F-003.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Dual sensitivity modules (models/sensitivity.py and analysis/sensitivity.py)",
       "verification_script": "tests/governance/test_f003_sensitivity_single_module.py"
     },
@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T21:51:47.331499+00:00",
-  "git_branch": "governance/phase-5-f004-powerbi-sunset",
-  "git_head_sha": "a443f1a47e56d05b700500df7e7be0d39117bb3b",
+  "generated_at": "2026-05-29T22:11:43.415254+00:00",
+  "git_branch": "governance/phase-5-f003-sensitivity-merge",
+  "git_head_sha": "c2b7200bc3ea3816bb95e973de42fe17740bcfd4",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -231,24 +231,23 @@
       "name": "sensitivity-merge",
       "path": "governance/migrations/01-sensitivity-merge.yaml",
       "started_at": "2026-05-20",
-      "status": "in_progress"
+      "status": "complete"
     }
   ],
   "summary": {
-    "findings_closed": 12,
+    "findings_closed": 13,
     "findings_closed_historical": 1,
     "findings_in_progress": 1,
-    "findings_open": 6,
+    "findings_open": 5,
     "findings_total": 20,
     "findings_wont_fix": 0,
-    "migrations_in_progress": 1,
+    "migrations_in_progress": 0,
     "migrations_total": 1,
     "open_by_category": {
       "audit_doc_accumulation": 1,
       "cross_session_amnesia": 1,
       "fake_completion": 1,
       "numeric_drift": 1,
-      "partial_migration": 1,
       "stale_generated_outputs": 2
     }
   },

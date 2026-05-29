@@ -16,6 +16,8 @@ modules:
   src.warehouse_humanoid_tco.analysis.sensitivity:
     path: src/warehouse_humanoid_tco/analysis/sensitivity.py
     public_functions:
+    - one_at_a_time
+    - monte_carlo
     - compute_tco_for_params
     - run_oat_sensitivity
     - run_monte_carlo_sensitivity
@@ -83,11 +85,6 @@ modules:
     - needs_manual_review
   src.warehouse_humanoid_tco.models.__init__:
     path: src/warehouse_humanoid_tco/models/__init__.py
-  src.warehouse_humanoid_tco.models.sensitivity:
-    path: src/warehouse_humanoid_tco/models/sensitivity.py
-    public_functions:
-    - one_at_a_time
-    - monte_carlo
   src.warehouse_humanoid_tco.models.simulation:
     path: src/warehouse_humanoid_tco/models/simulation.py
     classes:
