@@ -78,7 +78,9 @@ def test_audit_state_writer_emits_valid_json() -> None:
 
 
 def test_all_check_stubs_exit_zero() -> None:
-    stubs = sorted(SCRIPTS.glob("check_*.py"))
+    # Iterate only files that import the Phase 0 stub helper. This excludes
+    # pre-existing real implementations like scripts/check_ssot.py.
+    stubs = [p for p in sorted(SCRIPTS.glob("check_*.py")) if "_governance_stub" in p.read_text()]
     assert stubs, "Phase 0 must seed check_*.py stubs"
     for stub in stubs:
         result = _run(sys.executable, str(stub))

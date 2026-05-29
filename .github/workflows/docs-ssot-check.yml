@@ -50,7 +50,7 @@ jobs:
               | sort)
 
           # Define allowlist as regex
-          allowed_pattern='^\./(README\.md|PROJECT_CHARTER\.md|CHANGELOG\.md|CONTRIBUTING\.md|LICENSE\.md|docs/ADR/[0-9]{4}-[a-z0-9-]+\.md|docs/glossary\.md|docs/.*\.md|reports/.*\.md|\.github/.*\.md|data/raw/.*/README\.md)$'
+          allowed_pattern='^\./(README\.md|PROJECT_CHARTER\.md|CHANGELOG\.md|CONTRIBUTING\.md|LICENSE\.md|docs/ADR/[0-9]{4}-[a-z0-9-]+\.md|docs/glossary\.md|docs/.*\.md|reports/.*\.md|\.github/.*\.md|data/raw/.*/README\.md|governance/.*\.md)$'
 
           violations=()
           for f in "${all_md[@]}"; do
