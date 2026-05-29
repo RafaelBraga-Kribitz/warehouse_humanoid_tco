@@ -195,7 +195,11 @@ def module_01_main(
             pl.col("task_categories").list.len().alias("n_labels")
         )["n_labels"]
         multi_label_episode_count = int((label_counts > 1).sum())
-        avg_labels_per_episode = float(label_counts.mean() or 0.0)
+        # polars.Series.mean() returns a wide union (PythonLiteral | None) that
+        # newer pyright versions reject as ConvertibleToFloat. The runtime value
+        # is always a number here because label_counts is a UInt32 column.
+        mean_val: float = label_counts.mean() or 0.0  # type: ignore[assignment]
+        avg_labels_per_episode = float(mean_val)
 
     validation_report = {
         "phase": "module_01_capability_extraction",
