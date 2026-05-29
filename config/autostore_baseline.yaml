@@ -36,8 +36,7 @@ agents:
     cycle_time_std_seconds: null
     error_rate: null
     capex_eur: 120000              # 2026 market estimate; configurable in tco_assumptions.yaml
-    mtbf_hours: 2000               # mean time between failures
-    mttr_hours: 4                  # mean time to repair
+    # MTBF / MTTR live in humanoid_operational below (early-deployment rationale)
     energy_kwh_per_shift: 8.0
 
   amr:
