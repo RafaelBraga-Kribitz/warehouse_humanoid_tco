@@ -1,0 +1,18 @@
+id: F-015
+title: CLAUDE.md missing — no agent protocol; meta-plan predicted graphify claim must be banned at creation
+category: unverifiable_navigation_claim
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  CLAUDE.md does not exist. The meta-audit plan predicted a "graph rebuilt on
+  every git commit (hook)" claim at line 28 of a prior CLAUDE.md; that file is
+  not present in this branch. Phase 3 creates CLAUDE.md from scratch with the
+  Steward/Remediator/Adversary protocol.
+verification_script: scripts/check_claude_md.py
+notes: |
+  Closure (Phase 3): create CLAUDE.md with `make session-start` reference.
+  Forward gate: scripts/check_claude_md.py bans `graphify-out` substring and
+  the literal "(hook)" claim; requires `make session-start` reference present.

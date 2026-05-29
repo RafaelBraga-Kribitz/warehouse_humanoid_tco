@@ -1,0 +1,18 @@
+id: F-018
+title: autostore_baseline.yaml carries contradictory humanoid MTBF (2000h vs 40h)
+category: fragmented_standards
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  config/autostore_baseline.yaml:39 — agents.humanoid.mtbf_hours: 2000
+  config/autostore_baseline.yaml:92 — humanoid_operational.mtbf_hours: 40.0
+  Two MTBF values for the same agent, 50x apart. One is likely dead config.
+verification_script: tests/governance/test_f018_mtbf_consistency.py
+notes: |
+  Closure path (Phase 5): identify the canonical key (likely
+  humanoid_operational.mtbf_hours since it documents "early deployment"
+  rationale) and remove the other; or refactor consumers so both fields have
+  distinct semantics with documented justification.

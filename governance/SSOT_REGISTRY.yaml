@@ -1,0 +1,149 @@
+# SSOT Registry — canonical pointers for every fact in the project.
+#
+# Each entry maps a logical fact to its canonical file. Two enforcement modes:
+#   must_not_appear_in: literal value of the canonical fact must not be
+#                       hardcoded in any of these files.
+#   must_match_claim_in: another file's textual claim must match the
+#                        canonical value.
+#
+# Enforced by scripts/check_ssot_registry.py (Phase 1 — currently a stub).
+#
+# DO NOT add a fact here without a corresponding F-NNN.yaml that references it.
+
+facts:
+
+  simulation.n_runs:
+    canonical: config/autostore_baseline.yaml          # source of truth for default
+    notes: |
+      The default n_runs lives in module_02_simulation.py:33 today (15). After
+      Phase 5 it is read from config/autostore_baseline.yaml. The Makefile help
+      text and any README mention of run count must match.
+    must_not_appear_in:
+      - Makefile
+      - README.md
+      - PROJECT_CHARTER.md
+    finding: F-014
+
+  architecture.modules:
+    canonical: src/warehouse_humanoid_tco/__init__.py   # __all__
+    notes: |
+      The set of exported module names is the SSOT for "what the package exposes".
+      governance/CODE_INVENTORY.yaml is generated from this by ast walk.
+    finding: F-010
+
+  pyright_mode:
+    canonical: pyproject.toml                           # [tool.pyright] typeCheckingMode
+    must_match_claim_in:
+      - CONTRIBUTING.md
+    finding: F-006
+
+  pipeline_test_command:
+    canonical: .github/workflows/pipeline.yml           # step "Pytest"
+    notes: |
+      Must not contain || echo or 2>/dev/null escape hatches. Test exit code
+      must propagate to job result. Enforced by scripts/check_workflow_escapes.py.
+    finding: F-007
+
+  manifest_integrity:
+    canonical: config/dataset_manifest.yaml             # entries must carry sha256
+    notes: |
+      scripts/verify_data_integrity.py reads this file. Currently keyed under
+      wbt_datasets + diversemanip_datasets; the verifier reads "datasets" (wrong
+      key). Phase 1 fixes the key bug; Phase 5 populates sha256 values.
+    finding: F-007
+
+  charter_size:
+    canonical: PROJECT_CHARTER.md                       # ≤ 200 lines after Phase 2
+    notes: |
+      Today 779 lines. §11 Change Log to be replaced by
+      governance/CHANGELOG_GENERATED.md. Enforced by scripts/check_charter_size.py.
+    finding: F-001
+
+  changelog_authority:
+    canonical: CHANGELOG.md
+    notes: |
+      The project has two changelogs today (CHANGELOG.md + PROJECT_CHARTER.md §11).
+      Phase 2 deletes §11; CHANGELOG.md keeps marketing/release notes;
+      governance/CHANGELOG_GENERATED.md tracks git tags + finding closures.
+    must_not_appear_in:
+      - PROJECT_CHARTER.md            # §11 specifically; checked by check_charter_size.py
+    finding: F-002
+
+  npv_results:
+    canonical: reports/module_03_tco_report.json
+    notes: |
+      Any NPV claim in README/CHARTER/QMD must trace back to this file.
+      Enforced by scripts/check_report_data.py (Phase 1).
+    finding: F-005
+
+  qmd_render_date:
+    canonical: scripts/render_reports.py                # to be created in Phase 5
+    notes: |
+      Reports must not use `date: today` in QMD frontmatter (renders drift each
+      time). Enforced by scripts/check_qmd_dates.py.
+    must_not_appear_in:
+      - reports/Executive_Summary_DE.qmd
+      - reports/module_01_capability_extraction_audit.qmd
+      - reports/module_02_simulation_validation.qmd
+      - reports/module_03_tco_assumptions.qmd
+    finding: F-005
+
+  ssot_check_scope:
+    canonical: .pre-commit-config.yaml                  # ssot-check files: pattern
+    notes: |
+      Today: `^(src/|notebooks/|docs/ADR/)` — excludes CHARTER, config/, reports/.
+      Phase 4 expands to include them. Enforced by scripts/check_ssot_scope.py.
+    finding: F-009
+
+  pre_commit_installed:
+    canonical: .git/hooks/pre-commit                    # presence
+    notes: |
+      Today: missing. `make bootstrap` installs it. The check is "are the hooks
+      wired locally?" — not enforceable in CI directly (CI clones fresh) but
+      `make session-start` re-checks.
+    finding: F-013
+
+  audit_doc_location:
+    canonical: governance/findings/
+    must_not_appear_in:
+      - docs/todo/                                       # ban future creation
+    notes: |
+      All open work lives in finding YAMLs, not free-form markdown.
+    finding: F-012
+
+  workflow_purposes:
+    canonical: governance/WORKFLOW_REGISTRY.yaml
+    notes: |
+      Every .github/workflows/*.yml must have a registry entry with a non-empty
+      `gates:` list. Orphaned workflows fail check_workflow_registry.py.
+    finding: F-008
+
+  dead_code:
+    canonical: governance/ALLOWED_DEAD_CODE.yaml
+    notes: |
+      `vulture src/` output minus this allowlist must be empty. Each allowlist
+      entry requires a sunset_date and justification.
+    finding: F-004
+
+  png_prefix_sequence:
+    canonical: reports/executive_charts/                # filename pattern NN_*.png
+    notes: |
+      No two PNGs may share a numeric prefix. Enforced by
+      scripts/check_png_prefix_collisions.py.
+    finding: F-005
+
+  tableau_status:
+    canonical: governance/findings/F-017.yaml           # publication-pending claim
+    must_not_claim_in:
+      - README.md
+    notes: |
+      The README has historically claimed "Tableau Public publication pending."
+      Either publish or remove the claim; tracked by F-017.
+    finding: F-017
+
+  claude_protocol:
+    canonical: CLAUDE.md                                # created in Phase 3
+    notes: |
+      Must reference `make session-start`. Must not contain `graphify-out`
+      substring or "(hook)" claim. Enforced by scripts/check_claude_md.py.
+    finding: F-015

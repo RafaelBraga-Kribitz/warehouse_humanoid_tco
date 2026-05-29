@@ -1,0 +1,19 @@
+id: F-014
+title: Makefile help text duplicates simulation n_runs (forward gate; currently in sync)
+category: numeric_drift
+kind: recurrence_invariant
+status: open    # gate not yet installed; numbers happen to match
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  Makefile:18 — "Warehouse simulation (15 runs)".
+  src/warehouse_humanoid_tco/pipelines/module_02_simulation.py:33 — `n_runs: int = 15`.
+  Currently consistent; the risk is that they drift independently as in past
+  ADR-driven config bumps.
+verification_script: scripts/check_makefile_numerics.py
+notes: |
+  Closure path: install scripts/check_makefile_numerics.py to parse `make help`
+  numeric literals and cross-check against config/autostore_baseline.yaml /
+  pipeline defaults. Phase 5 may remove the literal from `make help` text and
+  read it dynamically.

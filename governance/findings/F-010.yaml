@@ -1,0 +1,19 @@
+id: F-010
+title: No persistent machine-readable audit state
+category: cross_session_amnesia
+kind: recurrence_invariant
+status: in_progress    # Phase 0 (this PR) lays the foundation; closed when SESSION_HANDOUT loop is functional
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  Prior to this branch, no AUDIT_STATE.json, no governance/ directory, no
+  finding YAMLs. Each session re-derived findings from prose; HANDOUT was
+  hand-curated; closure was a narrative claim, not a passing test.
+verification_script: tests/governance/test_f010_audit_state_present.py
+notes: |
+  Phase 0 (this PR): creates governance/ scaffold, AUDIT_STATE.json, finding
+  YAMLs, AUDIT_PROCEDURE.md, Makefile targets (stubs).
+  Phase 3: make session-start writes SESSION_HANDOUT.md; make session-end writes
+  SESSION_END.md. Finding closes when fresh session post-/clear can reproduce
+  the open-finding list with zero manual context injection.

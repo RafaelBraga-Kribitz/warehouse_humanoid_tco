@@ -1,0 +1,17 @@
+id: F-011
+title: Methodology drift — TIER0/1/2 → 11-dim → 12-dim → adversarial-Explore across sessions
+category: methodology_drift
+kind: recurrence_invariant
+status: in_progress    # Phase 0 (this PR) adds AUDIT_PROCEDURE.md; closes when sessions stop inventing frameworks
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  Prior 8 sessions each invented a new scoring framework. Methodology lived in
+  session prose, which is cleared on /clear or compaction.
+verification_script: tests/governance/test_f011_methodology_canonical.py
+notes: |
+  Phase 0: governance/AUDIT_PROCEDURE.md is the singular methodology reference.
+  CLAUDE.md (Phase 3) instructs agents to read it, not invent frameworks.
+  Test asserts AUDIT_PROCEDURE.md exists and contains the three role
+  definitions (Steward/Remediator/Adversary).

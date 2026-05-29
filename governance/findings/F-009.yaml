@@ -1,0 +1,17 @@
+id: F-009
+title: .pre-commit-config.yaml ssot-check files pattern excludes CHARTER, config/, reports/
+category: governance_gaps
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  .pre-commit-config.yaml ssot-check stanza: files: ^(src/|notebooks/|docs/ADR/)
+  CHARTER edits, config/ edits, and reports/ edits do not trigger SSOT freshness
+  checks even though all three are SSOT_REGISTRY canonical paths.
+verification_script: scripts/check_ssot_scope.py
+notes: |
+  Closure requires Phase 4: expand files: pattern to include PROJECT_CHARTER.md,
+  config/, reports/, governance/. scripts/check_ssot_scope.py asserts every
+  SSOT_REGISTRY canonical path is covered by the pre-commit pattern.

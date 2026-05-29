@@ -1,0 +1,19 @@
+id: F-013
+title: Pre-commit hooks not installed locally
+category: fake_pre_commit
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  .pre-commit-config.yaml defines black, ruff, ssot-check. .git/hooks/pre-commit
+  is absent. Any contributor cloning the repo today gets no local linting until
+  they `pre-commit install` — which is not in CONTRIBUTING.md or Makefile.
+verification_script: tests/governance/test_f013_bootstrap_documented.py
+notes: |
+  Closure (Phase 0 — this PR): make bootstrap runs `pre-commit install &&
+  pre-commit run --all-files`. The test asserts the bootstrap target exists in
+  the Makefile and pre-commit is in pyproject.toml [dev] deps (already true).
+  The presence of .git/hooks/pre-commit itself is not enforceable in CI (CI
+  clones fresh), but make session-start re-checks and warns.

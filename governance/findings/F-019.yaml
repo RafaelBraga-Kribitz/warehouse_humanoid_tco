@@ -1,0 +1,18 @@
+id: F-019
+title: README synthetic-vs-real-data narrative needs single canonical statement
+category: fragmented_standards
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  CHARTER §11 entry 1.0.3 (2026-05-21) records "Full pipeline executed on 2,359
+  real episodes" while CHARTER §11 entry 1.0.2 records "tested on synthetic data".
+  Reader cannot tell from README alone which state is current.
+verification_script: tests/governance/test_f019_data_provenance_statement.py
+notes: |
+  Closure (Phase 5): README states current data provenance once, with a link to
+  reports/derisk_inspection_report.json. Test asserts README references the
+  inspection report and that the inspection report's claimed dataset count
+  matches manifest entries.

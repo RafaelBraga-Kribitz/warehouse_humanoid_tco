@@ -1,0 +1,17 @@
+id: F-008
+title: Orphaned workflows — reproducibility.yml is cron-only, never gates a PR
+category: orphaned_workflows
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  .github/workflows/reproducibility.yml runs on schedule (Mondays 07:00 UTC) +
+  workflow_dispatch. No PR ever invokes it; the README "reproducibility" badge
+  reflects the most recent weekly run, which may not match the PR's code.
+verification_script: scripts/check_workflow_registry.py
+notes: |
+  Closure requires governance/WORKFLOW_REGISTRY.yaml entry with non-empty
+  gates: AND a per-PR reproducibility sample (single-module re-run) added to
+  ci.yml in Phase 4.

@@ -1,0 +1,18 @@
+id: F-003
+title: Dual sensitivity modules (models/sensitivity.py and analysis/sensitivity.py)
+category: partial_migration
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-29
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/models/sensitivity.py and
+  src/warehouse_humanoid_tco/analysis/sensitivity.py both exist;
+  tests/test_sensitivity.py imports from both.
+verification_script: tests/governance/test_f003_sensitivity_single_module.py
+linked_migration: governance/migrations/01-sensitivity-merge.yaml
+notes: |
+  Closure requires completing migration 01-sensitivity-merge: pick canonical
+  module (default: analysis/sensitivity.py), move primitives, redirect imports,
+  delete the deprecated module.

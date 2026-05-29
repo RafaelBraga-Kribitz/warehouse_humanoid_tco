@@ -1,0 +1,266 @@
+{
+  "findings": [
+    {
+      "category": "documentation_entropy",
+      "closed_at": null,
+      "id": "F-001",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-001.yaml",
+      "status": "open",
+      "title": "PROJECT_CHARTER.md exceeds 200-line scannable budget",
+      "verification_script": "scripts/check_charter_size.py"
+    },
+    {
+      "category": "charter_sprawl",
+      "closed_at": null,
+      "id": "F-002",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-002.yaml",
+      "status": "open",
+      "title": "PROJECT_CHARTER.md \u00a711 Change Log duplicates CHANGELOG.md",
+      "verification_script": "scripts/check_charter_size.py"
+    },
+    {
+      "category": "partial_migration",
+      "closed_at": null,
+      "id": "F-003",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-003.yaml",
+      "status": "open",
+      "title": "Dual sensitivity modules (models/sensitivity.py and analysis/sensitivity.py)",
+      "verification_script": "tests/governance/test_f003_sensitivity_single_module.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": null,
+      "id": "F-004",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-004.yaml",
+      "status": "open",
+      "title": "export_for_powerbi is dead code with no sunset",
+      "verification_script": "scripts/check_deprecations.py"
+    },
+    {
+      "category": "stale_generated_outputs",
+      "closed_at": null,
+      "id": "F-005",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-005.yaml",
+      "status": "open",
+      "title": "Generated reports have no freshness contract (date: today, no mtime check, no prefix-collision check)",
+      "verification_script": "tests/governance/test_f005_report_freshness.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": null,
+      "id": "F-006",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-006.yaml",
+      "status": "open",
+      "title": "CONTRIBUTING.md claims \"pyright strict\" but pyproject.toml is typeCheckingMode = \"basic\"",
+      "verification_script": "scripts/check_contributing_claims.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-007",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-007.yaml",
+      "status": "open",
+      "title": "Fake completion \u2014 pipeline.yml escape hatch + hollow verify-integrity",
+      "verification_script": "tests/governance/test_f007_no_fake_completion.py"
+    },
+    {
+      "category": "orphaned_workflows",
+      "closed_at": null,
+      "id": "F-008",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-008.yaml",
+      "status": "open",
+      "title": "Orphaned workflows \u2014 reproducibility.yml is cron-only, never gates a PR",
+      "verification_script": "scripts/check_workflow_registry.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": null,
+      "id": "F-009",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-009.yaml",
+      "status": "open",
+      "title": ".pre-commit-config.yaml ssot-check files pattern excludes CHARTER, config/, reports/",
+      "verification_script": "scripts/check_ssot_scope.py"
+    },
+    {
+      "category": "cross_session_amnesia",
+      "closed_at": null,
+      "id": "F-010",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-010.yaml",
+      "status": "in_progress",
+      "title": "No persistent machine-readable audit state",
+      "verification_script": "tests/governance/test_f010_audit_state_present.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-011",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-011.yaml",
+      "status": "in_progress",
+      "title": "Methodology drift \u2014 TIER0/1/2 \u2192 11-dim \u2192 12-dim \u2192 adversarial-Explore across sessions",
+      "verification_script": "tests/governance/test_f011_methodology_canonical.py"
+    },
+    {
+      "category": "audit_doc_accumulation",
+      "closed_at": null,
+      "id": "F-012",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-012.yaml",
+      "status": "open",
+      "title": "Audit-doc accumulation (CHARTER \u00a711 acts as journal; no retirement rule)",
+      "verification_script": "scripts/check_todo_dir.py"
+    },
+    {
+      "category": "fake_pre_commit",
+      "closed_at": null,
+      "id": "F-013",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-013.yaml",
+      "status": "open",
+      "title": "Pre-commit hooks not installed locally",
+      "verification_script": "tests/governance/test_f013_bootstrap_documented.py"
+    },
+    {
+      "category": "numeric_drift",
+      "closed_at": null,
+      "id": "F-014",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-014.yaml",
+      "status": "open",
+      "title": "Makefile help text duplicates simulation n_runs (forward gate; currently in sync)",
+      "verification_script": "scripts/check_makefile_numerics.py"
+    },
+    {
+      "category": "unverifiable_navigation_claim",
+      "closed_at": null,
+      "id": "F-015",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-015.yaml",
+      "status": "open",
+      "title": "CLAUDE.md missing \u2014 no agent protocol; meta-plan predicted graphify claim must be banned at creation",
+      "verification_script": "scripts/check_claude_md.py"
+    },
+    {
+      "category": "stale_generated_outputs",
+      "closed_at": null,
+      "id": "F-016",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-016.yaml",
+      "status": "open",
+      "title": "Notebook sequence \u2014 missing 02_*; jupytext discipline unverified",
+      "verification_script": "scripts/check_notebook_sequence.py"
+    },
+    {
+      "category": "unverifiable_navigation_claim",
+      "closed_at": null,
+      "id": "F-017",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-017.yaml",
+      "status": "open",
+      "title": "README Tableau Public \"publication pending\" claim is unverifiable",
+      "verification_script": "tests/governance/test_f017_tableau_status.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": null,
+      "id": "F-018",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-018.yaml",
+      "status": "open",
+      "title": "autostore_baseline.yaml carries contradictory humanoid MTBF (2000h vs 40h)",
+      "verification_script": "tests/governance/test_f018_mtbf_consistency.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": null,
+      "id": "F-019",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-29",
+      "path": "governance/findings/F-019.yaml",
+      "status": "open",
+      "title": "README synthetic-vs-real-data narrative needs single canonical statement",
+      "verification_script": "tests/governance/test_f019_data_provenance_statement.py"
+    },
+    {
+      "category": "audit_doc_accumulation",
+      "closed_at": "2026-05-29",
+      "id": "F-100",
+      "kind": "historical_change",
+      "opened_at": "2026-05-20",
+      "path": "governance/findings/F-100.yaml",
+      "status": "closed_historical",
+      "title": "PROJECT_CHARTER.md \u00a711 Change Log \u2014 historical migration record",
+      "verification_script": null
+    }
+  ],
+  "generated_at": "2026-05-29T12:03:14.253076+00:00",
+  "git_branch": "claude/meta-audit-prompt-harmonic-liskov-WD8iB",
+  "git_head_sha": "e2fad3a0f720800b7ac0a34cfa73f5ee7696d3f5",
+  "migrations": [
+    {
+      "linked_finding": "F-003",
+      "max_days_in_progress": 45,
+      "name": "sensitivity-merge",
+      "path": "governance/migrations/01-sensitivity-merge.yaml",
+      "started_at": "2026-05-20",
+      "status": "in_progress"
+    }
+  ],
+  "summary": {
+    "findings_closed": 0,
+    "findings_closed_historical": 1,
+    "findings_in_progress": 2,
+    "findings_open": 17,
+    "findings_total": 20,
+    "findings_wont_fix": 0,
+    "migrations_in_progress": 1,
+    "migrations_total": 1,
+    "open_by_category": {
+      "audit_doc_accumulation": 1,
+      "charter_sprawl": 1,
+      "cross_session_amnesia": 1,
+      "dead_artifacts": 1,
+      "documentation_entropy": 1,
+      "fake_completion": 1,
+      "fake_pre_commit": 1,
+      "fragmented_standards": 3,
+      "governance_gaps": 1,
+      "methodology_drift": 1,
+      "numeric_drift": 1,
+      "orphaned_workflows": 1,
+      "partial_migration": 1,
+      "stale_generated_outputs": 2,
+      "unverifiable_navigation_claim": 2
+    }
+  },
+  "validation_errors": [],
+  "writer": "scripts/write_audit_state.py"
+}

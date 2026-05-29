@@ -1,0 +1,19 @@
+# Deprecations — symbols slated for removal with sunset dates.
+#
+# Enforced by scripts/check_deprecations.py (Phase 1 stub):
+#   - any entry where today > sunset_date AND vulture still finds the symbol => fail
+#   - entries should be removed when the symbol is deleted
+#
+# A deprecation must reference an ADR explaining why.
+
+deprecations:
+
+  - symbol: warehouse_humanoid_tco.visualization.exports.export_for_powerbi
+    reason: |
+      PowerBI export path was a v0.x affordance; Tableau Public is the published
+      dashboard surface. The function has no callers in src/ or scripts/ and is
+      not referenced in tests. Sunset slated for end of Phase 5.
+    adr: ADR-0008   # to be authored in Phase 5
+    sunset_date: 2026-06-30
+    finding: F-004
+    opened_at: 2026-05-29
