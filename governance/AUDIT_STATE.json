@@ -255,12 +255,12 @@
     },
     {
       "category": "numeric_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-024",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-024.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Dashboard setup docs + Makefile help still claim 75 simulation runs / 15 per scenario",
       "verification_script": "tests/governance/test_f024_run_count_docs.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T19:19:56.362466+00:00",
-  "git_branch": "governance/f022-wage-range-v2",
-  "git_head_sha": "a3c2937ba385b5c619299058a9bcf1f1cf0c1a4e",
+  "generated_at": "2026-05-30T19:35:36.753194+00:00",
+  "git_branch": "governance/f024-run-count-invariant-v2",
+  "git_head_sha": "4d52a43c1ca6cd169b1f74e1e8fd5078d6f5f19b",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 27,
+    "findings_closed": 28,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 15,
+    "findings_open": 14,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -501,7 +501,7 @@
       "fake_completion": 1,
       "governance_gaps": 2,
       "methodology_drift": 5,
-      "numeric_drift": 2,
+      "numeric_drift": 1,
       "orphaned_workflows": 2,
       "partial_migration": 1
     }

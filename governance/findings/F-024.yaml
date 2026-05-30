@@ -2,19 +2,45 @@ id: F-024
 title: Dashboard setup docs + Makefile help still claim 75 simulation runs / 15 per scenario
 category: numeric_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  docs/TABLEAU_PUBLIC_SETUP.md — "simulation_runs.csv — 75 simulation runs (15 per scenario)"
-  docs/POWER_BI_SETUP.md — "Simulation raw results (15 runs × 5 scenarios)"
-  Makefile — "make module-02      Warehouse simulation (15 runs)"
-  reports/module_02_simulation_report.json — total_runs: 150, n_runs_per_scenario: 30
-  README.md:60 — "150 runs total across 5 warehouse scenarios (30 replications per scenario)"
+  Pre-closure: the parallel session's original evidence claimed the simulation
+  report carried `n_runs_per_scenario: 30` / `total_runs: 150` and the docs
+  cited 15/75 — a drift. Actual canonical state was the opposite: the JSON
+  carries 15/75 and the docs already agree. PR #18 reframed the finding from
+  "fix the drift" to "ensure consistency via invariant" but Codex correctly
+  noted the regexes had two gaps:
+    1. The README phrase "75 runs total across 5 warehouse scenarios" was
+       not captured by any pattern (false negative possible).
+    2. Pooling `n_runs_per_scenario` and `total_runs` into one valid set
+       meant context-mixing claims like "75 per scenario" would silently pass.
 verification_script: tests/governance/test_f024_run_count_docs.py
 notes: |
-  Run-count doubled to 30 reps/scenario but three setup docs were never updated.
-  A reviewer following TABLEAU_PUBLIC_SETUP.md would commit the wrong metadata.
-  Closure: update docs + Makefile help to 150 runs / 30 per scenario, or remove
-  the literal numbers in favor of a `make help` lookup.
+  Closed by a context-aware invariant test that:
+  1. Reads the canonical {total_runs, n_runs_per_scenario, scenarios_tested}
+     from reports/module_02_simulation_report.json.
+  2. Filters MC lines (containing "Monte Carlo" or " MC ") so the
+     "10,000 runs × 5 scenarios" line cannot accidentally match a simulation-
+     run pattern.
+  3. Maps each regex group to the canonical key it must equal:
+       - "(\\d+) simulation runs ((\\d+) per scenario)" → total + per_scenario
+       - "(\\d+) runs total across (\\d+) (warehouse )?scenarios" → total + scenarios
+       - "(\\d+) runs total" (without "across") → total
+       - "(\\d+) runs × (\\d+) scenarios" → per_scenario + scenarios
+       - "(\\d+) replicas? per scenario" → per_scenario
+       - "(\\d+) runs per scenario" → per_scenario
+       - Makefile "Warehouse simulation ((\\d+) runs)" → per_scenario
+       - TABLEAU "average across (\\d+) runs" → per_scenario
+       - TABLEAU "should be (\\d+) each" → per_scenario
+  4. All patterns use `(?<![\\d,])` negative lookbehind so they don't
+     false-positive on Monte Carlo magnitudes like "10,000".
+  Sanity-tested: deliberately injecting "30 per scenario" alongside a
+  canonical 15-per-scenario report correctly triggers a mismatch. The MC
+  "10,000 runs × 5 scenarios" line does NOT match any simulation pattern
+  even when the MC filter is bypassed (the lookbehind protects the digits).
+  If a future pipeline rerun changes n_runs_per_scenario, every doc claim
+  must be updated in the same PR or this invariant trips. Previously xfail,
+  now PASSED.
