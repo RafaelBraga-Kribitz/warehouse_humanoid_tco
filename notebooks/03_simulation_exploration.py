@@ -19,7 +19,6 @@
 # ## Data Loading
 
 import polars as pl
-import numpy as np
 
 sim_runs = pl.read_parquet("../data/processed/simulation_runs.parquet")
 print(f"Loaded {len(sim_runs)} simulation runs")
@@ -27,11 +26,15 @@ print(sim_runs.head(3))
 
 # ## Scenario Summary
 
-summary = sim_runs.group_by("scenario_id").agg(
-    pl.col("throughput_orders_per_shift").mean().alias("mean"),
-    pl.col("throughput_orders_per_shift").std().alias("std"),
-    pl.len().alias("n_runs")
-).sort("scenario_id")
+summary = (
+    sim_runs.group_by("scenario_id")
+    .agg(
+        pl.col("throughput_orders_per_shift").mean().alias("mean"),
+        pl.col("throughput_orders_per_shift").std().alias("std"),
+        pl.len().alias("n_runs"),
+    )
+    .sort("scenario_id")
+)
 print(summary)
 
 # ## Failed Approach: Mean Cycle Time as Service Time
@@ -53,4 +56,6 @@ print(summary)
 # **Learning:**
 # In SimPy discrete-event models, variance in the service time distribution is as important as the mean. Using aggregate statistics (mean only) risks hiding model assumptions that later affect business conclusions.
 
-print("\n✓ This notebook documents simulation development, including the dead-end of mean cycle time approach.")
+print(
+    "\n✓ This notebook documents simulation development, including the dead-end of mean cycle time approach."
+)
