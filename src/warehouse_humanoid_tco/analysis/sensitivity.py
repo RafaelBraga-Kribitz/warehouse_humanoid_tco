@@ -423,8 +423,8 @@ def run_sensitivity_analysis(
             f"NPV = €{leading_summary['npv_mean']:.0f} ± €{leading_summary['npv_std']:.0f}"
         )
         print(
-            f"    90% CI: €{leading_summary['npv_p5']:.0f} (p5) "
-            f"to €{leading_summary['npv_p95']:.0f} (p95)"
+            f"    90% output interval (p5–p95): €{leading_summary['npv_p5']:.0f} "
+            f"to €{leading_summary['npv_p95']:.0f}"
         )
 
     return {
