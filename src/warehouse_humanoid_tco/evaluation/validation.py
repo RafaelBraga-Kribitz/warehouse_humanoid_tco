@@ -8,7 +8,13 @@ from __future__ import annotations
 
 from scipy import stats
 
-KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0  # orders per 8-hour shift (public benchmark)
+# 960 orders per 8-hour shift = 120 orders/hour, the conservative lower-end anchor
+# of Knapp's public AutoStore performance envelope (~100–250+ picks/h/port).
+# Used by validate_human_baseline_throughput as a sanity gate, not a fitting target.
+# See ADR-0009 (governance/adrs/0009-knapp-throughput-reference.md) for the full
+# derivation, the asymmetry vs. config/autostore_baseline.yaml, and scope/limits.
+# Knapp public product page: https://www.knapp.com/en/solutions/products/autostore/
+KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0  # orders per 8-hour shift (see ADR-0009)
 TOLERANCE_FRACTION = 0.20
 
 

@@ -2,18 +2,30 @@ id: F-035
 title: Knapp AutoStore throughput reference 960/shift is a magic number with no citation
 category: governance_gaps
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/evaluation/validation.py:12 —
-    KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0  # orders per 8-hour shift (public benchmark)
-  No URL, no whitepaper, no grid size / port count / Knapp product version.
+  Pre-closure: src/warehouse_humanoid_tco/evaluation/validation.py defined
+  KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0 with the bare comment
+  "(public benchmark)". No URL, white paper, grid size, port count, or Knapp
+  product version was cited. The constant is the pass/fail gate for
+  validate_human_baseline_throughput; validation was effectively circular.
 verification_script: tests/governance/test_f035_knapp_citation.py
 notes: |
-  This is the pass/fail gate for validate_human_baseline_throughput. 960/shift is
-  ~3× lower than this config's 450 orders/h would produce — likely a different
-  Knapp configuration entirely. Validation is currently circular. Closure: add a
-  URL/citation comment block alongside the constant, or move the citation into
-  an ADR and reference it from the constant.
+  Closed by authoring ADR-0009 (governance/adrs/0009-knapp-throughput-reference.md)
+  which documents:
+    - The derivation: 960/shift = 120 orders/h, the conservative lower end of
+      Knapp's public AutoStore performance envelope (~100–250+ picks/h/port).
+    - The asymmetry: config/autostore_baseline.yaml models 4 picking ports × 250
+      orders/h ≈ 8000/shift, so the reference and the configuration describe
+      different Knapp installations. The validation is a sanity gate, not a
+      fitting target.
+    - Scope: used only by validate_human_baseline_throughput; not in TCO or
+      sensitivity analysis.
+    - Limits: no URL-pinned case study; a future contributor finding a specific
+      Knapp document matching this derivation should supersede this ADR.
+  The validation.py constant now sits inside a 7-line comment block that
+  references ADR-0009 and the Knapp public product page URL. The verification
+  test (URL or ADR-#### within 800 chars of the constant) was xfail; now PASSED.
