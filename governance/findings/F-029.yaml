@@ -2,15 +2,19 @@ id: F-029
 title: Sensitivity printout mislabels p5/p95 output quantiles as "90% CI"
 category: methodology_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/analysis/sensitivity.py:474-477 —
-    print(f"    90% CI: €{leading_summary['npv_p5']:.0f} (p5) to €{leading_summary['npv_p95']:.0f} (p95)")
+  Pre-closure: src/warehouse_humanoid_tco/analysis/sensitivity.py:426–428 printed
+    "90% CI: €{npv_p5} (p5) to €{npv_p95} (p95)"
+  which mislabels empirical quantiles (output distribution) as a confidence
+  interval (statistical inference on population parameter).
 verification_script: tests/governance/test_f029_quantile_label.py
 notes: |
-  Empirical quantiles of an MC output distribution are not a CI on any population
-  parameter. The dict keys already say npv_p5/npv_p95; only the print string
-  mislabels them. Closure: rename to "90% output interval (p5–p95)" or similar.
+  Closed by renaming the label to "90% output interval (p5–p95)" which correctly
+  describes the empirical 5th and 95th percentiles of the Monte Carlo distribution,
+  without claiming inference on any population parameter. The dict keys (npv_p5,
+  npv_p95) already make the semantics clear; the print label now matches. Verification
+  bans the string "90% CI:" in sensitivity.py; previously xfail, now PASSED.
