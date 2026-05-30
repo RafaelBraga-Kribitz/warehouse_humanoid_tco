@@ -233,12 +233,12 @@
     },
     {
       "category": "numeric_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-022",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-022.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Executive_Summary_DE.qmd wage range \u20ac9,25\u2013\u20ac27,75 contradicts KV-sourced config",
       "verification_script": "tests/governance/test_f022_wage_range_qmd.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T19:01:20.596264+00:00",
-  "git_branch": "governance/f020-exec-summary-v2",
-  "git_head_sha": "745e08d3ad469863ea92250093ee4ea0abd5840a",
+  "generated_at": "2026-05-30T19:19:56.362466+00:00",
+  "git_branch": "governance/f022-wage-range-v2",
+  "git_head_sha": "a3c2937ba385b5c619299058a9bcf1f1cf0c1a4e",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 26,
+    "findings_closed": 27,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 16,
+    "findings_open": 15,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -501,7 +501,7 @@
       "fake_completion": 1,
       "governance_gaps": 2,
       "methodology_drift": 5,
-      "numeric_drift": 3,
+      "numeric_drift": 2,
       "orphaned_workflows": 2,
       "partial_migration": 1
     }

@@ -357,10 +357,12 @@ def run_sensitivity_analysis(
         "transfer_factor": TRANSFER_FACTOR_BASELINE,
     }
 
-    # OAT parameter ranges — from config/tco_assumptions.yaml sensitivity_parameters
+    # OAT parameter ranges. Wage range is the actual WKO Spedition & Lagereibetriebe
+    # collective agreement bracket (BG-III 2025/26) — see config/tco_assumptions.yaml.
+    # Other ranges are documented stress-test bands around the point estimates.
     param_ranges: dict[str, tuple[float, float]] = {
         "humanoid_capex_eur": (60000, 180000),
-        "human_wage_eur": (9.25, 27.75),
+        "human_wage_eur": (15.13, 22.00),
         "human_overhead_mult": (1.0, 1.7),
         "discount_rate": (0.04, 0.12),
         "transfer_factor": (0.50, 0.90),
