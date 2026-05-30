@@ -61,7 +61,8 @@ def test_doc_run_counts_match_report() -> None:
             continue
         for claim in _extract_claims(path.read_text()):
             if claim not in valid:
-                mismatches.append(f"{path.relative_to(REPO_ROOT)}: {claim} (canonical {sorted(valid)})")
+                rel = path.relative_to(REPO_ROOT)
+                mismatches.append(f"{rel}: {claim} (canonical {sorted(valid)})")
     ratchet(
         "F-024",
         fixed=not mismatches,
