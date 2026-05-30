@@ -2,5 +2,5 @@
   "phase": "module_03_tco",
   "scenarios_analyzed": 5,
   "discount_rate": 0.08,
-  "tco_scenarios_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/tco_scenarios.parquet"
+  "tco_scenarios_path": "/home/user/warehouse_humanoid_tco/data/processed/tco_scenarios.parquet"
 }

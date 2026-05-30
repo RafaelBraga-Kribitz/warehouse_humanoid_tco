@@ -3,5 +3,5 @@
   "total_runs": 75,
   "scenarios_tested": 5,
   "n_runs_per_scenario": 15,
-  "simulation_runs_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/simulation_runs.parquet"
+  "simulation_runs_path": "/home/user/warehouse_humanoid_tco/data/processed/simulation_runs.parquet"
 }

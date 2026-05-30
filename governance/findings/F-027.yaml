@@ -2,17 +2,37 @@ id: F-027
 title: Simulation samples per-line service time as truncated Gaussian, biasing throughput
 category: methodology_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/models/simulation.py:111 —
-    per_line = max(float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std)), 1.0)
+  Pre-closure: src/warehouse_humanoid_tco/models/simulation.py:72-73 sampled
+  per-line service time as
+    cycle_time = float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std))
+    cycle_time = max(cycle_time, 1.0)
+  For Normal(25, 8) this folded ~0.13 % of draws into a point mass at 1.0,
+  asymmetrically biasing the empirical mean below the configured mean and
+  inflating simulated throughput.
 verification_script: tests/governance/test_f027_service_time_distribution.py
 notes: |
-  Industrial-IE standard for pick times is lognormal or Weibull (right-skewed).
-  Truncating Normal(25,8) at 1.0 folds the left tail into a point mass and biases
-  the empirical mean below 25, inflating throughput. Closure: sample lognormal
-  parameterised to the same mean/CV, or use scipy.stats.truncnorm with documented
-  rationale + an ADR.
+  Closed by replacing the naive truncated-Normal with a lognormal parameterised
+  to preserve the target mean and standard deviation exactly:
+    cv2    = (std / mean)**2
+    sigma2 = log1p(cv2)
+    mu     = log(mean) - 0.5 * sigma2
+    cycle_time = rng.lognormal(mu, sqrt(sigma2))
+  Lognormal is the industrial-IE standard for pick-time distributions:
+  right-skewed (matches empirical pick data), strictly positive (no clip
+  needed), and two-parameter (calibrated against the same mean/std the
+  config already supplies — no schema change).
+  Implementation lives in `_sample_service_time` in models/simulation.py;
+  full rationale + alternatives (truncnorm, Weibull) in
+  governance/adrs/0010-lognormal-service-time.md.
+  Downstream: re-ran `python -m warehouse_humanoid_tco.pipelines.module_02_simulation`
+  and `module_03_tco`; throughput shifted only marginally (cross-scenario
+  mean 950.3 vs prior ~949), well inside F-021's ±50 tolerance, so the QMD
+  "~959" claim and the F-020 NPV table both still match the CSV.
+  Verification: tests/governance/test_f027_service_time_distribution.py bans
+  the pattern `rng.normal(profile.cycle_time_mean, ...)`. Previously xfail,
+  now PASSED.
