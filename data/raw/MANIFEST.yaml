@@ -2,30 +2,74 @@
 # Records all raw data sources, versions, access dates, and hashes.
 # See PROJECT_CHARTER.md §6.1 for the authoritative data source list.
 # RULE: no dataset enters the project without an entry here.
+#
+# UnifoLM-WBT meta-collection: each subset is its own HF dataset repo with its
+# own revision_sha. Per-subset SHAs are duplicated in config/dataset_manifest.yaml
+# (which the pipeline consumes); this file is the documentary register.
 
 sources:
-  - id: unifolm_wbt
-    name: "UnifoLM-WBT-Dataset (meta-collection)"
-    repo_id: "unitreerobotics/UnifoLM-WBT-Dataset"
+  - id: unifolm_wbt_pickup_pillow
+    name: "G1_WBT_Inspire_Pickup_Pillow_MainCamOnly"
+    repo_id: "unitreerobotics/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly"
     repo_type: "dataset"
-    revision_sha: null          # FILL IN after running 00_derisk_dataset_inspection.py
-    local_dir: "data/raw/"      # The 5 G1_* subset dirs live here; per-subset SHAs in config/dataset_manifest.yaml
-    access_date: null           # FILL IN on first download
+    revision_sha: "24e3e4d88a5020bdb4b3046ec09b09dc56f8d1f1"
+    local_dir: "data/raw/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly/"
+    access_date: "2026-05-29"
     license: "Unitree open license — verify at dataset page before use"
-    notes: "LeRobot V2.0+ format. Whole-body teleoperation on Unitree G1. The 5 actual subsets (G1_WBT_*, G1_Dex1_DiverseManip_*) live as siblings under data/raw/."
+    notes: "LeRobot V2.0+. Spatial reach + grasp (pillow = soft, deformable object). 715 episodes."
+
+  - id: unifolm_wbt_clothes_washer
+    name: "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly"
+    repo_id: "unitreerobotics/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly"
+    repo_type: "dataset"
+    revision_sha: "c0a5fb0992a0f2a2b9df3493d27c2d670a4b1c36"
+    local_dir: "data/raw/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly/"
+    access_date: "2026-05-29"
+    license: "Unitree open license — verify at dataset page before use"
+    notes: "LeRobot V2.0+. Placement into constrained space (washing machine opening). 465 episodes."
+
+  - id: unifolm_wbt_dishwasher
+    name: "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher"
+    repo_id: "unitreerobotics/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher"
+    repo_type: "dataset"
+    revision_sha: "16c01dbfcb2159783ea575acd42d1cec9b69e311"
+    local_dir: "data/raw/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher/"
+    access_date: "2026-05-29"
+    license: "Unitree open license — verify at dataset page before use"
+    notes: "LeRobot V2.0+. Transport + placement with multiple objects (stackable items). 1460 episodes."
+
+  - id: diversemanip_singlearm
+    name: "G1_Dex1_DiverseManip_SingleArm_256x256"
+    repo_id: "unitreerobotics/G1_Dex1_DiverseManip_SingleArm_256x256"
+    repo_type: "dataset"
+    revision_sha: "adfe712e2ac801ca7ba18c0da79e39483975cc1f"
+    local_dir: "data/raw/G1_Dex1_DiverseManip_SingleArm_256x256/"
+    access_date: "2026-05-29"
+    license: "Unitree open license — verify at dataset page before use"
+    notes: "LeRobot V2.0+. Single-arm dexterous manipulation across object types/weights."
+
+  - id: diversemanip_dualarm
+    name: "G1_Dex1_DiverseManip_DualArm_256x256"
+    repo_id: "unitreerobotics/G1_Dex1_DiverseManip_DualArm_256x256"
+    repo_type: "dataset"
+    revision_sha: "50ea572ea5f225e30e7c9116ab814a2efd73060a"
+    local_dir: "data/raw/G1_Dex1_DiverseManip_DualArm_256x256/"
+    access_date: "2026-05-29"
+    license: "Unitree open license — verify at dataset page before use"
+    notes: "LeRobot V2.0+. Dual-arm coordination for larger/heavier objects."
 
   - id: at_wages
     name: "Statistik Austria Wage Tables"
     url: "https://www.statistik.at/statistiken/arbeitsmarkt/loehne-und-gehaelter"
     # No local_dir: not a downloaded file. Wage values are baked into config/tco_assumptions.yaml.
-    snapshot_date: null         # FILL IN on download
+    snapshot_date: "2026-05-30"
     license: "CC BY 4.0 (Open Government Data Austria)"
-    notes: "Sector wage tables used for labor cost inputs in TCO model. Source is the URL above; latched values live in config/tco_assumptions.yaml."
+    notes: "Sector wage tables used for labor cost inputs in TCO model. Source is the URL above; latched values live in config/tco_assumptions.yaml as of snapshot_date."
 
   - id: wko_kv
     name: "WKO Kollektivvertrag Spedition & Lagereibetriebe (BG-III 2025/26)"
     url: "https://www.wko.at/service/kollektivvertrag/"
     # No local_dir: not a downloaded file. KV rates are baked into config/tco_assumptions.yaml.
-    snapshot_date: null
+    snapshot_date: "2026-05-30"
     license: "Public domain"
-    notes: "Sector-specific wage rates for warehouse/logistics workers under the WKO Spedition & Lagereibetriebe collective agreement (BG-III 2025/26). Source is the URL above; latched values live in config/tco_assumptions.yaml."
+    notes: "Sector-specific wage rates for warehouse/logistics workers under the WKO Spedition & Lagereibetriebe collective agreement (BG-III 2025/26). Source is the URL above; latched values live in config/tco_assumptions.yaml as of snapshot_date."
