@@ -288,12 +288,12 @@
     },
     {
       "category": "methodology_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-027",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-027.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Simulation samples per-line service time as truncated Gaussian, biasing throughput",
       "verification_script": "tests/governance/test_f027_service_time_distribution.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T20:25:07.618078+00:00",
-  "git_branch": "governance/f025-manifest-provenance-v2",
-  "git_head_sha": "9ef99c7a8b8e1d0af09ac10254ad60062ea03947",
+  "generated_at": "2026-05-30T20:47:14.956936+00:00",
+  "git_branch": "governance/f027-lognormal-service-time",
+  "git_head_sha": "e8e0ff928c90ebf4846fdec61fc268400f806798",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 29,
+    "findings_closed": 30,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 13,
+    "findings_open": 12,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -500,7 +500,7 @@
       "dead_artifacts": 2,
       "fake_completion": 1,
       "governance_gaps": 1,
-      "methodology_drift": 5,
+      "methodology_drift": 4,
       "numeric_drift": 1,
       "orphaned_workflows": 2,
       "partial_migration": 1

@@ -35,6 +35,28 @@ class WarehouseScenario:
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
+def _sample_service_time(rng: np.random.Generator, mean: float, std: float) -> float:
+    """Draw one per-line service time from a lognormal preserving (mean, std).
+
+    Industrial-IE standard for pick-time distributions is right-skewed (lognormal
+    or Weibull); the previous naive ``rng.normal(...) clipped at 1.0`` folded the
+    left tail into a point mass, biasing the empirical mean below the
+    parameterised mean and inflating throughput. See ADR-0010 for derivation.
+
+    Given target mean M and std S (CV = S/M), the underlying Normal parameters
+    of ln(X) are ``sigma^2 = ln(1 + (S/M)^2)`` and ``mu = ln(M) - sigma^2 / 2``,
+    which makes ``E[X] = M`` and ``Var[X] = S^2`` exactly.
+    """
+    if mean <= 0:
+        return 1.0
+    if std <= 0:
+        return float(mean)
+    cv2 = (std / mean) ** 2
+    sigma2 = float(np.log1p(cv2))
+    mu = float(np.log(mean)) - 0.5 * sigma2
+    return float(rng.lognormal(mu, np.sqrt(sigma2)))
+
+
 def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]:
     """Run one simulation episode for a given scenario.
 
@@ -69,8 +91,7 @@ def run_scenario(scenario: WarehouseScenario, run_id: int = 0) -> dict[str, Any]
         with res.request() as req:
             queue_lengths.append(len(res.queue))
             yield req
-            cycle_time = float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std))
-            cycle_time = max(cycle_time, 1.0)
+            cycle_time = _sample_service_time(rng, profile.cycle_time_mean, profile.cycle_time_std)
             busy_time[profile.agent_type] += cycle_time
             yield env.timeout(cycle_time)
         completed_orders.append(env.now)
