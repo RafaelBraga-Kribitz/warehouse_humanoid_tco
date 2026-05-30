@@ -1,19 +1,23 @@
 id: F-023
-title: Executive_Summary_DE.qmd + raw MANIFEST cite "KV Handel" but canonical config is "KV Speditionen"
+title: QMD + config + raw MANIFEST cite the wrong KV (Handel) for warehouse wages
 category: fragmented_standards
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  reports/Executive_Summary_DE.qmd:26 — "WKO Kollektivvertrag Handel: sektorspezifische Lohnsätze"
-  data/raw/MANIFEST.yaml:26 — name: "WKO Kollektivvertrag Handel"
-  config/tco_assumptions.yaml:12-13 — "KV Spedition & Lagereibetriebe (WKÖ) … NOT KV Handel"
-  config/autostore_baseline.yaml:27 — "KV Spedition/Lagereibetriebe (WKÖ) BG-III 2025/26"
+  Pre-closure: reports/Executive_Summary_DE.qmd, reports/module_03_tco_assumptions.qmd,
+  data/raw/MANIFEST.yaml, config/tco_assumptions.yaml, config/autostore_baseline.yaml,
+  and src/warehouse_humanoid_tco/pipelines/module_03_tco.py all named the wrong
+  Austrian collective agreement (Handel / retail) for the wage anchor used by the
+  TCO model. Warehouse pickers fall under Spedition & Lagereibetriebe (BG-III
+  2025/26), not Handel.
 verification_script: tests/governance/test_f023_kv_naming.py
 notes: |
-  Two different Austrian collective agreements named in the same repo for the same
-  wage figure. For DACH-targeted portfolio this is a credibility kill. Closure:
-  replace "KV Handel" / "Kollektivvertrag Handel" in QMD and raw MANIFEST with
-  "KV Spedition & Lagereibetriebe".
+  Closed by replacing the wrong KV name with "Kollektivvertrag Spedition &
+  Lagereibetriebe (BG-III 2025/26)" in every source-of-truth file. The
+  verification scans reports/*.qmd, config/*.yaml, data/raw/MANIFEST.yaml,
+  README/CHARTER/CONTRIBUTING/CLAUDE/docs/, and src/**/*.py for the banned
+  substrings. Generated HTML renders are excluded — they refresh from QMD on
+  the next `make all`.

@@ -244,13 +244,13 @@
     },
     {
       "category": "fragmented_standards",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-023",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-023.yaml",
-      "status": "open",
-      "title": "Executive_Summary_DE.qmd + raw MANIFEST cite \"KV Handel\" but canonical config is \"KV Speditionen\"",
+      "status": "closed",
+      "title": "QMD + config + raw MANIFEST cite the wrong KV (Handel) for warehouse wages",
       "verification_script": "tests/governance/test_f023_kv_naming.py"
     },
     {
@@ -409,12 +409,12 @@
     },
     {
       "category": "fake_completion",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-038",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-038.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "docs/DASHBOARD_SETUP.md Power BI DAX snippet is syntactically invalid",
       "verification_script": "tests/governance/test_f038_dax_validity.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T18:43:10.617218+00:00",
+  "generated_at": "2026-05-30T18:47:03.191037+00:00",
   "git_branch": "HEAD",
-  "git_head_sha": "cc4b92dd57804376bea1422477c8d9e5a6274007",
+  "git_head_sha": "c92981015a91dd48875b3163cc8d0490014e43a1",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,18 +488,17 @@
     }
   ],
   "summary": {
-    "findings_closed": 22,
+    "findings_closed": 24,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 20,
+    "findings_open": 18,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
     "open_by_category": {
       "dead_artifacts": 3,
-      "fake_completion": 2,
-      "fragmented_standards": 1,
+      "fake_completion": 1,
       "governance_gaps": 2,
       "methodology_drift": 5,
       "numeric_drift": 3,
