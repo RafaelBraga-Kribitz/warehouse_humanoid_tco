@@ -310,12 +310,12 @@
     },
     {
       "category": "methodology_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-029",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-029.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Sensitivity printout mislabels p5/p95 output quantiles as \"90% CI\"",
       "verification_script": "tests/governance/test_f029_quantile_label.py"
     },
@@ -420,12 +420,12 @@
     },
     {
       "category": "stale_generated_outputs",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-039",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-039.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "docs/DASHBOARD_SETUP.md cites stale Best NPV \u20ac-924,125 that exists in no current artifact",
       "verification_script": "tests/governance/test_f039_stale_best_npv_card.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T15:17:49.133895+00:00",
-  "git_branch": "governance/f021-exec-summary-throughput",
-  "git_head_sha": "1091f645588adf0e586647f5f65d0c1519deb48a",
+  "generated_at": "2026-05-30T18:43:10.617218+00:00",
+  "git_branch": "HEAD",
+  "git_head_sha": "cc4b92dd57804376bea1422477c8d9e5a6274007",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 20,
+    "findings_closed": 22,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 22,
+    "findings_open": 20,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -501,11 +501,11 @@
       "fake_completion": 2,
       "fragmented_standards": 1,
       "governance_gaps": 2,
-      "methodology_drift": 6,
+      "methodology_drift": 5,
       "numeric_drift": 3,
       "orphaned_workflows": 2,
       "partial_migration": 1,
-      "stale_generated_outputs": 2
+      "stale_generated_outputs": 1
     }
   },
   "validation_errors": [],

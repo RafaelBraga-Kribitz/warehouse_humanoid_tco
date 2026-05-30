@@ -66,7 +66,7 @@ Complete guide for creating Tableau Public and Power BI dashboards from module o
 ### 3. Create Report
 - **Page 1:** TCO Overview
   - Card: Winner (S-hybrid-amr)
-  - Card: Best NPV (€-924,125)
+  - Card: Best NPV (read from `tco_scenarios.csv`; least-negative `npv_eur`)
   - Clustered bar: NPV by scenario
   - Stacked bar: Cost breakdown
 
