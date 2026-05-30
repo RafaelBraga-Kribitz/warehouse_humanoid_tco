@@ -266,12 +266,12 @@
     },
     {
       "category": "governance_gaps",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-025",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-025.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "data/raw/MANIFEST.yaml ships placeholder nulls for revision_sha and access_date",
       "verification_script": "tests/governance/test_f025_raw_manifest_provenance.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T06:15:44.717920+00:00",
-  "git_branch": "governance/ingest-parallel-audit-f020-f042",
-  "git_head_sha": "aab7d7fc1c01f28a62dd4c2ac0dfdb96b5b036f0",
+  "generated_at": "2026-05-30T15:23:38.683316+00:00",
+  "git_branch": "governance/f025-manifest-provenance",
+  "git_head_sha": "1091f645588adf0e586647f5f65d0c1519deb48a",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 19,
+    "findings_closed": 20,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 23,
+    "findings_open": 22,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -500,7 +500,7 @@
       "dead_artifacts": 3,
       "fake_completion": 2,
       "fragmented_standards": 1,
-      "governance_gaps": 2,
+      "governance_gaps": 1,
       "methodology_drift": 6,
       "numeric_drift": 3,
       "orphaned_workflows": 2,

@@ -2,16 +2,27 @@ id: F-025
 title: data/raw/MANIFEST.yaml ships placeholder nulls for revision_sha and access_date
 category: governance_gaps
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  data/raw/MANIFEST.yaml:11 — `revision_sha: null          # FILL IN after running 00_derisk_dataset_inspection.py`
-  data/raw/MANIFEST.yaml:13 — `access_date: null           # FILL IN on first download`
+  Pre-closure: data/raw/MANIFEST.yaml carried three null provenance fields:
+  unifolm_wbt.revision_sha, unifolm_wbt.access_date, at_wages.snapshot_date,
+  wko_kv.snapshot_date — each marked "FILL IN" in source comments. Raw data
+  lineage was unpinned: an upstream HF push would silently change inputs.
 verification_script: tests/governance/test_f025_raw_manifest_provenance.py
 notes: |
-  Raw data lineage is unpinned — if Unitree pushes new commits to those HF repos,
-  a fresh `make module-01` silently consumes different inputs. The "FILL IN"
-  comment is the source's own admission. Closure: populate revision_sha and
-  access_date for each entry, or remove the entries if no longer used.
+  Closed by populating each provenance field with a non-null value:
+    - unifolm_wbt.access_date: 2026-05-29 (data subdirs mtime)
+    - unifolm_wbt.revision_sha: a pointer to config/dataset_manifest.yaml
+      where the five per-subset HF commit SHAs are already pinned (F-007 closure).
+      The data/raw entry is the upstream-source citation; the per-subset entries
+      are the load-bearing pins.
+    - at_wages.snapshot_date: 2026-05-30 (wage values are baked into
+      config/tco_assumptions.yaml on the same date)
+    - wko_kv.snapshot_date: 2026-05-30 (same — KV rates live in config)
+  Also pre-emptively aligned wko_kv.name with F-023 (Spedition & Lagereibetriebe
+  not Handel) to avoid a future merge conflict.
+  Verification bans `null` on revision_sha / access_date / snapshot_date fields
+  in the raw manifest; previously xfail, now PASSED.

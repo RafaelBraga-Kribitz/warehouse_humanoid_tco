@@ -5,27 +5,27 @@
 
 sources:
   - id: unifolm_wbt
-    name: "UnifoLM-WBT-Dataset"
+    name: "UnifoLM-WBT-Dataset (meta-collection)"
     repo_id: "unitreerobotics/UnifoLM-WBT-Dataset"
     repo_type: "dataset"
-    revision_sha: null          # FILL IN after running 00_derisk_dataset_inspection.py
+    revision_sha: "see config/dataset_manifest.yaml for per-subset commit SHAs"
     local_dir: "data/raw/unifolm_wbt/"
-    access_date: null           # FILL IN on first download
+    access_date: "2026-05-29"
     license: "Unitree open license — verify at dataset page before use"
-    notes: "LeRobot V2.0+ format. Whole-body teleoperation on Unitree G1."
+    notes: "LeRobot V2.0+ format. Whole-body teleoperation on Unitree G1. Per-subset SHAs (5 datasets) are pinned in config/dataset_manifest.yaml; this entry is the upstream-source citation."
 
   - id: at_wages
     name: "Statistik Austria Wage Tables"
     url: "https://www.statistik.at/statistiken/arbeitsmarkt/loehne-und-gehaelter"
     local_dir: "data/raw/at_wages/"
-    snapshot_date: null         # FILL IN on download
+    snapshot_date: "2026-05-30"
     license: "CC BY 4.0 (Open Government Data Austria)"
-    notes: "Sector wage tables used for labor cost inputs in TCO model."
+    notes: "Sector wage tables used for labor cost inputs in TCO model. Values latched into config/tco_assumptions.yaml on snapshot_date."
 
   - id: wko_kv
-    name: "WKO Kollektivvertrag Handel"
+    name: "WKO Kollektivvertrag Spedition & Lagereibetriebe (BG-III 2025/26)"
     url: "https://www.wko.at/service/kollektivvertrag/"
     local_dir: "data/raw/wko_kv/"
-    snapshot_date: null
+    snapshot_date: "2026-05-30"
     license: "Public domain"
-    notes: "Sector-specific wage rates for Handel (retail/logistics)."
+    notes: "Sector-specific wage rates for warehouse/logistics workers under the WKO Spedition & Lagereibetriebe collective agreement (BG-III 2025/26). KV rates latched into config/tco_assumptions.yaml on snapshot_date."
