@@ -221,9 +221,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-29T22:29:04.949103+00:00",
-  "git_branch": "governance/phase-5-f007-manifest-sha",
-  "git_head_sha": "7bd3c882dcd132a52bee2fd4963173ad1f287b6d",
+  "generated_at": "2026-05-30T00:55:50.712309+00:00",
+  "git_branch": "governance/session-end-handoff",
+  "git_head_sha": "0e3e6df4d2633e0e66c74e29ecef20bf57066979",
   "migrations": [
     {
       "linked_finding": "F-003",
