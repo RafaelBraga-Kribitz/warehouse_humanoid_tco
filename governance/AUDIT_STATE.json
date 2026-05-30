@@ -299,12 +299,12 @@
     },
     {
       "category": "methodology_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-028",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-028.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Simulation never computes or asserts queueing utilisation \u03c1 = \u03bb/(c\u03bc)",
       "verification_script": "tests/governance/test_f028_utilisation_check.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T20:47:14.956936+00:00",
-  "git_branch": "governance/f027-lognormal-service-time",
-  "git_head_sha": "e8e0ff928c90ebf4846fdec61fc268400f806798",
+  "generated_at": "2026-05-30T21:45:43.545063+00:00",
+  "git_branch": "governance/f028-utilisation-check",
+  "git_head_sha": "048f6f948d5b396f156bdcffcee594c2187a3b1d",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 30,
+    "findings_closed": 31,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 12,
+    "findings_open": 11,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -500,7 +500,7 @@
       "dead_artifacts": 2,
       "fake_completion": 1,
       "governance_gaps": 1,
-      "methodology_drift": 4,
+      "methodology_drift": 3,
       "numeric_drift": 1,
       "orphaned_workflows": 2,
       "partial_migration": 1
