@@ -26,7 +26,8 @@ wie sie bei Knapp AG und TGW Logistics eingesetzt werden.
 - **UnifoLM-WBT-Dataset** (Unitree Robotics): empirische Teleoperation­sdaten
   vom Unitree G1 Humanoid-Roboter (öffentlich verfügbar via Hugging Face)
 - **Statistik Austria** Lohntabellen: österreichische Arbeitskosten
-- **WKO Kollektivvertrag Handel**: sektorspezifische Lohnsätze
+- **WKO Kollektivvertrag Spedition & Lagereibetriebe** (BG-III 2025/26):
+  sektorspezifische Lohnsätze für Lagerarbeit
 
 ## Methodik
 

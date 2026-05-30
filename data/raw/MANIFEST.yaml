@@ -23,9 +23,9 @@ sources:
     notes: "Sector wage tables used for labor cost inputs in TCO model."
 
   - id: wko_kv
-    name: "WKO Kollektivvertrag Handel"
+    name: "WKO Kollektivvertrag Spedition & Lagereibetriebe (BG-III 2025/26)"
     url: "https://www.wko.at/service/kollektivvertrag/"
     local_dir: "data/raw/wko_kv/"
     snapshot_date: null
     license: "Public domain"
-    notes: "Sector-specific wage rates for Handel (retail/logistics)."
+    notes: "Sector-specific wage rates for warehouse/logistics workers under the WKO Spedition & Lagereibetriebe collective agreement (BG-III 2025/26)."

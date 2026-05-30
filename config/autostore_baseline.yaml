@@ -25,7 +25,7 @@ agents:
     cycle_time_mean_seconds: 25    # seconds per pick line (Knapp benchmark)
     cycle_time_std_seconds: 8
     error_rate: 0.002
-    hourly_wage_eur: 18.50         # base; KV Handel 2026 estimate
+    hourly_wage_eur: 18.50         # base; KV Spedition & Lagereibetriebe BG-III 2025/26
     overhead_multiplier: 1.35      # social contributions, benefits
     absence_rate_per_shift: 0.05
 

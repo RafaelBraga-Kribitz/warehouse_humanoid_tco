@@ -36,7 +36,7 @@ The 5-year NPV model for Austrian intralogistics robotic integration uses 18 cor
 
 | Parameter | Value | Source |
 |-----------|-------|--------|
-| Base Hourly Wage | €18.50 | WKO Kollektivvertrag Handel 2026 |
+| Base Hourly Wage | €18.50 | WKO Kollektivvertrag Spedition & Lagereibetriebe BG-III 2025/26 |
 | Annual Wage Growth | 2.5% | Statistik Austria wage trend 2020-2025 |
 | Overhead Multiplier | 1.35× | Social contributions, holiday, sick pay per KV |
 | Sensitivity Range (wage) | €14-25/hr | Market bounds: minimum wage to senior roles |

@@ -9,7 +9,7 @@ financial:
   discount_rate_range: [0.04, 0.12]  # Sensitivity range
 
 labor:
-  # Source: WKO Kollektivvertrag Handel, 2026 snapshot
+  # Source: WKO Kollektivvertrag Spedition & Lagereibetriebe (BG-III 2025/26)
   # https://www.wko.at/service/kollektivvertrag/
   base_hourly_wage_eur: 18.50
   annual_wage_growth_rate: 0.025  # Source: Statistik Austria wage growth trend 2020-2025

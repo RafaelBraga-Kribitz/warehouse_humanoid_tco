@@ -25,7 +25,9 @@ from warehouse_humanoid_tco.models.tco import (
     compute_humanoid_capex,
 )
 
-_BASELINE_ANNUAL_OPEX = 8 * (252 * 8) * 18.50 * 1.35  # 8 humans, full shift, KV Handel 2026
+_BASELINE_ANNUAL_OPEX = (
+    8 * (252 * 8) * 18.50 * 1.35
+)  # 8 humans, full shift, KV Spedition & Lagereibetriebe
 
 
 def compute_tco_scenario(
