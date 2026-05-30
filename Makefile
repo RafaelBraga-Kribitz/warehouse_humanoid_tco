@@ -30,6 +30,7 @@ help:
 	@echo "Analysis:"
 	@echo "  make profile        Generate data profiling notebook"
 	@echo "  make dashboards     Generate Tableau/Power BI exports + charts"
+	@echo "  make exec-summary   Re-render reports/Executive_Summary_DE from QMD (requires quarto)"
 	@echo ""
 	@echo "Quality:"
 	@echo "  make lint           Black + Ruff + Pyright"
@@ -130,6 +131,18 @@ module-04:
 
 all: module-01 module-02 module-03 module-04
 	@echo "✓ All modules complete"
+
+# ── Report Rendering ──────────────────────────────────────────────────────────
+
+# Re-render the Executive Summary HTML/PDF from the QMD source.
+# Closes the F-020 staleness category: rather than hand-editing the HTML when
+# the QMD changes, contributors run this target. Requires `quarto` on PATH.
+exec-summary:
+	@command -v quarto >/dev/null 2>&1 || { \
+		echo "✗ quarto not installed. See https://quarto.org/docs/get-started/"; \
+		exit 1; \
+	}
+	quarto render reports/Executive_Summary_DE.qmd
 
 # ── Analysis & Profiling ──────────────────────────────────────────────────────
 

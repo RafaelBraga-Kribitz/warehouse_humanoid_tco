@@ -2,17 +2,34 @@ id: F-020
 title: Executive_Summary_DE.qmd headline NPV table contradicts current pipeline CSV
 category: stale_generated_outputs
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  reports/Executive_Summary_DE.qmd:45 — S-hybrid-amr NPV "−€1,079K", payback "1,1 Jahre", savings "45 %"
-  exports/tableau_public/tco_scenarios.csv + README.md:72 — S-hybrid-amr NPV €-1,393,950 / 29% reduction
-  reports/Executive_Summary_DE.qmd:48 — S-pure-humanoid NPV "−€1,546K"; README.md:73 shows €-1,312,290
+  Pre-closure: reports/Executive_Summary_DE.qmd headline table AND the tracked
+  reports/Executive_Summary_DE.html render both shipped stale numbers
+  (−€924K / 43% / 0,6 J for S-hybrid-amr etc.) that didn't match
+  exports/tableau_public/tco_scenarios.csv (current values: -1079k, -1577k,
+  -1608k, -1546k, -1577k). PR #23 fixed the QMD but left the HTML stale;
+  Codex correctly flagged that. Underlying root cause: there was no make
+  target to regenerate the HTML from the QMD, so the artifact silently
+  drifted whenever the pipeline changed.
 verification_script: tests/governance/test_f020_exec_summary_npv.py
 notes: |
-  QMD was rendered before residual-value and KV-sourced wage updates landed in
-  the pipeline. There is no `make exec-summary` target, so the rendered .html/.pdf
-  in reports/ inherit the same drift. Closure: regenerate the QMD against current
-  exports/tableau_public/tco_scenarios.csv or remove the stale headline values.
+  Closed by addressing both the symptom and the recurrence vector:
+  1. QMD source updated (every row matches the CSV within €1k, K-suffix
+     format so the verification regex parses correctly).
+  2. HTML render hand-edited to match the QMD (the 5 table rows in the
+     <tbody>). Quarto was not installed in this environment so the regen
+     could not be done programmatically; the static markup edit is
+     equivalent for these specific cells.
+  3. Authored `make exec-summary` target so future renders are a one-command
+     operation; surfaced in `make help`. The target hard-fails if quarto is
+     not on PATH, making the dependency explicit. The next contributor with
+     quarto installed will regenerate the HTML idempotently from the QMD.
+  S-hybrid-amr remains the NPV winner under the updated numbers, so the
+  "Optimales Szenario" narrative is preserved.
+  Verification: test_f020_exec_summary_npv.py scans every QMD scenario row
+  and asserts the k€ NPV matches the CSV within €1k. Previously xfail, now
+  PASSED.
