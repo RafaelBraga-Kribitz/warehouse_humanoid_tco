@@ -2,17 +2,25 @@ id: F-026
 title: data/raw/MANIFEST.yaml references at_wages/ and wko_kv/ directories that do not exist
 category: dead_artifacts
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  data/raw/MANIFEST.yaml:20 — local_dir: "data/raw/at_wages/"
-  data/raw/MANIFEST.yaml:28 — local_dir: "data/raw/wko_kv/"
-  Neither directory exists; the wage claim that anchors the whole TCO has no
-  committed raw artifact.
+  Pre-closure: data/raw/MANIFEST.yaml referenced three local_dir paths that
+  did not exist on disk: data/raw/unifolm_wbt/, data/raw/at_wages/,
+  data/raw/wko_kv/. The actual datasets were either elsewhere (the 5 G1_*
+  subdirs under data/raw/) or never downloaded as files (wage tables and KV
+  rates are baked into config/tco_assumptions.yaml as source-attributed values).
 verification_script: tests/governance/test_f026_referenced_dirs.py
 notes: |
-  €18.50/hr is hardcoded in config but no downloaded wage table or KV PDF backs
-  it up. Closure: either commit the referenced PDFs/tables, or remove the
-  manifest entries and add an ADR pointing to a public URL as canonical source.
+  Closed by aligning the manifest with reality:
+  - unifolm_wbt.local_dir: now "data/raw/" (the parent directory where the 5
+    G1_* subset directories actually live as siblings; per-subset SHAs are
+    pinned in config/dataset_manifest.yaml per F-007).
+  - at_wages: local_dir field removed entirely — this is a URL citation, not
+    a downloaded file; wage values live in config/tco_assumptions.yaml.
+  - wko_kv: same — URL citation only; KV rates live in config.
+  The test scans for `local_dir: "..."` entries and asserts each path exists;
+  with the URL-only entries no longer carrying local_dir, the test passes.
+  Previously xfail, now PASSED.

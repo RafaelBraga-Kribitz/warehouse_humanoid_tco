@@ -5,27 +5,27 @@
 
 sources:
   - id: unifolm_wbt
-    name: "UnifoLM-WBT-Dataset"
+    name: "UnifoLM-WBT-Dataset (meta-collection)"
     repo_id: "unitreerobotics/UnifoLM-WBT-Dataset"
     repo_type: "dataset"
     revision_sha: null          # FILL IN after running 00_derisk_dataset_inspection.py
-    local_dir: "data/raw/unifolm_wbt/"
+    local_dir: "data/raw/"      # The 5 G1_* subset dirs live here; per-subset SHAs in config/dataset_manifest.yaml
     access_date: null           # FILL IN on first download
     license: "Unitree open license — verify at dataset page before use"
-    notes: "LeRobot V2.0+ format. Whole-body teleoperation on Unitree G1."
+    notes: "LeRobot V2.0+ format. Whole-body teleoperation on Unitree G1. The 5 actual subsets (G1_WBT_*, G1_Dex1_DiverseManip_*) live as siblings under data/raw/."
 
   - id: at_wages
     name: "Statistik Austria Wage Tables"
     url: "https://www.statistik.at/statistiken/arbeitsmarkt/loehne-und-gehaelter"
-    local_dir: "data/raw/at_wages/"
+    # No local_dir: not a downloaded file. Wage values are baked into config/tco_assumptions.yaml.
     snapshot_date: null         # FILL IN on download
     license: "CC BY 4.0 (Open Government Data Austria)"
-    notes: "Sector wage tables used for labor cost inputs in TCO model."
+    notes: "Sector wage tables used for labor cost inputs in TCO model. Source is the URL above; latched values live in config/tco_assumptions.yaml."
 
   - id: wko_kv
     name: "WKO Kollektivvertrag Spedition & Lagereibetriebe (BG-III 2025/26)"
     url: "https://www.wko.at/service/kollektivvertrag/"
-    local_dir: "data/raw/wko_kv/"
+    # No local_dir: not a downloaded file. KV rates are baked into config/tco_assumptions.yaml.
     snapshot_date: null
     license: "Public domain"
-    notes: "Sector-specific wage rates for warehouse/logistics workers under the WKO Spedition & Lagereibetriebe collective agreement (BG-III 2025/26)."
+    notes: "Sector-specific wage rates for warehouse/logistics workers under the WKO Spedition & Lagereibetriebe collective agreement (BG-III 2025/26). Source is the URL above; latched values live in config/tco_assumptions.yaml."
