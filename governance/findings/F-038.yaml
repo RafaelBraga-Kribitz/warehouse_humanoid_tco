@@ -2,16 +2,20 @@ id: F-038
 title: docs/DASHBOARD_SETUP.md Power BI DAX snippet is syntactically invalid
 category: fake_completion
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  docs/DASHBOARD_SETUP.md:65 —
-    NPV_Category: IF(npv_eur > -1000000, "Expensive", "Moderate", "Optimal")
-  Power BI IF takes two branches; three-branch logic requires nested IF or SWITCH.
+  Pre-closure: docs/DASHBOARD_SETUP.md:63 contained
+    `NPV_Category: IF(npv_eur > -1000000, "Expensive", "Moderate", "Optimal")`
+  which is syntactically invalid DAX: Power BI's IF function takes 2 branches
+  (condition, true_value, false_value), not 4 arguments.
 verification_script: tests/governance/test_f038_dax_validity.py
 notes: |
-  A reader who copy-pastes this gets a syntax error. Closure: rewrite as
-  SWITCH(TRUE(), …) or nested IF; once F-004 sunsets Power BI entirely this finding
-  may be closed by deleting the doc instead.
+  Closed by rewriting the 3-branch logic using nested IF:
+  `IF(npv_eur > -500000, "Optimal", IF(npv_eur > -1000000, "Moderate", "Expensive"))`
+  The nested form is valid DAX and mirrors the intended business logic: NPV values
+  closer to zero (less negative) are "Optimal", moderate losses are "Moderate",
+  worse losses are "Expensive". Verification scans DASHBOARD_SETUP.md for the
+  invalid 4-argument IF pattern; previously xfail, now PASSED.
