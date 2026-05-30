@@ -266,12 +266,12 @@
     },
     {
       "category": "governance_gaps",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-025",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-025.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "data/raw/MANIFEST.yaml ships placeholder nulls for revision_sha and access_date",
       "verification_script": "tests/governance/test_f025_raw_manifest_provenance.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T19:35:36.753194+00:00",
-  "git_branch": "governance/f024-run-count-invariant-v2",
-  "git_head_sha": "4d52a43c1ca6cd169b1f74e1e8fd5078d6f5f19b",
+  "generated_at": "2026-05-30T20:25:07.618078+00:00",
+  "git_branch": "governance/f025-manifest-provenance-v2",
+  "git_head_sha": "9ef99c7a8b8e1d0af09ac10254ad60062ea03947",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 28,
+    "findings_closed": 29,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 14,
+    "findings_open": 13,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -499,7 +499,7 @@
     "open_by_category": {
       "dead_artifacts": 2,
       "fake_completion": 1,
-      "governance_gaps": 2,
+      "governance_gaps": 1,
       "methodology_drift": 5,
       "numeric_drift": 1,
       "orphaned_workflows": 2,
