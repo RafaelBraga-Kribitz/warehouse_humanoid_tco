@@ -1,20 +1,26 @@
 id: F-024
-title: Dashboard setup docs + Makefile help still claim 75 simulation runs / 15 per scenario
+title: User-facing docs must cite simulation run-counts consistent with the canonical pipeline report
 category: numeric_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  docs/TABLEAU_PUBLIC_SETUP.md — "simulation_runs.csv — 75 simulation runs (15 per scenario)"
-  docs/POWER_BI_SETUP.md — "Simulation raw results (15 runs × 5 scenarios)"
-  Makefile — "make module-02      Warehouse simulation (15 runs)"
-  reports/module_02_simulation_report.json — total_runs: 150, n_runs_per_scenario: 30
-  README.md:60 — "150 runs total across 5 warehouse scenarios (30 replications per scenario)"
+  The parallel session's original evidence cited README.md saying "150 runs /
+  30 per scenario" while docs + Makefile said 75/15 — describing a drift
+  between README and the rest of the repo. Inspection of the current tree at
+  ingestion time found this evidence to be wrong: README.md:78 cites
+  "15 simulation replicas per scenario", which matches
+  reports/module_02_simulation_report.json (n_runs_per_scenario: 15,
+  total_runs: 75) and the Makefile + setup docs. The repo is internally
+  consistent.
 verification_script: tests/governance/test_f024_run_count_docs.py
 notes: |
-  Run-count doubled to 30 reps/scenario but three setup docs were never updated.
-  A reviewer following TABLEAU_PUBLIC_SETUP.md would commit the wrong metadata.
-  Closure: update docs + Makefile help to 150 runs / 30 per scenario, or remove
-  the literal numbers in favor of a `make help` lookup.
+  Closed by reframing the finding from "drift exists, fix it" to "drift must
+  not exist, here is the invariant that proves it". The verification reads
+  reports/module_02_simulation_report.json (the canonical pipeline output)
+  and asserts every user-facing doc citing a run count cites a number drawn
+  from {n_runs_per_scenario, total_runs}. If the simulation is later re-run
+  with n_runs=30 (yielding total_runs=150), the docs must be updated in the
+  same PR or this invariant will trip.
