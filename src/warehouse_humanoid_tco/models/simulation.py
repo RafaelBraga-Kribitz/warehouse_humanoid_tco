@@ -61,9 +61,7 @@ def predict_utilisation(scenario: WarehouseScenario) -> float:
     total_agents = sum(p.count for p in eligible)
     if total_agents == 0:
         return 0.0
-    mean_service_seconds = sum(
-        (p.count / total_agents) * p.cycle_time_mean for p in eligible
-    )
+    mean_service_seconds = sum((p.count / total_agents) * p.cycle_time_mean for p in eligible)
     arrival_rate_per_second = scenario.order_arrival_rate_per_hour / 3600.0
     return arrival_rate_per_second * mean_service_seconds / total_agents
 
