@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
 
 from _ratchet import REPO_ROOT, ratchet
 
@@ -39,8 +38,7 @@ PATTERN_RULES: list[tuple[re.Pattern[str], dict[str, str]]] = [
     # "N simulation runs (M per scenario)"
     (
         re.compile(
-            r"(?<![\d,])(?P<total>\d+)\s+simulation runs\s*\("
-            r"(?P<per>\d+)\s+per scenario\)"
+            r"(?<![\d,])(?P<total>\d+)\s+simulation runs\s*\(" r"(?P<per>\d+)\s+per scenario\)"
         ),
         {"total": "total_runs", "per": "n_runs_per_scenario"},
     ),
@@ -65,9 +63,7 @@ PATTERN_RULES: list[tuple[re.Pattern[str], dict[str, str]]] = [
     ),
     # "N replicas? per scenario" / "N simulation replicas? per scenario"
     (
-        re.compile(
-            r"(?<![\d,])(?P<per>\d+)\s+(?:simulation\s+)?replicas?\s+per\s+scenario"
-        ),
+        re.compile(r"(?<![\d,])(?P<per>\d+)\s+(?:simulation\s+)?replicas?\s+per\s+scenario"),
         {"per": "n_runs_per_scenario"},
     ),
     # "N runs per scenario"
