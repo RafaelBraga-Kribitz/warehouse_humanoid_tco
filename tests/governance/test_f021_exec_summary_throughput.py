@@ -1,25 +1,28 @@
-"""F-021 — exec summary QMD throughput claim must match simulation report JSON.
+"""F-021 — exec summary QMD throughput claim must match pipeline output.
 
-QMD line 60 currently asserts "alle Szenarien zeigen statistisch identische
-Durchsätze (~959 Bestellungen/Schicht)". The simulation report carries scenario-
-level throughput_mean values; the rounded mean across scenarios must match the
-"~NNN" claim in the QMD within 50 orders.
+QMD line 60 asserts "alle Szenarien zeigen statistisch identische Durchsätze
+(~NNN Bestellungen/Schicht)". The truth source is the per-scenario
+`throughput_mean_orders_per_shift` column in exports/tableau_public/tco_scenarios.csv;
+the mean across scenarios must match the "~NNN" claim within 50 orders.
+
+The original test pointed at a `replication_summary` key that no longer exists
+in the simulation report JSON; the CSV is the canonical aggregate today.
 """
 
 from __future__ import annotations
 
-import json
+import csv
 import re
 
 from _ratchet import REPO_ROOT, ratchet
 
 QMD = REPO_ROOT / "reports" / "Executive_Summary_DE.qmd"
-REPORT = REPO_ROOT / "reports" / "module_02_simulation_report.json"
+CSV_PATH = REPO_ROOT / "exports" / "tableau_public" / "tco_scenarios.csv"
 
 
 def test_throughput_claim_matches_report() -> None:
-    if not QMD.exists() or not REPORT.exists():
-        ratchet("F-021", fixed=True, gap_msg="QMD or report absent — vacuously fixed")
+    if not QMD.exists() or not CSV_PATH.exists():
+        ratchet("F-021", fixed=True, gap_msg="QMD or CSV absent — vacuously fixed")
         return
     text = QMD.read_text()
     m = re.search(r"~(\d{3,4})\s*Bestellungen/Schicht", text)
@@ -27,16 +30,18 @@ def test_throughput_claim_matches_report() -> None:
         ratchet("F-021", fixed=True, gap_msg="no throughput claim in QMD — vacuously fixed")
         return
     claimed = int(m.group(1))
-    data = json.loads(REPORT.read_text())
-    rows = data.get("replication_summary", [])
-    if not rows:
-        ratchet("F-021", fixed=False, gap_msg="no replication_summary in simulation report")
+    means = [
+        float(r["throughput_mean_orders_per_shift"])
+        for r in csv.DictReader(CSV_PATH.open())
+        if r.get("throughput_mean_orders_per_shift")
+    ]
+    if not means:
+        ratchet("F-021", fixed=False, gap_msg="no throughput_mean column in CSV")
         return
-    means = [r.get("throughput_mean", 0) for r in rows]
     avg = sum(means) / len(means)
     delta = abs(claimed - avg)
     ratchet(
         "F-021",
         fixed=delta <= 50,
-        gap_msg=f"QMD claims ~{claimed}/shift; report mean {avg:.0f} (Δ={delta:.0f})",
+        gap_msg=f"QMD claims ~{claimed}/shift; CSV mean {avg:.0f} (Δ={delta:.0f})",
     )

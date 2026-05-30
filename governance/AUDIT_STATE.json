@@ -222,12 +222,12 @@
     },
     {
       "category": "stale_generated_outputs",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-021",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-021.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Executive_Summary_DE.qmd throughput numbers off by 2.7\u00d7 vs module_02_simulation_report.json",
       "verification_script": "tests/governance/test_f021_exec_summary_throughput.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T06:15:44.717920+00:00",
-  "git_branch": "governance/ingest-parallel-audit-f020-f042",
-  "git_head_sha": "aab7d7fc1c01f28a62dd4c2ac0dfdb96b5b036f0",
+  "generated_at": "2026-05-30T15:17:49.133895+00:00",
+  "git_branch": "governance/f021-exec-summary-throughput",
+  "git_head_sha": "1091f645588adf0e586647f5f65d0c1519deb48a",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 19,
+    "findings_closed": 20,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 23,
+    "findings_open": 22,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -505,7 +505,7 @@
       "numeric_drift": 3,
       "orphaned_workflows": 2,
       "partial_migration": 1,
-      "stale_generated_outputs": 3
+      "stale_generated_outputs": 2
     }
   },
   "validation_errors": [],
