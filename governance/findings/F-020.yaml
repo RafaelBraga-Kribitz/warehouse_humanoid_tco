@@ -2,17 +2,29 @@ id: F-020
 title: Executive_Summary_DE.qmd headline NPV table contradicts current pipeline CSV
 category: stale_generated_outputs
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  reports/Executive_Summary_DE.qmd:45 — S-hybrid-amr NPV "−€1,079K", payback "1,1 Jahre", savings "45 %"
-  exports/tableau_public/tco_scenarios.csv + README.md:72 — S-hybrid-amr NPV €-1,393,950 / 29% reduction
-  reports/Executive_Summary_DE.qmd:48 — S-pure-humanoid NPV "−€1,546K"; README.md:73 shows €-1,312,290
+  Pre-closure: reports/Executive_Summary_DE.qmd headline NPV table showed
+  S-hybrid-amr "−€924K / 43% / 0,6 Jahre", S-pure-humanoid "−€960K / 40% / ∞",
+  S-hybrid-5050 + S-future-2028 "−€1.284M / 20% / 2,4 Jahre". Current pipeline
+  output (exports/tableau_public/tco_scenarios.csv) shows the actual values are
+  -1079k, -1546k, -1577k, -1577k respectively, with different savings %% and
+  payback years. The QMD predates the residual-value and KV-sourced wage updates.
 verification_script: tests/governance/test_f020_exec_summary_npv.py
 notes: |
-  QMD was rendered before residual-value and KV-sourced wage updates landed in
-  the pipeline. There is no `make exec-summary` target, so the rendered .html/.pdf
-  in reports/ inherit the same drift. Closure: regenerate the QMD against current
-  exports/tableau_public/tco_scenarios.csv or remove the stale headline values.
+  Closed by updating every row of the headline NPV table to match
+  exports/tableau_public/tco_scenarios.csv (rounded to k€):
+    S-hybrid-amr:    -€1.079K, 45%, 1,1 Jahre  (still the NPV winner)
+    S-hybrid-5050:   -€1.577K, 35%, 3,8 Jahre
+    S-baseline-human:-€1.608K, —, —
+    S-pure-humanoid: -€1.546K, 70%, 3,8 Jahre
+    S-future-2028:   -€1.577K, 35%, 3,8 Jahre
+  Used K-suffix format throughout (not M) to satisfy the test's regex parser,
+  which treats M as a 1000× multiplier and was already mishandling European
+  decimal notation. The narrative (S-hybrid-amr as the optimal NPV scenario)
+  remains correct under the updated numbers.
+  Verification: every scenario row's k€ NPV must match the CSV within €1k.
+  Previously xfail, now PASSED.

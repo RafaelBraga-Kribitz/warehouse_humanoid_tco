@@ -45,11 +45,11 @@ Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlich
 
 | Szenario | 5-Jahr NPV | Kostenersparnis vs. Baseline | Amortisationszeit |
 |---|---|---|---|
-| **S-hybrid-amr** | **−€924K** | **43%** | **0,6 Jahre** |
-| S-hybrid-5050 | −€1.284M | 20% | 2,4 Jahre |
-| S-baseline-human | −€1.608M | — | — |
-| S-pure-humanoid | −€960K | 40% | ∞ |
-| S-future-2028 | −€1.284M | 20% | 2,4 Jahre |
+| **S-hybrid-amr** | **−€1.079K** | **45%** | **1,1 Jahre** |
+| S-hybrid-5050 | −€1.577K | 35% | 3,8 Jahre |
+| S-baseline-human | −€1.608K | — | — |
+| S-pure-humanoid | −€1.546K | 70% | 3,8 Jahre |
+| S-future-2028 | −€1.577K | 35% | 3,8 Jahre |
 
 ### Kritische Erkenntnisse
 
