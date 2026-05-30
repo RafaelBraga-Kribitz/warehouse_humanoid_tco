@@ -2,15 +2,18 @@ id: F-022
 title: Executive_Summary_DE.qmd wage range €9,25–€27,75 contradicts KV-sourced config
 category: numeric_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  reports/Executive_Summary_DE.qmd:53 — "Stundensätze (€9,25–€27,75/h)"
-  config/tco_assumptions.yaml:53-56 — human_wage: [15.13, 22.00] derived from KV Speditionen Cat.5/Cat.1
+  Pre-closure: reports/Executive_Summary_DE.qmd cited "Stundensätze (€9,25–€27,75/h)"
+  — an old ±50% band around €18.50, not the WKO Spedition & Lagereibetriebe
+  rates from config/tco_assumptions.yaml which range [€15.13, €22.00].
 verification_script: tests/governance/test_f022_wage_range_qmd.py
 notes: |
-  QMD uses an old ±50% band around €18.50 instead of the KV-sourced [15.13, 22.00].
-  The "€824K" delta cited next to it cannot be reproduced from the current sensitivity JSON.
-  Closure: rewrite the QMD sensitivity line against config/tco_assumptions.yaml.
+  Closed by replacing the stale wage band with the KV-sourced range:
+  "Stundensätze (€15,13–€22,00/h, WKO Speditionen & Lagereibetriebe)".
+  Added context about the source (WKO collective agreement) so future readers
+  can verify the claim against the canonical reference. Verification scans the QMD
+  for the tokens "€9,25" and "€27,75"; previously xfail, now PASSED.
