@@ -277,12 +277,12 @@
     },
     {
       "category": "dead_artifacts",
-      "closed_at": null,
+      "closed_at": "2026-05-30",
       "id": "F-026",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-026.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "data/raw/MANIFEST.yaml references at_wages/ and wko_kv/ directories that do not exist",
       "verification_script": "tests/governance/test_f026_referenced_dirs.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T18:47:03.191037+00:00",
+  "generated_at": "2026-05-30T18:49:29.185656+00:00",
   "git_branch": "HEAD",
-  "git_head_sha": "c92981015a91dd48875b3163cc8d0490014e43a1",
+  "git_head_sha": "f5e2e6eb2b362b3d415e64caeea185addd3d7b5d",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,16 +488,16 @@
     }
   ],
   "summary": {
-    "findings_closed": 24,
+    "findings_closed": 25,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 18,
+    "findings_open": 17,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
     "open_by_category": {
-      "dead_artifacts": 3,
+      "dead_artifacts": 2,
       "fake_completion": 1,
       "governance_gaps": 2,
       "methodology_drift": 5,
