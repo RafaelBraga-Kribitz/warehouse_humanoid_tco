@@ -1,0 +1,17 @@
+id: F-038
+title: docs/DASHBOARD_SETUP.md Power BI DAX snippet is syntactically invalid
+category: fake_completion
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  docs/DASHBOARD_SETUP.md:65 —
+    NPV_Category: IF(npv_eur > -1000000, "Expensive", "Moderate", "Optimal")
+  Power BI IF takes two branches; three-branch logic requires nested IF or SWITCH.
+verification_script: tests/governance/test_f038_dax_validity.py
+notes: |
+  A reader who copy-pastes this gets a syntax error. Closure: rewrite as
+  SWITCH(TRUE(), …) or nested IF; once F-004 sunsets Power BI entirely this finding
+  may be closed by deleting the doc instead.

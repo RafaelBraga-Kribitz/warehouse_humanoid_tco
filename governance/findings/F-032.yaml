@@ -1,0 +1,18 @@
+id: F-032
+title: transfer_factor MC range [0.5, 0.9] is inconsistent with downstream max(.,0.05) floor
+category: dead_artifacts
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/analysis/sensitivity.py — transfer_factor:
+    {"type": "uniform", "low": 0.50, "high": 0.90}
+  src/warehouse_humanoid_tco/analysis/sensitivity.py:94 —
+    transfer_multiplier = TRANSFER_FACTOR_BASELINE / max(transfer_factor, 0.05)
+verification_script: tests/governance/test_f032_transfer_factor_floor.py
+notes: |
+  The max(..., 0.05) floor cannot be hit with the configured MC/OAT range. One of
+  the two is dead code. Closure: widen the distribution to include the floor's
+  regime, or delete the floor and document the change in an ADR.

@@ -1,0 +1,20 @@
+id: F-034
+title: S-future-2028 humanoid_throughput_multiplier never propagates to TCO pipeline
+category: partial_migration
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  config/autostore_baseline.yaml — humanoid_throughput_multiplier: 1.30 (S-future-2028 only)
+  src/warehouse_humanoid_tco/pipelines/module_02_simulation.py — applies the multiplier
+  src/warehouse_humanoid_tco/pipelines/module_03_tco.py + models/tco.py — multiplier
+  is not referenced anywhere; only throughput from Module 2 is consumed.
+verification_script: tests/governance/test_f034_future_multiplier_propagation.py
+notes: |
+  The "future" scenario's 1.30× advertised in YAML never reaches the cost side of
+  the model. S-future-2028 NPV is then essentially S-hybrid-5050 NPV ± simulation
+  noise. Closure: either propagate the multiplier through module_03_tco/models.tco
+  and re-validate, or delete the multiplier and document an alternative
+  representation of the future scenario in an ADR.

@@ -1,0 +1,18 @@
+id: F-033
+title: module_03_tco.py emits undiscounted nominal total_opex alongside discounted NPV
+category: methodology_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/pipelines/module_03_tco.py:157 — "npv_eur": float(npv)  (discounted)
+  src/warehouse_humanoid_tco/pipelines/module_03_tco.py:161 — "total_opex_5yr_eur": float(annual_opex * years)  (undiscounted)
+  exports/tableau_public/tco_scenarios.csv ships both fields side-by-side.
+verification_script: tests/governance/test_f033_opex_pv_disambiguation.py
+notes: |
+  A reader comparing total_opex_5yr_eur to npv_eur mixes nominal and PV. Closure:
+  rename the nominal field to total_opex_5yr_eur_nominal or add a discounted
+  companion field total_opex_5yr_eur_pv with explicit naming; downstream Tableau
+  + Power BI exports must update with it.

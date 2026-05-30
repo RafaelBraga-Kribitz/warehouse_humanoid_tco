@@ -1,0 +1,18 @@
+id: F-027
+title: Simulation samples per-line service time as truncated Gaussian, biasing throughput
+category: methodology_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/models/simulation.py:111 —
+    per_line = max(float(rng.normal(profile.cycle_time_mean, profile.cycle_time_std)), 1.0)
+verification_script: tests/governance/test_f027_service_time_distribution.py
+notes: |
+  Industrial-IE standard for pick times is lognormal or Weibull (right-skewed).
+  Truncating Normal(25,8) at 1.0 folds the left tail into a point mass and biases
+  the empirical mean below 25, inflating throughput. Closure: sample lognormal
+  parameterised to the same mean/CV, or use scipy.stats.truncnorm with documented
+  rationale + an ADR.

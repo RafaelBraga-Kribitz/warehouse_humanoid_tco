@@ -1,0 +1,16 @@
+id: F-031
+title: Monte Carlo humanoid_capex_eur ~ Normal(120k, 30k) is not truncated, allows negative draws
+category: methodology_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/analysis/sensitivity.py — humanoid_capex_eur:
+    {"type": "normal", "mean": 120000, "std": 30000} with no truncation downstream.
+verification_script: tests/governance/test_f031_capex_truncation.py
+notes: |
+  P(X<0) ≈ 4×10⁻⁵; over 10k samples ~0.4 negative draws expected. Domain readers
+  will flag it. Closure: use scipy.stats.truncnorm at 0, or sample lognormal
+  parameterised to the same mean/CV, or document the rejection step.

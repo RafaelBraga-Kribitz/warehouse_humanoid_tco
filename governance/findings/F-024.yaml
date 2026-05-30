@@ -1,0 +1,20 @@
+id: F-024
+title: Dashboard setup docs + Makefile help still claim 75 simulation runs / 15 per scenario
+category: numeric_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  docs/TABLEAU_PUBLIC_SETUP.md — "simulation_runs.csv — 75 simulation runs (15 per scenario)"
+  docs/POWER_BI_SETUP.md — "Simulation raw results (15 runs × 5 scenarios)"
+  Makefile — "make module-02      Warehouse simulation (15 runs)"
+  reports/module_02_simulation_report.json — total_runs: 150, n_runs_per_scenario: 30
+  README.md:60 — "150 runs total across 5 warehouse scenarios (30 replications per scenario)"
+verification_script: tests/governance/test_f024_run_count_docs.py
+notes: |
+  Run-count doubled to 30 reps/scenario but three setup docs were never updated.
+  A reviewer following TABLEAU_PUBLIC_SETUP.md would commit the wrong metadata.
+  Closure: update docs + Makefile help to 150 runs / 30 per scenario, or remove
+  the literal numbers in favor of a `make help` lookup.

@@ -1,0 +1,16 @@
+id: F-021
+title: Executive_Summary_DE.qmd throughput numbers off by 2.7× vs module_02_simulation_report.json
+category: stale_generated_outputs
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  reports/Executive_Summary_DE.qmd:57 — "S-pure-humanoid: 2.915 Bestellungen/Schicht … S-hybrid-amr 3.362/Schicht"
+  reports/module_02_simulation_report.json — S-pure-humanoid throughput_mean ≈ 1077.4; S-hybrid-amr ≈ 2862.1
+verification_script: tests/governance/test_f021_exec_summary_throughput.py
+notes: |
+  The QMD numbers for S-pure-humanoid are 2.7× higher than the JSON pipeline output.
+  Same render-staleness root cause as F-020. Closure: re-render against current
+  module_02_simulation_report.json.

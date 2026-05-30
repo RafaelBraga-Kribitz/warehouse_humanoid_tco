@@ -1,0 +1,18 @@
+id: F-030
+title: OAT tornado is naive delta-from-base, not normalised elasticity or variance contribution
+category: methodology_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  After F-003 merged models/sensitivity.py into analysis/sensitivity.py, the OAT
+  routine (run_oat_sensitivity / _oat_summary in analysis/sensitivity.py) still
+  returns delta_vs_base = output - base_output. Parameter ranking on the tornado
+  is entirely a function of the chosen range, not of variance contribution.
+verification_script: tests/governance/test_f030_tornado_normalisation.py
+notes: |
+  Closure: either compute normalised elasticities (δoutput/output) / (δparam/param)
+  or migrate to SALib Sobol indices, and rename the chart so the ranking units
+  are unambiguous.

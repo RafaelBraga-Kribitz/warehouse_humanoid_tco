@@ -1,0 +1,19 @@
+id: F-041
+title: .github/workflows/ci.yml does not run the pipeline that produces claimed outputs
+category: orphaned_workflows
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  .github/workflows/ci.yml — runs Black, Ruff, Pyright, pytest, Docker import smoke;
+    no module_0* or `make all` step.
+  .github/workflows/pipeline.yml — `on: workflow_dispatch:` only; no push/PR trigger;
+    additionally gated to `if: github.ref == 'refs/heads/main'`.
+verification_script: tests/governance/test_f041_ci_runs_pipeline.py
+notes: |
+  Committed parquet/CSV are static; no CI job re-runs the pipeline against the
+  committed code on push. README badge tracks lint+test only. Closure (paired
+  with F-007 / pipeline.yml ADR): add a gated fixture-driven pipeline step to
+  ci.yml that exercises module_0[1-4] against a checked-in synthetic fixture.

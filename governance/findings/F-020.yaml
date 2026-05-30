@@ -1,0 +1,18 @@
+id: F-020
+title: Executive_Summary_DE.qmd headline NPV table contradicts current pipeline CSV
+category: stale_generated_outputs
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  reports/Executive_Summary_DE.qmd:45 — S-hybrid-amr NPV "−€1,079K", payback "1,1 Jahre", savings "45 %"
+  exports/tableau_public/tco_scenarios.csv + README.md:72 — S-hybrid-amr NPV €-1,393,950 / 29% reduction
+  reports/Executive_Summary_DE.qmd:48 — S-pure-humanoid NPV "−€1,546K"; README.md:73 shows €-1,312,290
+verification_script: tests/governance/test_f020_exec_summary_npv.py
+notes: |
+  QMD was rendered before residual-value and KV-sourced wage updates landed in
+  the pipeline. There is no `make exec-summary` target, so the rendered .html/.pdf
+  in reports/ inherit the same drift. Closure: regenerate the QMD against current
+  exports/tableau_public/tco_scenarios.csv or remove the stale headline values.

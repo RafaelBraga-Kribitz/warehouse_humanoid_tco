@@ -1,0 +1,17 @@
+id: F-025
+title: data/raw/MANIFEST.yaml ships placeholder nulls for revision_sha and access_date
+category: governance_gaps
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  data/raw/MANIFEST.yaml:11 — `revision_sha: null          # FILL IN after running 00_derisk_dataset_inspection.py`
+  data/raw/MANIFEST.yaml:13 — `access_date: null           # FILL IN on first download`
+verification_script: tests/governance/test_f025_raw_manifest_provenance.py
+notes: |
+  Raw data lineage is unpinned — if Unitree pushes new commits to those HF repos,
+  a fresh `make module-01` silently consumes different inputs. The "FILL IN"
+  comment is the source's own admission. Closure: populate revision_sha and
+  access_date for each entry, or remove the entries if no longer used.

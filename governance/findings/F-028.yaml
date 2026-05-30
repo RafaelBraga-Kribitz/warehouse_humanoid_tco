@@ -1,0 +1,19 @@
+id: F-028
+title: Simulation never computes or asserts queueing utilisation ρ = λ/(cμ)
+category: methodology_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/models/simulation.py — engine consumes arrival_rate,
+  service times, server count; never computes ρ.
+  config/autostore_baseline.yaml — comment admits "pool runs at high utilization
+  (~0.95); robot-heavy pools approach saturation".
+verification_script: tests/governance/test_f028_utilisation_check.py
+notes: |
+  At ρ≈0.97 the M/G/c system is near saturation; queue lengths blow up under mild
+  parameter perturbation. The simulation never logs ρ, never asserts ρ<1, never
+  compares baseline against the M/M/c Erlang-C closed form. Closure: compute ρ at
+  scenario init, log it, and assert ρ < 1 (or a configured ρ_max) before running.

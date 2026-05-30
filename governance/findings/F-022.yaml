@@ -1,0 +1,16 @@
+id: F-022
+title: Executive_Summary_DE.qmd wage range €9,25–€27,75 contradicts KV-sourced config
+category: numeric_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  reports/Executive_Summary_DE.qmd:53 — "Stundensätze (€9,25–€27,75/h)"
+  config/tco_assumptions.yaml:53-56 — human_wage: [15.13, 22.00] derived from KV Speditionen Cat.5/Cat.1
+verification_script: tests/governance/test_f022_wage_range_qmd.py
+notes: |
+  QMD uses an old ±50% band around €18.50 instead of the KV-sourced [15.13, 22.00].
+  The "€824K" delta cited next to it cannot be reproduced from the current sensitivity JSON.
+  Closure: rewrite the QMD sensitivity line against config/tco_assumptions.yaml.

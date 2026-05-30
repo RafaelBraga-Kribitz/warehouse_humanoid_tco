@@ -1,0 +1,18 @@
+id: F-042
+title: ci.yml Docker smoke test overrides ENTRYPOINT with no-op import
+category: orphaned_workflows
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  .github/workflows/ci.yml — `docker run --rm --entrypoint python warehouse-humanoid-tco:test -c "import warehouse_humanoid_tco; print('ok')"`
+  docker/Dockerfile ENTRYPOINT is `["python", "-m", "warehouse_humanoid_tco"]` —
+    overridden.
+verification_script: tests/governance/test_f042_docker_entrypoint.py
+notes: |
+  Smoke test verifies that a package can be imported — not that the image does
+  what the Dockerfile advertises. Closure: drop the --entrypoint override and
+  invoke the image as the Dockerfile defines it, with `--help` or `--version`
+  as the smoke command.

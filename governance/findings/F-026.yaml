@@ -1,0 +1,18 @@
+id: F-026
+title: data/raw/MANIFEST.yaml references at_wages/ and wko_kv/ directories that do not exist
+category: dead_artifacts
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  data/raw/MANIFEST.yaml:20 — local_dir: "data/raw/at_wages/"
+  data/raw/MANIFEST.yaml:28 — local_dir: "data/raw/wko_kv/"
+  Neither directory exists; the wage claim that anchors the whole TCO has no
+  committed raw artifact.
+verification_script: tests/governance/test_f026_referenced_dirs.py
+notes: |
+  €18.50/hr is hardcoded in config but no downloaded wage table or KV PDF backs
+  it up. Closure: either commit the referenced PDFs/tables, or remove the
+  manifest entries and add an ADR pointing to a public URL as canonical source.

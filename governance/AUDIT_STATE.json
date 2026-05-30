@@ -210,6 +210,259 @@
       "verification_script": "tests/governance/test_f019_data_provenance_statement.py"
     },
     {
+      "category": "stale_generated_outputs",
+      "closed_at": null,
+      "id": "F-020",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-020.yaml",
+      "status": "open",
+      "title": "Executive_Summary_DE.qmd headline NPV table contradicts current pipeline CSV",
+      "verification_script": "tests/governance/test_f020_exec_summary_npv.py"
+    },
+    {
+      "category": "stale_generated_outputs",
+      "closed_at": null,
+      "id": "F-021",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-021.yaml",
+      "status": "open",
+      "title": "Executive_Summary_DE.qmd throughput numbers off by 2.7\u00d7 vs module_02_simulation_report.json",
+      "verification_script": "tests/governance/test_f021_exec_summary_throughput.py"
+    },
+    {
+      "category": "numeric_drift",
+      "closed_at": null,
+      "id": "F-022",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-022.yaml",
+      "status": "open",
+      "title": "Executive_Summary_DE.qmd wage range \u20ac9,25\u2013\u20ac27,75 contradicts KV-sourced config",
+      "verification_script": "tests/governance/test_f022_wage_range_qmd.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": null,
+      "id": "F-023",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-023.yaml",
+      "status": "open",
+      "title": "Executive_Summary_DE.qmd + raw MANIFEST cite \"KV Handel\" but canonical config is \"KV Speditionen\"",
+      "verification_script": "tests/governance/test_f023_kv_naming.py"
+    },
+    {
+      "category": "numeric_drift",
+      "closed_at": null,
+      "id": "F-024",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-024.yaml",
+      "status": "open",
+      "title": "Dashboard setup docs + Makefile help still claim 75 simulation runs / 15 per scenario",
+      "verification_script": "tests/governance/test_f024_run_count_docs.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": null,
+      "id": "F-025",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-025.yaml",
+      "status": "open",
+      "title": "data/raw/MANIFEST.yaml ships placeholder nulls for revision_sha and access_date",
+      "verification_script": "tests/governance/test_f025_raw_manifest_provenance.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": null,
+      "id": "F-026",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-026.yaml",
+      "status": "open",
+      "title": "data/raw/MANIFEST.yaml references at_wages/ and wko_kv/ directories that do not exist",
+      "verification_script": "tests/governance/test_f026_referenced_dirs.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-027",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-027.yaml",
+      "status": "open",
+      "title": "Simulation samples per-line service time as truncated Gaussian, biasing throughput",
+      "verification_script": "tests/governance/test_f027_service_time_distribution.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-028",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-028.yaml",
+      "status": "open",
+      "title": "Simulation never computes or asserts queueing utilisation \u03c1 = \u03bb/(c\u03bc)",
+      "verification_script": "tests/governance/test_f028_utilisation_check.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-029",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-029.yaml",
+      "status": "open",
+      "title": "Sensitivity printout mislabels p5/p95 output quantiles as \"90% CI\"",
+      "verification_script": "tests/governance/test_f029_quantile_label.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-030",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-030.yaml",
+      "status": "open",
+      "title": "OAT tornado is naive delta-from-base, not normalised elasticity or variance contribution",
+      "verification_script": "tests/governance/test_f030_tornado_normalisation.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-031",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-031.yaml",
+      "status": "open",
+      "title": "Monte Carlo humanoid_capex_eur ~ Normal(120k, 30k) is not truncated, allows negative draws",
+      "verification_script": "tests/governance/test_f031_capex_truncation.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": null,
+      "id": "F-032",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-032.yaml",
+      "status": "open",
+      "title": "transfer_factor MC range [0.5, 0.9] is inconsistent with downstream max(.,0.05) floor",
+      "verification_script": "tests/governance/test_f032_transfer_factor_floor.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": null,
+      "id": "F-033",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-033.yaml",
+      "status": "open",
+      "title": "module_03_tco.py emits undiscounted nominal total_opex alongside discounted NPV",
+      "verification_script": "tests/governance/test_f033_opex_pv_disambiguation.py"
+    },
+    {
+      "category": "partial_migration",
+      "closed_at": null,
+      "id": "F-034",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-034.yaml",
+      "status": "open",
+      "title": "S-future-2028 humanoid_throughput_multiplier never propagates to TCO pipeline",
+      "verification_script": "tests/governance/test_f034_future_multiplier_propagation.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": null,
+      "id": "F-035",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-035.yaml",
+      "status": "open",
+      "title": "Knapp AutoStore throughput reference 960/shift is a magic number with no citation",
+      "verification_script": "tests/governance/test_f035_knapp_citation.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": null,
+      "id": "F-036",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-036.yaml",
+      "status": "open",
+      "title": "Reproducibility scaffolding is dead \u2014 seed_all + granular seeds + AgentProfile.seed all unused",
+      "verification_script": "tests/governance/test_f036_reproducibility_scaffolding.py"
+    },
+    {
+      "category": "numeric_drift",
+      "closed_at": null,
+      "id": "F-037",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-037.yaml",
+      "status": "open",
+      "title": "README MC 90% interval digits hand-transcribed and drift from sensitivity_analysis_report.json",
+      "verification_script": "tests/governance/test_f037_readme_mc_digits.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-038",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-038.yaml",
+      "status": "open",
+      "title": "docs/DASHBOARD_SETUP.md Power BI DAX snippet is syntactically invalid",
+      "verification_script": "tests/governance/test_f038_dax_validity.py"
+    },
+    {
+      "category": "stale_generated_outputs",
+      "closed_at": null,
+      "id": "F-039",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-039.yaml",
+      "status": "open",
+      "title": "docs/DASHBOARD_SETUP.md cites stale Best NPV \u20ac-924,125 that exists in no current artifact",
+      "verification_script": "tests/governance/test_f039_stale_best_npv_card.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-040",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-040.yaml",
+      "status": "open",
+      "title": "notebooks/01_data_profile_summary.ipynb has zero committed cell outputs",
+      "verification_script": "tests/governance/test_f040_notebook_outputs.py"
+    },
+    {
+      "category": "orphaned_workflows",
+      "closed_at": null,
+      "id": "F-041",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-041.yaml",
+      "status": "open",
+      "title": ".github/workflows/ci.yml does not run the pipeline that produces claimed outputs",
+      "verification_script": "tests/governance/test_f041_ci_runs_pipeline.py"
+    },
+    {
+      "category": "orphaned_workflows",
+      "closed_at": null,
+      "id": "F-042",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-05-30",
+      "path": "governance/findings/F-042.yaml",
+      "status": "open",
+      "title": "ci.yml Docker smoke test overrides ENTRYPOINT with no-op import",
+      "verification_script": "tests/governance/test_f042_docker_entrypoint.py"
+    },
+    {
       "category": "audit_doc_accumulation",
       "closed_at": "2026-05-29",
       "id": "F-100",
@@ -221,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-30T00:55:50.712309+00:00",
-  "git_branch": "governance/session-end-handoff",
-  "git_head_sha": "0e3e6df4d2633e0e66c74e29ecef20bf57066979",
+  "generated_at": "2026-05-30T06:15:44.717920+00:00",
+  "git_branch": "governance/ingest-parallel-audit-f020-f042",
+  "git_head_sha": "aab7d7fc1c01f28a62dd4c2ac0dfdb96b5b036f0",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -238,12 +491,22 @@
     "findings_closed": 19,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 0,
-    "findings_total": 20,
+    "findings_open": 23,
+    "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
-    "open_by_category": {}
+    "open_by_category": {
+      "dead_artifacts": 3,
+      "fake_completion": 2,
+      "fragmented_standards": 1,
+      "governance_gaps": 2,
+      "methodology_drift": 6,
+      "numeric_drift": 3,
+      "orphaned_workflows": 2,
+      "partial_migration": 1,
+      "stale_generated_outputs": 3
+    }
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"
