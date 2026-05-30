@@ -2,16 +2,20 @@ id: F-039
 title: docs/DASHBOARD_SETUP.md cites stale Best NPV €-924,125 that exists in no current artifact
 category: stale_generated_outputs
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  docs/DASHBOARD_SETUP.md:71 — Card: Best NPV (€-924,125)
-  exports/tableau_public/tco_scenarios.csv — no scenario has NPV anywhere near
-    -924,125 (current best is -1,312,290 for pure-humanoid).
+  Pre-closure: docs/DASHBOARD_SETUP.md:69 hard-coded "Card: Best NPV (€-924,125)",
+  a value that exists in no current artifact. exports/tableau_public/tco_scenarios.csv
+  shows the current best (least-negative) NPV is S-hybrid-amr at -1,078,786.
 verification_script: tests/governance/test_f039_stale_best_npv_card.py
 notes: |
-  A leftover number from an earlier model version (pre-throughput-coupling,
-  pre-residual). Closure: rewrite the card example using the current best NPV, or
-  delete the literal number in favor of a placeholder.
+  Closed by replacing the hard-coded literal with a data-pointer placeholder:
+  "Card: Best NPV (read from `tco_scenarios.csv`; least-negative `npv_eur`)".
+  Preferring a pointer over a fresh literal makes the finding terminally closed —
+  any future model run that shifts the best NPV cannot resurface this drift.
+  The verification scans DASHBOARD_SETUP.md for the substring 924125 (with or
+  without comma); future regressions of this exact stale number fail the
+  Adversary job.
