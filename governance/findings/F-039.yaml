@@ -1,0 +1,17 @@
+id: F-039
+title: docs/DASHBOARD_SETUP.md cites stale Best NPV €-924,125 that exists in no current artifact
+category: stale_generated_outputs
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  docs/DASHBOARD_SETUP.md:71 — Card: Best NPV (€-924,125)
+  exports/tableau_public/tco_scenarios.csv — no scenario has NPV anywhere near
+    -924,125 (current best is -1,312,290 for pure-humanoid).
+verification_script: tests/governance/test_f039_stale_best_npv_card.py
+notes: |
+  A leftover number from an earlier model version (pre-throughput-coupling,
+  pre-residual). Closure: rewrite the card example using the current best NPV, or
+  delete the literal number in favor of a placeholder.

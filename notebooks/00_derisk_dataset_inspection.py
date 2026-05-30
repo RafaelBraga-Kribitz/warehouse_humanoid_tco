@@ -41,7 +41,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -64,7 +64,7 @@ if missing:
     print(f"Missing: {missing}. Install: pip install {' '.join(missing)}")
     sys.exit(1)
 
-print(f"✓ All packages available")
+print("✓ All packages available")
 print(f"✓ Python: {sys.version.split()[0]}")
 
 import yaml
@@ -126,6 +126,7 @@ for dataset in all_datasets:
 ## Step 2: Inspect file structure for each dataset
 """
 
+
 # %%
 def catalog_files(siblings) -> dict[str, int]:
     """Count files by top-level directory."""
@@ -141,6 +142,7 @@ def catalog_files(siblings) -> dict[str, int]:
         else:
             prefixes["other"] += 1
     return prefixes
+
 
 file_structure = {}
 for dataset in all_datasets:
@@ -161,7 +163,7 @@ for dataset in all_datasets:
 
 # %%
 report = {
-    "run_timestamp_utc": datetime.now(timezone.utc).isoformat(),
+    "run_timestamp_utc": datetime.now(UTC).isoformat(),
     "manifest_path": str(CONFIG_PATH),
     "dataset_count": len(all_datasets),
     "datasets_accessible": sum(1 for v in dataset_info_map.values() if v.get("accessible")),
@@ -187,11 +189,11 @@ print(f"\n✓ Report written to {REPORT_PATH}")
 """
 
 # %%
-print("\n" + "="*60)
+print("\n" + "=" * 60)
 print("DE-RISK SUMMARY")
-print("="*60)
+print("=" * 60)
 print(f"\nDatasets accessible: {report['datasets_accessible']}/{report['dataset_count']}")
-if report['datasets_inaccessible'] > 0:
+if report["datasets_inaccessible"] > 0:
     print(f"⚠️  INACCESSIBLE: {report['datasets_inaccessible']}")
     for repo_id, info in dataset_info_map.items():
         if not info.get("accessible"):
@@ -199,9 +201,11 @@ if report['datasets_inaccessible'] > 0:
 else:
     print("✓ All datasets accessible")
 
-print(f"\nFile structure consistent across datasets: {len(set(str(v) for v in file_structure.values())) == 1}")
+print(
+    f"\nFile structure consistent across datasets: {len(set(str(v) for v in file_structure.values())) == 1}"
+)
 
 print("\nPROCEED TO MODULE 1 with:")
-print(f"  config/dataset_manifest.yaml (phases & tasks defined)")
+print("  config/dataset_manifest.yaml (phases & tasks defined)")
 print(f"  {REPORT_PATH} (SHAs pinned)")
 print("\nNext: Implement capability extraction per dataset, then aggregate.")

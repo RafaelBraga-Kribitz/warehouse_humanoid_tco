@@ -23,38 +23,36 @@
 
 # ## 1. Setup
 
-import pyarrow.parquet as pq
-import matplotlib.pyplot as plt
-import numpy as np
 import collections
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pyarrow.parquet as pq
+
 oat = pq.read_table("../data/processed/sensitivity_oat_results.parquet")
-mc  = pq.read_table("../data/processed/sensitivity_mc_samples.parquet")
+mc = pq.read_table("../data/processed/sensitivity_mc_samples.parquet")
 tco = pq.read_table("../data/processed/tco_scenarios.parquet")
 
 PARAM_LABELS = {
-    "humanoid_capex_eur":  "Humanoid Capex (€/unit)",
-    "human_wage_eur":      "Labor Wage (€/hr)",
+    "humanoid_capex_eur": "Humanoid Capex (€/unit)",
+    "human_wage_eur": "Labor Wage (€/hr)",
     "human_overhead_mult": "Labor Overhead Multiplier",
-    "humanoid_count":      "Humanoid Count",
-    "human_count":         "Human Count",
-    "discount_rate":       "Discount Rate",
+    "humanoid_count": "Humanoid Count",
+    "human_count": "Human Count",
+    "discount_rate": "Discount Rate",
 }
 
 # ## 2. OAT Tornado: Dominant Drivers
 
 # Build per-parameter NPV swing (max NPV - min NPV across the parameter's range)
 params = oat.column("parameter").to_pylist()
-npvs   = oat.column("npv_eur").to_pylist()
+npvs = oat.column("npv_eur").to_pylist()
 
 by_param = collections.defaultdict(list)
-for p, n in zip(params, npvs):
+for p, n in zip(params, npvs, strict=False):
     by_param[p].append(n)
 
-swings = {
-    PARAM_LABELS.get(p, p): max(v) - min(v)
-    for p, v in by_param.items()
-}
+swings = {PARAM_LABELS.get(p, p): max(v) - min(v) for p, v in by_param.items()}
 swings_sorted = sorted(swings.items(), key=lambda x: x[1])
 
 fig, ax = plt.subplots(figsize=(8, 4))
@@ -64,9 +62,8 @@ bars = ax.barh(labels, values, color=["#2d6a9f" if v > 500 else "#aac4de" for v 
 ax.set_xlabel("NPV Swing (k€, higher = more sensitive)")
 ax.set_title("OAT Sensitivity: TCO drivers ranked by NPV impact")
 ax.axvline(x=0, color="black", linewidth=0.5)
-for bar, val in zip(bars, values):
-    ax.text(val + 5, bar.get_y() + bar.get_height() / 2,
-            f"€{val:.0f}k", va="center", fontsize=9)
+for bar, val in zip(bars, values, strict=False):
+    ax.text(val + 5, bar.get_y() + bar.get_height() / 2, f"€{val:.0f}k", va="center", fontsize=9)
 plt.tight_layout()
 plt.savefig("../reports/executive_charts/04_sensitivity_tornado.png", dpi=150, bbox_inches="tight")
 plt.show()
@@ -83,12 +80,14 @@ p5, p50, p95 = np.percentile(npv_mc, [5, 50, 95])
 
 fig, ax = plt.subplots(figsize=(8, 3.5))
 ax.hist(npv_mc / 1e3, bins=50, color="#2d6a9f", alpha=0.8, edgecolor="white", linewidth=0.3)
-ax.axvline(p5 / 1e3,  color="#e05c1a", linestyle="--", label=f"P5  = €{p5/1e3:,.0f}k")
+ax.axvline(p5 / 1e3, color="#e05c1a", linestyle="--", label=f"P5  = €{p5/1e3:,.0f}k")
 ax.axvline(p50 / 1e3, color="#f0a500", linestyle="--", label=f"P50 = €{p50/1e3:,.0f}k")
 ax.axvline(p95 / 1e3, color="#3aaa35", linestyle="--", label=f"P95 = €{p95/1e3:,.0f}k")
 ax.set_xlabel("5-Year NPV (k€)")
 ax.set_ylabel("Frequency")
-ax.set_title(f"Monte Carlo NPV Distribution (n=10,000)\nmean=€{npv_mc.mean()/1e3:,.0f}k  σ=€{npv_mc.std()/1e3:,.0f}k")
+ax.set_title(
+    f"Monte Carlo NPV Distribution (n=10,000)\nmean=€{npv_mc.mean()/1e3:,.0f}k  σ=€{npv_mc.std()/1e3:,.0f}k"
+)
 ax.legend(fontsize=9)
 plt.tight_layout()
 plt.show()
@@ -99,7 +98,7 @@ plt.show()
 
 # ## 4. Scenario Comparison
 
-scenario_ids  = tco.column("scenario_id").to_pylist()
+scenario_ids = tco.column("scenario_id").to_pylist()
 scenario_npvs = [v / 1e3 for v in tco.column("npv_eur").to_pylist()]
 
 fig, ax = plt.subplots(figsize=(8, 3.5))
@@ -108,9 +107,16 @@ bars = ax.bar(scenario_ids, scenario_npvs, color=colors)
 ax.set_ylabel("5-Year NPV (k€)")
 ax.set_title("TCO by Scenario (lower = less costly)")
 ax.tick_params(axis="x", rotation=15)
-for bar, val in zip(bars, scenario_npvs):
-    ax.text(bar.get_x() + bar.get_width() / 2, val - 25,
-            f"€{val:,.0f}k", ha="center", va="top", fontsize=8, color="white")
+for bar, val in zip(bars, scenario_npvs, strict=False):
+    ax.text(
+        bar.get_x() + bar.get_width() / 2,
+        val - 25,
+        f"€{val:,.0f}k",
+        ha="center",
+        va="top",
+        fontsize=8,
+        color="white",
+    )
 plt.tight_layout()
 plt.show()
 

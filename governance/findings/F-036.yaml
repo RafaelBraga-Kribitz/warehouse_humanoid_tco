@@ -1,0 +1,21 @@
+id: F-036
+title: Reproducibility scaffolding is dead — seed_all + granular seeds + AgentProfile.seed all unused
+category: dead_artifacts
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  src/warehouse_humanoid_tco/utils/reproducibility.py:13 — seed_all defined; only
+    callers are tests/test_features_and_utils.py — no pipeline imports it.
+  config/seeds.yaml — order_arrival_seed/cycle_time_sampling_seed/downtime_seed/
+    worker_absence_seed — grep across src/ + scripts/ returns zero references.
+  src/warehouse_humanoid_tco/models/simulation.py:30 — AgentProfile.seed: int = 42
+    is set by every caller and never read (engine uses scenario.seed + run_id).
+verification_script: tests/governance/test_f036_reproducibility_scaffolding.py
+notes: |
+  Three independent reproducibility scaffolds exist but none are wired to the
+  pipeline. Closure: either wire seed_all + granular seeds into module_02_simulation
+  / module_03_tco entry points, or delete the unused config/keys/fields and
+  document the single canonical seed source.

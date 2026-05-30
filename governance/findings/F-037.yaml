@@ -1,0 +1,17 @@
+id: F-037
+title: README MC 90% interval digits hand-transcribed and drift from sensitivity_analysis_report.json
+category: numeric_drift
+kind: recurrence_invariant
+status: open
+opened_at: 2026-05-30
+closed_at: null
+recurrence_count: 0
+evidence: |
+  README.md:82 — "90% CI: [€-1,792,442, €-1,071,911] (spread €720,530)"
+  reports/sensitivity_analysis_report.json — npv_p5 = -1,792,460.21, npv_p95 = -1,071,891.10
+verification_script: tests/governance/test_f037_readme_mc_digits.py
+notes: |
+  Off by €18 and €20 respectively. Small in absolute terms but signals the README
+  was edited by hand instead of templated from the JSON. Closure: either template
+  the values from the JSON, or round to a stable precision (k€) and document the
+  rounding rule in an ADR.
