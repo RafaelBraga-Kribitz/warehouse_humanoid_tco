@@ -43,7 +43,7 @@ infrastructure:
 
 sensitivity_parameters:
   - name: labor_base_hourly_wage_eur
-    range: [14.00, 25.00]
+    range: [15.13, 22.00]  # WKO Spedition & Lagereibetriebe BG-III 2025/26 bracket
   - name: humanoid_unit_capex_eur
     range: [80000, 200000]
   - name: annual_wage_growth_rate

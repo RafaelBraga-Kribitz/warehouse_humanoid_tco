@@ -14,8 +14,8 @@
       180000
     ],
     "human_wage_eur": [
-      9.25,
-      27.75
+      15.13,
+      22.0
     ],
     "human_overhead_mult": [
       1.0,
@@ -58,8 +58,8 @@
     }
   },
   "mc_samples": 10000,
-  "oat_results_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet",
-  "mc_samples_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet",
+  "oat_results_path": "/home/user/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet",
+  "mc_samples_path": "/home/user/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet",
   "mc_summary": {
     "n_samples": 10000,
     "npv_mean": -1088956.5078413468,
@@ -103,7 +103,7 @@
       "npv_std": 275880.91570701747,
       "npv_min": -2706671.5844387184,
       "npv_max": -789114.2831771694,
-      "npv_p5": -2080925.6561196346,
+      "npv_p5": -2080925.6561196349,
       "npv_p25": -1781747.997052259,
       "npv_p50": -1585748.7695344854,
       "npv_p75": -1406186.1151681393,
@@ -127,7 +127,7 @@
       "npv_std": 275880.91570701747,
       "npv_min": -2706671.5844387184,
       "npv_max": -789114.2831771694,
-      "npv_p5": -2080925.6561196346,
+      "npv_p5": -2080925.6561196349,
       "npv_p25": -1781747.997052259,
       "npv_p50": -1585748.7695344854,
       "npv_p75": -1406186.1151681393,
