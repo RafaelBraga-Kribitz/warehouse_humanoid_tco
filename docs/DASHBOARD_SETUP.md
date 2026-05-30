@@ -60,7 +60,7 @@ Complete guide for creating Tableau Public and Power BI dashboards from module o
 ### 2. Data Modeling
 1. **Relationships:** tco_scenarios ← scenario_id → simulation_runs
 2. **Calculated Columns:**
-   - `NPV_Category`: IF(npv_eur > -1000000, "Expensive", "Moderate", "Optimal")
+   - `NPV_Category`: IF(npv_eur > -500000, "Optimal", IF(npv_eur > -1000000, "Moderate", "Expensive"))
    - `Capex_Ratio`: capex / (capex + opex)
 
 ### 3. Create Report
