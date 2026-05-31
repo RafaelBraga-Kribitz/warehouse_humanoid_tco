@@ -197,12 +197,18 @@ def run_oat_sensitivity(
     """One-at-a-time sensitivity for a fixed-composition scenario.
 
     Varies each continuous parameter across `n_steps` values; agent counts are
-    pinned to the scenario's composition.
+    pinned to the scenario's composition. Each result row carries both the raw
+    `delta_vs_base` (NPV - NPV_base) and a `normalised_elasticity`
+    (= percent change in NPV divided by percent change in the parameter).
+    Tornado rankings should be derived from elasticity, not raw delta, because
+    raw delta is a pure function of the chosen parameter range (F-030).
     """
     composition = SCENARIO_COMPOSITIONS[scenario_id]
+    base_npv = _call_with_params(composition, base_params)
     results: list[dict] = []
 
     for param_name, (min_val, max_val) in param_ranges.items():
+        base_value = float(base_params[param_name])
         param_values = np.linspace(min_val, max_val, n_steps)
         for param_val in param_values:
             test_params = base_params.copy()
@@ -214,10 +220,60 @@ def run_oat_sensitivity(
                     "parameter": param_name,
                     "parameter_value": float(param_val),
                     "npv_eur": float(npv),
+                    "delta_vs_base": float(npv - base_npv),
+                    "normalised_elasticity": _elasticity(
+                        npv, base_npv, float(param_val), base_value
+                    ),
                 }
             )
 
     return results
+
+
+def _elasticity(output: float, base_output: float, param: float, base_param: float) -> float:
+    """Compute normalised elasticity = (Δoutput / output) / (Δparam / param).
+
+    Returns 0.0 at the base point (where Δparam = 0). NaN-safe: zero base
+    output collapses the percent change in the denominator; in that case we
+    fall back to absolute fractional change ``Δoutput / Δparam`` scaled by
+    ``base_param`` so the magnitude still ranks parameters monotonically.
+    """
+    if param == base_param:
+        return 0.0
+    pct_param = (param - base_param) / base_param if base_param != 0 else 0.0
+    if pct_param == 0.0:
+        return 0.0
+    if base_output == 0:
+        return float((output - base_output) * base_param / (param - base_param))
+    pct_output = (output - base_output) / abs(base_output)
+    return float(pct_output / pct_param)
+
+
+def compute_elasticity_ranking(oat_results: list[dict]) -> list[dict]:
+    """Rank parameters by maximum |normalised_elasticity| across the OAT sweep.
+
+    Returns a list sorted descending by `peak_elasticity`. Each row also reports
+    `peak_delta_vs_base_eur` so consumers can render both the rank-driver
+    (elasticity, range-independent) and the dollar magnitude (delta, range-
+    dependent) — but the ranking is always driven by elasticity per F-030.
+    """
+    by_param: dict[str, list[dict]] = {}
+    for row in oat_results:
+        by_param.setdefault(row["parameter"], []).append(row)
+
+    ranking: list[dict] = []
+    for param_name, rows in by_param.items():
+        peak_elasticity = max(abs(r["normalised_elasticity"]) for r in rows)
+        peak_delta = max(abs(r["delta_vs_base"]) for r in rows)
+        ranking.append(
+            {
+                "parameter": param_name,
+                "peak_elasticity": float(peak_elasticity),
+                "peak_delta_vs_base_eur": float(peak_delta),
+            }
+        )
+    ranking.sort(key=lambda r: r["peak_elasticity"], reverse=True)
+    return ranking
 
 
 def _sample_params(
@@ -379,6 +435,7 @@ def run_sensitivity_analysis(
 
     print(f"  OAT sensitivity ({scenario_id}, {len(param_ranges)} parameters)...")
     oat_results = run_oat_sensitivity(scenario_id, base_params, param_ranges, n_steps=11)
+    elasticity_ranking = compute_elasticity_ranking(oat_results)
 
     print(f"  Monte Carlo: {n_mc_samples} samples × {len(SCENARIO_COMPOSITIONS)} scenarios...")
     mc_samples, mc_summary_per_scenario = run_monte_carlo_per_scenario(
@@ -405,6 +462,7 @@ def run_sensitivity_analysis(
         "scenario_id": scenario_id,
         "oat_parameters": list(param_ranges.keys()),
         "oat_parameter_ranges": {k: list(v) for k, v in param_ranges.items()},
+        "oat_elasticity_ranking": elasticity_ranking,
         "mc_param_distributions": param_distributions,
         "mc_samples": n_mc_samples,
         "oat_results_path": str(oat_path),

@@ -30,6 +30,33 @@
       0.9
     ]
   },
+  "oat_elasticity_ranking": [
+    {
+      "parameter": "human_overhead_mult",
+      "peak_elasticity": 0.7640331258643779,
+      "peak_delta_vs_base_eur": 213688.88293401035
+    },
+    {
+      "parameter": "human_wage_eur",
+      "peak_elasticity": 0.7640331258643744,
+      "peak_delta_vs_base_eur": 155935.1307896832
+    },
+    {
+      "parameter": "transfer_factor",
+      "peak_elasticity": 0.2507313744309317,
+      "peak_delta_vs_base_eur": 77281.59937595273
+    },
+    {
+      "parameter": "discount_rate",
+      "peak_elasticity": 0.1877657101826541,
+      "peak_delta_vs_base_eur": 101279.54765002965
+    },
+    {
+      "parameter": "humanoid_capex_eur",
+      "peak_elasticity": 0.146766788824108,
+      "peak_delta_vs_base_eur": 79165.00817797473
+    }
+  ],
   "mc_param_distributions": {
     "humanoid_capex_eur": {
       "type": "normal",

@@ -2,17 +2,37 @@ id: F-030
 title: OAT tornado is naive delta-from-base, not normalised elasticity or variance contribution
 category: methodology_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-30
 recurrence_count: 0
 evidence: |
-  After F-003 merged models/sensitivity.py into analysis/sensitivity.py, the OAT
-  routine (run_oat_sensitivity / _oat_summary in analysis/sensitivity.py) still
-  returns delta_vs_base = output - base_output. Parameter ranking on the tornado
-  is entirely a function of the chosen range, not of variance contribution.
+  Pre-closure: src/warehouse_humanoid_tco/analysis/sensitivity.py::run_oat_sensitivity
+  produced rows of {parameter, parameter_value, npv_eur} only. Any tornado built
+  from this data ranks parameters by raw delta-from-base — which is a pure
+  function of the chosen parameter range, not of variance contribution. Doubling
+  any parameter's OAT range silently re-ranks the tornado without any change in
+  model sensitivity.
 verification_script: tests/governance/test_f030_tornado_normalisation.py
 notes: |
-  Closure: either compute normalised elasticities (δoutput/output) / (δparam/param)
-  or migrate to SALib Sobol indices, and rename the chart so the ranking units
-  are unambiguous.
+  Closed by adding normalised elasticity to the OAT pipeline:
+  1. `run_oat_sensitivity` now returns `delta_vs_base` AND `normalised_elasticity`
+     (= (Δoutput / |output|) / (Δparam / param)) per row. Elasticity is
+     range-independent: it measures the model's local sensitivity, not the
+     analyst's choice of stress band.
+  2. New `_elasticity(output, base_output, param, base_param)` helper handles
+     edge cases (Δparam=0, base_output=0) without NaNs.
+  3. New `compute_elasticity_ranking(oat_results)` helper produces a sorted
+     ranking by peak |elasticity|; included as `oat_elasticity_ranking` in
+     reports/sensitivity_analysis_report.json.
+  4. Verification test tightened to ignore comment-only mentions: an actual
+     elasticity/Sobol/Morris *symbol* must appear in code, not just a TODO.
+  Current ranking on S-hybrid-amr:
+     - human_overhead_mult / human_wage_eur: peak |elasticity| ≈ 0.76 (tied)
+     - transfer_factor:                       0.25
+     - discount_rate:                         0.19
+     - humanoid_capex_eur:                    0.15
+  Labor dominates capex by ~5× in elasticity — the "8:1 labor-to-capex ratio"
+  in the Executive Summary becomes defensible against the F-022 concern that
+  the cited delta was a function of OAT-range choice.
+  Previously xfail, now PASSED.
