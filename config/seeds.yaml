@@ -1,13 +1,17 @@
 # All random seeds for the project.
 # Every random operation must draw from this file.
 # See PROJECT_CHARTER.md §8.4 for determinism requirements.
+#
+# F-036: the previous granular per-RNG-stream simulation seeds
+# (order_arrival_seed, cycle_time_sampling_seed, downtime_seed,
+# worker_absence_seed) were declared here but never consumed by any pipeline
+# code. They were removed in favour of a single canonical seed: SimPy + numpy
+# use one Generator per (scenario, run_id) seeded from global_seed below.
+# module_02_simulation.module_02_main is the only consumer of this file's
+# simulation.global_seed.
 
 simulation:
   global_seed: 42
-  order_arrival_seed: 100
-  cycle_time_sampling_seed: 101
-  downtime_seed: 102
-  worker_absence_seed: 103
 
 monte_carlo:
   tco_sensitivity_seed: 200
