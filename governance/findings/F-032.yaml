@@ -2,17 +2,35 @@ id: F-032
 title: transfer_factor MC range [0.5, 0.9] is inconsistent with downstream max(.,0.05) floor
 category: dead_artifacts
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/analysis/sensitivity.py — transfer_factor:
-    {"type": "uniform", "low": 0.50, "high": 0.90}
-  src/warehouse_humanoid_tco/analysis/sensitivity.py:94 —
+  Pre-closure: analysis/sensitivity.py::compute_tco_for_params declared
     transfer_multiplier = TRANSFER_FACTOR_BASELINE / max(transfer_factor, 0.05)
+  but the configured MC/OAT range was uniform [0.50, 0.90] (consistent with
+  config/autostore_baseline.yaml::capability_transfer). The 0.05 floor
+  therefore was unreachable from any sensitivity sweep — pure dead
+  defensive code. The finding's call: "one of the two is dead code."
 verification_script: tests/governance/test_f032_transfer_factor_floor.py
 notes: |
-  The max(..., 0.05) floor cannot be hit with the configured MC/OAT range. One of
-  the two is dead code. Closure: widen the distribution to include the floor's
-  regime, or delete the floor and document the change in an ADR.
+  Closed by deleting the dead floor and replacing it with an explicit
+  positive-input check:
+    if transfer_factor <= 0:
+        raise ValueError(...)
+    transfer_multiplier = TRANSFER_FACTOR_BASELINE / transfer_factor
+  This:
+    1. Removes the dead 0.05 floor.
+    2. Replaces silent infinite leverage (max-with-0.05 returned a finite
+       but enormous transfer_multiplier when callers passed 0) with a fast,
+       actionable ValueError naming the offending input.
+    3. Documents the [0.5, 0.9] OAT/MC range as the calibrated regime so a
+       future contributor knows where the boundary lives without grepping
+       config files.
+  Confirmed dead-code claim: re-ran the sensitivity pipeline; MC values
+  identical to the post-F-031 baseline (mean €-1,089,021, p5 €-1,386,257,
+  p95 €-830,291) to the last decimal — the floor never participated in any
+  sensitivity computation under the calibrated configuration.
+  Verification: tests/governance/test_f032_transfer_factor_floor.py.
+  Previously xfail, now PASSED.
