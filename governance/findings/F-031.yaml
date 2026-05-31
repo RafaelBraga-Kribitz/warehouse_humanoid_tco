@@ -2,15 +2,34 @@ id: F-031
 title: Monte Carlo humanoid_capex_eur ~ Normal(120k, 30k) is not truncated, allows negative draws
 category: methodology_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/analysis/sensitivity.py — humanoid_capex_eur:
-    {"type": "normal", "mean": 120000, "std": 30000} with no truncation downstream.
+  Pre-closure: src/warehouse_humanoid_tco/analysis/sensitivity.py declared
+    "humanoid_capex_eur": {"type": "normal", "mean": 120000, "std": 30000}
+  with no truncation downstream. P(X<0) ≈ 4×10⁻⁵; over 10k samples ~0.4
+  negative draws expected per run. Domain readers flag it as non-physical.
 verification_script: tests/governance/test_f031_capex_truncation.py
 notes: |
-  P(X<0) ≈ 4×10⁻⁵; over 10k samples ~0.4 negative draws expected. Domain readers
-  will flag it. Closure: use scipy.stats.truncnorm at 0, or sample lognormal
-  parameterised to the same mean/CV, or document the rejection step.
+  Closed by switching humanoid_capex_eur to a lognormal preserving the same
+  target (mean, std), using the same algebra as the F-027 / ADR-0010
+  service-time fix:
+    sigma^2 = ln(1 + (std/mean)^2)
+    mu      = ln(mean) - sigma^2 / 2
+    X ~ rng.lognormal(mu, sqrt(sigma^2))
+  Lognormal is strictly positive (no negative draws can form), right-skewed
+  (matches the empirical shape of capex surprises: many close to nominal,
+  occasional expensive units), and two-parameter (no schema change in the
+  param_distributions config).
+  Extended _sample_params in analysis/sensitivity.py to accept
+  type="lognormal" with positive-input validation. Re-ran the sensitivity
+  pipeline: MC mean shifted from €-1,088,957 to €-1,089,021 (Δ €64, ~0.006%),
+  p5/p95 shifted by €393/€341 respectively — the small shifts confirm the
+  prior Normal was effectively well-behaved despite the theoretical negative-
+  draw issue. README MC digits updated in lock-step so F-037's invariant
+  still passes (mean, std, median, p5, p95 all match the new JSON).
+  Previously xfail, now PASSED. The drift catch F-037 + the methodology fix
+  F-031 demonstrate the governance loop: methodology change → MC report
+  change → README must update in the same PR or CI flags drift.
