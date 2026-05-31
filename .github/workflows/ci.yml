@@ -45,8 +45,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Docker image
         run: docker build -f docker/Dockerfile -t warehouse-humanoid-tco:test .
+      # F-042: invoke the image as the Dockerfile defines it — the entrypoint
+      # is `python -m warehouse_humanoid_tco` — so we exercise the real CLI
+      # the user runs rather than overriding ENTRYPOINT with a no-op import.
       - name: Smoke test in container
-        run: docker run --rm --entrypoint python warehouse-humanoid-tco:test -c "import warehouse_humanoid_tco; print('ok')"
+        run: docker run --rm warehouse-humanoid-tco:test --help
 
   # F-041: exercise the simulation + TCO pipeline against the committed code on
   # every PR. Module 1 (capability extraction) needs HF Hub access for the WBT

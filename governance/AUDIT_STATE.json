@@ -453,12 +453,12 @@
     },
     {
       "category": "orphaned_workflows",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-042",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-042.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "ci.yml Docker smoke test overrides ENTRYPOINT with no-op import",
       "verification_script": "tests/governance/test_f042_docker_entrypoint.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T09:29:49.954920+00:00",
-  "git_branch": "governance/f040-notebook-outputs",
-  "git_head_sha": "96371294826bdd29ecc4c59744b05b6dba3f5771",
+  "generated_at": "2026-05-31T09:33:40.190534+00:00",
+  "git_branch": "governance/f042-docker-entrypoint",
+  "git_head_sha": "2b6c7d4503e78e33b2e80ac8d5e18b91b73129a7",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 33,
+    "findings_closed": 34,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 9,
+    "findings_open": 8,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -502,7 +502,6 @@
       "governance_gaps": 1,
       "methodology_drift": 2,
       "numeric_drift": 1,
-      "orphaned_workflows": 1,
       "partial_migration": 1
     }
   },

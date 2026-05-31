@@ -2,17 +2,27 @@ id: F-042
 title: ci.yml Docker smoke test overrides ENTRYPOINT with no-op import
 category: orphaned_workflows
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  .github/workflows/ci.yml — `docker run --rm --entrypoint python warehouse-humanoid-tco:test -c "import warehouse_humanoid_tco; print('ok')"`
-  docker/Dockerfile ENTRYPOINT is `["python", "-m", "warehouse_humanoid_tco"]` —
-    overridden.
+  Pre-closure: .github/workflows/ci.yml ran
+    docker run --rm --entrypoint python warehouse-humanoid-tco:test \
+      -c "import warehouse_humanoid_tco; print('ok')"
+  which overrode the Dockerfile ENTRYPOINT (`python -m warehouse_humanoid_tco`)
+  with a bare interpreter and a no-op import. The smoke test thus proved only
+  that the package was on PYTHONPATH inside the image — not that the CLI
+  advertised by the Dockerfile worked.
 verification_script: tests/governance/test_f042_docker_entrypoint.py
 notes: |
-  Smoke test verifies that a package can be imported — not that the image does
-  what the Dockerfile advertises. Closure: drop the --entrypoint override and
-  invoke the image as the Dockerfile defines it, with `--help` or `--version`
-  as the smoke command.
+  Closed by dropping the --entrypoint override and invoking the image as the
+  Dockerfile defines it:
+    docker run --rm warehouse-humanoid-tco:test --help
+  This runs `python -m warehouse_humanoid_tco --help`, which exercises the
+  argparse CLI surface (subcommands: extract, simulate, tco, export) and
+  fails the build if the entrypoint is broken — the failure mode the
+  previous smoke test silently masked. `--help` exits 0 and prints the CLI
+  banner, so the gate is fast and deterministic.
+  Verification: tests/governance/test_f042_docker_entrypoint.py bans the
+  `--entrypoint python` override in ci.yml. Previously xfail, now PASSED.
