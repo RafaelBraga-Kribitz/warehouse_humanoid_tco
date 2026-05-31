@@ -33,19 +33,19 @@ def test_presentation_target_exists() -> None:
 
 
 def test_presentation_target_documented() -> None:
-    """Verify `make presentation` appears in `make help` output."""
+    """Verify `make presentation` appears in the help target's @echo lines."""
     content = MAKEFILE.read_text()
 
-    # Check that help text mentions presentation
+    # Match an @echo line that mentions `make presentation` — the convention
+    # used by every other documented target in this Makefile.
     help_match = re.search(
-        r"make help.*make presentation",
+        r"@echo\s+.*make presentation",
         content,
-        re.DOTALL | re.IGNORECASE,
     )
     fixed = help_match is not None
 
     ratchet(
         "F-043",
         fixed,
-        "`make presentation` target not documented in `make help`",
+        "`make presentation` target not documented in `make help` output",
     )

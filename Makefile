@@ -1,5 +1,5 @@
 .PHONY: all setup bootstrap lint test module-01 module-02 module-03 module-04 profile dashboards ci-local clean help \
-        audit verify session-start session-end
+        audit verify session-start session-end presentation
 
 PYTHON ?= python
 # Use ?= so env override (VENV="" in CI workflows) takes precedence over default
@@ -31,6 +31,7 @@ help:
 	@echo "  make profile        Generate data profiling notebook"
 	@echo "  make dashboards     Generate Tableau/Power BI exports + charts"
 	@echo "  make exec-summary   Re-render reports/Executive_Summary_DE from QMD (requires quarto)"
+	@echo "  make presentation   Regenerate module-04 charts + render all QMD reports"
 	@echo ""
 	@echo "Quality:"
 	@echo "  make lint           Black + Ruff + Pyright"
@@ -143,6 +144,24 @@ exec-summary:
 		exit 1; \
 	}
 	quarto render reports/Executive_Summary_DE.qmd
+
+# Regenerate presentation-layer artifacts after data / methodology changes.
+# Closes F-043: charts and QMD-rendered HTML diverge from CSV/JSON outputs
+# unless module-04 + quarto are explicitly re-run. This target gives contributors
+# (and CI) one entry point. Does NOT re-run modules 01-03; those are data
+# pipelines and live under `make all`.
+presentation: module-04
+	@if command -v quarto >/dev/null 2>&1; then \
+		for qmd in reports/*.qmd; do \
+			[ -f "$$qmd" ] || continue; \
+			echo "Rendering $$qmd..."; \
+			quarto render "$$qmd"; \
+		done; \
+	else \
+		echo "⚠ quarto not installed — skipping QMD renders. Charts regenerated."; \
+		echo "  See https://quarto.org/docs/get-started/ to enable HTML/PDF renders."; \
+	fi
+	@echo "✓ presentation artifacts refreshed"
 
 # ── Analysis & Profiling ──────────────────────────────────────────────────────
 
