@@ -25,7 +25,7 @@ In Power BI Desktop:
 - Repeat for `simulation_runs.csv` and `humanoid_capabilities_summary.csv`
 
 **Note:** Power BI will auto-detect column types. Verify:
-- `npv_eur`, `total_capex_eur`, `total_opex_5yr_eur` are detected as numbers
+- `npv_eur`, `total_capex_eur`, `total_opex_5yr_eur_nominal`, `total_opex_5yr_eur_pv` are detected as numbers
 - `scenario_id` is text
 - `payback_years` is number (handles nulls)
 
@@ -52,7 +52,7 @@ Create the following pages in your report:
 
 **Visual 2: Capex vs Opex Breakdown (Stacked Bar)**
 - Category: `scenario_id`
-- Values: `total_capex_eur`, `total_opex_5yr_eur`
+- Values: `total_capex_eur`, `total_opex_5yr_eur_pv` (use the PV form so it stacks apples-to-apples with capex)
 - Title: "Cost Composition by Scenario"
 
 **Visual 3: Key Metrics (Card Visuals)**

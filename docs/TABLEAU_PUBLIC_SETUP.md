@@ -37,7 +37,7 @@ This guide walks through creating three interconnected dashboards for the humano
 4. Tableau will auto-detect columns and types
 5. Verify:
    - `scenario_id` = String
-   - `npv_eur`, `total_capex_eur`, `total_opex_5yr_eur` = Number
+   - `npv_eur`, `total_capex_eur`, `total_opex_5yr_eur_nominal`, `total_opex_5yr_eur_pv` = Number
    - `payback_years` = Number (null handling automatic)
 6. Click **Create Sheet**
 
@@ -64,7 +64,7 @@ This guide walks through creating three interconnected dashboards for the humano
 
 **Sheet 1b: Cost Composition**
 - Dimensions: `scenario_id`
-- Measures: `total_capex_eur`, `total_opex_5yr_eur`
+- Measures: `total_capex_eur`, `total_opex_5yr_eur_pv` (use the PV form so it stacks apples-to-apples with capex; `total_opex_5yr_eur_nominal` is for raw-cash-out reporting)
 - Visualization: Stacked Horizontal Bar
 - Color: Red for capex, orange for opex
 - Interactive: Filter by scenario
