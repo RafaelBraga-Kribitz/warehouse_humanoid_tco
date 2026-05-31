@@ -442,12 +442,12 @@
     },
     {
       "category": "orphaned_workflows",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-041",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-041.yaml",
-      "status": "open",
+      "status": "closed",
       "title": ".github/workflows/ci.yml does not run the pipeline that produces claimed outputs",
       "verification_script": "tests/governance/test_f041_ci_runs_pipeline.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T05:22:19.232695+00:00",
-  "git_branch": "governance/f030-oat-elasticity",
-  "git_head_sha": "98cd3655843047532141ab1055ab3b66a289af74",
+  "generated_at": "2026-05-31T09:29:49.954920+00:00",
+  "git_branch": "governance/f040-notebook-outputs",
+  "git_head_sha": "96371294826bdd29ecc4c59744b05b6dba3f5771",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 32,
+    "findings_closed": 33,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 10,
+    "findings_open": 9,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -502,7 +502,7 @@
       "governance_gaps": 1,
       "methodology_drift": 2,
       "numeric_drift": 1,
-      "orphaned_workflows": 2,
+      "orphaned_workflows": 1,
       "partial_migration": 1
     }
   },
