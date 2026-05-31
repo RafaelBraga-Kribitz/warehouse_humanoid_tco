@@ -387,12 +387,12 @@
     },
     {
       "category": "dead_artifacts",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-036",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-036.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Reproducibility scaffolding is dead \u2014 seed_all + granular seeds + AgentProfile.seed all unused",
       "verification_script": "tests/governance/test_f036_reproducibility_scaffolding.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T10:20:08.065667+00:00",
-  "git_branch": "governance/f035-knapp-citation-v2",
-  "git_head_sha": "35ddb98c7c8f14e7fc120b3cb4448ef2c178fc73",
+  "generated_at": "2026-05-31T10:29:33.742926+00:00",
+  "git_branch": "governance/f036-reproducibility-wiring",
+  "git_head_sha": "acb5570d1907b9bceefa78dafe230387c665ecba",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,16 +488,15 @@
     }
   ],
   "summary": {
-    "findings_closed": 40,
+    "findings_closed": 41,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 2,
+    "findings_open": 1,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
     "open_by_category": {
-      "dead_artifacts": 1,
       "fake_completion": 1
     }
   },

@@ -24,6 +24,29 @@ from warehouse_humanoid_tco.models.simulation import (
     WarehouseScenario,
     run_scenario,
 )
+from warehouse_humanoid_tco.utils.reproducibility import seed_all
+
+
+def _load_global_seed(project_root: Path) -> int | None:
+    """Load `simulation.global_seed` from config/seeds.yaml if present.
+
+    F-036: this wires the canonical seed source (config/seeds.yaml) into the
+    simulation pipeline. Returns None if the file is missing — caller falls
+    back to the function default. The 4 previous granular per-RNG-stream
+    keys (order_arrival_seed et al.) were removed because no pipeline code
+    consumed them; SimPy + numpy use one Generator per (scenario, run_id)
+    seeded from this single value.
+    """
+    seeds_path = project_root / "config" / "seeds.yaml"
+    if not seeds_path.exists():
+        return None
+    try:
+        data = yaml.safe_load(seeds_path.read_text()) or {}
+    except yaml.YAMLError:
+        return None
+    sim = data.get("simulation") or {}
+    raw = sim.get("global_seed")
+    return int(raw) if isinstance(raw, int) else None
 
 
 def module_02_main(
@@ -31,12 +54,22 @@ def module_02_main(
     config_path: Path | None = None,
     capability_summary_path: Path | None = None,
     n_runs: int = 15,
-    seed: int = 42,
+    seed: int | None = None,
 ) -> dict[str, Path | None]:
     """Run Module 2 end-to-end.
 
-    Returns dict mapping {'simulation_runs': ..., 'validation_report': ...}
+    Returns dict mapping {'simulation_runs': ..., 'validation_report': ...}.
+    F-036: `seed` defaults to None — the function loads config/seeds.yaml
+    `simulation.global_seed` and falls back to 42 if absent. seed_all is
+    called once so any non-Generator random consumers (random, np.random)
+    are also reproducible from the same seed source.
     """
+    if seed is None:
+        seed = _load_global_seed(project_root)
+        if seed is None:
+            seed = 42
+    seed_all(seed)
+
     # Load config
     if config_path is None:
         config_path = project_root / "config" / "autostore_baseline.yaml"
