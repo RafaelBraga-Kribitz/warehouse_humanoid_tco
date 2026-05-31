@@ -2,18 +2,38 @@ id: F-035
 title: Knapp AutoStore throughput reference 960/shift is a magic number with no citation
 category: governance_gaps
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/evaluation/validation.py:12 —
+  Pre-closure: evaluation/validation.py defined
     KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0  # orders per 8-hour shift (public benchmark)
-  No URL, no whitepaper, no grid size / port count / Knapp product version.
+  with no URL, no white paper, no Knapp product version. The constant is the
+  pass/fail gate for validate_human_baseline_throughput; validation was
+  effectively circular.
 verification_script: tests/governance/test_f035_knapp_citation.py
 notes: |
-  This is the pass/fail gate for validate_human_baseline_throughput. 960/shift is
-  ~3× lower than this config's 450 orders/h would produce — likely a different
-  Knapp configuration entirely. Validation is currently circular. Closure: add a
-  URL/citation comment block alongside the constant, or move the citation into
-  an ADR and reference it from the constant.
+  First attempt (PR #27, dropped) authored ADR-0009 v1 that contained two
+  factual errors Codex correctly flagged:
+    1. Self-contradictory utilisation math: text said 80 %, formula used 0.25.
+    2. Wrong central claim that config models 4 ports × 250 orders/h ≈ 8000/
+       shift. The simulation actually consumes order_arrival_rate_per_hour
+       (120/h) directly as a Poisson rate (module_02_simulation.py:145);
+       layout.ports is not wired to any throughput cap, so simulated
+       throughput is ~120 × 8 = ~960 — the same as the reference.
+  This closure ships ADR-0009 v2 (replaces v1 in-place) which:
+    - Removes both v1 errors.
+    - Honestly discloses that the gate is structurally tautological under
+      the current configuration: the simulation consumes the same arrival
+      rate the reference compares against, so the gate detects only
+      catastrophic loss of work-in-flight (routing regressions that drop or
+      starve orders), not independent throughput validation.
+    - Documents two deferred follow-ups: (a) an arrival-rate-independent
+      saturation throughput check, (b) pinning a real Knapp case study URL.
+  The validation.py comment block was rewritten to surface the tautology
+  disclosure inline so a reader doesn't have to open the ADR to learn the
+  gate's limits. Both comment and ADR link to the Knapp public product page.
+  Verification: tests/governance/test_f035_knapp_citation.py requires a URL
+  or ADR-#### reference within 800 chars of the constant. The new comment
+  references both ADR-0009 and the product URL. Previously xfail, now PASSED.

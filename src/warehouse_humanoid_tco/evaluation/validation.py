@@ -8,7 +8,18 @@ from __future__ import annotations
 
 from scipy import stats
 
-KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0  # orders per 8-hour shift (public benchmark)
+# 960 = 120 orders/h × 8 h shift — exactly the product of
+# config/autostore_baseline.yaml::operations::order_arrival_rate_per_hour
+# (a Poisson rate calibrated against Knapp's public AutoStore envelope of
+# 100–250+ picks/h/port) and the configured shift_hours. This gate is
+# therefore structurally tautological under the current config and detects
+# only catastrophic loss of work-in-flight (e.g., a routing regression that
+# drops or starves orders); it does NOT validate against an independent
+# external benchmark. See ADR-0009 (governance/adrs/0009-knapp-throughput-
+# reference.md) for the full derivation, the previous version's errors, and
+# the deferred follow-ups for a real validation gate.
+# Knapp public product page: https://www.knapp.com/en/solutions/products/autostore/
+KNAPP_AUTOSTORE_THROUGHPUT_REFERENCE = 960.0  # orders per 8-hour shift (see ADR-0009)
 TOLERANCE_FRACTION = 0.20
 
 
