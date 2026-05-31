@@ -332,12 +332,12 @@
     },
     {
       "category": "methodology_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-031",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-031.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "Monte Carlo humanoid_capex_eur ~ Normal(120k, 30k) is not truncated, allows negative draws",
       "verification_script": "tests/governance/test_f031_capex_truncation.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T09:41:46.879796+00:00",
-  "git_branch": "governance/f037-readme-mc-digits",
-  "git_head_sha": "9b8e215cb546a52bfcd1563dd08f948b90e4b39a",
+  "generated_at": "2026-05-31T09:49:03.845552+00:00",
+  "git_branch": "governance/f031-capex-lognormal",
+  "git_head_sha": "9cf2259c00024b6fa5aa622ab56fa3cbdbf118e0",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 35,
+    "findings_closed": 36,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 7,
+    "findings_open": 6,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -500,7 +500,7 @@
       "dead_artifacts": 2,
       "fake_completion": 1,
       "governance_gaps": 1,
-      "methodology_drift": 2,
+      "methodology_drift": 1,
       "partial_migration": 1
     }
   },

@@ -281,12 +281,34 @@ def _sample_params(
     distributions: dict[str, dict],
     n_samples: int,
 ) -> dict[str, np.ndarray]:
-    """Draw n_samples from each named distribution."""
+    """Draw n_samples from each named distribution.
+
+    Supports three distribution families:
+      - ``normal``: rng.normal(mean, std). Allows negative draws — use only
+        for parameters whose physical range admits both signs.
+      - ``lognormal``: rng.lognormal parameterised to preserve the target
+        ``mean`` and ``std`` exactly via sigma^2 = ln(1 + (std/mean)^2),
+        mu = ln(mean) - sigma^2/2. Strictly positive — use for parameters
+        like capex where negative draws are non-physical (F-031, F-027).
+      - ``uniform``: rng.uniform(low, high).
+    """
     samples: dict[str, np.ndarray] = {}
     for name, cfg in distributions.items():
         dtype = cfg.get("type", "normal")
         if dtype == "normal":
             samples[name] = rng.normal(cfg["mean"], cfg["std"], n_samples)
+        elif dtype == "lognormal":
+            mean = float(cfg["mean"])
+            std = float(cfg["std"])
+            if mean <= 0 or std <= 0:
+                raise ValueError(
+                    f"lognormal {name!r} requires positive mean and std; "
+                    f"got mean={mean}, std={std}"
+                )
+            cv2 = (std / mean) ** 2
+            sigma2 = float(np.log1p(cv2))
+            mu = float(np.log(mean)) - 0.5 * sigma2
+            samples[name] = rng.lognormal(mu, np.sqrt(sigma2), n_samples)
         elif dtype == "uniform":
             samples[name] = rng.uniform(cfg["low"], cfg["high"], n_samples)
         else:
@@ -424,9 +446,15 @@ def run_sensitivity_analysis(
         "transfer_factor": (0.50, 0.90),
     }
 
-    # MC distributions — continuous parameters only (agent counts fixed per scenario)
+    # MC distributions — continuous parameters only (agent counts fixed per scenario).
+    # humanoid_capex_eur uses lognormal (F-031): the prior Normal(120k, 30k) allowed
+    # negative draws (P ≈ 4e-5 per sample → ~0.4 negative draws per 10k-sample run).
+    # Lognormal is strictly positive, right-skewed (matches the real shape of capex
+    # surprises — occasional very expensive units), and preserves the same target
+    # mean and std exactly. See _sample_params for the algebra; same approach as
+    # ADR-0010 for service-time sampling.
     param_distributions: dict[str, dict] = {
-        "humanoid_capex_eur": {"type": "normal", "mean": 120000, "std": 30000},
+        "humanoid_capex_eur": {"type": "lognormal", "mean": 120000, "std": 30000},
         "human_wage_eur": {"type": "normal", "mean": 18.50, "std": 2.0},
         "human_overhead_mult": {"type": "uniform", "low": 1.0, "high": 1.7},
         "discount_rate": {"type": "uniform", "low": 0.04, "high": 0.12},
