@@ -2,17 +2,31 @@ id: F-033
 title: module_03_tco.py emits undiscounted nominal total_opex alongside discounted NPV
 category: methodology_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  src/warehouse_humanoid_tco/pipelines/module_03_tco.py:157 — "npv_eur": float(npv)  (discounted)
-  src/warehouse_humanoid_tco/pipelines/module_03_tco.py:161 — "total_opex_5yr_eur": float(annual_opex * years)  (undiscounted)
-  exports/tableau_public/tco_scenarios.csv ships both fields side-by-side.
+  Pre-closure: pipelines/module_03_tco.py emitted "npv_eur" (5-year discounted
+  cash sum) and "total_opex_5yr_eur" = annual_opex * years (undiscounted) in
+  the same result dict. A reader comparing the two — or any dashboard that
+  stacks total_capex_eur + total_opex_5yr_eur — silently mixed PV and nominal,
+  over-stating opex by ~22 % at the 8 % discount rate.
 verification_script: tests/governance/test_f033_opex_pv_disambiguation.py
 notes: |
-  A reader comparing total_opex_5yr_eur to npv_eur mixes nominal and PV. Closure:
-  rename the nominal field to total_opex_5yr_eur_nominal or add a discounted
-  companion field total_opex_5yr_eur_pv with explicit naming; downstream Tableau
-  + Power BI exports must update with it.
+  Closed by splitting the ambiguous field into two explicitly-typed ones:
+    - total_opex_5yr_eur_nominal  = annual_opex × years  (raw cash, undiscounted)
+    - total_opex_5yr_eur_pv       = Σ annual_opex / (1+r)^t for t=1..5  (PV)
+  Now `total_capex_eur + total_opex_5yr_eur_pv = |npv_eur|` to the last cent
+  (verified on all 5 scenarios), so the PV columns stack apples-to-apples
+  with capex. Nominal remains available for "raw cash out the door" reports.
+  Updated downstream consumers:
+    - module_04_dashboards: stacked Capex+Opex bar now uses _pv
+    - data/schemas.py: schema entries split
+    - tests/test_tco.py + tests/test_pipeline_modules.py: fixtures + asserts
+    - docs/TABLEAU_PUBLIC_SETUP.md + docs/POWER_BI_SETUP.md: column lists +
+      visualization recipes name the PV variant
+  Re-ran module_03_tco; CSV regenerated with both columns.
+  Verification: tests/governance/test_f033_opex_pv_disambiguation.py asserts
+  module_03_tco.py uses one of the disambiguated names. Previously xfail,
+  now PASSED. All 177 tests pass.

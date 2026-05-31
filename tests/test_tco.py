@@ -97,7 +97,10 @@ def test_tco_scenario_baseline_human() -> None:
     result = compute_tco_scenario("S-baseline-human", {}, {})
     assert result["npv_eur"] < 0
     assert result["total_capex_eur"] == 0.0
-    assert result["total_opex_5yr_eur"] > 0
+    assert result["total_opex_5yr_eur_nominal"] > 0
+    assert result["total_opex_5yr_eur_pv"] > 0
+    # PV must be less than nominal under positive discount rate.
+    assert result["total_opex_5yr_eur_pv"] < result["total_opex_5yr_eur_nominal"]
     assert result["cost_reduction_vs_baseline_pct"] == 0.0
     assert result["payback_years"] == 0.0  # no capex to recover
 
@@ -105,7 +108,8 @@ def test_tco_scenario_baseline_human() -> None:
 def test_tco_scenario_pure_humanoid_has_opex() -> None:
     """Pure humanoid scenario has nonzero opex: maintenance (8%/yr of capex) + energy."""
     result = compute_tco_scenario("S-pure-humanoid", {}, {})
-    assert result["total_opex_5yr_eur"] > 0  # maintenance + energy, not zero
+    assert result["total_opex_5yr_eur_nominal"] > 0  # maintenance + energy, not zero
+    assert result["total_opex_5yr_eur_pv"] > 0
     assert result["total_capex_eur"] > 0
     # Cost reduction below 100% because humanoid opex offsets labor savings
     assert result["cost_reduction_vs_baseline_pct"] < 100.0
@@ -133,7 +137,8 @@ def test_tco_scenario_required_keys() -> None:
         "cost_reduction_vs_baseline_pct",
         "payback_years",
         "total_capex_eur",
-        "total_opex_5yr_eur",
+        "total_opex_5yr_eur_nominal",
+        "total_opex_5yr_eur_pv",
         "pipeline_version",
     }
     assert required.issubset(result.keys())

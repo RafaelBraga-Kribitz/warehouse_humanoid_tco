@@ -75,6 +75,9 @@ TCO_SCENARIO_SCHEMA = {
     "irr": "float (-1.0-10.0, nullable)",
     "payback_years": "float (>=0.0, nullable)",
     "total_capex_eur": "float (>=0.0, non-null)",
-    "total_opex_5yr_eur": "float (>=0.0, non-null)",
+    # F-033: split into nominal vs PV — comparing PV against npv_eur is
+    # apples-to-apples; nominal stays for "raw cash out the door" reporting.
+    "total_opex_5yr_eur_nominal": "float (>=0.0, non-null)",
+    "total_opex_5yr_eur_pv": "float (>=0.0, non-null)",
     "pipeline_version": "str (non-null)",
 }

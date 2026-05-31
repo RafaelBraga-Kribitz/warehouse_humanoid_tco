@@ -59,10 +59,13 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(10, 6))
     scenarios_sorted = tco["scenario_id"].to_list()
     capex = tco["total_capex_eur"].to_list()
-    opex = tco["total_opex_5yr_eur"].to_list()
+    # F-033: use the PV-discounted opex stream so the stacked bar is in the same
+    # units as capex (both flows discounted to year 0). Pre-rename this column
+    # was the undiscounted nominal total, which over-stated the opex bar by ~22%.
+    opex = tco["total_opex_5yr_eur_pv"].to_list()
     x = range(len(scenarios_sorted))
     ax.bar(x, capex, label="Capex (Hardware)", color="#e74c3c")
-    ax.bar(x, opex, bottom=capex, label="Opex 5yr (Labor)", color="#f39c12")
+    ax.bar(x, opex, bottom=capex, label="Opex 5yr PV (Labor)", color="#f39c12")
     ax.set_xticks(x)
     ax.set_xticklabels(scenarios_sorted, rotation=45, ha="right")
     ax.set_ylabel("Cost (€)")

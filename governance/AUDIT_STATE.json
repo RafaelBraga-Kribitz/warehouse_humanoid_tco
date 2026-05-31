@@ -354,12 +354,12 @@
     },
     {
       "category": "methodology_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-033",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-033.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "module_03_tco.py emits undiscounted nominal total_opex alongside discounted NPV",
       "verification_script": "tests/governance/test_f033_opex_pv_disambiguation.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T09:54:23.892441+00:00",
-  "git_branch": "governance/f032-transfer-factor-floor",
-  "git_head_sha": "7e85fb73f086972ba389f53fdb9735ca3ba04072",
+  "generated_at": "2026-05-31T10:04:18.991683+00:00",
+  "git_branch": "governance/f033-opex-pv-disambiguation",
+  "git_head_sha": "eec6250ff8db955dcfa1c721827b3af5d147fa76",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 37,
+    "findings_closed": 38,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 5,
+    "findings_open": 4,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -500,7 +500,6 @@
       "dead_artifacts": 1,
       "fake_completion": 1,
       "governance_gaps": 1,
-      "methodology_drift": 1,
       "partial_migration": 1
     }
   },

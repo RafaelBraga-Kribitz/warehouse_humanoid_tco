@@ -131,10 +131,18 @@ def compute_tco_scenario(
     )
     annual_opex = annual_labor_cost + annual_humanoid_opex + annual_amr_opex
 
-    # 5-year discounted NPV (cost model: all flows negative)
+    # 5-year discounted NPV (cost model: all flows negative).
+    # F-033: track the year-0 capex flow and the PV-discounted opex stream
+    # separately so callers can report both `total_opex_5yr_eur_nominal`
+    # (sum of annual_opex × years, undiscounted) and the apples-to-apples
+    # `total_opex_5yr_eur_pv` (sum of the discounted opex flows). NPV is the
+    # sum of capex + every discounted opex flow.
     cash_flows = [-capex_year0]
+    pv_opex_total = 0.0
     for year in range(1, years + 1):
-        cash_flows.append(-annual_opex / ((1 + discount_rate) ** year))
+        pv_opex = annual_opex / ((1 + discount_rate) ** year)
+        pv_opex_total += pv_opex
+        cash_flows.append(-pv_opex)
 
     npv = sum(cash_flows)
 
@@ -160,7 +168,11 @@ def compute_tco_scenario(
         "cost_reduction_vs_baseline_pct": round(cost_reduction_pct, 1),
         "payback_years": payback_years if payback_years != float("inf") else None,
         "total_capex_eur": float(capex_year0),
-        "total_opex_5yr_eur": float(annual_opex * years),
+        # F-033: split the previous ambiguous `total_opex_5yr_eur` into nominal
+        # (sum of annual_opex × years, undiscounted) and PV (sum of the
+        # discounted opex flows, comparable to npv_eur and capex_year0).
+        "total_opex_5yr_eur_nominal": float(annual_opex * years),
+        "total_opex_5yr_eur_pv": float(pv_opex_total),
         "pipeline_version": "0.2.0",
     }
 
