@@ -1,0 +1,50 @@
+id: F-043
+title: Presentation-layer artifacts (charts, QMD renders) regenerate stale after methodology changes
+category: governance_gaps
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-05-31
+closed_at: 2026-05-31
+recurrence_count: 0
+evidence: |
+  After major methodology changes (e.g., F-033 opex split, F-034 S-future-2028
+  differentiation), presentation artifacts diverge from the underlying data:
+
+  1. reports/executive_charts/*.png (cost composition bar, tornado sensitivity
+     plots) are manually regenerated via module-04, but no `make` target invokes
+     module-04 in isolation after data changes. The `make all` target runs
+     modules 01-04 back-to-back, but if a contributor modifies only config or
+     analysis code (not module inputs), they must manually re-run module-04 to
+     regenerate charts. This creates a window where committed CSV/JSON outputs
+     exist but PNG visualizations remain stale.
+
+  2. Quarto documents (reports/*.qmd) render to HTML/PDF only when manually run
+     via `quarto render`. Only reports/Executive_Summary_DE.qmd has a dedicated
+     `make exec-summary` target; others (module_03_tco_assumptions.qmd, etc.)
+     lack `make` targets entirely. Reports may reference stale outputs or data
+     fields (e.g., old `total_opex_5yr_eur` vs new `total_opex_5yr_eur_pv`
+     split).
+
+  3. No CI gate enforces that checked-in HTML/PDF artifacts match the source
+     .qmd + data. A finding-closure PR can update data; the HTML land stale
+     because the PR didn't invoke the render step.
+
+  **Evidence of staleness:** After F-033 + F-034, S-future-2028 row in some
+  reports may show old capex / opex / NPV values or fail to apply the 1.30
+  throughput multiplier. `reports/executive_charts/` PNGs not regenerated.
+verification_script: tests/governance/test_f043_presentation_layer_regen.py
+notes: |
+  Closed by adding a `make presentation` target to Makefile that:
+    1. Depends on module-04 (regenerates dashboards + charts)
+    2. Iterates `reports/*.qmd` and renders each with quarto if available
+    3. Gracefully degrades when quarto is not installed (charts still refresh)
+    4. Does NOT re-run modules 01-03 — those are data-generation, kept separate
+       so contributors can refresh display without re-running the simulation
+  Documented in `make help` alongside `exec-summary`.
+  Verification: `tests/governance/test_f043_presentation_layer_regen.py` asserts
+  the target exists and is listed in help. Test was xfail while finding was
+  open; now enforces against regression via the ratchet.
+  Follow-up (not blocking closure): wire `make presentation` into a CI job that
+  runs on every PR, so stale committed charts/HTML are detected automatically.
+  Left for a separate finding because the gate decision (which artifacts are
+  CI-enforced) is independent from the target's existence.
