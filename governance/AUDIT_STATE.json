@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T10:29:33.742926+00:00",
-  "git_branch": "governance/f036-reproducibility-wiring",
-  "git_head_sha": "acb5570d1907b9bceefa78dafe230387c665ecba",
+  "generated_at": "2026-05-31T10:34:04.967509+00:00",
+  "git_branch": "main",
+  "git_head_sha": "ac93355fea2da26533057e0bb644424484560f57",
   "migrations": [
     {
       "linked_finding": "F-003",
