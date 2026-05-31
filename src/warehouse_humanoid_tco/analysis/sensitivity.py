@@ -128,8 +128,18 @@ def compute_tco_for_params(
     transfer means each humanoid does less productive work, so more effective
     units (capex + opex) are needed to match the demo-speed baseline.
     """
-    # Effective humanoid count: at the baseline transfer factor, multiplier = 1.0
-    transfer_multiplier = TRANSFER_FACTOR_BASELINE / max(transfer_factor, 0.05)
+    # Effective humanoid count: at the baseline transfer factor, multiplier = 1.0.
+    # transfer_factor must be positive — OAT and MC ranges are bounded at
+    # [0.5, 0.9] (see config/autostore_baseline.yaml::capability_transfer), so
+    # the previous max(.,0.05) floor was dead defensive code (F-032). Now
+    # validated explicitly so a caller passing 0 fails fast with a clear
+    # message instead of silently producing infinite leverage.
+    if transfer_factor <= 0:
+        raise ValueError(
+            f"transfer_factor must be positive; got {transfer_factor}. "
+            "OAT/MC ranges are [0.5, 0.9]; direct callers must supply > 0."
+        )
+    transfer_multiplier = TRANSFER_FACTOR_BASELINE / transfer_factor
     eff_humanoid = n_humanoid * transfer_multiplier
 
     humanoid_capex_total = compute_humanoid_capex(
