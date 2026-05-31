@@ -48,6 +48,35 @@ jobs:
       - name: Smoke test in container
         run: docker run --rm --entrypoint python warehouse-humanoid-tco:test -c "import warehouse_humanoid_tco; print('ok')"
 
+  # F-041: exercise the simulation + TCO pipeline against the committed code on
+  # every PR. Module 1 (capability extraction) needs HF Hub access for the WBT
+  # datasets and is therefore restricted to the workflow_dispatch pipeline.yml
+  # job that supplies HF_TOKEN; module-04 needs Module 1 outputs. Modules 2 and
+  # 3 are self-contained — SimPy + closed-form TCO — and can run on every PR.
+  # This proves the simulation+TCO surface against the committed code, not just
+  # the import-time smoke test that docker-build provides.
+  pipeline-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+      - name: Run module_02 simulation
+        run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
+      - name: Run module_03 TCO
+        run: python -m warehouse_humanoid_tco.pipelines.module_03_tco
+      - name: Assert pipeline outputs exist
+        run: |
+          test -s data/processed/simulation_runs.parquet
+          test -s data/processed/tco_scenarios.parquet
+          test -s reports/module_02_simulation_report.json
+          test -s reports/module_03_tco_report.json
+
   # Governance audit + Adversary: runs every check_*.py and re-verifies each
   # closed finding's verification_script. A closed finding that regresses fails
   # the PR. Phase 4 expands this into a clean-checkout job.

@@ -11,7 +11,7 @@
 workflows:
 
   ci.yml:
-    purpose: Per-PR lint, type-check, test, Docker smoke.
+    purpose: Per-PR lint, type-check, test, Docker smoke, pipeline smoke.
     triggers: [push: main+develop, pull_request: main+develop]
     gates:
       - black --check src/ tests/ scripts/
@@ -19,6 +19,7 @@ workflows:
       - pyright src/
       - pytest tests/ -v --tb=short
       - docker build smoke
+      - pipeline-smoke (module_02 + module_03 against committed code)  # F-041
     owner: portfolio author
     phase_4_additions:
       - make verify

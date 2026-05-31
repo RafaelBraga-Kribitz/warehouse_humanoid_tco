@@ -2,18 +2,31 @@ id: F-041
 title: .github/workflows/ci.yml does not run the pipeline that produces claimed outputs
 category: orphaned_workflows
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  .github/workflows/ci.yml — runs Black, Ruff, Pyright, pytest, Docker import smoke;
-    no module_0* or `make all` step.
-  .github/workflows/pipeline.yml — `on: workflow_dispatch:` only; no push/PR trigger;
-    additionally gated to `if: github.ref == 'refs/heads/main'`.
+  Pre-closure: .github/workflows/ci.yml ran Black, Ruff, Pyright, pytest,
+  Docker import smoke, and the governance audit — but never invoked any
+  pipeline module against the committed code on push/PR. .github/workflows/
+  pipeline.yml was workflow_dispatch-only (HF data dep). The README badge
+  therefore tracked lint+test+import only, leaving the simulation+TCO
+  surface unverified per-PR.
 verification_script: tests/governance/test_f041_ci_runs_pipeline.py
 notes: |
-  Committed parquet/CSV are static; no CI job re-runs the pipeline against the
-  committed code on push. README badge tracks lint+test only. Closure (paired
-  with F-007 / pipeline.yml ADR): add a gated fixture-driven pipeline step to
-  ci.yml that exercises module_0[1-4] against a checked-in synthetic fixture.
+  Closed by adding a `pipeline-smoke` job to ci.yml that runs
+  `python -m warehouse_humanoid_tco.pipelines.module_02_simulation` followed
+  by `module_03_tco` on every push/PR and asserts the four key outputs are
+  present (data/processed/{simulation_runs,tco_scenarios}.parquet,
+  reports/module_0{2,3}_*report.json). Module 1 (capability extraction)
+  needs HF Hub access and remains in the workflow_dispatch pipeline.yml that
+  supplies HF_TOKEN; Module 4 needs Module 1 outputs and is covered there.
+  The new job exercises the SimPy + closed-form TCO code paths, which is
+  where most of the methodology drift findings (F-027, F-028, F-030)
+  surfaced — so any regression in that surface now trips CI directly rather
+  than waiting for a manual workflow_dispatch.
+  Verification: tests/governance/test_f041_ci_runs_pipeline.py asserts
+  ci.yml contains `module_0[1-4]` / `make all` / `make module-0[1-4]`.
+  Previously xfail, now PASSED. WORKFLOW_REGISTRY.yaml updated to declare
+  the new gate.
