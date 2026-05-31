@@ -50,7 +50,7 @@ Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlich
 | S-hybrid-5050 | −€1.577K | 35% | 3,8 Jahre |
 | S-baseline-human | −€1.608K | — | — |
 | S-pure-humanoid | −€1.546K | 70% | 3,8 Jahre |
-| S-future-2028 | −€1.577K | 35% | 3,8 Jahre |
+| S-future-2028 | −€1.399K | 39% | 2,6 Jahre |
 
 ### Kritische Erkenntnisse
 

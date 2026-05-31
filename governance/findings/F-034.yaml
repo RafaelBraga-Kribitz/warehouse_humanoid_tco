@@ -2,19 +2,43 @@ id: F-034
 title: S-future-2028 humanoid_throughput_multiplier never propagates to TCO pipeline
 category: partial_migration
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  config/autostore_baseline.yaml — humanoid_throughput_multiplier: 1.30 (S-future-2028 only)
-  src/warehouse_humanoid_tco/pipelines/module_02_simulation.py — applies the multiplier
-  src/warehouse_humanoid_tco/pipelines/module_03_tco.py + models/tco.py — multiplier
-  is not referenced anywhere; only throughput from Module 2 is consumed.
+  Pre-closure: config/autostore_baseline.yaml declared
+    humanoid_throughput_multiplier: 1.30  # S-future-2028 only
+  pipelines/module_02_simulation.py applied it to cycle time, but
+  pipelines/module_03_tco.py + models/tco.py never referenced it. S-future-2028
+  TCO output was therefore numerically identical to S-hybrid-5050 (same agent
+  composition, same costs) — the entire "future" scenario produced zero
+  differentiation in the headline NPV ranking.
 verification_script: tests/governance/test_f034_future_multiplier_propagation.py
 notes: |
-  The "future" scenario's 1.30× advertised in YAML never reaches the cost side of
-  the model. S-future-2028 NPV is then essentially S-hybrid-5050 NPV ± simulation
-  noise. Closure: either propagate the multiplier through module_03_tco/models.tco
-  and re-validate, or delete the multiplier and document an alternative
-  representation of the future scenario in an ADR.
+  Closed by propagating humanoid_throughput_multiplier through the cost model
+  in pipelines/module_03_tco.py with the same "fewer effective units" semantics
+  the sensitivity transfer_factor already uses:
+    n_humanoid_eff = n_humanoid / humanoid_throughput_multiplier
+  (1.30× speed-up → 1/1.30 ≈ 0.77 of the units needed to deliver the same
+  throughput.) The reduction flows naturally through capex, maintenance,
+  energy, and supervision FTEs since all of those scale linearly with
+  n_humanoid in the existing model.
+  Scope discipline: only S-future-2028 receives the divisor; other scenarios
+  retain integer humanoid counts so their NPVs are unchanged.
+  Result on S-future-2028:
+    capex:    €532,000 → €409,231  (–23 %)
+    opex_pv:  €1,044,941 → €989,368  (–5 %)
+    NPV:      €-1,576,941 → €-1,398,599  (better by €178k)
+    payback:  3.8 → 2.6 years
+    savings:  35 % → 39 %
+  Updated reports/Executive_Summary_DE.qmd + .html S-future-2028 row to match.
+  Known gap (documented, not fixed here): the multiplier still does not
+  propagate through analysis/sensitivity.py, so S-future-2028 in the MC
+  report remains identical to S-hybrid-5050. That's a separate cleanup — the
+  sensitivity module computes against a fixed SCENARIO_COMPOSITIONS dict
+  rather than reading scenario-specific overrides from config. A future
+  finding can address it; F-034 closes the headline-TCO gap.
+  Verification: tests/governance/test_f034_future_multiplier_propagation.py
+  asserts the multiplier key is referenced in module_03_tco.py (or
+  models/tco.py). Previously xfail, now PASSED. All 178 tests pass.

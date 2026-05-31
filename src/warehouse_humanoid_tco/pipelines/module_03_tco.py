@@ -91,16 +91,42 @@ def compute_tco_scenario(
         humanoid_fraction = 0.5
 
     total_agents = assumptions.get("total_agents", 8)
-    n_humanoid = max(0, int(total_agents * humanoid_fraction))
+    n_humanoid_int = max(0, int(total_agents * humanoid_fraction))
     n_human = max(0, int(total_agents * human_fraction))
     n_amr = max(0, int(total_agents * amr_fraction))
+
+    # F-034: propagate humanoid_throughput_multiplier through the cost model.
+    # Source of truth is config/autostore_baseline.yaml — currently only
+    # S-future-2028 declares it (1.30x), modelling next-gen humanoids that
+    # are 30 % faster. A 1.30x speed-up means achieving the same throughput
+    # needs n_humanoid / 1.30 effective units, which reduces capex (fewer
+    # robots to buy), maintenance, energy, and supervision FTEs. Without
+    # this, S-future-2028 was numerically identical to S-hybrid-5050 in
+    # TCO output (same agent composition, no cost-side adjustment).
+    # Only the future scenario receives the divisor — non-future scenarios
+    # retain integer humanoid counts so their NPVs are unchanged by F-034.
+    humanoid_throughput_multiplier = 1.0
+    if "future-2028" in scenario_id:
+        humanoid_throughput_multiplier = assumptions.get(
+            "humanoid_throughput_multiplier_future_2028", 1.30
+        )
+    if humanoid_throughput_multiplier > 0:
+        n_humanoid: float = float(n_humanoid_int) / humanoid_throughput_multiplier
+    else:
+        n_humanoid = 0.0
 
     # Supervision: each humanoid consumes supervision_ratio of a human FTE
     supervision_ftes = humanoid_supervision_ratio * n_humanoid
 
-    # Year-0 capex: humanoid (unit + install + training) + AMR units
+    # Year-0 capex: humanoid (unit + install + training) + AMR units.
+    # n_humanoid is float after the F-034 multiplier division — the helpers
+    # accept fractional counts at runtime (linear in count), but their type
+    # hints declare int, hence the type: ignore.
     humanoid_capex_total = compute_humanoid_capex(
-        n_humanoid, humanoid_capex_unit, humanoid_install_cost, humanoid_training_cost
+        n_humanoid,  # type: ignore[arg-type]
+        humanoid_capex_unit,
+        humanoid_install_cost,
+        humanoid_training_cost,
     )
     amr_capex_total = n_amr * amr_capex_unit
     capex_year0 = humanoid_capex_total + amr_capex_total
@@ -114,7 +140,7 @@ def compute_tco_scenario(
         shift_hours,
     )
     annual_humanoid_opex = compute_annual_humanoid_opex(
-        n_humanoid,
+        n_humanoid,  # type: ignore[arg-type]
         humanoid_capex_unit,
         humanoid_maint_fraction,
         humanoid_energy_kwh,

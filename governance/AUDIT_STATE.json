@@ -365,12 +365,12 @@
     },
     {
       "category": "partial_migration",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-034",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-034.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "S-future-2028 humanoid_throughput_multiplier never propagates to TCO pipeline",
       "verification_script": "tests/governance/test_f034_future_multiplier_propagation.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T10:04:18.991683+00:00",
-  "git_branch": "governance/f033-opex-pv-disambiguation",
-  "git_head_sha": "eec6250ff8db955dcfa1c721827b3af5d147fa76",
+  "generated_at": "2026-05-31T10:14:29.207651+00:00",
+  "git_branch": "governance/f034-future-multiplier-propagation",
+  "git_head_sha": "1f03feffd5e8372af9b1ec7950315fe00d9437d7",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 38,
+    "findings_closed": 39,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 4,
+    "findings_open": 3,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -499,8 +499,7 @@
     "open_by_category": {
       "dead_artifacts": 1,
       "fake_completion": 1,
-      "governance_gaps": 1,
-      "partial_migration": 1
+      "governance_gaps": 1
     }
   },
   "validation_errors": [],
