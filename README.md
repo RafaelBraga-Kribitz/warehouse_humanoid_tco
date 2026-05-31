@@ -80,7 +80,7 @@ pip install -r requirements.txt
 ### Sensitivity Analysis
 
 - **Monte Carlo (10,000 runs × 5 scenarios = 50,000 samples, all persisted):** S-hybrid-amr NPV mean = €-1,088,957 ± €171,317 (1σ); median = €-1,078,928
-  - 90% CI: [€-1.39M, €-830K]
+  - 90% output interval (p5–p95): [€-1,385,864, €-829,950]
   - Per-scenario MC with **agent counts fixed**; samples only continuous params: humanoid capex, labor wage, labor overhead, discount rate, WBT→production transfer factor (5 parameters)
   - S-hybrid-amr is the only scenario whose p95 (€-830K) doesn't overlap with the baseline mean (€-1.62M) — it is robustly the cheapest under uncertainty
 - **OAT Tornado:** Labor variables dominate — wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity vs €158K for humanoid capex and €120K for transfer factor (~8× labor:capex ratio at full config ranges)
