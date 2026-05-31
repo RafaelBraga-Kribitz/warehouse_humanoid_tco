@@ -2,16 +2,26 @@ id: F-037
 title: README MC 90% interval digits hand-transcribed and drift from sensitivity_analysis_report.json
 category: numeric_drift
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  README.md:82 — "90% CI: [€-1,792,442, €-1,071,911] (spread €720,530)"
-  reports/sensitivity_analysis_report.json — npv_p5 = -1,792,460.21, npv_p95 = -1,071,891.10
+  Pre-closure: README.md:83 cited "90% CI: [€-1.39M, €-830K]" — abbreviated
+  rather than full-digit, and the labels did not match the current
+  sensitivity_analysis_report.json values (npv_p5 ≈ -€1,385,864,
+  npv_p95 ≈ -€829,950 after the F-027 lognormal / F-030 elasticity reruns).
+  Hand-edited drift was already documented as the failure mode.
 verification_script: tests/governance/test_f037_readme_mc_digits.py
 notes: |
-  Off by €18 and €20 respectively. Small in absolute terms but signals the README
-  was edited by hand instead of templated from the JSON. Closure: either template
-  the values from the JSON, or round to a stable precision (k€) and document the
-  rounding rule in an ADR.
+  Closed by replacing the abbreviated values with full comma-formatted
+  integers matching the JSON exactly:
+    "  - 90% output interval (p5–p95): [€-1,385,864, €-829,950]"
+  Also renamed "90% CI" to "90% output interval (p5–p95)" — same
+  methodology fix F-029 applied inside sensitivity.py (empirical quantiles
+  are not a CI on a population parameter). Bundled as a trivial under-10-line
+  cross-cutting cleanup per CLAUDE.md scope rules.
+  The verification test (_fmt(p5) and _fmt(p95) both present in README)
+  becomes a true drift catch: any future pipeline re-run that shifts the
+  MC quantiles will fail the test unless README is updated in the same PR.
+  Previously xfail, now PASSED.

@@ -398,12 +398,12 @@
     },
     {
       "category": "numeric_drift",
-      "closed_at": null,
+      "closed_at": "2026-05-31",
       "id": "F-037",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-037.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "README MC 90% interval digits hand-transcribed and drift from sensitivity_analysis_report.json",
       "verification_script": "tests/governance/test_f037_readme_mc_digits.py"
     },
@@ -474,9 +474,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-05-31T09:33:40.190534+00:00",
-  "git_branch": "governance/f042-docker-entrypoint",
-  "git_head_sha": "2b6c7d4503e78e33b2e80ac8d5e18b91b73129a7",
+  "generated_at": "2026-05-31T09:41:46.879796+00:00",
+  "git_branch": "governance/f037-readme-mc-digits",
+  "git_head_sha": "9b8e215cb546a52bfcd1563dd08f948b90e4b39a",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -488,10 +488,10 @@
     }
   ],
   "summary": {
-    "findings_closed": 34,
+    "findings_closed": 35,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 8,
+    "findings_open": 7,
     "findings_total": 43,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
@@ -501,7 +501,6 @@
       "fake_completion": 1,
       "governance_gaps": 1,
       "methodology_drift": 2,
-      "numeric_drift": 1,
       "partial_migration": 1
     }
   },
