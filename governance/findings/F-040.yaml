@@ -2,9 +2,9 @@ id: F-040
 title: notebooks/01_data_profile_summary.ipynb has zero committed cell outputs
 category: fake_completion
 kind: recurrence_invariant
-status: open
+status: closed
 opened_at: 2026-05-30
-closed_at: null
+closed_at: 2026-06-02
 recurrence_count: 0
 evidence: |
   README.md:56 — "Full data profiling notebook in notebooks/01_data_profile_summary.ipynb
@@ -14,6 +14,7 @@ evidence: |
   notebooks/01_data_profile_summary.ipynb — 15 cells, 0 code-cell outputs.
 verification_script: tests/governance/test_f040_notebook_outputs.py
 notes: |
-  A profiling notebook with no outputs has nothing to validate. Closure: execute
-  the notebook and commit cell outputs, or remove the "stakeholder transparency"
-  claim from README.
+  Closed by executing the notebook via nbclient with repo root as kernel CWD.
+  Two .to_pandas() calls removed (pandas not in venv); replaced with native
+  polars display (summary, per_episode.head(5)). All 5 code cells now carry
+  committed outputs. 183/183 tests pass; F-040 verification script PASS.

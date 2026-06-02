@@ -431,12 +431,12 @@
     },
     {
       "category": "fake_completion",
-      "closed_at": null,
+      "closed_at": "2026-06-02",
       "id": "F-040",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-040.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "notebooks/01_data_profile_summary.ipynb has zero committed cell outputs",
       "verification_script": "tests/governance/test_f040_notebook_outputs.py"
     },
@@ -485,9 +485,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-02T20:15:25.603849+00:00",
+  "generated_at": "2026-06-02T21:03:08.682699+00:00",
   "git_branch": "governance/presentation-regen-post-batch",
-  "git_head_sha": "2004a227aa6a4e0313705c3a68373f09954e3e53",
+  "git_head_sha": "355c70534c72d3958f19d7a1b97824092a369734",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -499,17 +499,15 @@
     }
   ],
   "summary": {
-    "findings_closed": 42,
+    "findings_closed": 43,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 1,
+    "findings_open": 0,
     "findings_total": 44,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
-    "open_by_category": {
-      "fake_completion": 1
-    }
+    "open_by_category": {}
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"
