@@ -20,9 +20,11 @@ import polars as pl
 import yaml
 
 from warehouse_humanoid_tco.models.simulation import (
+    DEFAULT_CAPACITY_CEILING_RHO,
     AgentProfile,
     WarehouseScenario,
     run_scenario,
+    simulate_at_capacity,
 )
 from warehouse_humanoid_tco.utils.reproducibility import seed_all
 
@@ -55,6 +57,8 @@ def module_02_main(
     capability_summary_path: Path | None = None,
     n_runs: int = 15,
     seed: int | None = None,
+    capacity_target_rho: float = DEFAULT_CAPACITY_CEILING_RHO,
+    capacity_n_runs: int = 5,
 ) -> dict[str, Path | None]:
     """Run Module 2 end-to-end.
 
@@ -114,6 +118,7 @@ def module_02_main(
 
     # ========== Run Simulations ==========
     all_runs = []
+    built_scenarios: list[WarehouseScenario] = []
     scenarios = config.get("scenarios", [])
     total_agents = config.get("total_agents", 8)
 
@@ -179,6 +184,7 @@ def module_02_main(
             shift_hours=config["operations"]["shift_hours"],
             seed=seed,
         )
+        built_scenarios.append(scenario)
 
         # Run multiple realizations
         print(f"  Running {n_runs} simulation(s)...")
@@ -188,6 +194,33 @@ def module_02_main(
             throughput = result["throughput_orders_per_shift"]
             queue_mean = result["queue_length_mean"]
             print(f"    Run {run_id}: {throughput:.0f} orders/shift, queue={queue_mean:.1f}")
+
+    # ========== Capacity Ceiling Sweep (F-044) ==========
+    # The fixed-arrival runs above measure throughput in a demand-bound regime
+    # (rho ~ 0.1-0.34); they don't differentiate scenarios because the Poisson
+    # arrival process is the binding constraint, not capacity. The capacity
+    # ceiling sweep ramps each scenario's arrival rate to lambda_max(target_rho)
+    # using the per-agent-type stability formula, then validates with finite-
+    # horizon simulation. Result is the discriminative chart 03 data.
+    print(
+        f"\n[Capacity] Computing capacity ceiling at rho={capacity_target_rho} "
+        f"({capacity_n_runs} validation runs/scenario)..."
+    )
+    capacity_rows: list[dict[str, object]] = []
+    for scenario in built_scenarios:
+        result = simulate_at_capacity(
+            scenario,
+            target_rho=capacity_target_rho,
+            n_runs=capacity_n_runs,
+        )
+        capacity_rows.append(result)
+        print(
+            f"  {scenario.scenario_id}: bottleneck={result['bottleneck_agent_type']} "
+            f"({result['bottleneck_cycle_time_seconds']:.1f}s), "
+            f"capacity={result['capacity_orders_per_shift']:.0f}/shift, "
+            f"observed={result['observed_throughput_mean']:.0f}"
+            f"±{result['observed_throughput_std']:.0f}"
+        )
 
     # ========== Export ==========
     print("\n[Export] Writing parquets...")
@@ -201,6 +234,14 @@ def module_02_main(
         runs_df = pl.DataFrame()
         runs_path = None
 
+    if capacity_rows:
+        capacity_df = pl.DataFrame(capacity_rows)
+        capacity_path: Path | None = data_processed / "simulation_capacity_ceiling.parquet"
+        capacity_df.write_parquet(capacity_path)
+        print(f"  ✓ {capacity_path}")
+    else:
+        capacity_path = None
+
     # ========== Validation Report ==========
     validation_report = {
         "phase": "module_02_simulation",
@@ -208,6 +249,9 @@ def module_02_main(
         "scenarios_tested": len(scenarios),
         "n_runs_per_scenario": n_runs,
         "simulation_runs_path": str(runs_path) if runs_path else None,
+        "capacity_ceiling_path": str(capacity_path) if capacity_path else None,
+        "capacity_target_rho": capacity_target_rho,
+        "capacity_n_runs_per_scenario": capacity_n_runs,
     }
 
     report_path = project_root / "reports" / "module_02_simulation_report.json"
@@ -220,6 +264,7 @@ def module_02_main(
 
     return {
         "simulation_runs": runs_path,
+        "capacity_ceiling": capacity_path,
         "validation_report": report_path,
     }
 

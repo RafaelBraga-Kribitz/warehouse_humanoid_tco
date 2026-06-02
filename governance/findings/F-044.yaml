@@ -1,0 +1,82 @@
+id: F-044
+title: Executive chart 03 reports demand-bound throughput, not scenario capacity
+category: methodology_drift
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-03
+closed_at: 2026-06-03
+recurrence_count: 0
+evidence: |
+  reports/executive_charts/03_simulation_throughput.png displays mean
+  orders/shift per scenario as a discriminating metric, but the underlying
+  data has no discriminative power: all five scenarios report 947–956
+  orders/shift (±33–42 std) — a 1% spread inside Poisson noise.
+
+  Root cause: config/autostore_baseline.yaml fixes
+  `operations.order_arrival_rate_per_hour = 120` (Poisson), and
+  `operations.shift_hours = 8`. Expected arrivals per shift = 960. Each
+  scenario runs predict_utilisation rho in [0.10, 0.34] — well below the
+  0.95 warn threshold and 1.0 saturation threshold (F-028 wiring). In a
+  stable M/G/c regime with rho << 1, throughput converges to the arrival
+  rate independent of capacity. The observed std (~34) matches Poisson(960)
+  std sqrt(960) ≈ 31, confirming the differences across scenarios are
+  arrival-process noise, not scenario behaviour.
+
+  Concretely, src/warehouse_humanoid_tco/pipelines/module_04_dashboards.py
+  lines 79-105 group simulation_runs.parquet by scenario_id, average
+  throughput_orders_per_shift, and plot. The metric is invariant under
+  scenario design — the chart compares the same Poisson(960) demand process
+  realised five times.
+
+  Secondary drift: the chart title hardcodes "3 runs" (line 101) but the
+  pipeline default is now 15 runs (Makefile help + module_02_main default).
+  Stale annotation. Tracked under F-024 elsewhere; closing F-044 will fix
+  the title as a side effect since the chart is rewritten.
+verification_script: tests/governance/test_f044_capacity_chart.py
+notes: |
+  Closure approach (Option B from agent diagnosis 2026-06-03): replace
+  the demand-bound throughput metric with a closed-form-plus-simulation
+  capacity ceiling — for each scenario, compute the maximum sustainable
+  arrival rate lambda_max under the per-agent-type stability constraint
+  (binding constraint = slowest agent type, not weighted mean), then run a
+  small batch at lambda_max to validate the theoretical ceiling holds in
+  finite-horizon stochastic regime.
+
+  Per-type binding constraint derivation: under proportional routing where
+  type t receives lambda × (count_t / total_count) arrivals/second and
+  serves at count_t / cycle_time_t orders/second, stability requires
+  lambda × cycle_time_t / total_count < 1 for every type. The binding
+  constraint is therefore the slowest type:
+      lambda_max = target_rho × total_count / max(cycle_time_t)
+  Note: predict_utilisation (added in F-028) uses the weighted-mean cycle
+  time across types. That correctly reports aggregate rho but overstates
+  capacity for heterogeneous mixes. F-028's saturation gate is still
+  protective because target_rho < 1, but the capacity-ceiling computation
+  for F-044 must use the per-type formula. This is documented in the new
+  function's docstring; a follow-up finding may be appropriate if the
+  aggregate-vs-per-type rho gap matters in other downstream consumers.
+
+  Artifacts:
+  - src/warehouse_humanoid_tco/models/simulation.py:
+      new compute_capacity_ceiling(scenario, target_rho=0.85) -> dict
+  - src/warehouse_humanoid_tco/pipelines/module_02_simulation.py:
+      after the standard runs, compute + simulate per scenario at
+      lambda_max, write data/processed/simulation_capacity_ceiling.parquet
+  - src/warehouse_humanoid_tco/pipelines/module_04_dashboards.py:
+      chart 03 reads simulation_capacity_ceiling.parquet, plots
+      capacity_orders_per_shift per scenario with observed_mean overlay,
+      retitled to "Maximum Sustainable Throughput by Scenario"
+
+  Verification (tests/governance/test_f044_capacity_chart.py): when
+  finding is closed, assert simulation_capacity_ceiling.parquet exists,
+  has one row per scenario in config/autostore_baseline.yaml, and the
+  capacity spread (max − min capacity_orders_per_shift) exceeds 500 —
+  a discriminative chart cannot collapse all scenarios to within Poisson
+  noise of a fixed arrival rate. Also assert module_04_dashboards.py
+  references the new parquet, not simulation_runs.parquet, for chart 03.
+
+  Why this is a methodology_drift category and not a visualization bug:
+  the chart accurately renders the data it was given. The drift is that
+  the data was the wrong thing to plot — the scenarios were never designed
+  to differ in their response to a fixed demand process. The fix changes
+  what we measure, not how we render it.

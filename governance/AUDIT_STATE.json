@@ -474,6 +474,17 @@
       "verification_script": "tests/governance/test_f043_presentation_layer_regen.py"
     },
     {
+      "category": "methodology_drift",
+      "closed_at": "2026-06-03",
+      "id": "F-044",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-03",
+      "path": "governance/findings/F-044.yaml",
+      "status": "closed",
+      "title": "Executive chart 03 reports demand-bound throughput, not scenario capacity",
+      "verification_script": "tests/governance/test_f044_capacity_chart.py"
+    },
+    {
       "category": "audit_doc_accumulation",
       "closed_at": "2026-05-29",
       "id": "F-100",
@@ -485,9 +496,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-02T21:03:08.682699+00:00",
-  "git_branch": "governance/presentation-regen-post-batch",
-  "git_head_sha": "355c70534c72d3958f19d7a1b97824092a369734",
+  "generated_at": "2026-06-02T22:28:23.473951+00:00",
+  "git_branch": "governance/f044-throughput-capacity-ceiling",
+  "git_head_sha": "72d41ff028ca6efbfc634009dd4f28a16ae3554f",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -499,11 +510,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 43,
+    "findings_closed": 44,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 0,
-    "findings_total": 44,
+    "findings_total": 45,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
