@@ -69,7 +69,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">26. Mai 2026</p>
+      <p class="date">29. Mai 2026</p>
     </div>
   </div>
   
@@ -90,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><strong>UnifoLM-WBT-Dataset</strong> (Unitree Robotics): empirische Teleoperation­sdaten vom Unitree G1 Humanoid-Roboter (öffentlich verfügbar via Hugging Face)</li>
 <li><strong>Statistik Austria</strong> Lohntabellen: österreichische Arbeitskosten</li>
-<li><strong>WKO Kollektivvertrag Handel</strong>: sektorspezifische Lohnsätze</li>
+<li><strong>WKO Kollektivvertrag Spedition &amp; Lagereibetriebe</strong> (BG-III 2025/26): sektorspezifische Lohnsätze für Lagerarbeit</li>
 </ul>
 </section>
 <section id="methodik" class="level2">
@@ -161,7 +161,7 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li><p><strong>Arbeitskostendomäne:</strong> Das Kostenmodell wird von Personalkostenreduktion, nicht von Roboter-Capex, dominiert. OAT-Sensitivität (<code>data/processed/sensitivity_oat_results.parquet</code>, Szenario S-hybrid-amr) zeigt: Stundensätze (€15,13–€22,00/h, WKO Spedition &amp; Lagereibetriebe BG-III 2025/26) bewegen NPV um <strong>€306K</strong>, der Overhead-Multiplikator (1,0–1,7) um weitere <strong>€427K</strong> — kombiniert ~<strong>€733K</strong> Arbeitskosten-Bandbreite gegenüber nur <strong>€158K</strong> für Humanoid-Capex (€60K–€180K/Einheit). Verhältnis ≈ <strong>4,6:1</strong> Arbeit-zu-Capex.</p></li>
 <li><p><strong>Humanoid-Sensitivität:</strong> Bei einem Capex &gt; €180K pro Roboter verschwindet der Vorteil des S-hybrid-amr. Siehe Empfindlichkeitsanalyse (<code>reports/sensitivity_analysis_report.json</code>).</p></li>
-<li><p><strong>Modellunsicherheit:</strong> Alle Szenarien zeigen statistisch identische Durchsätze (~959 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher <strong>nicht</strong> auf Durchsatz zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe <code>reports/module_02_simulation_validation.qmd</code> (Kruskal-Wallis p=1.0).</p></li>
+<li><p><strong>Modellunsicherheit:</strong> Alle Szenarien zeigen statistisch ähnliche Durchsätze (~947-956 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher <strong>nicht</strong> auf statistisch separierbare Durchsatzunterschiede zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe <code>reports/module_02_simulation_validation.qmd</code> (Kruskal-Wallis p=0.960110).</p></li>
 </ol>
 </section>
 </section>
