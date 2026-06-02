@@ -39,13 +39,13 @@ type_cmd ".venv/bin/python docs/assets/demo_mc_summary.py"
 sleep "$PAUSE_AFTER"
 
 # --- 3. Scenario ranking ------------------------------------------------------
-section_header "Scenario ranking — S-hybrid-amr beats human baseline by ~43%"
+section_header "Scenario ranking — S-hybrid-amr remains the lowest-NPV scenario"
 type_cmd ".venv/bin/python docs/assets/demo_scenarios.py"
 .venv/bin/python docs/assets/demo_scenarios.py
 sleep "$PAUSE_AFTER"
 
 # --- 4. Test suite ------------------------------------------------------------
-section_header "124 tests, 74% coverage — verifiable, reproducible"
+section_header "Test suite — verifiable, reproducible"
 type_cmd ".venv/bin/python -m pytest -q --no-header --no-cov 2>&1 | tail -3"
 .venv/bin/python -m pytest -q --no-header --no-cov 2>&1 | tail -3
 sleep 5

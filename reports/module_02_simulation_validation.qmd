@@ -22,9 +22,9 @@ Pass criterion: simulated throughput within 20% of Knapp reference (960 orders/8
 
 ## Executive Summary
 
-**PASS:** S-baseline-human simulation achieves 959.4 ± 43.4 orders/shift, a **-0.06% deviation** from Knapp's published 960 orders/shift. This is well within the 20% tolerance gate.
+**PASS:** S-baseline-human simulation achieves 949.7 ± 34.1 orders/shift, a **-1.08% deviation** from Knapp's published 960 orders/shift. This is well within the 20% tolerance gate.
 
-All scenarios are **statistically indistinguishable** by Kruskal-Wallis test (p=1.0), indicating the synthetic cycle time distribution masks inter-scenario differentiation. This is documented in ADR-0006 and explains why real data is required.
+All scenarios remain **statistically indistinguishable** by Kruskal-Wallis test (p=0.960110), indicating that the current queueing model produces similar realized throughput across the five staffing scenarios. Cost differentiation in Module 3 is therefore driven by financial assumptions rather than statistically separable throughput.
 
 ## Benchmark Comparison
 
@@ -60,7 +60,7 @@ print(f"Status:                        {'PASS ✓' if abs(deviation_pct) <= 20 e
 print("="*60)
 ```
 
-The **-0.06% deviation** demonstrates that the baseline simulation is accurately calibrated to published Knapp AutoStore performance data.
+The **-1.08% deviation** demonstrates that the baseline simulation is accurately calibrated to published Knapp AutoStore performance data.
 
 ## Statistical Hypothesis Test: Scenario Differentiation
 
@@ -111,16 +111,16 @@ summary = df.group_by("scenario_id").agg(
 ).sort("scenario_id")
 
 print("\nAll scenarios (n=15 replicates each):")
-print(summary.to_pandas().to_string())
+print(summary)
 ```
 
 ## Validation Conclusion
 
 | Criterion                           | Status | Evidence                              |
 |-------------------------------------|--------|---------------------------------------|
-| Baseline vs Knapp benchmark         | ✓ PASS | -0.06% (well within ±20% gate)        |
+| Baseline vs Knapp benchmark         | ✓ PASS | -1.08% (well within ±20% gate)        |
 | Benchmark credibility (citation)    | ✓ PASS | Knapp.com public source               |
-| Scenario statistical differentiation| ✗ FAIL | Kruskal-Wallis p=1.0 (no differences) |
+| Scenario statistical differentiation| ✗ FAIL | Kruskal-Wallis p=0.960110 (no significant differences) |
 | Known limitation documented         | ✓ PASS | ADR-0006, MODULE_COMPLETION_SUMMARY   |
 
 **Implication for TCO (Module 3):** Module 3 differentiation among scenarios is **not** driven by throughput variance (all scenarios ~960 orders/shift). Instead, it is driven by:

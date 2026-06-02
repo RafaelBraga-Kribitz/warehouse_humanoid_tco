@@ -58,7 +58,7 @@ Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlich
 
 2. **Humanoid-Sensitivität:** Bei einem Capex > €180K pro Roboter verschwindet der Vorteil des S-hybrid-amr. Siehe Empfindlichkeitsanalyse (`reports/sensitivity_analysis_report.json`).
 
-3. **Modellunsicherheit:** Alle Szenarien zeigen statistisch identische Durchsätze (~959 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher **nicht** auf Durchsatz zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe `reports/module_02_simulation_validation.qmd` (Kruskal-Wallis p=1.0).
+3. **Modellunsicherheit:** Alle Szenarien zeigen statistisch ähnliche Durchsätze (~947-956 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher **nicht** auf statistisch separierbare Durchsatzunterschiede zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe `reports/module_02_simulation_validation.qmd` (Kruskal-Wallis p=0.960110).
 
 ## Hinweis
 

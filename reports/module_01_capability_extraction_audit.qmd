@@ -20,7 +20,8 @@ It answers the Module 1 verification checklist from PROJECT_CHARTER.md §4.
 
 ## Status
 
-**NOT YET RUN.** Populate this report after executing `scripts/run_module_01.py`.
+**RUN COMPLETE.** This report renders against the current Module 1 outputs from
+`make module-01`.
 
 ## Verification Checklist
 
@@ -44,16 +45,27 @@ report_path = Path("../reports/derisk_inspection_report.json")
 if report_path.exists():
     with open(report_path) as f:
         report = json.load(f)
-    print(f"Dataset: {report['dataset_repo_id']}")
-    print(f"Revision SHA: {report.get('resolved_revision_sha', 'not yet resolved')}")
-    print(f"Total episodes: {report.get('info_summary', {}).get('total_episodes', 'unknown')}")
+    datasets = report.get("datasets", {})
+    print(f"Dataset manifest: {report.get('manifest_path', 'unknown')}")
+    print(f"Datasets accessible: {report.get('datasets_accessible', 'unknown')} / {report.get('dataset_count', 'unknown')}")
+    for repo_id, meta in datasets.items():
+        print(f"- {repo_id}: {meta.get('sha', 'no sha')} ({meta.get('files_count', 'unknown')} files)")
 else:
     print("Run 00_derisk_dataset_inspection.py first.")
 ```
 
 ## Episode Distribution by Task Category
 
-*(Populate after Module 1 run)*
+```{python}
+import polars as pl
+
+summary_path = Path("../data/processed/humanoid_capabilities_summary.parquet")
+if summary_path.exists():
+    summary = pl.read_parquet(summary_path).sort("task_category")
+    print(summary)
+else:
+    print("Run make module-01 first.")
+```
 
 ## Known Limitations
 
