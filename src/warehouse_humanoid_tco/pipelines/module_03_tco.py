@@ -69,8 +69,11 @@ def compute_breakeven_thresholds(
     if len(scenario_data) == 0:
         return {}
 
-    throughput_mean = scenario_data["throughput_orders_per_shift"].mean()
-    if not throughput_mean or throughput_mean <= 0:
+    throughput_mean_raw = scenario_data["throughput_orders_per_shift"].mean()
+    if throughput_mean_raw is None or not isinstance(throughput_mean_raw, (int, float)):
+        return {}
+    throughput_mean: float = float(throughput_mean_raw)
+    if throughput_mean <= 0:
         return {}
 
     # Binary search on capex: find where cost_per_order = baseline_cost_per_order
@@ -79,7 +82,7 @@ def compute_breakeven_thresholds(
     capex_high = 300000.0
     tolerance = 100.0  # iterate until ±€100 precision
 
-    original_capex = assumptions.get("humanoid_capex_eur", 120000)
+    original_capex = float(assumptions.get("humanoid_capex_eur", 120000))
 
     for _ in range(50):  # max 50 iterations for convergence
         capex_mid = (capex_low + capex_high) / 2
@@ -89,7 +92,7 @@ def compute_breakeven_thresholds(
         modified_assumptions["humanoid_capex_eur"] = capex_mid
         result = compute_tco_scenario(
             "S-pure-humanoid",
-            {"throughput_orders_per_shift": float(throughput_mean)},
+            {"throughput_orders_per_shift": throughput_mean},
             modified_assumptions,
             years=years,
             discount_rate=discount_rate,
