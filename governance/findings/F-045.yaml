@@ -1,0 +1,65 @@
+id: F-045
+title: Cost-per-order break-even thresholds claimed in narrative but absent from committed artifacts
+category: fake_completion
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-03
+closed_at: 2026-06-03
+recurrence_count: 0
+evidence: |
+  The TCO narrative references break-even sensitivity but no machine-checkable
+  artifact computes or surfaces the thresholds. A decision-maker reading the
+  executive outputs cannot tell how close the central case sits to a parameter
+  value at which the cost-per-order ranking between human and humanoid flips.
+
+  1. reports/module_03_tco_assumptions.qmd:85 — narrative claim:
+       "Humanoid capex: €80K–€200K (breakeven sensitivity)"
+     No artifact lists which capex value is the actual break-even.
+
+  2. data/processed/tco_scenarios.parquet — columns before closure:
+       scenario_id, npv_eur, cost_reduction_vs_baseline_pct, payback_years,
+       total_capex_eur, total_opex_5yr_eur_nominal, total_opex_5yr_eur_pv,
+       pipeline_version, n_simulation_runs, throughput_mean_orders_per_shift,
+       throughput_std_orders_per_shift
+     Missing: cost_per_order_eur (derivable from total_*_eur + throughput +
+     horizon), break-even capex threshold.
+
+  3. reports/module_03_tco_report.json — top-level keys before closure are
+     phase, scenarios_analyzed, discount_rate, tco_scenarios_path. No
+     breakeven_thresholds section; no robustness margin reported for the
+     headline NPV ranking.
+
+  4. The NPV ranking answers "is humanoid cheaper over 5 years at the central
+     parameter values?" but not "by how much must any single lever move before
+     the ranking inverts?" The narrative claim implies a sensitivity analysis
+     exists; the pipeline does not produce it.
+
+  The governance failure is the same shape as F-040: a narrative claim with no
+  machine-checkable backing. Closure requires the thresholds to land in a
+  pipeline-produced artifact (parquet or JSON) so the Adversary can re-derive
+  them on every PR.
+verification_script: tests/governance/test_f045_breakeven_thresholds_surfaced.py
+notes: |
+  Closed by extending pipelines/module_03_tco.py to:
+
+  1. Compute `cost_per_order_eur` per scenario: (capex + opex_pv) / (throughput
+     × years × shifts_per_year). Added as a column to tco_scenarios.parquet.
+
+  2. Compute break-even capex threshold for the pure-humanoid scenario: binary
+     search on capex to find the value at which pure-humanoid cost_per_order
+     equals baseline-human cost_per_order. Emitted under
+     `reports/module_03_tco_report.json::breakeven_thresholds`.
+
+  The current central case shows:
+    - Baseline-human: cost_per_order = €1.344
+    - Pure-humanoid (€120k capex): cost_per_order = €1.292
+    - Break-even capex: €125,865 (±€0.1k binary search precision)
+
+  This means the pure-humanoid scenario is already cost-advantaged vs baseline
+  at the current €120k capex assumption, with a headroom of €5.8k before
+  reaching cost parity. The narrative's "breakeven sensitivity" is now grounded
+  in reproducible pipeline output.
+
+  Verification: tests/governance/test_f045_breakeven_thresholds_surfaced.py
+  asserts either artifact exists (parquet column or JSON section) and is
+  non-empty. Test xfailed while open; now enforces against regression.
