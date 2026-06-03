@@ -81,7 +81,7 @@ def compute_breakeven_thresholds(
 
     original_capex = assumptions.get("humanoid_capex_eur", 120000)
 
-    for iteration in range(50):  # max 50 iterations for convergence
+    for _ in range(50):  # max 50 iterations for convergence
         capex_mid = (capex_low + capex_high) / 2
 
         # Compute TCO with this capex value

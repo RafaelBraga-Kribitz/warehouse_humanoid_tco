@@ -507,9 +507,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-03T22:31:17.253922+00:00",
+  "generated_at": "2026-06-03T22:37:34.086557+00:00",
   "git_branch": "f-045-cost-per-order",
-  "git_head_sha": "c216e062e09921d2ccd18f5b3a9b4a50ed0344ed",
+  "git_head_sha": "80f66b31a8d73958ff346fae560718f495ab4a3b",
   "migrations": [
     {
       "linked_finding": "F-003",
