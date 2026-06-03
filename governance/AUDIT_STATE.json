@@ -496,9 +496,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-02T22:28:23.473951+00:00",
+  "generated_at": "2026-06-02T23:44:21.240747+00:00",
   "git_branch": "governance/f044-throughput-capacity-ceiling",
-  "git_head_sha": "72d41ff028ca6efbfc634009dd4f28a16ae3554f",
+  "git_head_sha": "5e432e176387328b0bb6f034b746c933a3a478e3",
   "migrations": [
     {
       "linked_finding": "F-003",
