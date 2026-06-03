@@ -64,25 +64,23 @@ pip install -r requirements.txt
 ### Financial Analysis (5-year horizon, 8% discount)
 
 
-| Scenario         | NPV             | Capex      | Opex 5yr      |
-| ---------------- | --------------- | ---------- | ------------- |
-| S-baseline-human | €-1,608,251     | €0         | €2,013,984    |
-| S-future-2028    | €-1,576,941     | €532K      | €1,308,562    |
-| S-hybrid-5050    | €-1,576,941     | €532K      | €1,308,562    |
-| S-pure-humanoid  | €-1,545,632     | €1,064K    | €603,139      |
-| **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**|
+| Scenario         | NPV (5yr)       | Capex      | Opex 5yr      | Cost/order at capacity |
+| ---------------- | --------------- | ---------- | ------------- | ---------------------- |
+| S-baseline-human | €-1,608,251     | €0         | €2,013,984    | €0.204                 |
+| S-future-2028    | €-1,398,599     | €409K      | €1,239,000    | €0.405                 |
+| S-pure-humanoid  | €-1,545,632     | €1,064K    | €603,139      | €0.532                 |
+| **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**| **€0.554**             |
+| S-hybrid-5050    | €-1,576,941     | €532K      | €1,308,562    | €0.588                 |
 
-
-**Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~33% vs. the human baseline.** Annual opex now includes humanoid maintenance (8% of capex), energy, and a 0.10 FTE supervision overhead per humanoid; AMR scenarios also include AMR capex and opex. This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
+**Under the modeled assumptions, S-hybrid-amr has the lowest 5-year NPV (saves ~€530K vs. all-human baseline) and the tightest Monte Carlo risk band.** The cost-per-order metric — total 5yr cost divided by orders handled at each scenario's capacity ceiling — shows S-baseline-human is cheapest per handled unit (€0.204/order) because humans at 25s/cycle outperform humanoids at ~43s effective cycle. This reverses when humanoid capex drops below ~€65K/unit or cycle time improves beyond the current 0.70× transfer factor. Annual opex includes humanoid maintenance (8% of capex), energy, and 0.10 FTE supervision overhead per humanoid; AMR scenarios include AMR capex and opex. Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
 
 > **Real data execution:** Results computed from 2,359 episodes across 5 Unitree UnifoLM datasets (WBT + DiverseManip). Financial model uses 15 simulation replicas per scenario with Austrian labor cost inputs (€18.50/hr + 1.35× overhead).
 
 ### Sensitivity Analysis
 
-- **Monte Carlo (10,000 runs × 5 scenarios = 50,000 samples, all persisted):** S-hybrid-amr NPV mean = €-1,089,021 ± €171,407 (1σ); median = €-1,079,103
-  - 90% output interval (p5–p95): [€-1,386,257, €-830,291]
+- **Monte Carlo (10,000 runs × 5 scenarios = 50,000 samples, all persisted):** S-hybrid-amr NPV mean = €-1,089,021 ± €171,407 (1σ); median = €-1,079,103; 90% interval: [€-1,386,257, €-830,291] — tightest band across scenarios (€720K range). S-pure-humanoid has the best mean NPV (€-1,346K) but the widest risk band (€1,160K range).
   - Per-scenario MC with **agent counts fixed**; samples only continuous params: humanoid capex, labor wage, labor overhead, discount rate, WBT→production transfer factor (5 parameters)
-  - S-hybrid-amr is the only scenario whose p95 (€-830K) doesn't overlap with the baseline mean (€-1.62M) — it is robustly the cheapest under uncertainty
+  - S-hybrid-amr has the tightest NPV distribution — most robust choice under joint parameter uncertainty
 - **OAT Tornado:** Labor variables dominate — wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity vs €158K for humanoid capex and €120K for transfer factor (~8× labor:capex ratio at full config ranges)
 
 #### Executive Charts
@@ -130,7 +128,7 @@ pip install -r requirements.txt
 | [📊 reports/](./reports/) | Audit + validation reports + executive charts (all modules) |
 | [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) | Data validation + stakeholder transparency |
 | [📐 docs/data_lineage.md](./docs/data_lineage.md) | Pipeline data flow diagram (Mermaid) |
-| [📈 reports/executive_charts/](./reports/executive_charts/) | 4 finalized business charts (ranking, cost, throughput, sensitivity) |
+| [📈 reports/executive_charts/](./reports/executive_charts/) | Executive charts: NPV ranking, cost breakdown, capacity ceiling, sensitivity tornado |
 
 ## Why this project
 

@@ -1,0 +1,90 @@
+id: F-045
+title: Cost-per-order metric missing; README/LinkedIn/charter state stale NPV-only narrative
+category: methodology_drift
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-03
+closed_at: 2026-06-03
+recurrence_count: 0
+evidence: |
+  F-044 introduced simulation_capacity_ceiling.parquet with per-scenario
+  capacity_orders_per_shift. This enables a cost-per-order metric that
+  correctly normalises 5-yr total cost by actual throughput capacity — the
+  output-normalised metric proposed and independently validated during the
+  project's audit history.
+
+  Adversarial check (2026-06-03) computed cost-per-order using both
+  demand-bound throughput (wrong: all scenarios ~950/shift, Poisson noise)
+  and capacity-ceiling throughput (correct, F-044 data):
+
+  Cost per order at capacity ceiling:
+    S-baseline-human:  €0.204  (cheapest — 8 humans at 25s/cycle dominate)
+    S-future-2028:     €0.405
+    S-pure-humanoid:   €0.532
+    S-hybrid-amr:      €0.554
+    S-hybrid-5050:     €0.588
+
+  Key finding: S-baseline-human is the cheapest per handled order at
+  capacity. This is technically correct (human cycle time 25s beats humanoid
+  ~43s effective; zero capex). The "pure-humanoid wins on NPV" result is
+  also confirmed (mean MC NPV −€1.35M) but is driven by lower headcount
+  opex, not by throughput efficiency.
+
+  Stale artifacts identified:
+  1. README.md line 76: "S-hybrid-amr minimizes 5-year TCO by ~33%" — true
+     on NPV but misleading without cost-per-order context.
+  2. README.md line 82: MC numbers for S-hybrid-amr correct on NPV/NPV-risk
+     but cost-per-order narrative absent.
+  3. README.md line 85: "S-hybrid-amr is the only scenario whose p95
+     (€-830K) doesn't overlap with baseline mean" — check against current
+     MC data: S-pure-humanoid p95 is −€832K, also doesn't overlap. Claim
+     needs verification.
+  4. README.md lines 92-95, 133: references "4 finalized business charts"
+     — now 4+N (charts 05-08 pending approval); count stale once approved.
+  5. README.md line 111: scenario differentiation note references old
+     capacity regime; should reference F-044 fix.
+  6. docs/LINKEDIN_POST_DRAFT.md: states "hybrid workforce minimizes 5-year
+     TCO by €684K (43% reduction)" and cites OAT swing of €824K for wages
+     on S-hybrid-amr. €684K savings figure requires verification against
+     current tco_scenarios.parquet. OAT numbers need re-verification.
+  7. PROJECT_CHARTER.md: no direct stale numbers found but Austrian
+     work-council framing (productivity/ergonomic, not headcount reduction)
+     is not reflected in any executive chart or README narrative.
+
+  Prior instance (different LLM session) proposed reframing around
+  cost-per-order + risk-adjusted NPV with hybrid-amr as "best automated
+  cost-per-order". Adversarial check shows that conclusion was derived from
+  a pre-F-044 demand-bound throughput source and does not hold at capacity:
+  at capacity, hybrid-amr (€0.554/order) is 3rd worst, not best.
+  The reframing direction is correct; the specific conclusion is not.
+verification_script: tests/governance/test_f045_cost_per_order.py
+notes: |
+  Closure approach:
+  1. Add cost_per_order_eur column to tco_scenarios.parquet (computed in
+     module_03_tco.py using capacity_ceiling throughput joined from
+     simulation_capacity_ceiling.parquet).
+  2. Update README.md:
+     - Add cost-per-order table alongside NPV table.
+     - Reframe narrative: "S-hybrid-amr best NPV + tightest MC risk;
+       S-baseline-human lowest cost/order at current capex — cost-per-order
+       will flip in humanoid's favour when capex drops below ~€X (see
+       sensitivity)."
+     - Fix chart count (4 → correct number once 05-08 approved).
+     - Verify / fix the p95 non-overlap claim.
+  3. Update docs/LINKEDIN_POST_DRAFT.md: verify €684K savings figure;
+     replace "winner scenario" framing with cost-per-order + risk story;
+     add Austrian work-council productivity framing.
+  4. Write verification script asserting:
+     a. tco_scenarios.parquet has cost_per_order_eur column.
+     b. S-baseline-human has lowest cost_per_order_eur (true at current
+        capex/cycle-time assumptions — a load-bearing analytical result).
+     c. README.md mentions "cost_per_order" or "cost per order".
+     d. README.md chart table has ≥5 rows (once 05-08 committed).
+
+  Work-council framing note: charts and narrative must frame automation as
+  productivity and ergonomic enhancement. Cost-per-order is the correct
+  metric for this framing — it shows each handled unit costs less with
+  augmentation, not that fewer people are needed.
+
+  Cross-findings: F-044 is a prerequisite (capacity data). Charts 05-08
+  (pending user approval) will add supporting visual evidence once committed.

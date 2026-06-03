@@ -275,15 +275,42 @@ def module_03_main(
                 f"(throughput: {throughput_mean:.0f} ± {throughput_std:.0f} orders/shift)"
             )
 
+    # ========== Cost-per-order (F-045) ==========
+    # Join capacity ceiling to get output-normalised cost metric.
+    # Uses capacity_orders_per_shift (not demand-bound throughput ~950/shift)
+    # because at low utilisation all scenarios converge to Poisson(960) — see F-044.
+    capacity_path = data_processed / "simulation_capacity_ceiling.parquet"
+    if tco_results and capacity_path.exists():
+        cap_df = pl.read_parquet(capacity_path).select(
+            ["scenario_id", "capacity_orders_per_shift"]
+        )
+        operating_days_val = assumptions.get("operating_days", 252)
+        years_val = 5
+        tco_with_cap = pl.DataFrame(tco_results).join(cap_df, on="scenario_id", how="left")
+        tco_with_cap = tco_with_cap.with_columns(
+            (
+                (pl.col("total_capex_eur") + pl.col("total_opex_5yr_eur_nominal"))
+                / (pl.col("capacity_orders_per_shift") * operating_days_val * years_val)
+            ).alias("cost_per_order_eur")
+        )
+        tco_results_enriched = tco_with_cap.to_dicts()
+    else:
+        tco_results_enriched = tco_results
+
     # ========== Export ==========
     print("\n[Export] Writing parquets...")
 
-    if tco_results:
-        # Sort by scenario_id for deterministic output (pl.unique() order is not guaranteed)
-        tco_df = pl.DataFrame(tco_results).sort("scenario_id")
+    if tco_results_enriched:
+        tco_df = pl.DataFrame(tco_results_enriched).sort("scenario_id")
         tco_path = data_processed / "tco_scenarios.parquet"
         tco_df.write_parquet(tco_path)
         print(f"  ✓ {tco_path}")
+        if "cost_per_order_eur" in tco_df.columns:
+            for row in tco_df.sort("cost_per_order_eur").iter_rows(named=True):
+                print(
+                    f"    {row['scenario_id']}: €{row['cost_per_order_eur']:.3f}/order "
+                    f"at capacity"
+                )
     else:
         tco_df = pl.DataFrame()
         tco_path = None
