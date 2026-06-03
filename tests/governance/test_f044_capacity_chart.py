@@ -27,9 +27,7 @@ from _ratchet import REPO_ROOT, ratchet
 
 CONFIG = REPO_ROOT / "config" / "autostore_baseline.yaml"
 CAPACITY_PARQUET = REPO_ROOT / "data" / "processed" / "simulation_capacity_ceiling.parquet"
-MODULE_04 = (
-    REPO_ROOT / "src" / "warehouse_humanoid_tco" / "pipelines" / "module_04_dashboards.py"
-)
+MODULE_04 = REPO_ROOT / "src" / "warehouse_humanoid_tco" / "pipelines" / "module_04_dashboards.py"
 
 MIN_CAPACITY_SPREAD_ORDERS = 500
 REQUIRED_COLUMNS = {
@@ -105,9 +103,7 @@ def test_module_04_reads_capacity_parquet() -> None:
         ratchet("F-044", fixed=True, gap_msg="module_04_dashboards.py absent — vacuously fixed")
         return
     text = MODULE_04.read_text()
-    reads_capacity = bool(
-        re.search(r"simulation_capacity_ceiling\.parquet", text)
-    )
+    reads_capacity = bool(re.search(r"simulation_capacity_ceiling\.parquet", text))
     chart_filename_present = "03_simulation_throughput.png" in text
     # Both signals required: the chart filename references the F-044 output AND
     # the new parquet is loaded. Either alone is insufficient — a contributor

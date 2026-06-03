@@ -94,6 +94,8 @@ jobs:
         run: pip install uv
       - name: Install dependencies
         run: uv pip install -e ".[dev]" --system
+      - name: Generate simulation data (required for F-044 verification)
+        run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
       - name: make audit
         run: VENV="" make audit
       - name: Adversary — re-verify closed findings
