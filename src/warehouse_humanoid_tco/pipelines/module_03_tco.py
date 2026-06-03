@@ -30,6 +30,99 @@ _BASELINE_ANNUAL_OPEX = (
 )  # 8 humans, full shift, KV Spedition & Lagereibetriebe
 
 
+def compute_cost_per_order(
+    capex_eur: float,
+    opex_pv_eur: float,
+    throughput_mean_orders_per_shift: float,
+    years: int = 5,
+    shifts_per_year: int = 252,
+) -> float:
+    """Cost per order: total discounted cost / total orders delivered.
+
+    Returns € per order. Division by zero returns inf (infinite cost).
+    """
+    if throughput_mean_orders_per_shift <= 0 or years <= 0:
+        return float("inf")
+    total_orders = throughput_mean_orders_per_shift * shifts_per_year * years
+    if total_orders <= 0:
+        return float("inf")
+    total_cost = capex_eur + opex_pv_eur
+    return total_cost / total_orders
+
+
+def compute_breakeven_thresholds(
+    baseline_cost_per_order: float,
+    pure_humanoid_result: dict,
+    assumptions: dict,
+    sim_df: pl.DataFrame,
+    years: int = 5,
+    discount_rate: float = 0.08,
+    baseline_annual_opex: float = _BASELINE_ANNUAL_OPEX,
+) -> dict:
+    """Compute break-even capex for pure-humanoid scenario vs baseline-human.
+
+    Uses binary search to find the capex value at which pure-humanoid cost_per_order
+    equals baseline cost_per_order. Returns dict with breakeven_capex_eur_per_unit.
+    """
+    # Get throughput for pure-humanoid scenario
+    scenario_data = sim_df.filter(pl.col("scenario_id") == "S-pure-humanoid")
+    if len(scenario_data) == 0:
+        return {}
+
+    throughput_mean = scenario_data["throughput_orders_per_shift"].mean()
+    if not throughput_mean or throughput_mean <= 0:
+        return {}
+
+    # Binary search on capex: find where cost_per_order = baseline_cost_per_order
+    # Start with a reasonable range: €10k to €300k
+    capex_low = 10000.0
+    capex_high = 300000.0
+    tolerance = 100.0  # iterate until ±€100 precision
+
+    original_capex = assumptions.get("humanoid_capex_eur", 120000)
+
+    for iteration in range(50):  # max 50 iterations for convergence
+        capex_mid = (capex_low + capex_high) / 2
+
+        # Compute TCO with this capex value
+        modified_assumptions = assumptions.copy()
+        modified_assumptions["humanoid_capex_eur"] = capex_mid
+        result = compute_tco_scenario(
+            "S-pure-humanoid",
+            {"throughput_orders_per_shift": float(throughput_mean)},
+            modified_assumptions,
+            years=years,
+            discount_rate=discount_rate,
+            baseline_annual_opex=baseline_annual_opex,
+        )
+        cost_per_order_at_capex = result.get("cost_per_order_eur", float("inf"))
+
+        # Check convergence
+        if abs(capex_high - capex_low) < tolerance:
+            break
+
+        # Adjust range based on whether we're above or below target
+        if cost_per_order_at_capex > baseline_cost_per_order:
+            capex_high = capex_mid  # cost too high, need lower capex
+        else:
+            capex_low = capex_mid  # cost below target, can accept higher capex
+
+    breakeven_capex = (capex_low + capex_high) / 2
+
+    return {
+        "capex_eur_per_unit": round(breakeven_capex, 0),
+        "baseline_cost_per_order_eur": round(baseline_cost_per_order, 3),
+        "pure_humanoid_current_cost_per_order_eur": round(
+            pure_humanoid_result.get("cost_per_order_eur", 0.0), 3
+        ),
+        "current_capex_eur_per_unit": round(original_capex, 0),
+        "methodology": (
+            "Binary search on capex to find where pure-humanoid cost_per_order "
+            "= baseline-human cost_per_order"
+        ),
+    }
+
+
 def compute_tco_scenario(
     scenario_id: str,
     simulation_data: dict,
@@ -188,6 +281,15 @@ def compute_tco_scenario(
     else:
         payback_years = round(capex_year0 / annual_savings, 1)
 
+    # F-045: compute cost per order for break-even analysis
+    throughput_mean = simulation_data.get("throughput_orders_per_shift", 0.0)
+    cost_per_order = compute_cost_per_order(
+        capex_year0,
+        pv_opex_total,
+        throughput_mean,
+        years=years,
+    )
+
     return {
         "scenario_id": scenario_id,
         "npv_eur": float(npv),
@@ -200,6 +302,7 @@ def compute_tco_scenario(
         "total_opex_5yr_eur_nominal": float(annual_opex * years),
         "total_opex_5yr_eur_pv": float(pv_opex_total),
         "pipeline_version": "0.2.0",
+        "cost_per_order_eur": cost_per_order,
     }
 
 
@@ -295,6 +398,29 @@ def module_03_main(
         "discount_rate": 0.08,
         "tco_scenarios_path": str(tco_path) if tco_path else None,
     }
+
+    # F-045: Add break-even thresholds to the report
+    if tco_results and len(sim_df) > 0:
+        baseline_result = next(
+            (r for r in tco_results if "baseline-human" in r["scenario_id"]), None
+        )
+        pure_humanoid_result = next(
+            (r for r in tco_results if "pure-humanoid" in r["scenario_id"]), None
+        )
+        if baseline_result and pure_humanoid_result:
+            baseline_cost_per_order = baseline_result.get("cost_per_order_eur", 0.0)
+            if baseline_cost_per_order > 0:
+                breakeven_data = compute_breakeven_thresholds(
+                    baseline_cost_per_order,
+                    pure_humanoid_result,
+                    assumptions,
+                    sim_df,
+                    years=5,
+                    discount_rate=0.08,
+                    baseline_annual_opex=_BASELINE_ANNUAL_OPEX,
+                )
+                if breakeven_data:
+                    validation_report["breakeven_thresholds"] = breakeven_data
 
     report_path = project_root / "reports" / "module_03_tco_report.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)

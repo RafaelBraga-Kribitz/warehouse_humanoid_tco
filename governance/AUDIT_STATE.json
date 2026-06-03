@@ -485,6 +485,17 @@
       "verification_script": "tests/governance/test_f044_capacity_chart.py"
     },
     {
+      "category": "fake_completion",
+      "closed_at": "2026-06-03",
+      "id": "F-045",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-03",
+      "path": "governance/findings/F-045.yaml",
+      "status": "closed",
+      "title": "Cost-per-order break-even thresholds claimed in narrative but absent from committed artifacts",
+      "verification_script": "tests/governance/test_f045_breakeven_thresholds_surfaced.py"
+    },
+    {
       "category": "audit_doc_accumulation",
       "closed_at": "2026-05-29",
       "id": "F-100",
@@ -496,9 +507,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-02T23:44:21.240747+00:00",
-  "git_branch": "governance/f044-throughput-capacity-ceiling",
-  "git_head_sha": "5e432e176387328b0bb6f034b746c933a3a478e3",
+  "generated_at": "2026-06-03T22:31:17.253922+00:00",
+  "git_branch": "f-045-cost-per-order",
+  "git_head_sha": "c216e062e09921d2ccd18f5b3a9b4a50ed0344ed",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -510,11 +521,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 44,
+    "findings_closed": 45,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 0,
-    "findings_total": 45,
+    "findings_total": 46,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
