@@ -518,9 +518,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-04T18:05:49.847525+00:00",
-  "git_branch": "chore/post-f045-cleanup-clean",
-  "git_head_sha": "03af837ab1b52e7dbb8275bf5094cf1c039c5802",
+  "generated_at": "2026-06-04T18:33:26.689422+00:00",
+  "git_branch": "claude/meta-audit-prompt-harmonic-liskov-WD8iB",
+  "git_head_sha": "45936754748882bfbf60e7dd7bad9f7295d42456",
   "migrations": [
     {
       "linked_finding": "F-003",
