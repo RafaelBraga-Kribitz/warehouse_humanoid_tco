@@ -93,6 +93,7 @@ pip install -r requirements.txt
 | **Cost Breakdown** | ![](./reports/executive_charts/02_cost_breakdown.png) | [📥 02_cost_breakdown.png](./reports/executive_charts/02_cost_breakdown.png) |
 | **Capacity Ceiling** | ![](./reports/executive_charts/03_simulation_throughput.png) | [📥 03_simulation_throughput.png](./reports/executive_charts/03_simulation_throughput.png) |
 | **Sensitivity Tornado** | ![](./reports/executive_charts/04_sensitivity_tornado.png) | [📥 04_sensitivity_tornado.png](./reports/executive_charts/04_sensitivity_tornado.png) |
+| **Cost per Order** | ![](./reports/executive_charts/05_cost_per_order.png) | [📥 05_cost_per_order.png](./reports/executive_charts/05_cost_per_order.png) |
 
 **Full Report:** [📄 reports/sensitivity_analysis_report.json](./reports/sensitivity_analysis_report.json)
 
@@ -117,7 +118,7 @@ pip install -r requirements.txt
 1. Read [📋 PROJECT_CHARTER.md](./PROJECT_CHARTER.md) for methodology + assumptions
 2. Review [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) for data validation
 3. Check [📁 reports/](./reports/) for Module 0–4 validation reports
-4. View [📈 executive_charts/](./reports/executive_charts/) (NPV, Cost, Capacity Ceiling, Sensitivity)
+4. View [📈 executive_charts/](./reports/executive_charts/) (NPV, Cost, Throughput, Sensitivity, Cost/Order)
 5. Browse the dashboard data: [📊 exports/tableau_public/](./exports/tableau_public/) (CSVs ready for Tableau / Power BI import)
 
 ## Documentation Entry Points
@@ -130,7 +131,7 @@ pip install -r requirements.txt
 | [📊 reports/](./reports/) | Audit + validation reports + executive charts (all modules) |
 | [📊 notebooks/01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb) | Data validation + stakeholder transparency |
 | [📐 docs/data_lineage.md](./docs/data_lineage.md) | Pipeline data flow diagram (Mermaid) |
-| [📈 reports/executive_charts/](./reports/executive_charts/) | 4 finalized business charts (ranking, cost, capacity ceiling, sensitivity) |
+| [📈 reports/executive_charts/](./reports/executive_charts/) | 5 finalized business charts (ranking, cost, throughput, sensitivity, cost/order) |
 
 ## Why this project
 
