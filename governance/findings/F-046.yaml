@@ -1,0 +1,39 @@
+id: F-046
+title: Cost-per-order has no executive chart despite being the headline unit-economics KPI
+category: fake_completion
+kind: missing_artifact
+status: closed
+opened_at: 2026-06-04
+closed_at: 2026-06-04
+recurrence_count: 0
+evidence: |
+  F-045 added cost_per_order_eur to tco_scenarios.parquet and surfaced the
+  break-even threshold in module_03_tco_report.json. The metric is now the
+  single clearest way to compare scenarios for a decision-maker (€/order at
+  5yr horizon), but no executive chart visualises it.
+
+  reports/executive_charts/ contains:
+    01_tco_npv_ranking.png     — NPV by scenario (absolute €)
+    02_cost_breakdown.png      — capex vs opex stack
+    03_simulation_throughput.png — capacity ceiling (orders/shift)
+    04_sensitivity_tornado.png  — OAT parameter importance
+
+  Missing: a bar chart of cost_per_order_eur per scenario with break-even
+  reference line at €1.344 (baseline-human cost). S-hybrid-amr's €0.895
+  advantage over the €1.344 baseline is the headline finding but is not
+  visible in any single chart without mental arithmetic across Chart 1 and
+  external knowledge of order volumes.
+verification_script: tests/governance/test_f046_cost_per_order_chart_exists.py
+notes: |
+  Closed by adding Chart 5 to generate_executive_charts() in module_04_dashboards.py.
+  Horizontal bar chart of cost_per_order_eur per scenario sorted ascending, with a
+  dashed reference line at baseline-human cost (€1.344). Green bars = below baseline,
+  red bars = above baseline. S-hybrid-amr (€0.895) is immediately visible as the
+  only scenario below the baseline reference line.
+
+  PNG committed at reports/executive_charts/05_cost_per_order.png (132KB, 300dpi).
+  README chart table updated to include the new row.
+
+  Verification: tests/governance/test_f046_cost_per_order_chart_exists.py
+  asserts file exists (>10KB) and module_04_dashboards.py contains both the
+  filename and cost_per_order_eur column reference.

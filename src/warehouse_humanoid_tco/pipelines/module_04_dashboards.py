@@ -144,6 +144,30 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     plt.savefig(charts_dir / "03_simulation_throughput.png", dpi=300, bbox_inches="tight")
     plt.close()
 
+    # Chart 5: Cost per Order by Scenario (F-046)
+    # cost_per_order_eur = (capex + opex_pv) / (throughput × years × shifts_per_year)
+    # Added to tco_scenarios.parquet by F-045.  Reference line at baseline cost
+    # makes the S-hybrid-amr advantage visible without mental arithmetic.
+    tco_cpo = tco.sort("cost_per_order_eur")
+    scenarios_cpo = tco_cpo["scenario_id"].to_list()
+    cpo = tco_cpo["cost_per_order_eur"].to_list()
+    baseline_cpo = float(
+        tco_cpo.filter(pl.col("scenario_id") == "S-baseline-human")["cost_per_order_eur"][0]
+    )
+    colors_cpo = ["#2ecc71" if v < baseline_cpo else "#e74c3c" for v in cpo]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.barh(scenarios_cpo, cpo, color=colors_cpo)
+    ax.axvline(baseline_cpo, color="#555555", linestyle="--", linewidth=1.2, label=f"Baseline €{baseline_cpo:.3f}")
+    ax.set_xlabel("Cost per Order (€, 5-year horizon)")
+    ax.set_title("Unit Economics: Cost per Order by Scenario")
+    ax.legend(loc="lower right", fontsize=9)
+    ax.grid(axis="x", alpha=0.3)
+    for bar, v in zip(bars, cpo, strict=True):
+        ax.text(v + 0.005, bar.get_y() + bar.get_height() / 2, f"€{v:.3f}", va="center", fontsize=9)
+    plt.tight_layout()
+    plt.savefig(charts_dir / "05_cost_per_order.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
     print(f"✓ Generated executive charts: {charts_dir}")
 
 

@@ -496,6 +496,17 @@
       "verification_script": "tests/governance/test_f045_breakeven_thresholds_surfaced.py"
     },
     {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-046",
+      "kind": "missing_artifact",
+      "opened_at": "2026-06-04",
+      "path": "governance/findings/F-046.yaml",
+      "status": "open",
+      "title": "Cost-per-order has no executive chart despite being the headline unit-economics KPI",
+      "verification_script": "tests/governance/test_f046_cost_per_order_chart_exists.py"
+    },
+    {
       "category": "audit_doc_accumulation",
       "closed_at": "2026-05-29",
       "id": "F-100",
@@ -507,9 +518,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-03T22:37:34.086557+00:00",
-  "git_branch": "f-045-cost-per-order",
-  "git_head_sha": "80f66b31a8d73958ff346fae560718f495ab4a3b",
+  "generated_at": "2026-06-04T13:12:33.536448+00:00",
+  "git_branch": "feat/F-046-cost-per-order-chart",
+  "git_head_sha": "48c71fb27c75abff63b309e72e6bb39be7c109bd",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -524,12 +535,14 @@
     "findings_closed": 45,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 0,
-    "findings_total": 46,
+    "findings_open": 1,
+    "findings_total": 47,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
-    "open_by_category": {}
+    "open_by_category": {
+      "fake_completion": 1
+    }
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"
