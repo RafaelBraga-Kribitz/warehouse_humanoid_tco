@@ -154,6 +154,7 @@ def _make_processed_data(processed_dir: Path) -> None:
             "cost_reduction_vs_baseline_pct": [0.0, 50.0],
             "payback_years": [None, 2.4],
             "pipeline_version": ["0.1.0", "0.1.0"],
+            "cost_per_order_eur": [1.344, 0.895],
         }
     ).write_parquet(processed_dir / "tco_scenarios.parquet")
 
