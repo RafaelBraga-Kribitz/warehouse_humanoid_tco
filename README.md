@@ -64,16 +64,16 @@ pip install -r requirements.txt
 ### Financial Analysis (5-year horizon, 8% discount)
 
 
-| Scenario         | NPV             | Capex      | Opex 5yr      |
-| ---------------- | --------------- | ---------- | ------------- |
-| S-baseline-human | €-1,608,251     | €0         | €2,013,984    |
-| S-future-2028    | €-1,576,941     | €532K      | €1,308,562    |
-| S-hybrid-5050    | €-1,576,941     | €532K      | €1,308,562    |
-| S-pure-humanoid  | €-1,545,632     | €1,064K    | €603,139      |
-| **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**|
+| Scenario         | NPV             | Capex      | Opex 5yr      | Cost/Order |
+| ---------------- | --------------- | ---------- | ------------- | ---------- |
+| S-baseline-human | €-1,608,251     | €0         | €2,013,984    | €1.344     |
+| S-future-2028    | €-1,576,941     | €532K      | €1,308,562    | €1.170     |
+| S-hybrid-5050    | €-1,576,941     | €532K      | €1,308,562    | €1.314     |
+| S-pure-humanoid  | €-1,545,632     | €1,064K    | €603,139      | €1.295     |
+| **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**| **€0.895** |
 
 
-**Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~33% vs. the human baseline.** Annual opex now includes humanoid maintenance (8% of capex), energy, and a 0.10 FTE supervision overhead per humanoid; AMR scenarios also include AMR capex and opex. This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
+**Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~33% vs. the human baseline.** Annual opex now includes humanoid maintenance (8% of capex), energy, and a 0.10 FTE supervision overhead per humanoid; AMR scenarios also include AMR capex and opex. This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Pure-humanoid reaches cost-parity with the human baseline at ≤€125,865/unit capex (current: €120K → €5.8K headroom; see `reports/module_03_tco_report.json::breakeven_thresholds`). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
 
 > **Real data execution:** Results computed from 2,359 episodes across 5 Unitree UnifoLM datasets (WBT + DiverseManip). Financial model uses 15 simulation replicas per scenario with Austrian labor cost inputs (€18.50/hr + 1.35× overhead).
 
@@ -91,7 +91,7 @@ pip install -r requirements.txt
 |-------|------|------|
 | **NPV Ranking** | ![](./reports/executive_charts/01_tco_npv_ranking.png) | [📥 01_tco_npv_ranking.png](./reports/executive_charts/01_tco_npv_ranking.png) |
 | **Cost Breakdown** | ![](./reports/executive_charts/02_cost_breakdown.png) | [📥 02_cost_breakdown.png](./reports/executive_charts/02_cost_breakdown.png) |
-| **Simulation Throughput** | ![](./reports/executive_charts/03_simulation_throughput.png) | [📥 03_simulation_throughput.png](./reports/executive_charts/03_simulation_throughput.png) |
+| **Capacity Ceiling** | ![](./reports/executive_charts/03_simulation_throughput.png) | [📥 03_simulation_throughput.png](./reports/executive_charts/03_simulation_throughput.png) |
 | **Sensitivity Tornado** | ![](./reports/executive_charts/04_sensitivity_tornado.png) | [📥 04_sensitivity_tornado.png](./reports/executive_charts/04_sensitivity_tornado.png) |
 | **Cost per Order** | ![](./reports/executive_charts/05_cost_per_order.png) | [📥 05_cost_per_order.png](./reports/executive_charts/05_cost_per_order.png) |
 
