@@ -69,6 +69,117 @@ def predict_utilisation(scenario: WarehouseScenario) -> float:
 RHO_WARN_THRESHOLD = 0.95
 RHO_SATURATION_THRESHOLD = 1.0
 
+# F-044: industrial-IE convention for "max sustainable" utilisation. At rho > 0.95
+# the M/M/c mean queue length ~ rho/(1-rho) starts to explode; 0.85 leaves slack
+# for arrival burstiness and service-time variability while still being a
+# meaningful capacity ceiling, not just half-load.
+DEFAULT_CAPACITY_CEILING_RHO = 0.85
+
+
+def compute_capacity_ceiling(
+    scenario: WarehouseScenario,
+    target_rho: float = DEFAULT_CAPACITY_CEILING_RHO,
+) -> dict[str, Any]:
+    """Closed-form max-sustainable arrival rate under per-agent-type stability.
+
+    Closes F-044. Under the proportional routing implemented in `run_scenario`
+    (orders dispatched to agent type t with probability count_t / total_count),
+    the per-type load is:
+
+        lambda_t = lambda * (count_t / total_count)     # arrivals/sec to t
+        rho_t    = lambda_t / (count_t / cycle_time_t)
+                 = lambda * cycle_time_t / total_count
+
+    The system is stable iff every per-type rho_t < 1; the binding constraint
+    is therefore the slowest agent type:
+
+        lambda_max = target_rho * total_count / max(cycle_time_t)
+
+    `predict_utilisation` (F-028) uses the count-weighted mean cycle time and
+    correctly reports the aggregate rho for saturation-gate purposes, but the
+    weighted mean understates the bottleneck in heterogeneous mixes. For the
+    capacity-ceiling chart we need the per-type bound; both formulas coincide
+    when only one agent type is eligible (homogeneous scenarios).
+
+    target_rho defaults to 0.85: standard industrial-IE design utilisation
+    that bounds mean queue length while still calling the result a "capacity
+    ceiling" rather than half-load. Pass 1.0 for the theoretical maximum at
+    the cost of unbounded queue growth at the operating point.
+    """
+    eligible = [p for p in scenario.agent_profiles if p.count > 0]
+    total_agents = sum(p.count for p in eligible)
+    if total_agents == 0:
+        return {
+            "scenario_id": scenario.scenario_id,
+            "target_rho": target_rho,
+            "total_agents": 0,
+            "bottleneck_agent_type": None,
+            "bottleneck_cycle_time_seconds": 0.0,
+            "lambda_max_per_hour": 0.0,
+            "capacity_orders_per_shift": 0.0,
+        }
+    bottleneck = max(eligible, key=lambda p: p.cycle_time_mean)
+    lambda_max_per_second = target_rho * total_agents / bottleneck.cycle_time_mean
+    shift_seconds = scenario.shift_hours * 3600.0
+    return {
+        "scenario_id": scenario.scenario_id,
+        "target_rho": target_rho,
+        "total_agents": total_agents,
+        "bottleneck_agent_type": bottleneck.agent_type,
+        "bottleneck_cycle_time_seconds": float(bottleneck.cycle_time_mean),
+        "lambda_max_per_hour": float(lambda_max_per_second * 3600.0),
+        "capacity_orders_per_shift": float(lambda_max_per_second * shift_seconds),
+    }
+
+
+def simulate_at_capacity(
+    scenario: WarehouseScenario,
+    target_rho: float = DEFAULT_CAPACITY_CEILING_RHO,
+    n_runs: int = 5,
+    run_id_offset: int = 1000,
+) -> dict[str, Any]:
+    """Run `scenario` at lambda_max(target_rho) to validate the closed-form ceiling.
+
+    Closes F-044. Returns the dict from compute_capacity_ceiling plus the
+    observed throughput moments across `n_runs` finite-horizon shifts at the
+    stressed arrival rate. Validation is essential because the closed form
+    assumes steady state; an 8-hour shift at rho = 0.85 still leaves orders
+    in queue at end-of-shift, so observed_throughput_mean is typically a few
+    percent below capacity_orders_per_shift.
+
+    run_id_offset avoids seed collisions with the baseline `run_scenario`
+    sweep — those use run_id in [0, n_runs), this uses [offset, offset+n_runs).
+    """
+    ceiling = compute_capacity_ceiling(scenario, target_rho=target_rho)
+    if ceiling["total_agents"] == 0:
+        return {
+            **ceiling,
+            "observed_throughput_mean": 0.0,
+            "observed_throughput_std": 0.0,
+            "n_runs_at_ceiling": 0,
+        }
+    stressed = WarehouseScenario(
+        scenario_id=scenario.scenario_id,
+        architecture=scenario.architecture,
+        total_agents=scenario.total_agents,
+        agent_profiles=scenario.agent_profiles,
+        order_arrival_rate_per_hour=ceiling["lambda_max_per_hour"],
+        shift_hours=scenario.shift_hours,
+        seed=scenario.seed,
+        metadata=dict(scenario.metadata) if scenario.metadata else {},
+    )
+    throughputs = [
+        run_scenario(stressed, run_id=run_id_offset + i)["throughput_orders_per_shift"]
+        for i in range(n_runs)
+    ]
+    arr = np.array(throughputs, dtype=float)
+    return {
+        **ceiling,
+        "observed_throughput_mean": float(arr.mean()),
+        "observed_throughput_std": float(arr.std(ddof=1)) if n_runs > 1 else 0.0,
+        "n_runs_at_ceiling": n_runs,
+    }
+
 
 def _sample_service_time(rng: np.random.Generator, mean: float, std: float) -> float:
     """Draw one per-line service time from a lognormal preserving (mean, std).

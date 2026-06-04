@@ -154,8 +154,25 @@ def _make_processed_data(processed_dir: Path) -> None:
             "cost_reduction_vs_baseline_pct": [0.0, 50.0],
             "payback_years": [None, 2.4],
             "pipeline_version": ["0.1.0", "0.1.0"],
+            "cost_per_order_eur": [1.344, 0.895],
         }
     ).write_parquet(processed_dir / "tco_scenarios.parquet")
+
+    # F-044: chart 03 + tableau export read the capacity-ceiling parquet.
+    pl.DataFrame(
+        {
+            "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
+            "target_rho": [0.85, 0.85],
+            "total_agents": [8, 6],
+            "bottleneck_agent_type": ["human", "humanoid"],
+            "bottleneck_cycle_time_seconds": [25.0, 78.7],
+            "lambda_max_per_hour": [979.2, 233.0],
+            "capacity_orders_per_shift": [7834.0, 1864.0],
+            "observed_throughput_mean": [7780.0, 1850.0],
+            "observed_throughput_std": [40.0, 25.0],
+            "n_runs_at_ceiling": [5, 5],
+        }
+    ).write_parquet(processed_dir / "simulation_capacity_ceiling.parquet")
 
 
 @pytest.mark.integration
@@ -169,6 +186,7 @@ def test_export_for_tableau_creates_csvs(tmp_path: Path) -> None:
     assert (export_dir / "humanoid_capabilities_summary.csv").exists()
     assert (export_dir / "simulation_runs.csv").exists()
     assert (export_dir / "tco_scenarios.csv").exists()
+    assert (export_dir / "simulation_capacity_ceiling.csv").exists()
 
 
 @pytest.mark.integration

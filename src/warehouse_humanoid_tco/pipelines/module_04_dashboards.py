@@ -25,11 +25,13 @@ def export_for_tableau(processed_dir: Path, export_dir: Path) -> None:
     capabilities_summary = pl.read_parquet(processed_dir / "humanoid_capabilities_summary.parquet")
     simulation_runs = pl.read_parquet(processed_dir / "simulation_runs.parquet")
     tco_scenarios = pl.read_parquet(processed_dir / "tco_scenarios.parquet")
+    capacity_ceiling = pl.read_parquet(processed_dir / "simulation_capacity_ceiling.parquet")
 
     # Export as CSV for Tableau
     capabilities_summary.write_csv(export_dir / "humanoid_capabilities_summary.csv")
     simulation_runs.write_csv(export_dir / "simulation_runs.csv")
     tco_scenarios.write_csv(export_dir / "tco_scenarios.csv")
+    capacity_ceiling.write_csv(export_dir / "simulation_capacity_ceiling.csv")
 
     print(f"✓ Exported for Tableau: {export_dir}")
 
@@ -76,32 +78,100 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     plt.savefig(charts_dir / "02_cost_breakdown.png", dpi=300, bbox_inches="tight")
     plt.close()
 
-    # Chart 3: Simulation Throughput by Scenario
-    sim = pl.read_parquet(processed_dir / "simulation_runs.parquet")
-    sim_summary = (
-        sim.group_by("scenario_id")
-        .agg(
-            pl.col("throughput_orders_per_shift").mean().alias("mean_throughput"),
-            pl.col("throughput_orders_per_shift").std().alias("std_throughput"),
-        )
-        .sort("mean_throughput")
+    # Chart 3: Capacity Ceiling by Scenario (F-044)
+    # Before F-044 this plotted mean throughput from simulation_runs.parquet, but
+    # the baseline arrival rate (120/hr, Poisson) puts every scenario in a deeply
+    # demand-bound regime (rho in [0.10, 0.34]); observed throughputs collapse to
+    # Poisson(960) noise regardless of capacity. Now reads the F-044 capacity-
+    # ceiling sweep which stresses each scenario to lambda_max(target_rho=0.85)
+    # under the per-agent-type stability constraint — the resulting bars compare
+    # scenario *capacity*, which is what the chart claimed to show all along.
+    capacity = pl.read_parquet(processed_dir / "simulation_capacity_ceiling.parquet").sort(
+        "capacity_orders_per_shift"
     )
+    scenarios = capacity["scenario_id"].to_list()
+    theoretical = capacity["capacity_orders_per_shift"].to_list()
+    observed = capacity["observed_throughput_mean"].to_list()
+    observed_std = capacity["observed_throughput_std"].to_list()
+    bottlenecks = capacity["bottleneck_agent_type"].to_list()
+    target_rho = float(capacity["target_rho"][0])
+    n_validation_runs = int(capacity["n_runs_at_ceiling"][0])
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    scenarios = sim_summary["scenario_id"].to_list()
-    means = sim_summary["mean_throughput"].to_list()
-    # Replace None std (single-run scenarios) with 0.0 to avoid matplotlib error
-    stds = [s if s is not None else 0.0 for s in sim_summary["std_throughput"].to_list()]
-    x = range(len(scenarios))
-    error_bars = stds if any(s > 0 for s in stds) else None
-    ax.bar(x, means, yerr=error_bars, capsize=5, color="#9b59b6", alpha=0.7)
+    x = list(range(len(scenarios)))
+    width = 0.4
+    ax.bar(
+        [i - width / 2 for i in x],
+        theoretical,
+        width=width,
+        color="#9b59b6",
+        alpha=0.85,
+        label=f"Closed-form ceiling (rho={target_rho:.2f})",
+    )
+    ax.bar(
+        [i + width / 2 for i in x],
+        observed,
+        width=width,
+        yerr=observed_std,
+        capsize=4,
+        color="#27ae60",
+        alpha=0.85,
+        label=f"Simulated mean at lambda_max ({n_validation_runs} runs, ±1 std)",
+    )
     ax.set_xticks(x)
-    ax.set_xticklabels(scenarios, rotation=45, ha="right")
-    ax.set_ylabel("Orders per 8-hour Shift")
-    ax.set_title("Warehouse Throughput by Scenario (3 runs, ±1 std)")
+    ax.set_xticklabels(
+        [f"{s}\n(bottleneck: {b})" for s, b in zip(scenarios, bottlenecks, strict=True)],
+        rotation=20,
+        ha="right",
+        fontsize=9,
+    )
+    ax.set_ylabel("Max Sustainable Orders per 8-hour Shift")
+    ax.set_title("Warehouse Capacity Ceiling by Scenario")
+    ax.legend(loc="upper left", fontsize=9)
     ax.grid(axis="y", alpha=0.3)
-    plt.tight_layout()
+    fig.text(
+        0.5,
+        0.005,
+        "Per-agent-type stability bound: lambda_max = rho * c / max(cycle_time_t). "
+        "Baseline runs at 120 orders/hr are deeply demand-bound (rho < 0.35) and "
+        "do not discriminate scenarios.",
+        ha="center",
+        fontsize=7,
+        color="gray",
+        style="italic",
+    )
+    plt.tight_layout(rect=(0, 0.03, 1, 1))
     plt.savefig(charts_dir / "03_simulation_throughput.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    # Chart 5: Cost per Order by Scenario (F-046)
+    # cost_per_order_eur = (capex + opex_pv) / (throughput × years × shifts_per_year)
+    # Added to tco_scenarios.parquet by F-045.  Reference line at baseline cost
+    # makes the S-hybrid-amr advantage visible without mental arithmetic.
+    tco_cpo = tco.sort("cost_per_order_eur")
+    scenarios_cpo = tco_cpo["scenario_id"].to_list()
+    cpo = tco_cpo["cost_per_order_eur"].to_list()
+    baseline_cpo = float(
+        tco_cpo.filter(pl.col("scenario_id") == "S-baseline-human")["cost_per_order_eur"][0]
+    )
+    colors_cpo = ["#2ecc71" if v < baseline_cpo else "#e74c3c" for v in cpo]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.barh(scenarios_cpo, cpo, color=colors_cpo)
+    ax.axvline(
+        baseline_cpo,
+        color="#555555",
+        linestyle="--",
+        linewidth=1.2,
+        label=f"Baseline €{baseline_cpo:.3f}",
+    )
+    ax.set_xlabel("Cost per Order (€, 5-year horizon)")
+    ax.set_title("Unit Economics: Cost per Order by Scenario")
+    ax.legend(loc="lower right", fontsize=9)
+    ax.grid(axis="x", alpha=0.3)
+    for bar, v in zip(bars, cpo, strict=True):
+        ax.text(v + 0.005, bar.get_y() + bar.get_height() / 2, f"€{v:.3f}", va="center", fontsize=9)
+    plt.tight_layout()
+    plt.savefig(charts_dir / "05_cost_per_order.png", dpi=300, bbox_inches="tight")
     plt.close()
 
     print(f"✓ Generated executive charts: {charts_dir}")

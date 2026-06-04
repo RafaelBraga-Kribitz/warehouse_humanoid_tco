@@ -431,12 +431,12 @@
     },
     {
       "category": "fake_completion",
-      "closed_at": null,
+      "closed_at": "2026-06-02",
       "id": "F-040",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
       "path": "governance/findings/F-040.yaml",
-      "status": "open",
+      "status": "closed",
       "title": "notebooks/01_data_profile_summary.ipynb has zero committed cell outputs",
       "verification_script": "tests/governance/test_f040_notebook_outputs.py"
     },
@@ -474,15 +474,37 @@
       "verification_script": "tests/governance/test_f043_presentation_layer_regen.py"
     },
     {
-      "category": "fake_completion",
-      "closed_at": null,
+      "category": "methodology_drift",
+      "closed_at": "2026-06-03",
       "id": "F-044",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-03",
       "path": "governance/findings/F-044.yaml",
-      "status": "open",
+      "status": "closed",
+      "title": "Executive chart 03 reports demand-bound throughput, not scenario capacity",
+      "verification_script": "tests/governance/test_f044_capacity_chart.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": "2026-06-03",
+      "id": "F-045",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-03",
+      "path": "governance/findings/F-045.yaml",
+      "status": "closed",
       "title": "Cost-per-order break-even thresholds claimed in narrative but absent from committed artifacts",
-      "verification_script": "tests/governance/test_f044_breakeven_thresholds_surfaced.py"
+      "verification_script": "tests/governance/test_f045_breakeven_thresholds_surfaced.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-046",
+      "kind": "missing_artifact",
+      "opened_at": "2026-06-04",
+      "path": "governance/findings/F-046.yaml",
+      "status": "open",
+      "title": "Cost-per-order has no executive chart despite being the headline unit-economics KPI",
+      "verification_script": "tests/governance/test_f046_cost_per_order_chart_exists.py"
     },
     {
       "category": "audit_doc_accumulation",
@@ -496,9 +518,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-04T06:28:26.021992+00:00",
-  "git_branch": "claude/meta-audit-prompt-harmonic-liskov-WD8iB",
-  "git_head_sha": "878db5fe9e761004c46875ffa99cd5f38f1f603e",
+  "generated_at": "2026-06-04T13:12:33.536448+00:00",
+  "git_branch": "feat/F-046-cost-per-order-chart",
+  "git_head_sha": "48c71fb27c75abff63b309e72e6bb39be7c109bd",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -510,11 +532,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 42,
+    "findings_closed": 45,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 2,
-    "findings_total": 45,
+    "findings_open": 1,
+    "findings_total": 47,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
