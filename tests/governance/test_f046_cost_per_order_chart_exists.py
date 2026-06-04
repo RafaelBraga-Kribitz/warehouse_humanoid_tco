@@ -48,7 +48,6 @@ def test_module_04_generates_cost_per_order_chart() -> None:
         "F-046",
         fixed=has_filename and reads_column,
         gap_msg=(
-            f"module_04_dashboards.py: has_filename={has_filename} "
-            f"reads_column={reads_column}"
+            f"module_04_dashboards.py: has_filename={has_filename} " f"reads_column={reads_column}"
         ),
     )

@@ -157,7 +157,13 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     colors_cpo = ["#2ecc71" if v < baseline_cpo else "#e74c3c" for v in cpo]
     fig, ax = plt.subplots(figsize=(10, 6))
     bars = ax.barh(scenarios_cpo, cpo, color=colors_cpo)
-    ax.axvline(baseline_cpo, color="#555555", linestyle="--", linewidth=1.2, label=f"Baseline €{baseline_cpo:.3f}")
+    ax.axvline(
+        baseline_cpo,
+        color="#555555",
+        linestyle="--",
+        linewidth=1.2,
+        label=f"Baseline €{baseline_cpo:.3f}",
+    )
     ax.set_xlabel("Cost per Order (€, 5-year horizon)")
     ax.set_title("Unit Economics: Cost per Order by Scenario")
     ax.legend(loc="lower right", fontsize=9)
