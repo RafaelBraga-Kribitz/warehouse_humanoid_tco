@@ -82,7 +82,7 @@ The 5-year NPV model for Austrian intralogistics robotic integration uses 18 cor
 The following 9 parameters drive the Monte Carlo and one-at-a-time sensitivity analysis:
 
 1. **Labor base wage:** €14–€25/hour (primary cost driver)
-2. **Humanoid capex:** €80K–€200K (breakeven sensitivity)
+2. **Humanoid capex:** €80K–€200K — break-even at €125,865 (see `reports/module_03_tco_report.json::breakeven_thresholds`)
 3. **Annual wage growth:** 1–5% (long-term cost trajectory)
 4. **Discount rate:** 4–12% (financing assumptions)
 5. **Robot useful life:** 4–10 years (depreciation schedule)
