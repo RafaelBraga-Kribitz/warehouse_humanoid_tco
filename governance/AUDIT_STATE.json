@@ -496,9 +496,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-03T20:34:43.786013+00:00",
+  "generated_at": "2026-06-04T06:28:26.021992+00:00",
   "git_branch": "claude/meta-audit-prompt-harmonic-liskov-WD8iB",
-  "git_head_sha": "a41abf481fe3763e96266365f05e7ad11245e807",
+  "git_head_sha": "878db5fe9e761004c46875ffa99cd5f38f1f603e",
   "migrations": [
     {
       "linked_finding": "F-003",
