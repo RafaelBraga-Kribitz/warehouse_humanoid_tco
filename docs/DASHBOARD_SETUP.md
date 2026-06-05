@@ -44,6 +44,8 @@ Complete guide for creating Tableau Public and Power BI dashboards from module o
 2. Get shareable URL
 3. Add URLs to GitHub README under "Dashboards" section
 
+**Published workbook:** [Humanoid Robotics TCO on Tableau Public](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)
+
 ---
 
 ## Power BI (.pbix for Recruiters)
@@ -89,6 +91,7 @@ Complete guide for creating Tableau Public and Power BI dashboards from module o
 
 ## Quick Links
 
+- **Tableau Public Dashboard:** [Humanoid Robotics TCO](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)
 - **Data Files:** `exports/tableau_public/`
 - **Executive Charts:** `reports/executive_charts/`
 - **Module Reports:** `reports/module_*_report.json`

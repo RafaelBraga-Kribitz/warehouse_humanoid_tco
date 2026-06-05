@@ -28,7 +28,7 @@ last_reviewed: 2026-05-27
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
 crisp_dm_phase: evaluation
-module_status: Modules 0–4 complete on real data (2,359 episodes); Tableau Public and LinkedIn outreach pending
+module_status: Modules 0–4 complete on real data (2,359 episodes); Tableau Public published; LinkedIn outreach pending
 SSOT_METADATA_END -->
 
 # 📋 Project Charter: Warehouse Humanoid TCO Analyzer
@@ -55,7 +55,7 @@ SSOT_METADATA_END -->
 | Primary goal | Build a recruiter-ready DA/BI portfolio piece for Austrian industrial employers (Knapp AG, TGW Logistics, Magna Steyr) |
 | Secondary goal | Produce a reproducible analytical framework for humanoid robot TCO that has analytical value beyond the portfolio |
 | Time budget | 8 to 10 weeks part-time |
-| Status | v1.0 complete. All 4 modules shipped with real data (2,359 episodes). Tableau Public publication and external outreach pending. |
+| Status | v1.0 complete. All 4 modules shipped with real data (2,359 episodes). [Tableau Public dashboard](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1) published; external outreach (LinkedIn) pending. |
 | Repo structure | See SRS §8 |
 
 ---

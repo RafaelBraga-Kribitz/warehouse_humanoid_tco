@@ -20,6 +20,8 @@ The full analysis is open-source and reproducible: every assumption is documente
 
 **Repository:** [github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco)
 
+**Dashboard:** [Humanoid Robotics TCO on Tableau Public](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)
+
 **For operations teams:** Start with PROJECT_CHARTER.md. For data nerds: see the Monte Carlo sensitivity analysis (10K samples) and the Kruskal-Wallis test showing where throughput differentiation actually comes from.
 
 If you work in Knapp, TGW, or Austrian intralogistics more broadly—I'd like to hear if this model matches your actual constraints. The biggest gap is calibration: my assumptions are publicly stated, but they're still assumptions.
@@ -45,6 +47,8 @@ Die Ergebnisse waren überraschend.
 Die vollständige Analyse ist Open-Source und reproduzierbar: Jede Annahme ist dokumentiert, jede Berechnung ist nachprüfbar, und jedes Ergebnis ist versionskontrolliert.
 
 **Repository:** [github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco)
+
+**Dashboard:** [Humanoid Robotics TCO auf Tableau Public](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)
 
 Für Operations-Teams: Beginnen Sie mit PROJECT_CHARTER.md. Für Data-Nerds: Siehe die Monte-Carlo-Sensitivitätsanalyse (10K Stichproben) und den Kruskal-Wallis-Test.
 
