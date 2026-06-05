@@ -197,8 +197,8 @@ def module_04_main(
     validation_report = {
         "module": "04_dashboards",
         "status": "complete",
-        "tableau_exports": str(tableau_dir),
-        "executive_charts": str(charts_dir),
+        "tableau_exports": str(tableau_dir.relative_to(project_root)),
+        "executive_charts": str(charts_dir.relative_to(project_root)),
         "next_steps": [
             "Upload tableau_public/ CSVs to Tableau Public",
             "Create dashboards in Tableau: TCO, Simulation, Capabilities",

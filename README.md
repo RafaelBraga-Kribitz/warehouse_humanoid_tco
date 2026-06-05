@@ -40,9 +40,8 @@ jupyter notebook notebooks/00_derisk_dataset_inspection.ipynb
 make all
 ```
 
-**For users without `uv`:** Generate a requirements.txt from `uv.lock`:
+**For users without `uv`:** A frozen `requirements.txt` is committed (regenerated from `uv.lock` via `uv export --format requirements-txt --no-hashes --no-emit-project`):
 ```bash
-uv export --format requirements-txt > requirements.txt
 pip install -r requirements.txt
 ```
 

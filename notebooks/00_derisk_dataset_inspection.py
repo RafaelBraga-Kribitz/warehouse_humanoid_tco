@@ -164,7 +164,7 @@ for dataset in all_datasets:
 # %%
 report = {
     "run_timestamp_utc": datetime.now(UTC).isoformat(),
-    "manifest_path": str(CONFIG_PATH),
+    "manifest_path": str(CONFIG_PATH.relative_to(PROJECT_ROOT)),
     "dataset_count": len(all_datasets),
     "datasets_accessible": sum(1 for v in dataset_info_map.values() if v.get("accessible")),
     "datasets_inaccessible": sum(1 for v in dataset_info_map.values() if not v.get("accessible")),

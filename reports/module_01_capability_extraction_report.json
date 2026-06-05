@@ -11,6 +11,6 @@
   "multi_label_episode_count": 1750,
   "avg_labels_per_episode": 2.285,
   "datasets_processed": 5,
-  "per_episode_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_per_episode.parquet",
-  "summary_path": "/Users/rbk/warehouse_humanoid_tco/data/processed/humanoid_capabilities_summary.parquet"
+  "per_episode_path": "data/processed/humanoid_capabilities_per_episode.parquet",
+  "summary_path": "data/processed/humanoid_capabilities_summary.parquet"
 }

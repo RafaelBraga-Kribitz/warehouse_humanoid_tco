@@ -209,8 +209,8 @@ def module_01_main(
         "multi_label_episode_count": multi_label_episode_count,
         "avg_labels_per_episode": round(avg_labels_per_episode, 3),
         "datasets_processed": len(all_episodes),
-        "per_episode_path": str(per_episode_path),
-        "summary_path": str(summary_path),
+        "per_episode_path": str(per_episode_path.relative_to(project_root)),
+        "summary_path": str(summary_path.relative_to(project_root)),
     }
 
     report_path = project_root / "reports" / "module_01_capability_extraction_report.json"
