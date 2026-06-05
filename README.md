@@ -72,6 +72,9 @@ pip install -r requirements.txt
 | S-future-2028    | €-1,398,599     | €409K      | €1,238,969    | €1.170     |
 | **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**| **€0.895** |
 
+![NPV Ranking — S-hybrid-amr lowest 5-year cost at €-1.08M](./reports/executive_charts/01_tco_npv_ranking.png)
+
+> **Plain-language summary:** A hybrid workforce (60% human + 20% humanoid + 20% AMR) cuts 5-year warehouse costs from €1.6M to €1.08M — a ~33% saving, or €0.45/order cheaper. At current humanoid capex (€120K/unit), pure-humanoid breaks even with the human baseline with €5.8K of headroom. Labor cost uncertainty drives ~3.6× more NPV variance than robot capex; the capital investment is the comparatively smaller risk.
 
 **Under the modeled assumptions, S-hybrid-amr minimizes 5-year TCO by ~33% vs. the human baseline.** Annual opex now includes humanoid maintenance (8% of capex), energy, and a 0.10 FTE supervision overhead per humanoid; AMR scenarios also include AMR capex and opex. This advantage is sensitive to humanoid capex: at >€180K/unit the advantage narrows significantly (see sensitivity tornado chart below). Pure-humanoid reaches cost-parity with the human baseline at ≤€125,865/unit capex (current: €120K → €5.8K headroom; see `reports/module_03_tco_report.json::breakeven_thresholds`). Results assume a 70% WBT-to-production transfer factor; see §2A in PROJECT_CHARTER.md for the rationale.
 
@@ -83,7 +86,7 @@ pip install -r requirements.txt
   - 90% output interval (p5–p95): [€-1,386,257, €-830,291]
   - Per-scenario MC with **agent counts fixed**; samples only continuous params: humanoid capex, labor wage, labor overhead, discount rate, WBT→production transfer factor (5 parameters)
   - S-hybrid-amr is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M); its entire 90% interval [€-1.39M, €-830K] sits above the baseline expectation — it is robustly the cheapest under uncertainty
-- **OAT Tornado:** Labor variables dominate — overhead swing €542K + wage swing €388K = €930K combined labor sensitivity vs €258K for humanoid capex and €204K for transfer factor (~3.6× labor:capex ratio at full config ranges)
+- **OAT Tornado:** Labor variables dominate — overhead swing €542K + wage swing €388K = €930K combined labor sensitivity vs €258K for humanoid capex alone (~3.6× ratio) or €462K when WBT transfer factor uncertainty is included (~2.0×). Either way, labor is the dominant uncertainty; the robot investment is comparatively low-risk.
 
 #### Executive Charts
 
