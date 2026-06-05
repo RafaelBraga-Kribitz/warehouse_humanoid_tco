@@ -518,9 +518,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-05T18:02:10.196631+00:00",
+  "generated_at": "2026-06-05T18:33:03.403885+00:00",
   "git_branch": "claude/keen-fermi-Tt1Mq",
-  "git_head_sha": "ad28e22da661b7ad0d53262f0b30cf01323ad078",
+  "git_head_sha": "728df988027863f2d5c7e2cd4c51981cc4824743",
   "migrations": [
     {
       "linked_finding": "F-003",
