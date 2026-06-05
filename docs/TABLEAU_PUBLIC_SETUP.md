@@ -147,19 +147,19 @@ This guide walks through creating three interconnected dashboards for the humano
 3. Click **Publish**
 4. Sign in with Tableau Public account
 5. Confirm public sharing
-6. Copy the public URL: `https://public.tableau.com/app/profile/[username]/viz/...`
+6. Copy the public URL (published workbook):
+
+   `https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1`
 
 ### Step 9: Link Dashboard in README
 
-Update `README.md` section "### Dashboards":
+The README `### Dashboards` section links the published workbook:
 
 ```markdown
 ### Dashboards
 
-- **[TCO Summary Dashboard](https://public.tableau.com/...)** — Interactive NPV ranking and cost composition
-- **[Simulation Validation](https://public.tableau.com/...)** — Throughput and queue analysis
-- **[Capabilities Explorer](https://public.tableau.com/...)** — Task-level humanoid performance
-- **[Direct Data Download](./exports/tableau_public/)** — Raw CSVs for use in your own BI tools
+- **[Tableau Public Dashboard](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)** — Interactive TCO, simulation, and capabilities analysis
+- **Power BI:** exported data ready for `.pbix` creation ([`exports/tableau_public/`](./exports/tableau_public/))
 ```
 
 ## Maintenance & Updates

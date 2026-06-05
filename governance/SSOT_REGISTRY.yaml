@@ -133,12 +133,10 @@ facts:
     finding: F-005
 
   tableau_status:
-    canonical: governance/findings/F-017.yaml           # publication-pending claim
-    must_not_claim_in:
-      - README.md
+    canonical: README.md#dashboards
+    published_url: https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1
     notes: |
-      The README has historically claimed "Tableau Public publication pending."
-      Either publish or remove the claim; tracked by F-017.
+      Tableau Public workbook published 2026-06-05. URL linked from README §Dashboards.
     finding: F-017
 
   claude_protocol:

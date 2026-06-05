@@ -112,7 +112,7 @@ For now, the `.pbix` approach is simpler and more concrete.
 If Power BI is not available:
 - CSV files are also exported to `exports/tableau_public/`
 - Upload these directly to Tableau Public (free tier available)
-- Tableau's public gallery will automatically create sharable visualizations
+- **Published workbook:** [Humanoid Robotics TCO on Tableau Public](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)
 - Share the public link in README.md
 
 ## Reproducibility Note
