@@ -83,7 +83,7 @@ pip install -r requirements.txt
   - 90% output interval (p5–p95): [€-1,386,257, €-830,291]
   - Per-scenario MC with **agent counts fixed**; samples only continuous params: humanoid capex, labor wage, labor overhead, discount rate, WBT→production transfer factor (5 parameters)
   - S-hybrid-amr is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M); its entire 90% interval [€-1.39M, €-830K] sits above the baseline expectation — it is robustly the cheapest under uncertainty
-- **OAT Tornado:** Labor variables dominate — wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity vs €158K for humanoid capex and €120K for transfer factor (~8× labor:capex ratio at full config ranges)
+- **OAT Tornado:** Labor variables dominate — overhead swing €542K + wage swing €388K = €930K combined labor sensitivity vs €258K for humanoid capex and €204K for transfer factor (~3.6× labor:capex ratio at full config ranges)
 
 #### Executive Charts
 
