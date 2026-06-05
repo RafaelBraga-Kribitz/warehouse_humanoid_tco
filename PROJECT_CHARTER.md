@@ -21,10 +21,10 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 -->
 
 <!-- SSOT_METADATA_START
-version: 1.1.4
+version: 1.1.5
 status: active
-last_updated: 2026-05-27
-last_reviewed: 2026-05-27
+last_updated: 2026-06-05
+last_reviewed: 2026-06-05
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
 crisp_dm_phase: evaluation
@@ -91,7 +91,7 @@ The project succeeds if **all four** of these are true at completion:
 |---|---|---|
 | **Reproducibility** | Stranger clones repo, runs `make all`, reproduces every artifact bit-for-bit | CI weekly determinism test |
 | **Analytical Credibility** | TCO model exposes every assumption as configurable param; top 6 drivers identified | `reports/sensitivity_analysis_report.json` + tornado chart |
-| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of release | Tracked in `governance/CHANGELOG.md` |
+| **Market Signal** | ≥1 documented response from Austrian industrial firm (LinkedIn/recruiter/interview) within 4 weeks of Tableau Public going live | Post-publication tracking; 4-week window starts at Tableau launch, not at v1.0 code completion. Tracked in `governance/CHANGELOG.md` |
 | **Doc Quality** | SSOT is sole authority; CI passes ≥30 days post-release with zero sprawl | CI stats in weekly reproducibility report |
 
 ### 3.4 Stakeholders
