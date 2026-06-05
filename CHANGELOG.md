@@ -7,6 +7,14 @@ Versions are thematic milestones, not strict semver releases.
 
 ---
 
+## [Unreleased]
+
+### Fixed
+- **README financial table: S-future-2028 row corrected.** The row previously duplicated S-hybrid-5050's NPV (€-1,576,941), Capex (€532K), and Opex (€1,308,562); only its cost/order (€1.170) was right. Values now match `data/processed/tco_scenarios.parquet` / `exports/tableau_public/tco_scenarios.csv`: NPV €-1,398,599, Capex €409K, Opex €1,238,969. Table re-sorted by NPV so S-future-2028 sits between S-pure-humanoid and S-hybrid-amr.
+- **README sensitivity: MC robustness claim made precise.** The "only scenario whose p95 doesn't overlap the baseline mean" line was imprecise (other scenarios' p95 also clear the baseline mean). Reframed to the distinctive, accurate fact: S-hybrid-amr is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M).
+
+---
+
 ## [v0.6.0] — Portfolio Audit Remediation — 2026-05-27
 
 ### Added

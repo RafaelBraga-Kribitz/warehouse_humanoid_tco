@@ -67,9 +67,9 @@ pip install -r requirements.txt
 | Scenario         | NPV             | Capex      | Opex 5yr      | Cost/Order |
 | ---------------- | --------------- | ---------- | ------------- | ---------- |
 | S-baseline-human | €-1,608,251     | €0         | €2,013,984    | €1.344     |
-| S-future-2028    | €-1,576,941     | €532K      | €1,308,562    | €1.170     |
 | S-hybrid-5050    | €-1,576,941     | €532K      | €1,308,562    | €1.314     |
 | S-pure-humanoid  | €-1,545,632     | €1,064K    | €603,139      | €1.295     |
+| S-future-2028    | €-1,398,599     | €409K      | €1,238,969    | €1.170     |
 | **S-hybrid-amr** | **€-1,078,786** | **€198K**  | **€1,102,993**| **€0.895** |
 
 
@@ -82,7 +82,7 @@ pip install -r requirements.txt
 - **Monte Carlo (10,000 runs × 5 scenarios = 50,000 samples, all persisted):** S-hybrid-amr NPV mean = €-1,089,021 ± €171,407 (1σ); median = €-1,079,103
   - 90% output interval (p5–p95): [€-1,386,257, €-830,291]
   - Per-scenario MC with **agent counts fixed**; samples only continuous params: humanoid capex, labor wage, labor overhead, discount rate, WBT→production transfer factor (5 parameters)
-  - S-hybrid-amr is the only scenario whose p95 (€-830K) doesn't overlap with the baseline mean (€-1.62M) — it is robustly the cheapest under uncertainty
+  - S-hybrid-amr is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M); its entire 90% interval [€-1.39M, €-830K] sits above the baseline expectation — it is robustly the cheapest under uncertainty
 - **OAT Tornado:** Labor variables dominate — wage swing €824K + overhead swing €427K = €1.25M combined labor sensitivity vs €158K for humanoid capex and €120K for transfer factor (~8× labor:capex ratio at full config ranges)
 
 #### Executive Charts
