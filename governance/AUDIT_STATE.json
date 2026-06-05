@@ -518,9 +518,9 @@
       "verification_script": null
     }
   ],
-  "generated_at": "2026-06-04T18:33:26.689422+00:00",
-  "git_branch": "claude/meta-audit-prompt-harmonic-liskov-WD8iB",
-  "git_head_sha": "45936754748882bfbf60e7dd7bad9f7295d42456",
+  "generated_at": "2026-06-05T18:02:10.196631+00:00",
+  "git_branch": "claude/keen-fermi-Tt1Mq",
+  "git_head_sha": "ad28e22da661b7ad0d53262f0b30cf01323ad078",
   "migrations": [
     {
       "linked_finding": "F-003",
