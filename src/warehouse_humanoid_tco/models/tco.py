@@ -1,8 +1,20 @@
-"""TCO financial model.
+"""TCO financial model — pure, assumption-explicit primitives.
 
-Computes NPV, IRR, and payback period for each warehouse scenario.
 All assumptions must be passed explicitly — no internal defaults.
 See PROJECT_CHARTER.md §4 Module 3 and config/tco_assumptions.yaml.
+
+Which primitives the pipeline actually uses:
+  - `compute_npv` is the single canonical NPV implementation, called by BOTH
+    `pipelines.module_03_tco.compute_tco_scenario` and
+    `analysis.sensitivity.compute_tco_for_params`.
+  - `compute_annual_labor_cost`, `compute_humanoid_capex`,
+    `compute_annual_humanoid_opex` are used by the pipeline.
+  - `compute_irr` and `compute_payback_years` are general-purpose cash-flow
+    helpers retained as a tested public API. The TCO pipeline does NOT use them:
+    it is a pure-cost model (all cash flows negative), so IRR is undefined and a
+    cumulative-cashflow payback never turns positive. The pipeline instead
+    reports a SIMPLE payback = capex / annual_opex_savings_vs_baseline. These
+    two helpers are not "richer modeling" claims about the headline results.
 """
 
 from __future__ import annotations

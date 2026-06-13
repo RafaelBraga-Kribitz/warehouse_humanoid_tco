@@ -4,10 +4,10 @@
   "discount_rate": 0.08,
   "tco_scenarios_path": "/home/user/warehouse_humanoid_tco/data/processed/tco_scenarios.parquet",
   "breakeven_thresholds": {
-    "capex_eur_per_unit": 125865.0,
+    "capex_eur_per_unit": 125582.0,
     "baseline_cost_per_order_eur": 1.344,
-    "pure_humanoid_current_cost_per_order_eur": 1.292,
-    "current_capex_eur_per_unit": 120000,
+    "pure_humanoid_current_cost_per_order_eur": 1.295,
+    "current_capex_eur_per_unit": 120000.0,
     "methodology": "Binary search on capex to find where pure-humanoid cost_per_order = baseline-human cost_per_order"
   }
 }

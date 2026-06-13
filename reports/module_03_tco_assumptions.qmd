@@ -79,19 +79,22 @@ The 5-year NPV model for Austrian intralogistics robotic integration uses 18 cor
 
 ## Sensitivity Analysis Parameters
 
-The following 9 parameters drive the Monte Carlo and one-at-a-time sensitivity analysis:
+The Monte-Carlo and one-at-a-time (OAT) analysis varies **five continuous
+parameters** (agent counts are held fixed per scenario). These are the
+parameters the model actually samples, defined in
+`config/tco_assumptions.yaml::sensitivity`:
 
-1. **Labor base wage:** €14–€25/hour (primary cost driver)
-2. **Humanoid capex:** €80K–€200K — break-even at €125,865 (see `reports/module_03_tco_report.json::breakeven_thresholds`)
-3. **Annual wage growth:** 1–5% (long-term cost trajectory)
+1. **Humanoid capex:** OAT €60K–€180K; MC lognormal(mean €120K, std €30K). Break-even at €125,582 (see `reports/module_03_tco_report.json::breakeven_thresholds`)
+2. **Labor base wage:** €15.13–€22.00/hour (WKO Spedition & Lagereibetriebe BG-III 2025/26 bracket)
+3. **Labor overhead multiplier:** 1.0–1.7
 4. **Discount rate:** 4–12% (financing assumptions)
-5. **Robot useful life:** 4–10 years (depreciation schedule)
-6. **Annual maintenance:** 4–15% of capex (operating risk)
-7. **Energy cost:** €0.15–€0.35/kWh (operational expense)
-8. **Financing rate:** 2–8% (capital cost)
-9. **Training cost:** €2K–€10K/unit (onboarding)
+5. **WBT→production transfer factor:** 0.50–0.90 (capability shortfall vs. teleoperation demos)
 
-All ranges reflect plausible but not extreme scenarios. See `reports/sensitivity_analysis_report.json` for tornado chart (parameter importance ranking).
+Other financial inputs in `config/tco_assumptions.yaml` (wage growth, useful
+life, maintenance fraction, energy cost, financing rate, training cost) are
+configurable point estimates but are **not** swept in the v1.0 sensitivity
+analysis. See `reports/sensitivity_analysis_report.json::oat_elasticity_ranking`
+for the parameter-importance ranking.
 
 ## Transparency & Auditing
 

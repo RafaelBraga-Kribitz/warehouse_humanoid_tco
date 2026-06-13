@@ -15,8 +15,6 @@ PARAM_LABELS = {
     "transfer_factor": "WBT→Production Transfer Factor",
 }
 
-BASELINE_NPV = -1078786.0  # S-hybrid-amr central estimate (post T0.1 opex fix)
-
 
 def main() -> None:
     project_root = Path(__file__).parent.parent
@@ -24,6 +22,11 @@ def main() -> None:
     out_path = project_root / "reports" / "executive_charts" / "04_sensitivity_tornado.png"
 
     df = pl.read_parquet(oat_path)
+
+    # Baseline NPV is the OAT pivot, derived from the data (npv - delta_vs_base
+    # is constant across rows) rather than hardcoded — so the chart cannot drift
+    # from the model when the scenario NPV changes (audit Risk #5).
+    baseline_npv = float((df["npv_eur"] - df["delta_vs_base"])[0])
 
     # For each parameter compute low/high NPV (min/max of npv_eur)
     summary = (
@@ -48,13 +51,13 @@ def main() -> None:
 
     for i, (low, high, _label) in enumerate(zip(npv_low, npv_high, labels, strict=True)):
         # Low side (more negative = higher cost)
-        ax.barh(i, low - BASELINE_NPV, left=BASELINE_NPV, color="#E07B39", alpha=0.85, height=0.5)
+        ax.barh(i, low - baseline_npv, left=baseline_npv, color="#E07B39", alpha=0.85, height=0.5)
         # High side (less negative = lower cost)
-        ax.barh(i, high - BASELINE_NPV, left=BASELINE_NPV, color="#4A90D9", alpha=0.85, height=0.5)
+        ax.barh(i, high - baseline_npv, left=baseline_npv, color="#4A90D9", alpha=0.85, height=0.5)
 
     ax.set_yticks(list(y_pos))
     ax.set_yticklabels(labels, fontsize=11)
-    ax.axvline(BASELINE_NPV, color="black", linewidth=1.2, linestyle="--", alpha=0.6)
+    ax.axvline(baseline_npv, color="black", linewidth=1.2, linestyle="--", alpha=0.6)
 
     ax.set_xlabel("5-Year NPV (€)", fontsize=11)
     ax.set_title(
@@ -66,7 +69,8 @@ def main() -> None:
     ax.text(
         0.5,
         1.01,
-        "S-hybrid-amr scenario · OAT across config ranges · baseline NPV = €-1,079K",
+        "S-hybrid-amr scenario · OAT across config ranges · "
+        f"baseline NPV = €{baseline_npv/1000:,.0f}K",
         transform=ax.transAxes,
         ha="center",
         fontsize=9,

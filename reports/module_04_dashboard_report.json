@@ -7,6 +7,6 @@
     "Upload tableau_public/ CSVs to Tableau Public",
     "Create dashboards in Tableau: TCO, Simulation, Capabilities",
     "Share public link in portfolio README",
-    "Create Power BI .pbix from module outputs for Austrian recruiters"
+    "Power BI users import the same CSVs directly (one surface, per ADR-0008)"
   ]
 }

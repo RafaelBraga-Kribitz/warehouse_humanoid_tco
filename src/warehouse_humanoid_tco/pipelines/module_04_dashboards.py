@@ -1,11 +1,12 @@
 """Module 4: Dashboard Generation
 
-Produces interactive visualizations for stakeholders:
-1. Tableau Public dashboard (shareable link)
-2. Power BI .pbix export (recruiters)
-3. Executive summary charts (TCO, simulation, capability)
+Produces stakeholder-facing artifacts:
+1. Tableau Public dashboard data (CSV exports; the single published surface).
+   The same CSVs import directly into Power BI Desktop — see ADR-0008, which
+   deprecated a separate Power BI export path in favour of one CSV surface.
+2. Executive summary charts (TCO, cost breakdown, capacity, sensitivity, cost/order).
 
-See PROJECT_CHARTER.md §4 Module 4.
+See PROJECT_CHARTER.md §4 Module 4 and ADR-0008.
 """
 
 from __future__ import annotations
@@ -203,7 +204,7 @@ def module_04_main(
             "Upload tableau_public/ CSVs to Tableau Public",
             "Create dashboards in Tableau: TCO, Simulation, Capabilities",
             "Share public link in portfolio README",
-            "Create Power BI .pbix from module outputs for Austrian recruiters",
+            "Power BI users import the same CSVs directly (one surface, per ADR-0008)",
         ],
     }
 

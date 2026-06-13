@@ -29,6 +29,37 @@ from warehouse_humanoid_tco.models.simulation import (
 from warehouse_humanoid_tco.utils.reproducibility import seed_all
 
 
+def _select_humanoid_cycle_time(
+    summary_df: pl.DataFrame,
+    reference_task: str,
+    default_mean: float = 30.0,
+    default_std: float = 10.0,
+) -> tuple[float, float]:
+    """Return (cycle_time_mean, cycle_time_std) for the named task category.
+
+    Selection is explicit (``task_category == reference_task``), not positional,
+    so it is invariant to the row order of the capability summary. The previous
+    "first row with a non-null std" logic silently depended on the alphabetical
+    sort of category names and selected ``bimanual_handling`` — the slowest,
+    two-handed task — rather than the modelled warehouse pick. Falls back to a
+    documented default only when the summary is empty; a present-but-missing
+    reference task fails loud rather than mis-modelling silently.
+    """
+    if summary_df is None or len(summary_df) == 0:
+        return default_mean, default_std
+    match = summary_df.filter(pl.col("task_category") == reference_task)
+    if len(match) == 0:
+        raise ValueError(
+            f"reference_task {reference_task!r} not in capability summary; "
+            f"available: {summary_df['task_category'].to_list()}"
+        )
+    mean = match["cycle_time_mean"][0]
+    std = match["cycle_time_std"][0]
+    if mean is None or std is None:
+        raise ValueError(f"reference_task {reference_task!r} has null cycle_time mean/std")
+    return float(mean), float(std)
+
+
 def _load_global_seed(project_root: Path) -> int | None:
     """Load `simulation.global_seed` from config/seeds.yaml if present.
 
@@ -100,21 +131,29 @@ def module_02_main(
         print("  ⚠ Capability summary not found. Using placeholder values.")
         summary_df = pl.DataFrame()
 
-    # Extract humanoid cycle time from summary (using first row with valid std)
-    humanoid_cycle_mean = 30.0
-    humanoid_cycle_std = 10.0
-
-    if len(summary_df) > 0:
-        # Find first row with non-null cycle_time_std
-        for i in range(len(summary_df)):
-            if summary_df["cycle_time_std"][i] is not None:
-                humanoid_cycle_mean = float(summary_df["cycle_time_mean"][i])
-                humanoid_cycle_std = float(summary_df["cycle_time_std"][i])
-                break
-        # Fallback to first row's mean if no std available
-        if humanoid_cycle_std == 10.0 and summary_df["cycle_time_mean"][0] is not None:
-            humanoid_cycle_mean = float(summary_df["cycle_time_mean"][0])
-        print(f"  Using humanoid cycle time: {humanoid_cycle_mean:.1f}±{humanoid_cycle_std:.1f}s")
+    # Humanoid cycle time fed to the simulation:
+    #   (1) Select an explicit, warehouse-relevant task category (config
+    #       agents.humanoid.reference_task) — invariant to summary row order.
+    #   (2) Apply the WBT->production transfer factor so the simulated humanoid
+    #       runs at production speed, not raw teleoperation-demo speed. The
+    #       charter calls this the single largest methodological assumption; it
+    #       must reach the simulation, not only the cost model.
+    reference_task = config["agents"]["humanoid"].get("reference_task", "pick_medium_object")
+    transfer_factor = (
+        config.get("capability_transfer", {})
+        .get("wbt_to_production_factor", {})
+        .get("point_estimate", 0.70)
+    )
+    if transfer_factor <= 0:
+        raise ValueError(f"wbt_to_production_factor must be > 0; got {transfer_factor}")
+    demo_cycle_mean, demo_cycle_std = _select_humanoid_cycle_time(summary_df, reference_task)
+    humanoid_cycle_mean = demo_cycle_mean / transfer_factor
+    humanoid_cycle_std = demo_cycle_std / transfer_factor
+    print(
+        f"  Humanoid cycle time: demo {demo_cycle_mean:.1f}±{demo_cycle_std:.1f}s "
+        f"(task={reference_task}) -> production {humanoid_cycle_mean:.1f}"
+        f"±{humanoid_cycle_std:.1f}s (transfer={transfer_factor:.2f})"
+    )
 
     # ========== Run Simulations ==========
     all_runs = []
@@ -124,22 +163,33 @@ def module_02_main(
 
     for scenario_config in scenarios:
         scenario_id = scenario_config["id"]
-        human_frac = scenario_config.get("human_fraction", 0.0)
-        humanoid_frac = scenario_config.get("humanoid_fraction", 0.0)
-        amr_frac = scenario_config.get("amr_fraction", 0.0)
         throughput_mult = scenario_config.get("humanoid_throughput_multiplier", 1.0)
+
+        # Explicit integer crew sizes are the SSOT (config agent_counts). This
+        # replaces `int(total_agents * fraction)`, which silently truncated
+        # fractional crews (60/20/20 of 8 -> 4 + 1 + 1 = 6, not 8). Fall back to
+        # rounded fractions only for legacy configs/tests without agent_counts.
+        counts = scenario_config.get("agent_counts")
+        if counts is None:
+            counts = {
+                "human": round(total_agents * scenario_config.get("human_fraction", 0.0)),
+                "humanoid": round(total_agents * scenario_config.get("humanoid_fraction", 0.0)),
+                "amr": round(total_agents * scenario_config.get("amr_fraction", 0.0)),
+            }
+        human_count = int(counts.get("human", 0))
+        humanoid_count = int(counts.get("humanoid", 0))
+        amr_count = int(counts.get("amr", 0))
 
         print(f"\n[Scenario] {scenario_id}")
         print(
-            f"  Composition: {human_frac:.1%} human, "
-            f"{humanoid_frac:.1%} humanoid, {amr_frac:.1%} AMR"
+            f"  Crew: {human_count} human, {humanoid_count} humanoid, "
+            f"{amr_count} AMR ({human_count + humanoid_count + amr_count} units)"
         )
 
         # Create agent profiles
         agent_profiles = []
 
-        if human_frac > 0:
-            human_count = max(1, int(total_agents * human_frac))
+        if human_count > 0:
             agent_profiles.append(
                 AgentProfile(
                     agent_type="human",
@@ -150,8 +200,7 @@ def module_02_main(
                 )
             )
 
-        if humanoid_frac > 0:
-            humanoid_count = max(1, int(total_agents * humanoid_frac))
+        if humanoid_count > 0:
             agent_profiles.append(
                 AgentProfile(
                     agent_type="humanoid",
@@ -162,8 +211,7 @@ def module_02_main(
                 )
             )
 
-        if amr_frac > 0:
-            amr_count = max(1, int(total_agents * amr_frac))
+        if amr_count > 0:
             agent_profiles.append(
                 AgentProfile(
                     agent_type="amr",

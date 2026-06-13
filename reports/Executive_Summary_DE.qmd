@@ -35,8 +35,8 @@ wie sie bei Knapp AG und TGW Logistics eingesetzt werden.
    aus Roboter-Episodendaten (Zykluszeiten, Erfolgsraten)
 2. **Simulation (Modul 2):** Diskrete Ereignissimulation (SimPy) eines AutoStore-Lagers
    mit verschiedenen Belegschaftsszenarien
-3. **TCO-Modell (Modul 3):** 5-Jahres-Kapitalwertanalyse (NPV, IRR, Amortisationszeit)
-4. **Dashboard (Modul 4):** Interaktives BI-Dashboard (Tableau Public + Power BI)
+3. **TCO-Modell (Modul 3):** 5-Jahres-Kapitalwertanalyse (NPV, einfache Amortisationszeit; IRR entfällt — reines Kostenmodell ohne Erlöse)
+4. **Dashboard (Modul 4):** Interaktives BI-Dashboard (Tableau Public; CSV-Exporte auch direkt in Power BI importierbar — siehe ADR-0008)
 
 ## Wichtigste Erkenntnisse
 
