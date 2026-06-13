@@ -121,9 +121,9 @@ SCENARIO_COMPOSITIONS: dict[str, dict[str, float]] = {
 
 
 def compute_tco_for_params(
-    n_human: int,
-    n_humanoid: int,
-    n_amr: int = 0,
+    n_human: float,
+    n_humanoid: float,
+    n_amr: float = 0,
     humanoid_capex_eur: float = 120000.0,
     human_wage_eur: float = 18.50,
     human_overhead_mult: float = 1.35,
@@ -195,7 +195,7 @@ def compute_tco_for_params(
         operating_days,
     )
     annual_amr_opex = compute_annual_humanoid_opex(
-        n_amr,
+        n_amr,  # type: ignore[arg-type]
         amr_capex_eur,
         amr_maint_fraction,
         amr_energy_kwh_per_shift,
@@ -209,7 +209,7 @@ def compute_tco_for_params(
 
 
 def _call_with_params(
-    composition: dict[str, int],
+    composition: dict[str, float],
     params: dict[str, float],
 ) -> float:
     """Helper: dispatch a (composition, params) pair into compute_tco_for_params."""

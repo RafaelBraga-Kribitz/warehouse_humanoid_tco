@@ -318,7 +318,7 @@ def compute_tco_scenario(
         operating_days,
     )
     annual_amr_opex = compute_annual_humanoid_opex(
-        n_amr,
+        n_amr,  # type: ignore[arg-type]
         amr_capex_unit,
         amr_maint_fraction,
         amr_energy_kwh,
@@ -446,7 +446,7 @@ def module_03_main(
         baseline_id = "S-baseline-human"
         if baseline_id in sim_df["scenario_id"].to_list():
             b_data = sim_df.filter(pl.col("scenario_id") == baseline_id)
-            b_throughput = float(b_data["throughput_orders_per_shift"].mean() or 0.0)
+            b_throughput: float = b_data["throughput_orders_per_shift"].mean() or 0.0  # type: ignore[assignment]
             b_result = compute_tco_scenario(
                 baseline_id,
                 {"throughput_orders_per_shift": b_throughput},
