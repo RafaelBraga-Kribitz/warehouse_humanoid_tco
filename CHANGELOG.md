@@ -9,6 +9,53 @@ Versions are thematic milestones, not strict semver releases.
 
 ## [Unreleased]
 
+### Fixed (Audit remediation — wiring, realism, and honest framing)
+- **TCO config is now actually wired.** `compute_tco_scenario` read flat keys
+  (`human_hourly_wage_eur` etc.) that did not exist in the nested
+  `config/tco_assumptions.yaml` (`labor.base_hourly_wage_eur`), so every value
+  silently fell back to a hardcoded default — editing the config changed nothing
+  (proven: NPV unchanged after ×5 wage / ×8 capex). Added
+  `module_03_tco.build_financial_params` to map the nested config into the flat
+  key space; the headline NPV table is unchanged (defaults equalled config), but
+  the config now drives the model. Sensitivity ranges/distributions/base-point
+  likewise now come from `config/tco_assumptions.yaml::sensitivity` (replacing a
+  decorative 10-item list the code ignored).
+- **Agent counts are explicit (no silent truncation).** `int(total_agents *
+  fraction)` floored S-hybrid-amr to a 6-unit crew while docs implied 8. Crew
+  sizes are now `config/autostore_baseline.yaml::scenarios.agent_counts`, read by
+  both Module 2 and Module 3; S-hybrid-amr is documented as an intentional
+  6-unit lean crew. Numbers unchanged; the hidden artifact is gone.
+- **Transfer factor reaches the simulation.** The 0.70 WBT→production factor was
+  applied only in the cost model; the SimPy capacity used raw teleoperation-demo
+  speed. It is now applied to the simulated humanoid cycle time. The humanoid
+  cycle time is also selected by an explicit `reference_task`
+  (`pick_medium_object`) instead of "first row with a valid std", which depended
+  on alphabetical sort order and picked `bimanual_handling`. Capacity ceiling
+  updated accordingly (max sustainable 209–979 orders/hr across scenarios).
+- **Honest headline metric.** `tco_scenarios` now carries
+  `total_cost_reduction_vs_baseline_pct` (NPV-based, accounts for capex) alongside
+  the opex-only `cost_reduction_vs_baseline_pct`/`opex_reduction_vs_baseline_pct`.
+  Pure-humanoid is 70% lower on opex but only 3.9% on total cost; README now
+  ranks by total-cost reduction and explains the difference.
+- **S-future-2028 no longer equals S-hybrid-5050 in Monte Carlo.** The throughput
+  multiplier is now applied in `analysis/sensitivity.py`, so the MC mean
+  (€-1.42M) differs from S-hybrid-5050 (€-1.60M) and brackets the deterministic
+  NPV (€-1.40M).
+- **README/QMD/data-lineage de-staled.** OAT tornado figures re-sourced from the
+  report (overhead ±€214K, wage ±€156K, capex ±€79K — not the prior €542K/€388K/
+  €258K; OAT deltas are no longer summed as "combined labor sensitivity").
+  Capacity range corrected (209–979 orders/hr, was 500–1150). Break-even
+  €125,865 → €125,582 (now self-consistent with the cost-per-order artifact).
+  `docs/data_lineage.md` edges/paths/counts corrected (no false `sim → NPV`
+  edge; `analysis/sensitivity.py`; 5 PNGs). `success_rate=1.0` and shared
+  `reach`/`energy` documented as demo-completion / non-differentiating.
+- **Power BI reconciled with ADR-0008.** Removed the orphan
+  `exports/powerbi/data_model_template.json`; README, module_04, QMDs, and the
+  setup guides now state Tableau Public is the single published surface (CSVs
+  import into Power BI; no `.pbix` is shipped/committed). Tornado chart no longer
+  hardcodes the baseline NPV; `models/tco.py` documents that IRR/cumulative
+  payback helpers are a tested API the cost-model pipeline does not use.
+
 ### Fixed
 - **README financial table: S-future-2028 row corrected.** The row previously duplicated S-hybrid-5050's NPV (€-1,576,941), Capex (€532K), and Opex (€1,308,562); only its cost/order (€1.170) was right. Values now match `data/processed/tco_scenarios.parquet` / `exports/tableau_public/tco_scenarios.csv`: NPV €-1,398,599, Capex €409K, Opex €1,238,969. Table re-sorted by NPV so S-future-2028 sits between S-pure-humanoid and S-hybrid-amr.
 - **README sensitivity: MC robustness claim made precise.** The "only scenario whose p95 doesn't overlap the baseline mean" line was imprecise (other scenarios' p95 also clear the baseline mean). Reframed to the distinctive, accurate fact: S-hybrid-amr is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M).

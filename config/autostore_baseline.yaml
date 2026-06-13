@@ -38,6 +38,13 @@ agents:
     capex_eur: 120000              # 2026 market estimate; configurable in tco_assumptions.yaml
     # MTBF / MTTR live in humanoid_operational below (early-deployment rationale)
     energy_kwh_per_shift: 8.0
+    # Which Module-1 task category supplies the humanoid cycle time fed to the
+    # SimPy simulation. An explicit, warehouse-relevant choice (picking is the
+    # modelled warehouse task). Previously the pipeline used "first row with a
+    # non-null std", which silently depended on the alphabetical sort of
+    # category names and selected bimanual_handling — the slowest, two-handed
+    # task. See module_02_simulation._select_humanoid_cycle_time.
+    reference_task: pick_medium_object
 
   amr:
     cycle_time_mean_seconds: 35
@@ -48,30 +55,47 @@ agents:
     mttr_hours: 2
     energy_kwh_per_shift: 4.0
 
+# agent_counts is the single source of truth for how many of each agent type
+# each scenario fields. Both Module 2 (SimPy server capacities — must be
+# integer) and Module 3 (cost model) read these counts directly. They replace
+# the prior `int(total_agents * fraction)` computation, which silently
+# truncated fractional crews: 60/20/20 of 8 floored to 4 + 1 + 1 = 6, not 8,
+# so S-hybrid-amr was actually a 6-unit crew while documentation implied 8.
+# Counts are now explicit and the truncation is gone. The *_fraction fields are
+# retained only as human-readable intent annotations; they are NOT used to size
+# crews. Where a scenario fields fewer than `total_agents` units (S-hybrid-amr),
+# that is an intentional lean-crew design and is disclosed as such — part of its
+# cost advantage comes from fielding fewer total units at the modelled 120
+# orders/hr demand (rho < 1 confirms 6 units suffice).
 scenarios:
   - id: S-baseline-human
     human_fraction: 1.0
     humanoid_fraction: 0.0
     amr_fraction: 0.0
+    agent_counts: {human: 8, humanoid: 0, amr: 0}   # 8 units
   - id: S-pure-humanoid
     human_fraction: 0.0
     humanoid_fraction: 1.0
     amr_fraction: 0.0
+    agent_counts: {human: 0, humanoid: 8, amr: 0}   # 8 units
   - id: S-hybrid-5050
     human_fraction: 0.5
     humanoid_fraction: 0.5
     amr_fraction: 0.0
+    agent_counts: {human: 4, humanoid: 4, amr: 0}   # 8 units
   - id: S-hybrid-amr
     human_fraction: 0.6
     humanoid_fraction: 0.2
     amr_fraction: 0.2
+    agent_counts: {human: 4, humanoid: 1, amr: 1}   # 6 units — lean mixed crew
   - id: S-future-2028
     human_fraction: 0.5
     humanoid_fraction: 0.5
     amr_fraction: 0.0
     humanoid_throughput_multiplier: 1.30
+    agent_counts: {human: 4, humanoid: 4, amr: 0}   # 8 units
 
-total_agents: 8                    # total workforce units per scenario
+total_agents: 8                    # nominal workforce budget per scenario (see agent_counts)
 
 capability_transfer:
   # WBT demos are human-teleoperated at demonstration speed.

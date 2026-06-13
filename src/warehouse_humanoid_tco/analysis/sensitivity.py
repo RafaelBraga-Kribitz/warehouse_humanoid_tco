@@ -22,6 +22,7 @@ from typing import Any
 
 import numpy as np
 import polars as pl
+import yaml
 
 from warehouse_humanoid_tco.models.tco import (
     compute_annual_humanoid_opex,
@@ -89,13 +90,33 @@ def monte_carlo(
 
 TRANSFER_FACTOR_BASELINE = 0.70  # See config/autostore_baseline.yaml::capability_transfer
 
-# Fixed agent composition per scenario (total_agents=8). Source: config/autostore_baseline.yaml
-SCENARIO_COMPOSITIONS: dict[str, dict[str, int]] = {
-    "S-baseline-human": {"n_human": 8, "n_humanoid": 0, "n_amr": 0},
-    "S-pure-humanoid": {"n_human": 0, "n_humanoid": 8, "n_amr": 0},
-    "S-hybrid-5050": {"n_human": 4, "n_humanoid": 4, "n_amr": 0},
-    "S-hybrid-amr": {"n_human": 4, "n_humanoid": 1, "n_amr": 1},
-    "S-future-2028": {"n_human": 4, "n_humanoid": 4, "n_amr": 0},
+
+def _load_sensitivity_config(project_root: Path) -> dict:
+    """Load the `sensitivity` block from config/tco_assumptions.yaml.
+
+    Returns {} if the file or block is absent (callers fall back to literals).
+    """
+    path = project_root / "config" / "tco_assumptions.yaml"
+    if not path.exists():
+        return {}
+    try:
+        cfg = yaml.safe_load(path.read_text()) or {}
+    except yaml.YAMLError:
+        return {}
+    sens = cfg.get("sensitivity")
+    return sens if isinstance(sens, dict) else {}
+
+
+# Fixed agent composition per scenario. Source: config/autostore_baseline.yaml
+# (agent_counts). `throughput_multiplier` mirrors the TCO pipeline's F-034
+# adjustment so S-future-2028 (next-gen humanoids 30% faster) is NOT identical
+# to S-hybrid-5050 in the Monte-Carlo output (audit Risk #6).
+SCENARIO_COMPOSITIONS: dict[str, dict[str, float]] = {
+    "S-baseline-human": {"n_human": 8, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-pure-humanoid": {"n_human": 0, "n_humanoid": 8, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-hybrid-5050": {"n_human": 4, "n_humanoid": 4, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-hybrid-amr": {"n_human": 4, "n_humanoid": 1, "n_amr": 1, "throughput_multiplier": 1.0},
+    "S-future-2028": {"n_human": 4, "n_humanoid": 4, "n_amr": 0, "throughput_multiplier": 1.30},
 }
 
 
@@ -108,6 +129,7 @@ def compute_tco_for_params(
     human_overhead_mult: float = 1.35,
     discount_rate: float = 0.08,
     transfer_factor: float = TRANSFER_FACTOR_BASELINE,
+    throughput_multiplier: float = 1.0,
     years: int = 5,
     operating_days: int = 252,
     shift_hours: float = 8.0,
@@ -141,6 +163,11 @@ def compute_tco_for_params(
         )
     transfer_multiplier = TRANSFER_FACTOR_BASELINE / transfer_factor
     eff_humanoid = n_humanoid * transfer_multiplier
+    # F-034 parity: a next-gen throughput multiplier means the same throughput
+    # needs fewer effective humanoid units (less capex/opex). Mirrors the TCO
+    # pipeline so S-future-2028 differs from S-hybrid-5050 under MC (Risk #6).
+    if throughput_multiplier > 0:
+        eff_humanoid = eff_humanoid / throughput_multiplier
 
     humanoid_capex_total = compute_humanoid_capex(
         eff_humanoid,  # type: ignore[arg-type]
@@ -190,6 +217,7 @@ def _call_with_params(
         n_human=composition["n_human"],
         n_humanoid=composition["n_humanoid"],
         n_amr=composition["n_amr"],
+        throughput_multiplier=float(composition.get("throughput_multiplier", 1.0)),
         humanoid_capex_eur=float(params.get("humanoid_capex_eur", 120000.0)),
         human_wage_eur=float(params.get("human_wage_eur", 18.50)),
         human_overhead_mult=float(params.get("human_overhead_mult", 1.35)),
@@ -436,8 +464,13 @@ def run_sensitivity_analysis(
 
     print("[Sensitivity] Running OAT + Monte Carlo analysis...")
 
-    # Base parameter point estimates (used as OAT pivot)
-    base_params = {
+    # Base point, OAT ranges, and MC distributions are read from
+    # config/tco_assumptions.yaml::sensitivity (audit Risk #18 — the config is
+    # now the source of truth, not decorative). The literals below are last-resort
+    # fallbacks only, equal to the config values, for configs lacking the block.
+    sens_cfg = _load_sensitivity_config(project_root)
+
+    base_params = sens_cfg.get("base_point") or {
         "humanoid_capex_eur": 120000.0,
         "human_wage_eur": 18.50,
         "human_overhead_mult": 1.35,
@@ -445,25 +478,21 @@ def run_sensitivity_analysis(
         "transfer_factor": TRANSFER_FACTOR_BASELINE,
     }
 
-    # OAT parameter ranges. Wage range is the actual WKO Spedition & Lagereibetriebe
-    # collective agreement bracket (BG-III 2025/26) — see config/tco_assumptions.yaml.
-    # Other ranges are documented stress-test bands around the point estimates.
+    oat_cfg = sens_cfg.get("oat") or {
+        "humanoid_capex_eur": [60000, 180000],
+        "human_wage_eur": [15.13, 22.00],
+        "human_overhead_mult": [1.0, 1.7],
+        "discount_rate": [0.04, 0.12],
+        "transfer_factor": [0.50, 0.90],
+    }
     param_ranges: dict[str, tuple[float, float]] = {
-        "humanoid_capex_eur": (60000, 180000),
-        "human_wage_eur": (15.13, 22.00),
-        "human_overhead_mult": (1.0, 1.7),
-        "discount_rate": (0.04, 0.12),
-        "transfer_factor": (0.50, 0.90),
+        k: (float(v[0]), float(v[1])) for k, v in oat_cfg.items()
     }
 
-    # MC distributions — continuous parameters only (agent counts fixed per scenario).
-    # humanoid_capex_eur uses lognormal (F-031): the prior Normal(120k, 30k) allowed
-    # negative draws (P ≈ 4e-5 per sample → ~0.4 negative draws per 10k-sample run).
-    # Lognormal is strictly positive, right-skewed (matches the real shape of capex
-    # surprises — occasional very expensive units), and preserves the same target
-    # mean and std exactly. See _sample_params for the algebra; same approach as
-    # ADR-0010 for service-time sampling.
-    param_distributions: dict[str, dict] = {
+    # MC distributions — continuous parameters only (agent counts fixed per
+    # scenario). humanoid_capex_eur uses lognormal (F-031): strictly positive,
+    # right-skewed, preserving the target mean/std exactly. See _sample_params.
+    param_distributions: dict[str, dict] = sens_cfg.get("monte_carlo") or {
         "humanoid_capex_eur": {"type": "lognormal", "mean": 120000, "std": 30000},
         "human_wage_eur": {"type": "normal", "mean": 18.50, "std": 2.0},
         "human_overhead_mult": {"type": "uniform", "low": 1.0, "high": 1.7},

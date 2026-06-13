@@ -1,6 +1,8 @@
 # Dashboard Setup Guide
 
-Complete guide for creating Tableau Public and Power BI dashboards from module outputs.
+Complete guide for building the dashboard from module outputs. Tableau Public is
+the single published surface (per ADR-0008); the Power BI section below is an
+optional user-side path using the same CSV exports — no `.pbix` is shipped.
 
 ## Tableau Public (Recommended for Portfolio)
 

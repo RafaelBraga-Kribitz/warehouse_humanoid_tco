@@ -41,24 +41,31 @@ infrastructure:
   integration_cost_eur: 200000     # one-time system integration
   integration_cost_range: [100000, 400000]
 
-sensitivity_parameters:
-  - name: labor_base_hourly_wage_eur
-    range: [15.13, 22.00]  # WKO Spedition & Lagereibetriebe BG-III 2025/26 bracket
-  - name: humanoid_unit_capex_eur
-    range: [80000, 200000]
-  - name: annual_wage_growth_rate
-    range: [0.01, 0.05]
-  - name: discount_rate
-    range: [0.04, 0.12]
-  - name: humanoid_useful_life_years
-    range: [4, 10]
-  - name: humanoid_annual_maintenance_fraction
-    range: [0.04, 0.15]
-  - name: energy_cost_eur_per_kwh
-    range: [0.15, 0.35]
-  - name: financing_rate
-    range: [0.02, 0.08]
-  - name: training_cost_per_humanoid_eur
-    range: [2000, 10000]
-  - name: humanoid_throughput_multiplier
-    range: [0.70, 1.50]
+# Sensitivity analysis specification — the SINGLE SOURCE OF TRUTH for the OAT
+# ranges and Monte-Carlo distributions used by analysis/sensitivity.py.
+#
+# The previous `sensitivity_parameters` block listed ten parameters (some of
+# which — useful_life, financing_rate, wage_growth — the model never sampled)
+# while the code hardcoded a different five. The config was decorative. This
+# block lists exactly the five continuous parameters the model actually varies,
+# and analysis/sensitivity.py reads its ranges/distributions from here. Editing
+# a value here changes the sensitivity outputs.
+sensitivity:
+  oat:                       # one-at-a-time sweep ranges (min, max)
+    humanoid_capex_eur: [60000, 180000]
+    human_wage_eur: [15.13, 22.00]      # WKO Spedition & Lagereibetriebe BG-III 2025/26 bracket
+    human_overhead_mult: [1.0, 1.7]
+    discount_rate: [0.04, 0.12]
+    transfer_factor: [0.50, 0.90]       # WBT->production capability transfer
+  monte_carlo:               # per-parameter distribution for the 10k-sample MC
+    humanoid_capex_eur: {type: lognormal, mean: 120000, std: 30000}
+    human_wage_eur: {type: normal, mean: 18.50, std: 2.0}
+    human_overhead_mult: {type: uniform, low: 1.0, high: 1.7}
+    discount_rate: {type: uniform, low: 0.04, high: 0.12}
+    transfer_factor: {type: uniform, low: 0.50, high: 0.90}
+  base_point:                # OAT pivot / central estimate
+    humanoid_capex_eur: 120000.0
+    human_wage_eur: 18.50
+    human_overhead_mult: 1.35
+    discount_rate: 0.08
+    transfer_factor: 0.70

@@ -1,5 +1,10 @@
 # Power BI Dashboard Setup Guide
 
+> **Status (ADR-0008):** Power BI is an **optional, user-side** path. The single
+> *published* dashboard surface for v1.0 is Tableau Public; no `.pbix` is built
+> or committed to this repository. This guide is a convenience for users who
+> prefer to import the same CSVs into Power BI.
+
 This guide explains how to create a Power BI dashboard from the exported CSV data.
 
 ## Data Files
@@ -96,8 +101,9 @@ On each page, add a slicer for:
 ### 7. Save as .pbix
 
 - **File > Save**
-- Save to `warehouse_humanoid_tco.pbix` in the repo root
-- Commit to git: `git add warehouse_humanoid_tco.pbix`
+- Save the `.pbix` locally for your own use
+- **Do not commit the `.pbix` to this repository** — per ADR-0008 the repo ships
+  one dashboard surface (Tableau Public + the CSV exports), not a `.pbix`.
 
 ## Alternative: Use Power BI Template File
 

@@ -28,9 +28,16 @@ def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
         },
         "agents": {
             "human": {"cycle_time_mean_seconds": 25.0, "cycle_time_std_seconds": 5.0},
-            "humanoid": {"cycle_time_mean_seconds": 30.0, "cycle_time_std_seconds": 8.0},
+            "humanoid": {
+                "cycle_time_mean_seconds": 30.0,
+                "cycle_time_std_seconds": 8.0,
+                # Explicit reference task matches the synthetic capability summary
+                # used by test_module02_main_with_capability_summary.
+                "reference_task": "pick_small_object",
+            },
             "amr": {"cycle_time_mean_seconds": 35.0, "cycle_time_std_seconds": 5.0},
         },
+        "capability_transfer": {"wbt_to_production_factor": {"point_estimate": 1.0}},
         "scenarios": [
             {
                 "id": "S-baseline-human",

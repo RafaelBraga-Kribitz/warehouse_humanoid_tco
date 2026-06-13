@@ -159,7 +159,7 @@ The README `### Dashboards` section links the published workbook:
 ### Dashboards
 
 - **[Tableau Public Dashboard](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1)** — Interactive TCO, simulation, and capabilities analysis
-- **Power BI:** exported data ready for `.pbix` creation ([`exports/tableau_public/`](./exports/tableau_public/))
+- The same CSV exports import directly into Power BI Desktop (one surface, per ADR-0008).
 ```
 
 ## Maintenance & Updates
