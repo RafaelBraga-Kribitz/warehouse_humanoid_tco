@@ -27,6 +27,10 @@ Extracts humanoid robot task capabilities from the open Unitree UnifoLM-WBT data
 git clone https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco.git
 cd warehouse_humanoid_tco
 
+# Fetch the raw datasets (Git-LFS-backed). Without this, data/raw/ holds only
+# LFS pointer files and `make all` fails closed at Module 1 (0 episodes).
+git lfs install && git lfs pull
+
 # Install dependencies (one-time)
 uv venv .venv
 source .venv/bin/activate

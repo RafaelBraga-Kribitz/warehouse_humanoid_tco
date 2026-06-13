@@ -516,11 +516,22 @@
       "status": "closed_historical",
       "title": "PROJECT_CHARTER.md \u00a711 Change Log \u2014 historical migration record",
       "verification_script": null
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": "2026-06-13",
+      "id": "F-101",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-06-13",
+      "path": "governance/findings/F-101.yaml",
+      "status": "closed",
+      "title": "Module 1 fails open \u2014 reports success on 0 episodes when raw data is unavailable",
+      "verification_script": "tests/governance/test_f101_module01_fails_closed_on_empty.py"
     }
   ],
-  "generated_at": "2026-06-13T07:18:14.413639+00:00",
-  "git_branch": "claude/quirky-carson-j7dnkn",
-  "git_head_sha": "1ca91310870bc7938c962ff8b2fc6339315482ed",
+  "generated_at": "2026-06-13T12:54:05.886426+00:00",
+  "git_branch": "claude/youthful-mccarthy-uhgr4q",
+  "git_head_sha": "191fbcb2e76fb7b8ead3cb099c42df33336002c3",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -532,11 +543,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 46,
+    "findings_closed": 47,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 0,
-    "findings_total": 47,
+    "findings_total": 48,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,

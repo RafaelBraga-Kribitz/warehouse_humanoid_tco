@@ -1,0 +1,46 @@
+id: F-101
+title: "Module 1 fails open — reports success on 0 episodes when raw data is unavailable"
+category: fake_completion
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-06-13
+closed_at: 2026-06-13
+recurrence_count: 0
+evidence: |
+  src/.../pipelines/module_01_capability_extraction.py extracted 0 episodes yet
+  printed "✓ Module 1 complete. 0 episodes" + "✓ Success" and exited 0, writing
+  an empty validation report.
+
+  Root cause (data acquisition): data/raw/**/*.parquet are Git-LFS pointer files
+  (133-byte `version https://git-lfs.github.com/spec/v1 ...` stubs). When the
+  clone has no `git lfs pull` AND HuggingFace egress is blocked, extraction reads
+  zero real episodes. The downstream guards (`if len(per_episode) > 0`) tolerated
+  the empty frame, so the module fell through to a success report.
+
+  Reproduced: `python -m warehouse_humanoid_tco.pipelines.module_01_capability_extraction`
+  in a no-LFS / no-egress container → "✓ Success. 0 episodes" (exit 0), then
+  `module_03_tco_report.json` / module_04 produce empty or missing artifacts.
+
+  This directly undercuts PROJECT_CHARTER.md §3.3 Success Criterion #1
+  ("stranger clones repo, runs `make all`, reproduces every artifact") and is the
+  exact fake-completion failure mode the governance suite already guards against
+  elsewhere (test_f007_no_fake_completion.py). git-lfs was also undocumented as a
+  clone precondition (no mention in README/CHARTER/CONTRIBUTING/docs).
+verification_script: tests/governance/test_f101_module01_fails_closed_on_empty.py
+notes: |
+  Closed by:
+  1. Added `require_episodes_extracted(n_episodes, n_datasets)` to
+     module_01_capability_extraction.py and invoked it immediately after
+     `per_episode` is built. It raises RuntimeError (caught by __main__ →
+     sys.exit(1)) when 0 episodes are extracted, with a message pointing at
+     `git lfs install && git lfs pull` / HuggingFace egress.
+  2. README quick-start now documents the Git-LFS precondition before `make all`.
+
+  Verification (tests/governance/test_f101_module01_fails_closed_on_empty.py):
+    - behavioural: require_episodes_extracted(0, n) raises; (>0, n) does not;
+    - wiring: module_01 actually invokes the guard (symbol-call regex, not a
+      comment), so a silent revert that defines-but-never-calls it regresses.
+
+  Deliberately NOT hard-coding the 2,359-episode count as a floor (that would
+  couple the contract to one dataset); the guard asserts n_episodes > 0. CI runs
+  with real data, so the guard is a no-op there and the pipeline is unaffected.
