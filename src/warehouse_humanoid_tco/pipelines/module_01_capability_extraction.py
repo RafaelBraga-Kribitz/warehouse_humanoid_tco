@@ -26,6 +26,29 @@ from warehouse_humanoid_tco.features.extraction import extract_dataset_episodes
 from warehouse_humanoid_tco.features.taxonomy import classify_task
 
 
+def require_episodes_extracted(n_episodes: int, n_datasets: int) -> None:
+    """Fail closed when capability extraction yields zero episodes.
+
+    Module 1 reads Git-LFS-backed raw parquet under ``data/raw/``. If the clone
+    holds only LFS pointer files (no ``git lfs pull``) and HuggingFace is
+    unreachable, extraction silently yields 0 episodes. Without this guard the
+    module would write empty outputs and still print "success" — a fake
+    completion (F-101) that produces empty downstream simulations and
+    dashboards. Fail loudly instead, pointing at the data-acquisition
+    precondition.
+
+    Raises:
+        RuntimeError: when ``n_episodes <= 0``.
+    """
+    if n_episodes <= 0:
+        raise RuntimeError(
+            f"Capability extraction produced 0 episodes from {n_datasets} "
+            "dataset(s). Raw data is Git-LFS-backed: run "
+            "`git lfs install && git lfs pull` (or enable HuggingFace network "
+            "access) before `make all`. Refusing to write empty outputs."
+        )
+
+
 def module_01_main(
     project_root: Path,
     derisk_report_path: Path | None = None,
@@ -136,6 +159,9 @@ def module_01_main(
         per_episode = pl.concat(normalized, how="diagonal")
     else:
         per_episode = pl.DataFrame()
+
+    # Fail closed: a 0-episode extraction must not masquerade as success (F-101).
+    require_episodes_extracted(len(per_episode), len(all_episodes))
 
     if len(per_episode) > 0:
         per_episode = per_episode.with_columns(
