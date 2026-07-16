@@ -194,12 +194,14 @@ def test_module_01_skips_missing_sha_and_failed_extract(tmp_path: Path) -> None:
         encoding="utf-8",
     )
 
-    with patch(
-        "warehouse_humanoid_tco.pipelines.module_01_capability_extraction.extract_dataset_episodes",
-        side_effect=RuntimeError("corrupt parquet"),
+    with (
+        patch(
+            "warehouse_humanoid_tco.pipelines.module_01_capability_extraction.extract_dataset_episodes",
+            side_effect=RuntimeError("corrupt parquet"),
+        ),
+        pytest.raises(RuntimeError, match="0 episodes"),
     ):
-        with pytest.raises(RuntimeError, match="0 episodes"):
-            module_01_main(tmp_path, derisk_report_path=derisk, skip_download=True)
+        module_01_main(tmp_path, derisk_report_path=derisk, skip_download=True)
 
 
 def test_scale_line_and_availability_reject_nonpositive() -> None:

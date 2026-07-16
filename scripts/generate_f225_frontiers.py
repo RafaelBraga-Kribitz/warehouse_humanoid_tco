@@ -183,7 +183,10 @@ def main() -> None:
     report = json.loads(report_path.read_text())
     report.update(variance_proxy())
     report["decision_flip_thresholds"] = {
-        "definition": "Thresholds compare scenario cost at all other base assumptions; positive NPV is lower cost.",
+        "definition": (
+            "Thresholds compare scenario cost at all other base assumptions; "
+            "positive NPV is lower cost."
+        ),
         "S-lean-human": {
             "status": "cheapest across the published robot frontier grid",
             "base_npv_eur": npv("S-lean-human"),
@@ -194,7 +197,9 @@ def main() -> None:
         },
         "S-hybrid-amr": {
             "integration_cost_eur": 200_000,
-            "interpretation": "The F-222 integration cost is retained; it prevents a robot ranking claim.",
+            "interpretation": (
+                "The F-222 integration cost is retained; it prevents a robot ranking claim."
+            ),
         },
     }
     report_path.write_text(json.dumps(report, indent=2) + "\n")

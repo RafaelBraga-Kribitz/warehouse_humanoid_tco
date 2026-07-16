@@ -12,8 +12,9 @@
       "transfer_factor_sampled",
       "humanoid_supervision_ratio_sampled"
     ],
-    "sha256": "fc83d488b95313b4f85bb62a34065ea726a21e08c4f78e9ae53cf978d1049bc5",
-    "finding": "F-237"
+    "sha256": "27a27fc9aa762635f98cc6356e5eab970710a7e2777aca1bcb3738df4712fb7a",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/sensitivity_oat_results.parquet": {
     "rows": 66,
@@ -25,8 +26,9 @@
       "delta_vs_base",
       "normalised_elasticity"
     ],
-    "sha256": "7c25116fe6fde564ed69d1710a35a60db06d6eb8ce84b5b550c232c141858803",
-    "finding": "F-237"
+    "sha256": "64f10d87f3683e2f10d937f827011b8e68292452b58f0c62300e08ff3f76c5d1",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/humanoid_capabilities_summary.parquet": {
     "rows": 4,
@@ -43,8 +45,9 @@
       "success_rate",
       "insufficient_sample"
     ],
-    "sha256": "00f6d3ad62dd712a1ae70a9d279edd6642b44e97e870f2ed47d1e0bece2cbcd4",
-    "finding": "F-221"
+    "sha256": "a5e8b12a18b8cfea5e294b0177586ef4ad062aa41f0c120a16d5d45a0077aeac",
+    "finding": "F-221",
+    "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/simulation_runs.parquet": {
     "rows": 90,
@@ -60,8 +63,9 @@
       "utilization_humanoid",
       "utilization_amr"
     ],
-    "sha256": "5075a1b15c66a733720de72350fa19ba8ca4f73dadab305824375de15c2725b4",
-    "finding": "F-237"
+    "sha256": "627b34c3222325ec064db5b84282c50fc4dba8605c39603e531aa281903cfd31",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/tco_scenarios.parquet": {
     "rows": 6,
@@ -83,8 +87,9 @@
       "throughput_std_orders_per_shift",
       "total_cost_reduction_vs_baseline_pct"
     ],
-    "sha256": "a77e7c2a423b3771c4c47448965005d66654c8005c1881ec8ec1ff01c0892c23",
-    "finding": "F-237"
+    "sha256": "6b51bb51fbe0b4d09712d2a6309b9d3bcd5a482e15082bd044cee964df7eae46",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/simulation_capacity_ceiling.parquet": {
     "rows": 6,
@@ -100,7 +105,8 @@
       "observed_throughput_std",
       "n_runs_at_ceiling"
     ],
-    "sha256": "a97abac9fdccfd9c9c7c0b8ba2b0d5e3f781a00f650cc65ef5e5104a7563d7bd",
-    "finding": "F-237"
+    "sha256": "90ca553bfef2d1cbe89b2588e5bc4577e0da34ac0d251f29d2e8a1cf6059a91c",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
   }
 }

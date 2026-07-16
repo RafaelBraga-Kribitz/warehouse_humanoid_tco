@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Iterable
 from itertools import product
-import json
 from pathlib import Path
 from typing import Any
 
@@ -357,7 +357,9 @@ def generate_demand_frontier(project_root: Path) -> dict[str, Path]:
     report_path.write_text(
         json.dumps(
             {
-                "methodology": "Deterministic crew optimization over demand and separately staffed shifts.",
+                "methodology": (
+                    "Deterministic crew optimization over demand and separately staffed shifts."
+                ),
                 "lambda_per_hour": lambdas,
                 "shifts": shifts,
                 "night_shift_premium": night_premium,

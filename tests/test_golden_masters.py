@@ -13,6 +13,18 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 GOLDENS = json.loads((REPO_ROOT / "tests" / "golden" / "golden_masters.json").read_text())
 
 
+def _content_sha256(path: Path) -> str:
+    """Hash logical row content so pins survive cross-platform Parquet encodings."""
+    frame = pl.read_parquet(path)
+    payload = json.dumps(
+        frame.to_dicts(),
+        sort_keys=True,
+        default=str,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 @pytest.mark.parametrize("relative_path,expected", GOLDENS.items())
 def test_processed_parquet_matches_golden_master(
     relative_path: str, expected: dict[str, object]
@@ -25,7 +37,7 @@ def test_processed_parquet_matches_golden_master(
     frame = pl.read_parquet(path)
     assert frame.height == expected["rows"]
     assert frame.columns == expected["columns"]
-    assert hashlib.sha256(path.read_bytes()).hexdigest() == expected["sha256"]
+    assert _content_sha256(path) == expected["sha256"]
 
 
 @pytest.mark.parametrize(

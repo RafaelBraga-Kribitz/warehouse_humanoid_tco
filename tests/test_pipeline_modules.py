@@ -25,7 +25,8 @@ def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
         "operations": {
             "shift_hours": 0.05,  # very short for test speed
             "order_arrival_rate_per_hour": 60.0,
-            "pick_lines_per_order": 1.0,  # F-237: required; 1.0 keeps fixture cycle times as written
+            # F-237: required; 1.0 keeps fixture cycle times as written
+            "pick_lines_per_order": 1.0,
         },
         "agents": {
             "human": {"cycle_time_mean_seconds": 25.0, "cycle_time_std_seconds": 5.0},
