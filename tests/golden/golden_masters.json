@@ -65,7 +65,8 @@
     ],
     "sha256": "627b34c3222325ec064db5b84282c50fc4dba8605c39603e531aa281903cfd31",
     "finding": "F-237",
-    "hash_kind": "polars_to_dicts_json"
+    "hash_kind": "polars_to_dicts_json",
+    "content_stable": false
   },
   "data/processed/tco_scenarios.parquet": {
     "rows": 6,

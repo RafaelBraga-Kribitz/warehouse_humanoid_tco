@@ -135,7 +135,7 @@ def _counts_key(counts: dict[str, int]) -> tuple[int, int, tuple[int, int, int]]
     return (
         sum(counts.values()),
         counts["humanoid"],
-        tuple(counts[agent_type] for agent_type in _AGENT_TYPES),
+        (counts["human"], counts["humanoid"], counts["amr"]),
     )
 
 
@@ -198,14 +198,16 @@ def optimize_crew(
     feasible: list[dict[str, Any]] = []
 
     for count_values in product(*count_ranges):
-        counts = dict(zip(_AGENT_TYPES, count_values, strict=True))
+        counts: dict[str, int] = dict(zip(_AGENT_TYPES, count_values, strict=True))
         total_units = sum(counts.values())
         if total_units == 0:
             continue
         # ADR-0017: reject pure-AMR crews even when amr is an allowed technology.
         if counts["amr"] > 0 and counts["human"] == 0 and counts["humanoid"] == 0:
             continue
-        if require_each_policy_class and any(counts[agent_type] == 0 for agent_type in allowed):
+        if require_each_policy_class and any(
+            counts.get(agent_type, 0) == 0 for agent_type in allowed
+        ):
             continue
 
         class_rho = {

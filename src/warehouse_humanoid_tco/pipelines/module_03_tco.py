@@ -575,17 +575,16 @@ def module_03_main(
     print("\n[TCO] Computing financial metrics per scenario...")
 
     tco_results = []
-    baseline_annual_opex: float | None = None
-    baseline_npv: float | None = None
+    baseline_annual_opex = 0.0
+    baseline_npv = 0.0
 
     if len(sim_df) > 0:
         # Compute the baseline first so cost-reduction/payback are measured
         # against the live configuration rather than a frozen fallback.
         baseline_id = "S-baseline-human"
         b_data = sim_df.filter(pl.col("scenario_id") == baseline_id)
-        b_throughput: float = (
-            b_data["throughput_orders_per_shift"].mean() if len(b_data) else 0.0
-        ) or 0.0
+        raw_baseline_mean = b_data["throughput_orders_per_shift"].mean() if len(b_data) else 0.0
+        b_throughput = float(raw_baseline_mean or 0.0)  # type: ignore[arg-type]
         baseline_composition = compositions.get(
             baseline_id,
             {
@@ -604,14 +603,14 @@ def module_03_main(
             discount_rate=discount_rate,
             composition=baseline_composition,
         )
-        baseline_annual_opex = b_result["total_opex_5yr_eur_nominal"] / years
-        baseline_npv = b_result["npv_eur"]
+        baseline_annual_opex = float(b_result["total_opex_5yr_eur_nominal"]) / years
+        baseline_npv = float(b_result["npv_eur"])
 
         for scenario_id in sorted(sim_df.select(pl.col("scenario_id").unique()).to_series()):
             scenario_data = sim_df.filter(pl.col("scenario_id") == scenario_id)
             col = scenario_data["throughput_orders_per_shift"]
-            throughput_mean: float = col.mean() or 0.0  # type: ignore[assignment]
-            throughput_std: float = col.std() or 0.0  # type: ignore[assignment]
+            throughput_mean = float(col.mean() or 0.0)  # type: ignore[arg-type]
+            throughput_std = float(col.std() or 0.0)  # type: ignore[arg-type]
             result = compute_tco_scenario(
                 scenario_id,
                 {"throughput_orders_per_shift": throughput_mean},
