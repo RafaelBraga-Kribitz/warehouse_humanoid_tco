@@ -1,6 +1,6 @@
 # warehouse_humanoid_tco
 
-<!-- F-201: hero banner removed until user-supplied Figma file arrives (typo'd AI banner retired). -->
+![Hero Banner](./docs/assets/hero-banner-v2.png)
 
 [![CI](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml)
 [![Reproducibility](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/reproducibility.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/reproducibility.yml)
@@ -103,6 +103,27 @@ The biggest surprise was how much the sensitivity analysis depends on headcount 
 
 The second surprise was the 3× variance in cycle time across task categories in the real UnifoLM data — pick tasks are far noisier than place tasks, which makes the hybrid-AMR advantage fragile in some scenarios. With more time I would calibrate against actual Knapp throughput benchmarks rather than public estimates, and add a proper learning curve for humanoid performance over the first 12 months of deployment.
 
+## Author
+
+<table>
+  <tr>
+    <td width="110">
+      <img
+        src="docs/assets/Author_MDS_Rafael_Braga-Kribitz_kroped.png"
+        alt="Rafael Braga-Kribitz"
+        width="96"
+      />
+    </td>
+    <td>
+      <strong>Rafael Braga-Kribitz</strong><br />
+      Seiersberg-Pirka, Austria · Portfolio project, 2026<br />
+      <a href="https://www.linkedin.com/in/rafaelbragakribitz/">LinkedIn</a>
+      ·
+      <a href="mailto:rafaelbragakribitz@gmail.com">rafaelbragakribitz@gmail.com</a>
+    </td>
+  </tr>
+</table>
+
 ## License
 
-[MIT](./LICENSE) · **Author:** Rafael Braga-Kribitz, Seiersberg-Pirka, Austria · 2026
+[MIT](./LICENSE)
