@@ -25,9 +25,9 @@ baseline on five-year NPV.
 **Decision rule:** At least one non-baseline, non-lean-human row has
 `total_cost_reduction_vs_baseline_pct > 0`.
 
-**VERDICT H2: REJECTED —** After F-237 pick-lines scaling, every robot-inclusive
-crew is costlier than the eight-human baseline (S-future-2028 is −46.7%
-total-cost reduction)
+**VERDICT H2: SUPPORTED —** After F-241, S-lean-hybrid-amr (1 human + 3 AMRs)
+beats the eight-human baseline by 73.8% total-cost reduction; humanoid-inclusive
+crews remain costlier than the baseline
 [exports/tableau_public/tco_scenarios.csv::total_cost_reduction_vs_baseline_pct].
 
 ## H3 — Current-capex pure-humanoid parity
@@ -38,8 +38,8 @@ total-cost reduction)
 the current unit capex (€120,000), leaving non-negative headroom.
 
 **VERDICT H3: REJECTED —** The €56,446 breakeven versus the legacy baseline is
-below €120,000 current capex, and versus right-sized lean-human staffing no
-breakeven exists anywhere in the searched €10K–€500K capex range
+below €120,000 current capex, and versus S-lean-hybrid-amr no breakeven exists
+anywhere in the searched €10K–€500K capex range
 (`vs_lean_human.no_breakeven_in_search_range: true` — capex is not the binding
 constraint) [reports/module_03_tco_report.json::breakeven_thresholds].
 
@@ -51,6 +51,6 @@ uncertainty after F-237 service-time scaling.
 **Decision rule:** The MC-winning scenario's p5 NPV is greater than the
 baseline mean NPV.
 
-**VERDICT H4: SUPPORTED —** S-lean-human wins 100% of Monte Carlo samples; its
-p5 NPV (€−872,829) is better than the baseline mean (€−1.73M)
+**VERDICT H4: SUPPORTED —** S-lean-hybrid-amr wins 99.8% of Monte Carlo samples;
+its p5 NPV (€−537,549) is better than the baseline mean (€−1.74M)
 [reports/sensitivity_analysis_report.json::mc_summary_per_scenario].

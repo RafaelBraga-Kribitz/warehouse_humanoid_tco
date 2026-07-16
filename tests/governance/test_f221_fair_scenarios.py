@@ -97,10 +97,10 @@ def test_f221_artifacts_document_the_new_headline() -> None:
     goldens = json.loads((ROOT / "tests" / "golden" / "golden_masters.json").read_text())
     fixed = (
         (ROOT / "reports" / "executive_charts" / "06_effect_decomposition.png").exists()
-        and "S-lean-human is cheapest" in readme
+        and "S-lean-hybrid-amr is cheapest" in readme
         and "Old headline" in adr
         and "New headline" in adr
-        and goldens["data/processed/tco_scenarios.parquet"]["finding"] == "F-237"
-        and goldens["data/processed/simulation_capacity_ceiling.parquet"]["finding"] == "F-237"
+        and goldens["data/processed/tco_scenarios.parquet"]["finding"] == "F-241"
+        and goldens["data/processed/simulation_capacity_ceiling.parquet"]["finding"] == "F-241"
     )
     ratchet("F-221", fixed=fixed, gap_msg="fair-scenario outputs or evidence are incomplete")

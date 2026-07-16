@@ -234,7 +234,8 @@ def compute_breakeven_thresholds(
             "current_capex_eur_per_unit": round(original_capex, 0),
             "methodology": (
                 "Binary search on capex to find where pure-humanoid cost_per_order "
-                "= S-lean-human cost_per_order (F-237 decision trigger)"
+                "= S-lean-hybrid-amr cost_per_order (F-241 decision trigger; "
+                "JSON key vs_lean_human retained for F-210 claim path)"
             ),
         }
     return out
@@ -671,7 +672,9 @@ def module_03_main(
         )
         if baseline_result and pure_humanoid_result:
             baseline_cost_per_order = baseline_result.get("cost_per_order_eur", 0.0)
-            lean_result = next((r for r in tco_results if r["scenario_id"] == "S-lean-human"), None)
+            lean_result = next(
+                (r for r in tco_results if r["scenario_id"] == "S-lean-hybrid-amr"), None
+            )
             if baseline_cost_per_order > 0:
                 lean_cpo = lean_result.get("cost_per_order_eur") if lean_result else None
                 # Approximate lean annual opex from nominal 5yr / years for payback helper.

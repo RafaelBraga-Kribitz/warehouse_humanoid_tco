@@ -6,7 +6,7 @@ This guide walks through creating three interconnected dashboards for the humano
 
 **Data Source:** CSV files in `exports/tableau_public/`:
 - `tco_scenarios.csv` — 5 scenarios, NPV results
-- `simulation_runs.csv` — 90 simulation runs (15 per scenario × 6 scenarios)
+- `simulation_runs.csv` — 105 simulation runs (15 per scenario × 7 scenarios)
 - `humanoid_capabilities_summary.csv` — Task-level humanoid capabilities
 
 **Target Dashboards:**

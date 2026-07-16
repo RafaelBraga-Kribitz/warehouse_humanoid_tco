@@ -88,7 +88,11 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         scenarios,
         costs,
         color=[
-            RECOMMENDED if s == "S-lean-human" else BASELINE if s == "S-baseline-human" else OTHER
+            RECOMMENDED
+            if s == "S-lean-hybrid-amr"
+            else BASELINE
+            if s == "S-baseline-human"
+            else OTHER
             for s in scenarios
         ],
     )
@@ -229,7 +233,7 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     colors_cpo = [
         (
             RECOMMENDED
-            if s == "S-lean-human"
+            if s == "S-lean-hybrid-amr"
             else (
                 BASELINE
                 if abs(v - baseline_cpo) / baseline_cpo <= 0.02
@@ -265,20 +269,20 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     plt.savefig(charts_dir / "05_cost_per_order.png", dpi=300, bbox_inches="tight")
     plt.close()
 
-    # F-221: separate the legacy eight-human staffing effect from the cost of
+    # F-241: separate the legacy eight-human staffing effect from the cost of
     # each technology mix. Positive values are savings relative to the legacy
-    # baseline; a negative bar is a premium relative to optimized human sizing.
+    # baseline; a negative bar is a premium relative to the frontier lean hybrid.
     baseline_cost = -float(tco.filter(pl.col("scenario_id") == "S-baseline-human")["npv_eur"][0])
-    lean_rows = tco.filter(pl.col("scenario_id") == "S-lean-human")
+    lean_rows = tco.filter(pl.col("scenario_id") == "S-lean-hybrid-amr")
     # Unit-test fixtures and legacy exports predate the fair comparator. In that
     # case, retain a neutral baseline reference rather than failing chart export.
     lean_cost = -float(lean_rows["npv_eur"][0]) if len(lean_rows) else baseline_cost
     robot_rows = tco.filter(
         pl.col("scenario_id").is_in(
-            ["S-pure-humanoid", "S-hybrid-5050", "S-hybrid-amr", "S-future-2028"]
+            ["S-lean-human", "S-pure-humanoid", "S-hybrid-5050", "S-hybrid-amr", "S-future-2028"]
         )
     ).sort("scenario_id")
-    effect_labels = ["Crew sizing\n(8→1 human)"] + robot_rows["scenario_id"].to_list()
+    effect_labels = ["Crew sizing\n(8→1H+3A)"] + robot_rows["scenario_id"].to_list()
     effect_values = [baseline_cost - lean_cost] + [
         lean_cost + float(npv) for npv in robot_rows["npv_eur"].to_list()
     ]
@@ -305,8 +309,8 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     fig.text(
         0.5,
         0.01,
-        "First bar: savings from rightsizing the legacy human crew. Remaining bars: "
-        "technology-mix cost relative to optimized human sizing; lower is better.",
+        "First bar: savings from rightsizing the legacy human crew to S-lean-hybrid-amr. "
+        "Remaining bars: cost relative to that frontier lean mix; lower is better.",
         ha="center",
         fontsize=7,
         color=BASELINE,

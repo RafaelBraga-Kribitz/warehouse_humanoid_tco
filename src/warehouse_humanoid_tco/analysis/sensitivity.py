@@ -132,6 +132,7 @@ def _load_monte_carlo_seed(project_root: Path, default: int = 42) -> int:
 SCENARIO_COMPOSITIONS: dict[str, dict[str, float]] = {
     "S-baseline-human": {"n_human": 8, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
     "S-lean-human": {"n_human": 3, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-lean-hybrid-amr": {"n_human": 1, "n_humanoid": 0, "n_amr": 3, "throughput_multiplier": 1.0},
     "S-pure-humanoid": {"n_human": 0, "n_humanoid": 11, "n_amr": 0, "throughput_multiplier": 1.0},
     "S-hybrid-5050": {"n_human": 11, "n_humanoid": 11, "n_amr": 0, "throughput_multiplier": 1.0},
     "S-hybrid-amr": {"n_human": 3, "n_humanoid": 11, "n_amr": 4, "throughput_multiplier": 1.0},
@@ -609,15 +610,14 @@ def run_monte_carlo_per_scenario(
 
 def run_sensitivity_analysis(
     project_root: Path,
-    scenario_id: str = "S-lean-human",
+    scenario_id: str = "S-lean-hybrid-amr",
     n_mc_samples: int = 10000,
 ) -> dict[str, Path]:
     """Run full sensitivity analysis.
 
-    OAT runs against `scenario_id` (default S-lean-human — the recommended scenario).
-    Monte Carlo runs per-scenario across all published scenarios.
-
-    Returns dict mapping output paths.
+    OAT runs against `scenario_id` (default S-lean-hybrid-amr — the recommended
+    frontier lean mix after F-241). Monte Carlo runs per-scenario across all
+    published scenarios.
     """
     data_processed = project_root / "data" / "processed"
     data_processed.mkdir(parents=True, exist_ok=True)
