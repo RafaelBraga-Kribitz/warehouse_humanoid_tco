@@ -1,7 +1,7 @@
 {
   "phase": "module_02_simulation",
-  "total_runs": 90,
-  "scenarios_tested": 6,
+  "total_runs": 105,
+  "scenarios_tested": 7,
   "n_runs_per_scenario": 15,
   "simulation_runs_path": "data/processed/simulation_runs.parquet",
   "capacity_ceiling_path": "data/processed/simulation_capacity_ceiling.parquet",

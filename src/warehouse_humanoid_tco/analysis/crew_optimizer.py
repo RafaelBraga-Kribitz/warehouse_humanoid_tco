@@ -21,6 +21,13 @@ from warehouse_humanoid_tco.pipelines.module_03_tco import (
     build_financial_params,
     compute_tco_scenario,
 )
+from warehouse_humanoid_tco.visualization.chart_style import (
+    BASELINE,
+    EURO_MILLIONS,
+    OTHER,
+    RECOMMENDED,
+    apply_style,
+)
 
 _AGENT_TYPES = ("human", "humanoid", "amr")
 _MAX_CREW_PER_TYPE = 12
@@ -374,22 +381,58 @@ def generate_demand_frontier(project_root: Path) -> dict[str, Path]:
         encoding="utf-8",
     )
 
-    fig, ax = plt.subplots(figsize=(9, 5))
-    for shift_count in shifts:
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+    # F-241: robot_count is invariant across shifts at each λ; plot 5-year cost
+    # so shift economics separate visually. Series colors cycle F-214 tokens.
+    series_colors = (RECOMMENDED, OTHER, BASELINE)
+    for shift_count, color in zip(shifts, series_colors, strict=False):
         subset = [row for row in rows if row["shifts"] == shift_count]
+        xs = [row["lambda_per_hour"] for row in subset]
+        # Frontier stores positive discounted cost (see optimize_crew docstring).
+        ys = [row["npv_eur"] / 1_000_000 for row in subset]
         ax.plot(
-            [row["lambda_per_hour"] for row in subset],
-            [row["robot_count"] for row in subset],
+            xs,
+            ys,
             marker="o",
+            color=color,
             label=f"{shift_count} shift{'s' if shift_count > 1 else ''}",
         )
+        for row, x, y in zip(subset, xs, ys, strict=True):
+            label = (
+                f"{int(row['human_count'])}H"
+                f"+{int(row['humanoid_count'])}R"
+                f"+{int(row['amr_count'])}A"
+            )
+            # Compact annotation when humanoids are zero (typical frontier cells).
+            if row["humanoid_count"] == 0:
+                label = f"{int(row['human_count'])}H+{int(row['amr_count'])}A"
+            ax.annotate(
+                label,
+                (x, y),
+                textcoords="offset points",
+                xytext=(0, 6),
+                ha="center",
+                fontsize=7,
+                color=color,
+            )
     ax.set_xlabel("Demand (orders per hour)")
-    ax.set_ylabel("Robots in optimized crew")
-    ax.set_title("Robot entry frontier by demand and shift count")
+    ax.set_ylabel("Five-year total cost (€M, present value)")
+    ax.set_title("Frontier lean crew cost by demand and shift count")
     ax.set_xticks(lambdas)
+    apply_style(ax)
+    ax.yaxis.set_major_formatter(EURO_MILLIONS)
     ax.grid(axis="y", alpha=0.3)
     ax.legend(title=f"Night premium ×{night_premium:g}")
-    fig.tight_layout()
+    fig.text(
+        0.5,
+        0.01,
+        "Each point is the ρ≤0.85 least-cost crew at that demand; labels are crew mix. "
+        "Shift lines diverge because night-premium wages raise opex while robot count stays fixed.",
+        ha="center",
+        fontsize=7,
+        color=BASELINE,
+    )
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
     chart_path = charts_dir / "09_robot_entry_frontier.png"
     fig.savefig(chart_path, dpi=300)
     plt.close(fig)

@@ -17,21 +17,22 @@ format:
 
 ## Recommendation
 
-**Act now:** size the crew to S-lean-human (three people, ρ≤0.85 after
-pick-lines scaling). At €647K in five-year present-value cost, it is the
-least-cost modeled capacity-feasible option. **For robot-inclusive
-alternatives:** S-future-2028 is lowest at €2.533M, but remains costlier than
-the human baseline. Do not approve procurement solely on wage-arbitrage
-assumptions; local vacancies and warehouse telemetry are the decision-critical
-validation inputs.
+**Act now:** deploy S-lean-hybrid-amr (1 human + 3 AMRs, ρ≤0.85). At €453K in
+five-year present-value cost, it is the least-cost modeled capacity-feasible
+option. **S-lean-human** (3 people, €647K) remains the human-only comparator.
+**For humanoid-inclusive alternatives:** S-future-2028 is lowest at €2.533M, but
+remains costlier than the human baseline. Do not approve humanoid procurement
+solely on wage-arbitrage assumptions; local vacancies and warehouse telemetry
+are the decision-critical validation inputs.
 
 ## Decision at a glance
 
 | Scenario | 5-year NPV | Total-cost reduction vs baseline (NPV) | Decision |
 |---|---:|---:|---|
-| **S-lean-human** | **−€647K** | **62.5%** | Implement now |
+| **S-lean-hybrid-amr** | **−€453K** | **73.8%** | Implement now |
+| S-lean-human | −€647K | 62.5% | Human-only comparator |
 | S-baseline-human | −€1.726M | 0.0% | Legacy reference |
-| **S-future-2028** | **−€2.533M** | **−46.7%** | Lowest-cost robot case |
+| **S-future-2028** | **−€2.533M** | **−46.7%** | Lowest-cost humanoid case |
 | S-pure-humanoid | −€2.878M | −66.7% | Not preferred |
 | S-hybrid-amr | −€3.841M | −122.5% | Integration burden |
 
@@ -60,5 +61,5 @@ therefore applies a 0.50–0.90 WBT-to-production transfer factor.
 Availability derating, wage growth, system integration (€200K for robot
 scenarios), and residual value are modeled. They are assumptions, not
 measurements. The published frontiers do not identify a S-future-2028 /
-S-lean-human cost tie within the €60K–€180K humanoid-capex grid. A local pilot
+S-lean-hybrid-amr cost tie within the €60K–€180K humanoid-capex grid. A local pilot
 should replace the transfer proxy before a capital commitment.

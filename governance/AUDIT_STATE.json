@@ -956,11 +956,22 @@
       "status": "closed",
       "title": "Coverage fail-under still 76% despite F-235 claiming >=90",
       "verification_script": "tests/governance/test_f240_coverage_ratchet.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-241",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-241.yaml",
+      "status": "closed",
+      "title": "Promote the frontier-optimal lean mixed crew to a published scenario and make chart 09 informative.",
+      "verification_script": "tests/governance/test_f241_lean_hybrid_scenario.py"
     }
   ],
-  "generated_at": "2026-07-16T15:59:20.224228+00:00",
-  "git_branch": "main",
-  "git_head_sha": "d284a99c14f14a8a4d71140a96f934e3ff443a4c",
+  "generated_at": "2026-07-16T18:19:41.896114+00:00",
+  "git_branch": "quality-transformation-program",
+  "git_head_sha": "1add796a1d4c49984897dd1f6f667187c3dad758",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -972,11 +983,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 85,
+    "findings_closed": 86,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 1,
-    "findings_total": 87,
+    "findings_total": 88,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,

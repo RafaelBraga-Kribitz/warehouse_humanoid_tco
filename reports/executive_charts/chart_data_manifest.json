@@ -2,10 +2,10 @@
   "schema_version": 1,
   "hash_algorithm": "sha256",
   "charts": {
-    "01_tco_npv_ranking": "1bf61b6d6a5d25b3e6229876792365a9bd29b35ed1fd72245923738406e43835",
-    "02_cost_breakdown": "1d84dd4a2c2614464780fc0a1efcad9f94eb88ba32e2e053e453a416d0c45b37",
-    "03_simulation_throughput": "32a9800a05c0caea6eb56f93207c0fe5f9ebd9940b3453e576701df61ae78b13",
-    "05_cost_per_order": "bc9f724e7311f91d6a119f62d7db3219c1767a97ac34beba1b55ed89a1f0c720",
-    "06_effect_decomposition": "d6d94bc3a7bd16c363fddba4129508e4af33e82764b9a6700e041e0fb40aa846"
+    "01_tco_npv_ranking": "904bb6fb3ab1d57b45f0b8efd76fd21939076d9f482248fad8526018928d343f",
+    "02_cost_breakdown": "ad6a5844b5f0324dd2296c6699ca5d49bd5204908b91d309af2fc4e56b39c80c",
+    "03_simulation_throughput": "f73930d97ac903d4106a57fd0e4f85bdf584636333c13786a1be44bb0b753084",
+    "05_cost_per_order": "66fd17c6840c2958fdcba74d36f1bb9dd3bc5f43dcbe28883fa75674a934c66b",
+    "06_effect_decomposition": "76295a69e3dc6fbb407d4ff6562883cc7f059ae51c921af9c98aceae7378bb10"
   }
 }

@@ -1,6 +1,6 @@
 {
   "phase": "module_03_tco",
-  "scenarios_analyzed": 6,
+  "scenarios_analyzed": 7,
   "discount_rate": 0.08,
   "tco_scenarios_path": "data/processed/tco_scenarios.parquet",
   "scenario_results": [
@@ -340,6 +340,73 @@
       "total_cost_reduction_vs_baseline_pct": 62.5
     },
     {
+      "scenario_id": "S-lean-hybrid-amr",
+      "npv_eur": -452706.1806407064,
+      "cost_reduction_vs_baseline_pct": 85.3,
+      "opex_reduction_vs_baseline_pct": 85.3,
+      "payback_years": 0.5,
+      "total_capex_eur": 195000.0,
+      "total_opex_5yr_eur_nominal": 333096.78918607027,
+      "total_opex_5yr_eur_pv": 265171.3275831703,
+      "residual_salvage_eur": 10968.75,
+      "cost_line_breakdown": [
+        {
+          "line": "humanoid_unit_capex",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "humanoid_installation",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "humanoid_training",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "amr_unit_capex",
+          "npv_eur": -195000.0
+        },
+        {
+          "line": "system_integration",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "human_labor",
+          "npv_eur": -215800.3500158894
+        },
+        {
+          "line": "humanoid_supervision_labor",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "humanoid_maintenance",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "humanoid_energy",
+          "npv_eur": -0.0
+        },
+        {
+          "line": "amr_maintenance",
+          "npv_eur": -46714.70743381359
+        },
+        {
+          "line": "amr_energy",
+          "npv_eur": -2656.270133467309
+        },
+        {
+          "line": "residual_salvage",
+          "npv_eur": 7465.146942463977
+        }
+      ],
+      "pipeline_version": "0.2.0",
+      "cost_per_order_eur": 0.3741571295016483,
+      "n_simulation_runs": 15,
+      "throughput_mean_orders_per_shift": 960.2666666666667,
+      "throughput_std_orders_per_shift": 38.23884835882906,
+      "total_cost_reduction_vs_baseline_pct": 73.8
+    },
+    {
       "scenario_id": "S-pure-humanoid",
       "npv_eur": -2877837.43403249,
       "cost_reduction_vs_baseline_pct": 51.2,
@@ -658,6 +725,56 @@
         "npv_eur": 0.0
       }
     ],
+    "S-lean-hybrid-amr": [
+      {
+        "line": "humanoid_unit_capex",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "humanoid_installation",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "humanoid_training",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "amr_unit_capex",
+        "npv_eur": -195000.0
+      },
+      {
+        "line": "system_integration",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "human_labor",
+        "npv_eur": -215800.3500158894
+      },
+      {
+        "line": "humanoid_supervision_labor",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "humanoid_maintenance",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "humanoid_energy",
+        "npv_eur": -0.0
+      },
+      {
+        "line": "amr_maintenance",
+        "npv_eur": -46714.70743381359
+      },
+      {
+        "line": "amr_energy",
+        "npv_eur": -2656.270133467309
+      },
+      {
+        "line": "residual_salvage",
+        "npv_eur": 7465.146942463977
+      }
+    ],
     "S-pure-humanoid": [
       {
         "line": "humanoid_unit_capex",
@@ -727,9 +844,9 @@
         10000,
         500000
       ],
-      "lean_cost_per_order_eur": 0.543,
+      "lean_cost_per_order_eur": 0.374,
       "current_capex_eur_per_unit": 120000.0,
-      "methodology": "Binary search on capex to find where pure-humanoid cost_per_order = S-lean-human cost_per_order (F-237 decision trigger)"
+      "methodology": "Binary search on capex to find where pure-humanoid cost_per_order = S-lean-hybrid-amr cost_per_order (F-241 decision trigger; JSON key vs_lean_human retained for F-210 claim path)"
     }
   }
 }

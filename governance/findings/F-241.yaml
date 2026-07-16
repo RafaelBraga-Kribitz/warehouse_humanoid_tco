@@ -1,0 +1,26 @@
+id: F-241
+title: "Promote the frontier-optimal lean mixed crew to a published scenario and make chart 09 informative."
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: >
+  Demand-frontier optimizer at λ=120/h finds 1 human + 3 AMRs cheaper than
+  published S-lean-human (€452,706 vs €647,401 five-year cost). README deferred
+  promotion as "queued follow-up work." Chart 09 plots robot_count vs demand with
+  one line per shift count, but robot_count is invariant across shifts so the
+  three series coincide and the chart is uninformative.
+verification_script: tests/governance/test_f241_lean_hybrid_scenario.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - S-lean-hybrid-amr (1H+0 humanoid+3 AMR) in config/autostore_baseline.yaml
+  - Decision statement / README recommend it; no "queued follow-up" sentence
+  - vs_lean_human breakeven recomputed vs the new winner (expect no-breakeven)
+  - Chart 09: 5-year cost (€M) vs demand; one series per shift; crew annotations;
+    F-214 style tokens + message-title; three series not pairwise identical
+  - Golden masters, claims ledger, check_decision_statement, make verify pass
+  LOCKED DECISIONS: ADR-0017 allows human+AMR (forbids pure-AMR only).
+  Finding ID is F-241 (F-240 already owns the coverage ratchet).
+  FINAL: published scenario + chart 09 cost-vs-demand; vs_lean uses hybrid.

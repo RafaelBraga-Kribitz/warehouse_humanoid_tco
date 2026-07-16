@@ -1,6 +1,6 @@
 {
   "phase": "sensitivity_analysis",
-  "scenario_id": "S-lean-human",
+  "scenario_id": "S-lean-hybrid-amr",
   "oat_parameters": [
     "humanoid_capex_eur",
     "human_wage_eur",
@@ -38,18 +38,18 @@
   "oat_elasticity_ranking": [
     {
       "parameter": "human_wage_eur",
-      "peak_elasticity": 1.0000000000000036,
-      "peak_delta_vs_base_eur": 122481.27973874798
+      "peak_elasticity": 0.46895653223176786,
+      "peak_delta_vs_base_eur": 40827.09324624925
     },
     {
       "parameter": "human_overhead_mult",
-      "peak_elasticity": 1.0000000000000013,
-      "peak_delta_vs_base_eur": 167844.7166790251
+      "peak_elasticity": 0.4689565322317659,
+      "peak_delta_vs_base_eur": 55948.23889300844
     },
     {
       "parameter": "discount_rate",
-      "peak_elasticity": 0.23412320109834875,
-      "peak_delta_vs_base_eur": 75785.80311579618
+      "peak_elasticity": 0.13446724984110286,
+      "peak_delta_vs_base_eur": 30938.986437919084
     },
     {
       "parameter": "humanoid_capex_eur",
@@ -104,15 +104,15 @@
   "mc_samples_path": "data/processed/sensitivity_mc_samples.parquet",
   "mc_summary": {
     "n_samples": 10000,
-    "npv_mean": -650694.3123467095,
-    "npv_std": 128139.7398298561,
-    "npv_min": -1109341.6132452514,
-    "npv_max": -289662.04950675124,
-    "npv_p5": -872828.7368479451,
-    "npv_p25": -738790.9003571125,
-    "npv_p50": -642788.212183306,
-    "npv_p75": -554378.057932735,
-    "npv_p95": -455152.48551601137
+    "npv_mean": -461414.25371210004,
+    "npv_std": 43755.334581303265,
+    "npv_min": -619608.0072448791,
+    "npv_max": -338993.68108854105,
+    "npv_p5": -537549.2515931947,
+    "npv_p25": -490935.9332108062,
+    "npv_p50": -458769.4965954056,
+    "npv_p75": -428688.8757979198,
+    "npv_p95": -394657.86847954436
   },
   "mc_summary_per_scenario": {
     "S-baseline-human": {
@@ -138,6 +138,18 @@
       "npv_p50": -642788.212183306,
       "npv_p75": -554378.057932735,
       "npv_p95": -455152.48551601137
+    },
+    "S-lean-hybrid-amr": {
+      "n_samples": 10000,
+      "npv_mean": -461414.25371210004,
+      "npv_std": 43755.334581303265,
+      "npv_min": -619608.0072448791,
+      "npv_max": -338993.68108854105,
+      "npv_p5": -537549.2515931947,
+      "npv_p25": -490935.9332108062,
+      "npv_p50": -458769.4965954056,
+      "npv_p75": -428688.8757979198,
+      "npv_p95": -394657.86847954436
     },
     "S-pure-humanoid": {
       "n_samples": 10000,
@@ -190,24 +202,25 @@
   },
   "rank_probabilities": {
     "S-baseline-human": 0.0,
-    "S-lean-human": 1.0,
+    "S-lean-human": 0.0021,
+    "S-lean-hybrid-amr": 0.9979,
     "S-pure-humanoid": 0.0,
     "S-hybrid-5050": 0.0,
     "S-hybrid-amr": 0.0,
     "S-future-2028": 0.0
   },
   "evpi_eur": {
-    "humanoid_capex_eur": 0.0,
-    "human_wage_eur": 0.0,
-    "human_overhead_mult": 1.1641532182693481e-10,
-    "discount_rate": 2.3283064365386963e-10,
-    "transfer_factor": 1.1641532182693481e-10,
-    "humanoid_supervision_ratio": 1.1641532182693481e-10
+    "humanoid_capex_eur": 5.820766091346741e-11,
+    "human_wage_eur": 5.820766091346741e-11,
+    "human_overhead_mult": 5.820766091346741e-11,
+    "discount_rate": 0.0,
+    "transfer_factor": 0.0,
+    "humanoid_supervision_ratio": 0.0
   },
   "convergence": {
-    "half1_mean": -652250.9880614112,
-    "half2_mean": -649137.6366320079,
-    "rel_delta": 0.0047846605853600985
+    "half1_mean": -461909.89270063036,
+    "half2_mean": -460918.61472356966,
+    "rel_delta": 0.0021483471069344345
   },
   "infeasible_sample_count": 0,
   "sobol_indices": {
@@ -254,12 +267,12 @@
   },
   "decision_flip_thresholds": {
     "definition": "Thresholds compare scenario cost at all other base assumptions; positive NPV is lower cost.",
-    "S-lean-human": {
+    "S-lean-hybrid-amr": {
       "status": "cheapest across the published robot frontier grid",
-      "base_npv_eur": -647401.0500476682
+      "base_npv_eur": -460171.3275831704
     },
     "S-future-2028": {
-      "capex_eur_per_unit_to_tie_lean_human": null,
+      "capex_eur_per_unit_to_tie_lean_hybrid": null,
       "interpretation": "No tie inside \u20ac60k\u2013\u20ac180k capex with other assumptions fixed."
     },
     "S-hybrid-amr": {

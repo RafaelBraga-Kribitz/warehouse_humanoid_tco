@@ -1,6 +1,6 @@
 {
   "data/processed/sensitivity_mc_samples.parquet": {
-    "rows": 60000,
+    "rows": 70000,
     "columns": [
       "sample_id",
       "scenario_id",
@@ -12,8 +12,8 @@
       "transfer_factor_sampled",
       "humanoid_supervision_ratio_sampled"
     ],
-    "sha256": "27a27fc9aa762635f98cc6356e5eab970710a7e2777aca1bcb3738df4712fb7a",
-    "finding": "F-237",
+    "sha256": "9c0f0ec1beedda42c8e32f62cf63bb2084a6a503e50b5957e44dce5d315debae",
+    "finding": "F-241",
     "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/sensitivity_oat_results.parquet": {
@@ -26,8 +26,8 @@
       "delta_vs_base",
       "normalised_elasticity"
     ],
-    "sha256": "64f10d87f3683e2f10d937f827011b8e68292452b58f0c62300e08ff3f76c5d1",
-    "finding": "F-237",
+    "sha256": "38ad4095e141c01a81c0234cf5ed23bc55a62b30f65eda0847513f2dde107358",
+    "finding": "F-241",
     "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/humanoid_capabilities_summary.parquet": {
@@ -50,7 +50,7 @@
     "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/simulation_runs.parquet": {
-    "rows": 90,
+    "rows": 105,
     "columns": [
       "scenario_id",
       "run_id",
@@ -60,16 +60,16 @@
       "pipeline_version",
       "seed",
       "utilization_human",
-      "utilization_humanoid",
-      "utilization_amr"
+      "utilization_amr",
+      "utilization_humanoid"
     ],
-    "sha256": "627b34c3222325ec064db5b84282c50fc4dba8605c39603e531aa281903cfd31",
-    "finding": "F-237",
+    "sha256": "202b0d960e9f98badd7d6f479f4b9bfd5f50b214bed78803c50cfcf6cdfc10f4",
+    "finding": "F-241",
     "hash_kind": "polars_to_dicts_json",
     "content_stable": false
   },
   "data/processed/tco_scenarios.parquet": {
-    "rows": 6,
+    "rows": 7,
     "columns": [
       "scenario_id",
       "npv_eur",
@@ -88,12 +88,12 @@
       "throughput_std_orders_per_shift",
       "total_cost_reduction_vs_baseline_pct"
     ],
-    "sha256": "6b51bb51fbe0b4d09712d2a6309b9d3bcd5a482e15082bd044cee964df7eae46",
-    "finding": "F-237",
+    "sha256": "b7dd43ea97b2c6b3018da99a29a5e54d1e19dadb1b37932bd373d5cf12bcc4bb",
+    "finding": "F-241",
     "hash_kind": "polars_to_dicts_json"
   },
   "data/processed/simulation_capacity_ceiling.parquet": {
-    "rows": 6,
+    "rows": 7,
     "columns": [
       "scenario_id",
       "target_rho",
@@ -106,8 +106,8 @@
       "observed_throughput_std",
       "n_runs_at_ceiling"
     ],
-    "sha256": "90ca553bfef2d1cbe89b2588e5bc4577e0da34ac0d251f29d2e8a1cf6059a91c",
-    "finding": "F-237",
+    "sha256": "78b8211e000e95dd9a3398759b33de4d4e6c746c8c86aa9567afff3d3e78833c",
+    "finding": "F-241",
     "hash_kind": "polars_to_dicts_json"
   }
 }

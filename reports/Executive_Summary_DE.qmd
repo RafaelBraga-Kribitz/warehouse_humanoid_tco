@@ -19,21 +19,22 @@ format:
 
 ## Empfehlung
 
-**Jetzt:** Crew auf S-lean-human (3 Personen, ρ≤0,85 nach Pick-Lines-Skalierung)
-dimensionieren. Es ist mit €647K Fünfjahres-Barwertkosten die günstigste
-modellierte, kapazitätsfähige Option. **Bei Robotern:** S-future-2028 ist mit
-€2,533M die günstigste robotergänzte Variante, bleibt aber teurer als die
-menschliche Baseline. Keine Beschaffung allein auf Basis von Lohnarbitrage
-freigeben; offene Stellen und Warehouse-Telemetrie sind die entscheidenden
-Validierungspunkte.
+**Jetzt:** S-lean-hybrid-amr (1 Person + 3 AMR, ρ≤0,85) umsetzen. Es ist mit
+€453K Fünfjahres-Barwertkosten die günstigste modellierte, kapazitätsfähige
+Option. **S-lean-human** (3 Personen, €647K) bleibt der reine
+Human-Vergleich. **Bei Humanoiden:** S-future-2028 ist mit €2,533M die
+günstigste humanoide Variante, bleibt aber teurer als die menschliche Baseline.
+Keine Humanoid-Beschaffung allein auf Basis von Lohnarbitrage freigeben; offene
+Stellen und Warehouse-Telemetrie sind die entscheidenden Validierungspunkte.
 
 ## Entscheidung auf einen Blick
 
 | Szenario | 5-Jahr NPV | Gesamtkosten-Reduktion vs. Baseline (NPV) | Entscheidung |
 |---|---:|---:|---|
-| **S-lean-human** | **−€647K** | **62,5%** | Jetzt umsetzen |
+| **S-lean-hybrid-amr** | **−€453K** | **73,8%** | Jetzt umsetzen |
+| S-lean-human | −€647K | 62,5% | Human-Vergleich |
 | S-baseline-human | −€1726K | 0,0% | Legacy-Referenz |
-| **S-future-2028** | **−€2533K** | **-46,7%** | Günstigster Roboterfall |
+| **S-future-2028** | **−€2533K** | **-46,7%** | Günstigster Humanoidfall |
 | S-pure-humanoid | −€2878K | -66,7% | Nicht bevorzugt |
 | S-hybrid-amr | −€3841K | -122,5% | Integration belastet |
 | S-hybrid-5050 | −€5252K | -204,2% | Nicht bevorzugt |
@@ -71,4 +72,4 @@ Die Demonstrationsdaten sind Haushaltsaufgaben, keine Lagertelemetrie. Der
 Transferfaktor (0,50–0,90), Verfügbarkeit und die €200K Systemintegration sind
 modelliert, aber vor einer Investition mit einem lokalen Pilotversuch zu prüfen.
 Die Sensitivitätsfrontieren zeigen im veröffentlichten Capex-Bereich keinen
-Kostengleichstand zwischen S-future-2028 und S-lean-human.
+Kostengleichstand zwischen S-future-2028 und S-lean-hybrid-amr.

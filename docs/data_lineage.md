@@ -51,7 +51,7 @@ flowchart TD
     C --> N["5-year cost NPV"]
     R --> N
     N --> K{"Decision"}
-    K -->|"lowest modeled cost"| L["S-lean-human now"]
+    K -->|"lowest modeled cost"| L["S-lean-hybrid-amr now"]
     K -->|"robot-only comparison"| F["S-future-2028"]
     V["Local pilot telemetry and vacancy evidence"] -. validates/replaces .-> X
     V -. validates .-> D

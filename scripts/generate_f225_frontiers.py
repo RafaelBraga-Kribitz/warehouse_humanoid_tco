@@ -43,7 +43,7 @@ def robot_frontier(
     capex: np.ndarray, wage: np.ndarray, transfer: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray]:
     """Return robot-vs-lean cost deltas on two two-way parameter grids."""
-    lean = npv("S-lean-human")
+    lean = npv("S-lean-hybrid-amr")
     capex_wage = np.empty((len(wage), len(capex)))
     capex_transfer = np.empty((len(transfer), len(capex)))
     for row, value in enumerate(wage):
@@ -111,7 +111,7 @@ def chart(path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, 
     apply_style(axis)
     colorbar = figure.colorbar(image, ax=axis)
     colorbar.ax.ticklabel_format(style="plain")
-    colorbar.set_label("Extra 5-year cost vs S-lean-human (€M; positive = robot costlier)")
+    colorbar.set_label("Extra 5-year cost vs S-lean-hybrid-amr (€M; positive = robot costlier)")
     figure.savefig(path, dpi=180)
     plt.close(figure)
 
@@ -187,12 +187,12 @@ def main() -> None:
             "Thresholds compare scenario cost at all other base assumptions; "
             "positive NPV is lower cost."
         ),
-        "S-lean-human": {
+        "S-lean-hybrid-amr": {
             "status": "cheapest across the published robot frontier grid",
-            "base_npv_eur": npv("S-lean-human"),
+            "base_npv_eur": npv("S-lean-hybrid-amr"),
         },
         "S-future-2028": {
-            "capex_eur_per_unit_to_tie_lean_human": None,
+            "capex_eur_per_unit_to_tie_lean_hybrid": None,
             "interpretation": "No tie inside €60k–€180k capex with other assumptions fixed.",
         },
         "S-hybrid-amr": {

@@ -54,6 +54,15 @@ scenarios:
     human: 3
     humanoid: 0
     amr: 0
+# Frontier-optimal lean mix at λ=120/h (demand_frontier.json::results[0]); F-241.
+- id: S-lean-hybrid-amr
+  human_fraction: 0.25
+  humanoid_fraction: 0.0
+  amr_fraction: 0.75
+  agent_counts:
+    human: 1
+    humanoid: 0
+    amr: 3
 - id: S-pure-humanoid
   human_fraction: 0.0
   humanoid_fraction: 1.0
