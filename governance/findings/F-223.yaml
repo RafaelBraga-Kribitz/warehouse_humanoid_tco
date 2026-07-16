@@ -1,0 +1,15 @@
+id: F-223
+title: "Cost taxonomy + euro-exact reconciliation + auditor worksheet"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No taxonomized cost lines reconciling to NPV; hardcoded baseline opex fallback.
+verification_script: tests/governance/test_f223_reconciliation.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - cost_line_breakdown sums to NPV within EUR1; auditors_worksheet.md; no _BASELINE_ANNUAL_OPEX.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

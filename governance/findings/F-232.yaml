@@ -1,0 +1,15 @@
+id: F-232
+title: "Multi-shift + demand frontier where robots enter optimal mix"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Single demand/shift world; no robot entry frontier.
+verification_script: tests/governance/test_f232_demand_frontier.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - Frontier JSON + chart 09; grid via optimizer; night premium wired.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

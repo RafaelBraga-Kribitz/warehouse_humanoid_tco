@@ -1,0 +1,18 @@
+id: F-200
+title: "Quality Transformation Program filed as F-201+ queue + QUALITY_BLUEPRINT.md"
+category: governance_gaps
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Program not yet filed as machine-readable findings.
+verification_script: scripts/check_program_filed.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - Every ID in {F-201..F-207, F-210..F-219, F-220..F-230, F-231..F-236} has YAML with evidence + verification_script; QUALITY_BLUEPRINT.md exists.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+
+  Closed by bootstrap: filed 34 program findings + QUALITY_BLUEPRINT.md.
+  F-040 re-verification recorded in bootstrap session notes.

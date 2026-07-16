@@ -1,0 +1,15 @@
+id: F-231
+title: "EVPI / value of information per MC parameter"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No value-of-information framing for procurement triggers.
+verification_script: tests/governance/test_f231_evpi.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - evpi_eur in sensitivity report; all >=0; README ranks uncertainty.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

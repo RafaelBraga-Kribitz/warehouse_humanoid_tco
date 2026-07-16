@@ -1,12 +1,13 @@
 {
   "phase": "sensitivity_analysis",
-  "scenario_id": "S-hybrid-amr",
+  "scenario_id": "S-lean-human",
   "oat_parameters": [
     "humanoid_capex_eur",
     "human_wage_eur",
     "human_overhead_mult",
     "discount_rate",
-    "transfer_factor"
+    "transfer_factor",
+    "humanoid_supervision_ratio"
   ],
   "oat_parameter_ranges": {
     "humanoid_capex_eur": [
@@ -28,33 +29,42 @@
     "transfer_factor": [
       0.5,
       0.9
+    ],
+    "humanoid_supervision_ratio": [
+      0.05,
+      0.5
     ]
   },
   "oat_elasticity_ranking": [
     {
-      "parameter": "human_overhead_mult",
-      "peak_elasticity": 0.7640331258643779,
-      "peak_delta_vs_base_eur": 213688.88293401035
-    },
-    {
       "parameter": "human_wage_eur",
-      "peak_elasticity": 0.7640331258643744,
-      "peak_delta_vs_base_eur": 155935.1307896832
+      "peak_elasticity": 1.0000000000000036,
+      "peak_delta_vs_base_eur": 122481.27973874798
     },
     {
-      "parameter": "transfer_factor",
-      "peak_elasticity": 0.2507313744309317,
-      "peak_delta_vs_base_eur": 77281.59937595273
+      "parameter": "human_overhead_mult",
+      "peak_elasticity": 1.0000000000000013,
+      "peak_delta_vs_base_eur": 167844.7166790251
     },
     {
       "parameter": "discount_rate",
-      "peak_elasticity": 0.1877657101826541,
-      "peak_delta_vs_base_eur": 101279.54765002965
+      "peak_elasticity": 0.23412320109834875,
+      "peak_delta_vs_base_eur": 75785.80311579618
     },
     {
       "parameter": "humanoid_capex_eur",
-      "peak_elasticity": 0.146766788824108,
-      "peak_delta_vs_base_eur": 79165.00817797473
+      "peak_elasticity": 0.0,
+      "peak_delta_vs_base_eur": 0.0
+    },
+    {
+      "parameter": "transfer_factor",
+      "peak_elasticity": 0.0,
+      "peak_delta_vs_base_eur": 0.0
+    },
+    {
+      "parameter": "humanoid_supervision_ratio",
+      "peak_elasticity": 0.0,
+      "peak_delta_vs_base_eur": 0.0
     }
   ],
   "mc_param_distributions": {
@@ -82,83 +92,179 @@
       "type": "uniform",
       "low": 0.5,
       "high": 0.9
+    },
+    "humanoid_supervision_ratio": {
+      "type": "uniform",
+      "low": 0.05,
+      "high": 0.5
     }
   },
   "mc_samples": 10000,
-  "oat_results_path": "/home/user/warehouse_humanoid_tco/data/processed/sensitivity_oat_results.parquet",
-  "mc_samples_path": "/home/user/warehouse_humanoid_tco/data/processed/sensitivity_mc_samples.parquet",
+  "oat_results_path": "data/processed/sensitivity_oat_results.parquet",
+  "mc_samples_path": "data/processed/sensitivity_mc_samples.parquet",
   "mc_summary": {
     "n_samples": 10000,
-    "npv_mean": -1089021.2904903619,
-    "npv_std": 171407.27808484124,
-    "npv_min": -1858911.4860986276,
-    "npv_max": -601670.6472465018,
-    "npv_p5": -1386256.9832886597,
-    "npv_p25": -1206889.7093130106,
-    "npv_p50": -1079103.212666592,
-    "npv_p75": -959256.9542212585,
-    "npv_p95": -830291.3087201955
+    "npv_mean": -650694.3123467095,
+    "npv_std": 128139.7398298561,
+    "npv_min": -1109341.6132452514,
+    "npv_max": -289662.04950675124,
+    "npv_p5": -872828.7368479451,
+    "npv_p25": -738790.9003571125,
+    "npv_p50": -642788.212183306,
+    "npv_p75": -554378.057932735,
+    "npv_p95": -455152.48551601137
   },
   "mc_summary_per_scenario": {
     "S-baseline-human": {
       "n_samples": 10000,
-      "npv_mean": -1618163.66866686,
-      "npv_std": 316769.8648562773,
-      "npv_min": -2884123.8376292954,
-      "npv_max": -811966.169043128,
-      "npv_p5": -2174365.869862373,
-      "npv_p25": -1835889.5379467884,
-      "npv_p50": -1599385.0402254805,
-      "npv_p75": -1373894.1987633475,
-      "npv_p95": -1143461.3181371728
+      "npv_mean": -1735184.8329245585,
+      "npv_std": 341705.97287961637,
+      "npv_min": -2958244.3019873365,
+      "npv_max": -772432.1320180034,
+      "npv_p5": -2327543.2982611875,
+      "npv_p25": -1970109.0676189668,
+      "npv_p50": -1714101.899155483,
+      "npv_p75": -1478341.4878206265,
+      "npv_p95": -1213739.9613760305
+    },
+    "S-lean-human": {
+      "n_samples": 10000,
+      "npv_mean": -650694.3123467095,
+      "npv_std": 128139.7398298561,
+      "npv_min": -1109341.6132452514,
+      "npv_max": -289662.04950675124,
+      "npv_p5": -872828.7368479451,
+      "npv_p25": -738790.9003571125,
+      "npv_p50": -642788.212183306,
+      "npv_p75": -554378.057932735,
+      "npv_p95": -455152.48551601137
     },
     "S-pure-humanoid": {
       "n_samples": 10000,
-      "npv_mean": -1587487.5995256386,
-      "npv_std": 427882.3192406004,
-      "npv_min": -3803365.07778344,
-      "npv_max": -574053.6482661504,
-      "npv_p5": -2374061.29310953,
-      "npv_p25": -1832864.2592358394,
-      "npv_p50": -1524079.1279307194,
-      "npv_p75": -1276578.9834099049,
-      "npv_p95": -1010820.3730051758
+      "npv_mean": -3489723.490842464,
+      "npv_std": 920187.5427814858,
+      "npv_min": -8202754.5220028795,
+      "npv_max": -1400669.2859179722,
+      "npv_p5": -5168136.465237071,
+      "npv_p25": -4047472.3770174724,
+      "npv_p50": -3359888.100002229,
+      "npv_p75": -2816345.3616741514,
+      "npv_p95": -2200763.5667549362
     },
     "S-hybrid-5050": {
       "n_samples": 10000,
-      "npv_mean": -1602825.6340962495,
-      "npv_std": 275982.2649275737,
-      "npv_min": -2869024.4390523275,
-      "npv_max": -860371.0613067531,
-      "npv_p5": -2086824.6279962005,
-      "npv_p25": -1775519.76115822,
-      "npv_p50": -1579544.0812791497,
-      "npv_p75": -1403229.1260338956,
-      "npv_p95": -1194139.3040652273
+      "npv_mean": -5875602.636113732,
+      "npv_std": 1113073.1093294013,
+      "npv_min": -11344943.738624018,
+      "npv_max": -3156358.082380702,
+      "npv_p5": -7860313.31905708,
+      "npv_p25": -6573345.72429136,
+      "npv_p50": -5754164.412206763,
+      "npv_p75": -5065689.290103278,
+      "npv_p95": -4283988.281952742
     },
     "S-hybrid-amr": {
       "n_samples": 10000,
-      "npv_mean": -1089021.2904903619,
-      "npv_std": 171407.27808484124,
-      "npv_min": -1858911.4860986276,
-      "npv_max": -601670.6472465018,
-      "npv_p5": -1386256.9832886597,
-      "npv_p25": -1206889.7093130106,
-      "npv_p50": -1079103.212666592,
-      "npv_p75": -959256.9542212585,
-      "npv_p95": -830291.3087201955
+      "npv_mean": -4466439.335984547,
+      "npv_std": 954453.390898046,
+      "npv_min": -9236058.016219933,
+      "npv_max": -2282893.279048533,
+      "npv_p5": -6202267.907754938,
+      "npv_p25": -5048755.867974953,
+      "npv_p50": -4335412.56164691,
+      "npv_p75": -3765740.488174863,
+      "npv_p95": -3130318.7023250614
     },
     "S-future-2028": {
       "n_samples": 10000,
-      "npv_mean": -1419653.987997137,
-      "npv_std": 237178.0404421956,
-      "npv_min": -2469198.958777001,
-      "npv_max": -761879.0917475311,
-      "npv_p5": -1834361.344795588,
-      "npv_p25": -1571887.7589931542,
-      "npv_p50": -1402762.8930581957,
-      "npv_p75": -1246376.7335074376,
-      "npv_p95": -1063430.7105027745
+      "npv_mean": -2921149.6562335747,
+      "npv_std": 617452.3755856844,
+      "npv_min": -5971826.086173024,
+      "npv_max": -1502330.751806311,
+      "npv_p5": -4044371.671538382,
+      "npv_p25": -3296164.083220797,
+      "npv_p50": -2838958.544097902,
+      "npv_p75": -2469302.7441474167,
+      "npv_p95": -2053989.927898411
+    }
+  },
+  "rank_probabilities": {
+    "S-baseline-human": 0.0,
+    "S-lean-human": 1.0,
+    "S-pure-humanoid": 0.0,
+    "S-hybrid-5050": 0.0,
+    "S-hybrid-amr": 0.0,
+    "S-future-2028": 0.0
+  },
+  "evpi_eur": {
+    "humanoid_capex_eur": 0.0,
+    "human_wage_eur": 0.0,
+    "human_overhead_mult": 1.1641532182693481e-10,
+    "discount_rate": 2.3283064365386963e-10,
+    "transfer_factor": 1.1641532182693481e-10,
+    "humanoid_supervision_ratio": 1.1641532182693481e-10
+  },
+  "convergence": {
+    "half1_mean": -652250.9880614112,
+    "half2_mean": -649137.6366320079,
+    "rel_delta": 0.0047846605853600985
+  },
+  "infeasible_sample_count": 0,
+  "sobol_indices": {
+    "estimator": "coarse_grid_variance_proxy",
+    "description": "One-dimensional 21-point deterministic grids; normalized output variance is a screening proxy, not a Saltelli/Sobol interaction estimator.",
+    "indices": {
+      "humanoid_capex_eur": {
+        "first_order": 0.4668972272479119,
+        "total_order": 0.4668972272479119
+      },
+      "human_wage_eur": {
+        "first_order": 0.024114029208181828,
+        "total_order": 0.024114029208181828
+      },
+      "human_overhead_mult": {
+        "first_order": 0.0470141196590134,
+        "total_order": 0.0470141196590134
+      },
+      "discount_rate": {
+        "first_order": 0.015267812764343185,
+        "total_order": 0.015267812764343185
+      },
+      "transfer_factor": {
+        "first_order": 0.2657727165147556,
+        "total_order": 0.2657727165147556
+      },
+      "humanoid_supervision_ratio": {
+        "first_order": 0.18093409460579407,
+        "total_order": 0.18093409460579407
+      }
+    }
+  },
+  "correlation_sensitivity": {
+    "method": "Pearson correlation across the same OAT coarse grids",
+    "scenario_id": "S-future-2028",
+    "coefficients": {
+      "humanoid_capex_eur": -1.0,
+      "human_wage_eur": -1.0,
+      "human_overhead_mult": -0.9999999999999998,
+      "discount_rate": 0.9989748610455851,
+      "transfer_factor": 0.9874741356568892,
+      "humanoid_supervision_ratio": -1.0
+    }
+  },
+  "decision_flip_thresholds": {
+    "definition": "Thresholds compare scenario cost at all other base assumptions; positive NPV is lower cost.",
+    "S-lean-human": {
+      "status": "cheapest across the published robot frontier grid",
+      "base_npv_eur": -647401.0500476682
+    },
+    "S-future-2028": {
+      "capex_eur_per_unit_to_tie_lean_human": null,
+      "interpretation": "No tie inside \u20ac60k\u2013\u20ac180k capex with other assumptions fixed."
+    },
+    "S-hybrid-amr": {
+      "integration_cost_eur": 200000,
+      "interpretation": "The F-222 integration cost is retained; it prevents a robot ranking claim."
     }
   }
 }

@@ -18,6 +18,7 @@ workflows:
       - ruff check src/ tests/ scripts/
       - pyright src/
       - pytest tests/ -v --tb=short
+      - dbt-backed Tableau CSV parity (F-229)
       - docker build smoke
       - pipeline-smoke (module_02 + module_03 against committed code)  # F-041
     owner: portfolio author
@@ -32,6 +33,7 @@ workflows:
       - ruff check src/
       - pytest tests/ -v          # line 25 escape hatch (`|| echo "No tests"`) to be removed in Phase 4
       - modules 01–04 sequential run
+      - dbt build after Module 4 (F-229)
     owner: portfolio author
     known_issues:
       - F-007  # workflow_dispatch-only + pytest escape hatch

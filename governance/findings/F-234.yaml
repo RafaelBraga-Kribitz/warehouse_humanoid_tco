@@ -1,0 +1,15 @@
+id: F-234
+title: "Framework packaging + MAINTENANCE.md annual refresh policy"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No installable quickstart without LFS; no maintenance calendar.
+verification_script: tests/governance/test_f234_packaging.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - examples/quickstart.py exits 0 without data/; MAINTENANCE.md; version 1.0.0.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

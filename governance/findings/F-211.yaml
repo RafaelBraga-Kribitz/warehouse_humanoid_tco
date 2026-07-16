@@ -1,0 +1,15 @@
+id: F-211
+title: "EXPERIMENTS.md H1-H4 with numeric rules and machine-checked verdicts"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Charter references EXPERIMENTS.md H1-H4 but file is missing/stub.
+verification_script: scripts/check_hypothesis_verdicts.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - 4 VERDICT H lines; H2/H3/H4 recomputed from artifacts match stated verdicts.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

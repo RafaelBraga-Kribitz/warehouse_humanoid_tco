@@ -25,6 +25,8 @@ def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
         "operations": {
             "shift_hours": 0.05,  # very short for test speed
             "order_arrival_rate_per_hour": 60.0,
+            # F-237: required; 1.0 keeps fixture cycle times as written
+            "pick_lines_per_order": 1.0,
         },
         "agents": {
             "human": {"cycle_time_mean_seconds": 25.0, "cycle_time_std_seconds": 5.0},
@@ -135,8 +137,15 @@ def _make_processed_data(processed_dir: Path) -> None:
         {
             "task_category": ["pick_small_object", "place_general"],
             "n_episodes": [15, 10],
+            "cycle_time_p50": [24.0, 11.0],
+            "cycle_time_p95": [32.0, 16.0],
             "cycle_time_mean": [25.0, 12.0],
             "cycle_time_std": [5.0, 3.0],
+            "reach_mean_meters": [0.5, 0.4],
+            "reach_max_meters": [1.0, 0.9],
+            "energy_proxy_mean": [10.0, 8.0],
+            "success_rate": [1.0, 1.0],
+            "insufficient_sample": [False, False],
         }
     ).write_parquet(processed_dir / "humanoid_capabilities_summary.parquet")
 
@@ -146,8 +155,12 @@ def _make_processed_data(processed_dir: Path) -> None:
             "run_id": [0, 0],
             "throughput_orders_per_shift": [920.0, 880.0],
             "queue_length_mean": [0.5, 0.3],
+            "rho_predicted": [0.1, 0.2],
             "pipeline_version": ["0.1.0", "0.1.0"],
             "seed": [42, 42],
+            "utilization_human": [0.1, 0.2],
+            "utilization_humanoid": [None, 0.1],
+            "utilization_amr": [None, 0.1],
         }
     ).write_parquet(processed_dir / "simulation_runs.parquet")
 
@@ -159,9 +172,14 @@ def _make_processed_data(processed_dir: Path) -> None:
             "total_opex_5yr_eur_nominal": [2014000.0, 1007000.0],
             "total_opex_5yr_eur_pv": [1608300.0, 804125.0],
             "cost_reduction_vs_baseline_pct": [0.0, 50.0],
+            "opex_reduction_vs_baseline_pct": [0.0, 50.0],
             "payback_years": [None, 2.4],
             "pipeline_version": ["0.1.0", "0.1.0"],
             "cost_per_order_eur": [1.344, 0.895],
+            "n_simulation_runs": [15, 15],
+            "throughput_mean_orders_per_shift": [920.0, 880.0],
+            "throughput_std_orders_per_shift": [10.0, 10.0],
+            "total_cost_reduction_vs_baseline_pct": [0.0, 42.5],
         }
     ).write_parquet(processed_dir / "tco_scenarios.parquet")
 

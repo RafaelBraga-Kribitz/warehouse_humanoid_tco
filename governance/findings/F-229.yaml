@@ -1,0 +1,16 @@
+id: F-229
+title: "dbt-duckdb validation layer over processed parquet"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No dbt validation layer for analytics-engineering signal.
+verification_script: tests/governance/test_f229_dbt_parity.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - dbt build green; mart parity vs Tableau CSVs; CI wired.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+  CLOSED: 2026-07-16. Local dbt parity pytest passed with dbt-duckdb 1.10.1.

@@ -1,0 +1,23 @@
+id: F-225
+title: "Breakeven frontiers + Sobol + SENSITIVITY.md v2"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No two-way frontiers or Sobol; SENSITIVITY.md incomplete.
+verification_script: tests/governance/test_f225_frontiers.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - Charts 07/08; sobol_indices; correlation_sensitivity; decision_flip_thresholds.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+
+  QA FOLLOW-UP (2026-07-16, reviewer session): charts 07/08 rendered blank —
+  contourf levels were computed in raw euros while the plotted array was in
+  EUR millions, so every value fell outside the level range; the colorbar label
+  sign convention was also inverted (cost-negative NPV deltas). Fixed
+  generate_f225_frontiers.py: cost delta negated to positive-costlier, levels
+  in plot units, no-frontier annotation when the range does not cross zero,
+  plain colorbar formatting. Charts regenerated.

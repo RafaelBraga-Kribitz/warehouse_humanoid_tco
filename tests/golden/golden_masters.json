@@ -1,0 +1,113 @@
+{
+  "data/processed/sensitivity_mc_samples.parquet": {
+    "rows": 60000,
+    "columns": [
+      "sample_id",
+      "scenario_id",
+      "npv_eur",
+      "humanoid_capex_eur_sampled",
+      "human_wage_eur_sampled",
+      "human_overhead_mult_sampled",
+      "discount_rate_sampled",
+      "transfer_factor_sampled",
+      "humanoid_supervision_ratio_sampled"
+    ],
+    "sha256": "27a27fc9aa762635f98cc6356e5eab970710a7e2777aca1bcb3738df4712fb7a",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
+  },
+  "data/processed/sensitivity_oat_results.parquet": {
+    "rows": 66,
+    "columns": [
+      "scenario_id",
+      "parameter",
+      "parameter_value",
+      "npv_eur",
+      "delta_vs_base",
+      "normalised_elasticity"
+    ],
+    "sha256": "64f10d87f3683e2f10d937f827011b8e68292452b58f0c62300e08ff3f76c5d1",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
+  },
+  "data/processed/humanoid_capabilities_summary.parquet": {
+    "rows": 4,
+    "columns": [
+      "task_category",
+      "n_episodes",
+      "cycle_time_p50",
+      "cycle_time_p95",
+      "cycle_time_mean",
+      "cycle_time_std",
+      "reach_mean_meters",
+      "reach_max_meters",
+      "energy_proxy_mean",
+      "success_rate",
+      "insufficient_sample"
+    ],
+    "sha256": "a5e8b12a18b8cfea5e294b0177586ef4ad062aa41f0c120a16d5d45a0077aeac",
+    "finding": "F-221",
+    "hash_kind": "polars_to_dicts_json"
+  },
+  "data/processed/simulation_runs.parquet": {
+    "rows": 90,
+    "columns": [
+      "scenario_id",
+      "run_id",
+      "throughput_orders_per_shift",
+      "queue_length_mean",
+      "rho_predicted",
+      "pipeline_version",
+      "seed",
+      "utilization_human",
+      "utilization_humanoid",
+      "utilization_amr"
+    ],
+    "sha256": "627b34c3222325ec064db5b84282c50fc4dba8605c39603e531aa281903cfd31",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json",
+    "content_stable": false
+  },
+  "data/processed/tco_scenarios.parquet": {
+    "rows": 6,
+    "columns": [
+      "scenario_id",
+      "npv_eur",
+      "cost_reduction_vs_baseline_pct",
+      "opex_reduction_vs_baseline_pct",
+      "payback_years",
+      "total_capex_eur",
+      "total_opex_5yr_eur_nominal",
+      "total_opex_5yr_eur_pv",
+      "residual_salvage_eur",
+      "cost_line_breakdown",
+      "pipeline_version",
+      "cost_per_order_eur",
+      "n_simulation_runs",
+      "throughput_mean_orders_per_shift",
+      "throughput_std_orders_per_shift",
+      "total_cost_reduction_vs_baseline_pct"
+    ],
+    "sha256": "6b51bb51fbe0b4d09712d2a6309b9d3bcd5a482e15082bd044cee964df7eae46",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
+  },
+  "data/processed/simulation_capacity_ceiling.parquet": {
+    "rows": 6,
+    "columns": [
+      "scenario_id",
+      "target_rho",
+      "total_agents",
+      "bottleneck_agent_type",
+      "bottleneck_cycle_time_seconds",
+      "lambda_max_per_hour",
+      "capacity_orders_per_shift",
+      "observed_throughput_mean",
+      "observed_throughput_std",
+      "n_runs_at_ceiling"
+    ],
+    "sha256": "90ca553bfef2d1cbe89b2588e5bc4577e0da34ac0d251f29d2e8a1cf6059a91c",
+    "finding": "F-237",
+    "hash_kind": "polars_to_dicts_json"
+  }
+}

@@ -1,0 +1,7 @@
+warehouse_humanoid_tco:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: analytics/dbt/target/whtco.duckdb
+      threads: 1

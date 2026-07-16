@@ -1,0 +1,34 @@
+id: F-237
+title: "Order service time omits pick_lines_per_order — crew sizing and headline numbers invalid"
+category: methodology_drift
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: >
+  config/autostore_baseline.yaml documents agents.*.cycle_time_mean_seconds as
+  seconds per pick line and operations.pick_lines_per_order: 2.5, but that key
+  was listed under unmodeled_parameters and never multiplied into service time.
+  predict_utilisation, compute_capacity_ceiling, Module 2 profiles, crew_optimizer,
+  and the demand frontier therefore treated 25s as per-order service. At λ=120/h
+  one human falsely showed ρ≈0.83; with L=2.5, E[S]=62.5s → ρ≈2.08.
+verification_script: tests/governance/test_f237_pick_lines_service.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - scale_line_cycle_to_order applied in Module 2 + crew_optimizer (mean×L, std×√L)
+  - predict_utilisation for 1 human at 120/hr with scaled service > 1.0
+  - S-lean-human agent_counts.human ≥ 3 after re-optimize
+  - Pure-AMR excluded from frontier/optimizer policies (ADR-0017)
+  - breakeven_thresholds.vs_lean_human drives decision trigger
+  LOCKED DECISIONS: ADR-0017; Execution Spec F-237 plan.
+
+  QA FOLLOW-UP (2026-07-16, reviewer session): the published vs_lean_human
+  "breakeven" of EUR 10,030 was the binary search's EUR 10K lower bound, not a
+  real crossover (no parity exists in the searched range). Fixed
+  compute_breakeven_thresholds to bracket-check the endpoints and emit
+  capex_eur_per_unit: null + no_breakeven_in_search_range: true; updated
+  Charter/README decision statement, EXPERIMENTS H3, check_decision_statement.py
+  (null-aware), and regenerated module-03 outputs + claims ledger. README now
+  also discloses the frontier's cheaper 1-human+3-AMR configuration; promoting
+  it to a formal scenario is queued follow-up work.

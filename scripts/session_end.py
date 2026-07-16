@@ -40,9 +40,7 @@ def main() -> int:
     summary = state.get("summary", {})
     changed = _changed_files_since_session_start()
     findings_touched = [c for c in changed if c.startswith("governance/findings/")]
-    adrs_touched = [
-        c for c in changed if c.startswith("docs/ADR/") or c.startswith("governance/adrs/")
-    ]
+    adrs_touched = [c for c in changed if c.startswith("governance/adrs/")]
     scripts_touched = [
         c for c in changed if c.startswith("scripts/check_") or c.startswith("tests/governance/")
     ]

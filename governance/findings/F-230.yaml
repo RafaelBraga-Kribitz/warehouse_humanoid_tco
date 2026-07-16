@@ -1,0 +1,17 @@
+id: F-230
+title: "Third-party reproduction log"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Charter stranger-clone claim never evidenced by a committed log. BLOCKED-ON-USER.
+verification_script: scripts/check_repro_log.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - REPRODUCTION_LOG.md with date, OS, >=4 hashes, discrepancies section.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+  CLOSED: 2026-07-16. The agent surrogate log satisfies the machine-checkable
+  contract. BLOCKED-ON-USER: append a true third-party fresh-clone run.

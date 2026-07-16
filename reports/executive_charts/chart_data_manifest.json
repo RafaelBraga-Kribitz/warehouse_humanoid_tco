@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "hash_algorithm": "sha256",
+  "charts": {
+    "01_tco_npv_ranking": "1bf61b6d6a5d25b3e6229876792365a9bd29b35ed1fd72245923738406e43835",
+    "02_cost_breakdown": "1d84dd4a2c2614464780fc0a1efcad9f94eb88ba32e2e053e453a416d0c45b37",
+    "03_simulation_throughput": "32a9800a05c0caea6eb56f93207c0fe5f9ebd9940b3453e576701df61ae78b13",
+    "05_cost_per_order": "bc9f724e7311f91d6a119f62d7db3219c1767a97ac34beba1b55ed89a1f0c720",
+    "06_effect_decomposition": "d6d94bc3a7bd16c363fddba4129508e4af33e82764b9a6700e041e0fb40aa846"
+  }
+}

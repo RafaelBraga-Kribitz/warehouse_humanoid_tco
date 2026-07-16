@@ -6,9 +6,15 @@
 
 ## Version History (Semantic Versioning)
 
-### [Unreleased — Governance Phases 2–5]
+### [Unreleased — Quality Transformation Program]
 
-(Phase 2–5 work tracked in findings; see `governance/findings/` for open and closed items.)
+- **F-200** (2026-07-16): Filed Quality Transformation Program — `governance/QUALITY_BLUEPRINT.md` + findings F-201–F-236.
+- **Phase 0** (2026-07-16): F-202–F-207 closed (Charter link-truth, ADR unify, taxonomy honesty, decorative-config triage, DE metric align, path scrub). F-201 remains open (BLOCKED-ON-USER Figma banner; typo'd AI banner removed from README).
+- **Phase 1** (2026-07-16): F-210–F-219 closed (decision statement, hypotheses, lean-human, validity, charts, README, PDF, property tests, license, DuckDB SQL).
+- **Phase 2** (2026-07-16): F-220–F-230, F-236 closed (optimizer, fair scenarios, realism, cost taxonomy, CRN, frontiers, register, memos/FAQ, deck, dbt, repro log, claims ledger).
+- **Phase 3** (2026-07-16): F-231–F-235 closed (EVPI, demand frontier, publication pack, packaging, pyright strict).
+
+(See `governance/findings/` and `QUALITY_BLUEPRINT.md` for acceptance criteria.)
 
 ### [Phase 1] — 2026-05-29: Real Check Implementations + Adversary CI Job
 
@@ -46,7 +52,7 @@ Full audit remediation: linting (33 errors fixed), sensititvity analysis paramet
 - Linting: ruff + black compliance across all modules
 - Sensitivity: OAT 5-parameter sweep + Monte Carlo 10K samples
 - Hypothesis status: H1–H4 with confirmed/inconclusive/rejected outcomes
-- ADR-0005 & ADR-0006 authored (see `docs/ADR/`)
+- ADR-0005 & ADR-0006 authored (see `governance/adrs/`)
 - Data lineage diagram + Docker CI job
 - README badges + reproducibility statement
 
@@ -91,7 +97,7 @@ Full audit remediation: linting (33 errors fixed), sensititvity analysis paramet
 
 - Repository initialized (Python 3.11 + uv)
 - PROJECT_CHARTER.md (SSOT)
-- `docs/ADR/` (0001–0004)
+- `governance/adrs/` (0001–0004)
 - Basic repo structure (`src/`, `data/`, `tests/`, `config/`)
 - pyproject.toml (dependencies, Black, Ruff, pytest config)
 

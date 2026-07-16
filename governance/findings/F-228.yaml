@@ -1,0 +1,15 @@
+id: F-228
+title: "Exhibit deck generated and pinned"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No consulting-grade exhibit deck.
+verification_script: tests/governance/test_f228_deck.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - exhibit_deck.qmd <=12 slides; python chunks for numbers; PDF exists.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

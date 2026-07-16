@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this framework, please cite it as below."
+title: "Warehouse Humanoid TCO"
+version: 1.0.0
+date-released: 2026-07-16
+authors:
+  - family-names: "Braga-Kribitz"
+    given-names: "Rafael"
+repository-code: "https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco"
+license: "MIT"

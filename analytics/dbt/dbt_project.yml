@@ -1,0 +1,15 @@
+name: warehouse_humanoid_tco
+version: "1.0"
+config-version: 2
+profile: warehouse_humanoid_tco
+
+model-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  warehouse_humanoid_tco:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

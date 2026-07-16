@@ -1,0 +1,24 @@
+id: F-217
+title: "Property-test lattice + golden masters for TCO kernels"
+category: governance_gaps
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No property tests before Phase-2 model rewires.
+verification_script: tests/test_tco_properties.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - >=6 property invariants; golden_masters.json + test; assertion audit table in notes.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+  ASSERTION AUDIT:
+  | Invariant | Guard |
+  |---|---|
+  | NPV pure costs and discount-rate monotonicity | tests/test_tco_properties.py |
+  | Labor and capex additivity | tests/test_tco_properties.py |
+  | Wage-to-NPV, zero-throughput, and non-saving payback | tests/test_tco_properties.py |
+  | Processed artifact rows, columns, and SHA-256 | tests/test_golden_masters.py |
+  Missing generated pipeline parquets are xfailed explicitly; present artifacts
+  must be pinned before a golden-master check can pass.

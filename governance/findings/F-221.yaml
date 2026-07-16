@@ -1,0 +1,31 @@
+id: F-221
+title: "Fair scenario redesign using optimizer + effect decomposition"
+category: methodology_drift
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Headline comparison confounds headcount with technology.
+verification_script: tests/governance/test_f221_fair_scenarios.py
+notes: |
+  DESIGN NOTE (2026-07-16):
+  Scenario sizing is a constrained min-cost crew-selection problem. For each
+  permitted policy class, optimize_crew enumerates feasible integer crews and
+  selects the least-cost solution for which every staffed agent class satisfies
+  rho = lambda * mean_service_seconds / (3600 * count) <= 0.85. A policy class
+  may not use excluded technologies; the 50/50 hybrid adds a near-equal
+  human/humanoid composition constraint and selects the closest feasible mix
+  when an exact balance is infeasible. Future-2028 preserves its configured
+  humanoid throughput multiplier during sizing. S-baseline-human deliberately
+  remains the historical eight-human reference, labelled legacy overstaffed
+  baseline; S-lean-human is the optimized human-only comparator. Outputs,
+  financial records, closed-form capacity rows, visual decomposition, README,
+  and golden values are regenerated from those counts. The governance test
+  independently reruns the optimizer and checks all published scenario counts
+  and synchronized exports.
+
+  ACCEPTANCE CRITERIA:
+  - All agent_counts match optimizer; chart 06 exists; README decomposition; golden masters updated.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

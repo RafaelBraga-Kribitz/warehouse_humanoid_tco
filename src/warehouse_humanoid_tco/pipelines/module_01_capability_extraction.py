@@ -24,6 +24,7 @@ from warehouse_humanoid_tco.data.download import download_dataset
 from warehouse_humanoid_tco.features.aggregation import aggregate_capabilities
 from warehouse_humanoid_tco.features.extraction import extract_dataset_episodes
 from warehouse_humanoid_tco.features.taxonomy import classify_task
+from warehouse_humanoid_tco.utils.paths import repo_relative
 
 
 def require_episodes_extracted(n_episodes: int, n_datasets: int) -> None:
@@ -235,8 +236,8 @@ def module_01_main(
         "multi_label_episode_count": multi_label_episode_count,
         "avg_labels_per_episode": round(avg_labels_per_episode, 3),
         "datasets_processed": len(all_episodes),
-        "per_episode_path": str(per_episode_path.relative_to(project_root)),
-        "summary_path": str(summary_path.relative_to(project_root)),
+        "per_episode_path": repo_relative(per_episode_path),
+        "summary_path": repo_relative(summary_path),
     }
 
     report_path = project_root / "reports" / "module_01_capability_extraction_report.json"

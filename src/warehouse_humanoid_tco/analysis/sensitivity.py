@@ -30,6 +30,7 @@ from warehouse_humanoid_tco.models.tco import (
     compute_humanoid_capex,
     compute_npv,
 )
+from warehouse_humanoid_tco.utils.paths import repo_relative
 
 
 def one_at_a_time(
@@ -107,16 +108,34 @@ def _load_sensitivity_config(project_root: Path) -> dict:
     return sens if isinstance(sens, dict) else {}
 
 
+def _load_monte_carlo_seed(project_root: Path, default: int = 42) -> int:
+    """Load the canonical TCO sensitivity seed from ``config/seeds.yaml``."""
+    path = project_root / "config" / "seeds.yaml"
+    if not path.exists():
+        return default
+    try:
+        config = yaml.safe_load(path.read_text()) or {}
+    except yaml.YAMLError:
+        return default
+    monte_carlo = config.get("monte_carlo")
+    if not isinstance(monte_carlo, dict):
+        return default
+    seed = monte_carlo.get("tco_sensitivity_seed")
+    return int(seed) if isinstance(seed, int) else default
+
+
 # Fixed agent composition per scenario. Source: config/autostore_baseline.yaml
 # (agent_counts). `throughput_multiplier` mirrors the TCO pipeline's F-034
 # adjustment so S-future-2028 (next-gen humanoids 30% faster) is NOT identical
 # to S-hybrid-5050 in the Monte-Carlo output (audit Risk #6).
+# Counts re-derived under F-237 pick-lines scaling + F-221 fair optimizer.
 SCENARIO_COMPOSITIONS: dict[str, dict[str, float]] = {
     "S-baseline-human": {"n_human": 8, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-pure-humanoid": {"n_human": 0, "n_humanoid": 8, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-hybrid-5050": {"n_human": 4, "n_humanoid": 4, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-hybrid-amr": {"n_human": 4, "n_humanoid": 1, "n_amr": 1, "throughput_multiplier": 1.0},
-    "S-future-2028": {"n_human": 4, "n_humanoid": 4, "n_amr": 0, "throughput_multiplier": 1.30},
+    "S-lean-human": {"n_human": 3, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-pure-humanoid": {"n_human": 0, "n_humanoid": 11, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-hybrid-5050": {"n_human": 11, "n_humanoid": 11, "n_amr": 0, "throughput_multiplier": 1.0},
+    "S-hybrid-amr": {"n_human": 3, "n_humanoid": 11, "n_amr": 4, "throughput_multiplier": 1.0},
+    "S-future-2028": {"n_human": 3, "n_humanoid": 9, "n_amr": 0, "throughput_multiplier": 1.30},
 }
 
 
@@ -138,6 +157,11 @@ def compute_tco_for_params(
     humanoid_maint_fraction: float = 0.08,
     humanoid_energy_kwh_per_shift: float = 8.0,
     humanoid_supervision_ratio: float = 0.10,
+    humanoid_availability: float = 40.0 / 40.5 * 4.0 / 5.0,
+    annual_wage_growth_rate: float = 0.025,
+    humanoid_useful_life_years: float = 7.0,
+    humanoid_residual_value_fraction: float = 0.10,
+    integration_cost_eur: float = 200000.0,
     amr_capex_eur: float = 65000.0,
     amr_maint_fraction: float = 0.06,
     amr_energy_kwh_per_shift: float = 4.0,
@@ -168,6 +192,9 @@ def compute_tco_for_params(
     # pipeline so S-future-2028 differs from S-hybrid-5050 under MC (Risk #6).
     if throughput_multiplier > 0:
         eff_humanoid = eff_humanoid / throughput_multiplier
+    if humanoid_availability <= 0:
+        raise ValueError(f"humanoid_availability must be positive; got {humanoid_availability}")
+    eff_humanoid = eff_humanoid / humanoid_availability
 
     humanoid_capex_total = compute_humanoid_capex(
         eff_humanoid,  # type: ignore[arg-type]
@@ -177,9 +204,11 @@ def compute_tco_for_params(
     )
     amr_capex_total = n_amr * amr_capex_eur
     capex_year0 = humanoid_capex_total + amr_capex_total
+    if n_humanoid > 0:
+        capex_year0 += integration_cost_eur
 
     supervision_ftes = humanoid_supervision_ratio * eff_humanoid
-    annual_labor = compute_annual_labor_cost(
+    annual_labor_base = compute_annual_labor_cost(
         n_human + supervision_ftes,  # type: ignore[arg-type]
         human_wage_eur,
         human_overhead_mult,
@@ -202,9 +231,21 @@ def compute_tco_for_params(
         energy_cost_eur_per_kwh,
         operating_days,
     )
-    annual_opex = annual_labor + annual_humanoid_opex + annual_amr_opex
+    annual_non_labor_opex = annual_humanoid_opex + annual_amr_opex
+    annual_opex_by_year = [
+        annual_labor_base * (1 + annual_wage_growth_rate) ** year + annual_non_labor_opex
+        for year in range(1, years + 1)
+    ]
+    residual_salvage = (
+        eff_humanoid
+        * humanoid_capex_eur
+        * humanoid_residual_value_fraction
+        * max(0.0, (humanoid_useful_life_years - years) / humanoid_useful_life_years)
+    )
 
-    cash_flows = [-capex_year0] + [-annual_opex] * years
+    cash_flows = [-capex_year0] + [-opex for opex in annual_opex_by_year]
+    if years > 0:
+        cash_flows[-1] += residual_salvage
     return compute_npv(cash_flows, discount_rate)
 
 
@@ -223,6 +264,7 @@ def _call_with_params(
         human_overhead_mult=float(params.get("human_overhead_mult", 1.35)),
         discount_rate=float(params.get("discount_rate", 0.08)),
         transfer_factor=float(params.get("transfer_factor", TRANSFER_FACTOR_BASELINE)),
+        humanoid_supervision_ratio=float(params.get("humanoid_supervision_ratio", 0.10)),
     )
 
 
@@ -369,6 +411,124 @@ def _summarize(npv_array: np.ndarray, n_samples: int) -> dict[str, float]:
     }
 
 
+def _rank_probabilities(
+    samples: list[dict],
+    scenario_ids: list[str],
+    n_samples: int,
+) -> tuple[dict[str, float], int]:
+    """Return P(rank 1) and the count of unusable paired CRN draws.
+
+    A sample is feasible only when every scenario has one finite NPV. Ties use
+    the supplied scenario order, making the winner deterministic and keeping
+    the probabilities a proper distribution.
+    """
+    by_sample: dict[int, dict[str, float]] = {}
+    for row in samples:
+        sample_id = int(row["sample_id"])
+        by_sample.setdefault(sample_id, {})[str(row["scenario_id"])] = float(row["npv_eur"])
+
+    wins = dict.fromkeys(scenario_ids, 0)
+    feasible_count = 0
+    for sample_id in range(n_samples):
+        npvs = by_sample.get(sample_id, {})
+        if (
+            len(npvs) != len(scenario_ids)
+            or any(scenario_id not in npvs for scenario_id in scenario_ids)
+            or any(not np.isfinite(npvs[scenario_id]) for scenario_id in scenario_ids)
+        ):
+            continue
+        winner = max(scenario_ids, key=lambda scenario_id: npvs[scenario_id])
+        wins[winner] += 1
+        feasible_count += 1
+
+    if feasible_count == 0:
+        return {scenario_id: 0.0 for scenario_id in scenario_ids}, n_samples
+    return (
+        {scenario_id: wins[scenario_id] / feasible_count for scenario_id in scenario_ids},
+        n_samples - feasible_count,
+    )
+
+
+def compute_evpi_per_parameter(
+    samples: list[dict[str, Any]],
+    scenario_ids: list[str],
+    parameter_names: list[str],
+    *,
+    n_bins: int = 20,
+) -> dict[str, float]:
+    """Estimate partial EVPI from common-random-number Monte Carlo samples.
+
+    For each input X, the estimator is ``E[max_s E(NPV_s | X)] - max_s E(NPV_s)``.
+    It uses equal-frequency bins as a non-parametric conditional-mean estimator.
+    Every scenario shares a parameter draw for a sample id, so differences are
+    attributable to the parameter rather than independently sampled noise.
+    """
+    if n_bins < 2:
+        raise ValueError("n_bins must be at least 2")
+
+    rows_by_sample: dict[int, dict[str, dict[str, Any]]] = {}
+    for row in samples:
+        sample_id = int(row["sample_id"])
+        rows_by_sample.setdefault(sample_id, {})[str(row["scenario_id"])] = row
+    complete = [
+        scenario_rows
+        for scenario_rows in rows_by_sample.values()
+        if all(scenario_id in scenario_rows for scenario_id in scenario_ids)
+    ]
+    if not complete:
+        return {name: 0.0 for name in parameter_names}
+
+    scenario_means = {
+        scenario_id: float(np.mean([float(rows[scenario_id]["npv_eur"]) for rows in complete]))
+        for scenario_id in scenario_ids
+    }
+    current_value = max(scenario_means.values())
+    evpi: dict[str, float] = {}
+    for parameter in parameter_names:
+        sample_key = f"{parameter}_sampled"
+        values = np.asarray([float(rows[scenario_ids[0]][sample_key]) for rows in complete])
+        # Stable rank bins avoid distribution-specific assumptions and ensure
+        # non-empty conditioning cells even for repeated uniform draws.
+        ranks = np.argsort(np.argsort(values, kind="stable"), kind="stable")
+        bins = np.minimum((ranks * n_bins) // len(complete), n_bins - 1)
+        conditional_value = 0.0
+        for bin_id in range(n_bins):
+            indices = np.flatnonzero(bins == bin_id)
+            if not len(indices):
+                continue
+            conditional_value += (
+                len(indices)
+                / len(complete)
+                * max(
+                    float(
+                        np.mean(
+                            [float(complete[index][scenario_id]["npv_eur"]) for index in indices]
+                        )
+                    )
+                    for scenario_id in scenario_ids
+                )
+            )
+        # Sampling noise can make an otherwise non-negative value infinitesimally
+        # negative; zero is the economically meaningful lower bound.
+        evpi[parameter] = float(max(0.0, conditional_value - current_value))
+    return evpi
+
+
+def _convergence_diagnostic(npv_array: np.ndarray) -> dict[str, float]:
+    """Compare first- and second-half means for a lightweight MC stability check."""
+    midpoint = len(npv_array) // 2
+    if midpoint == 0 or midpoint == len(npv_array):
+        raise ValueError("convergence diagnostic requires at least two samples")
+    half1_mean = float(np.mean(npv_array[:midpoint]))
+    half2_mean = float(np.mean(npv_array[midpoint:]))
+    rel_delta = abs(half1_mean - half2_mean) / max(abs((half1_mean + half2_mean) / 2), 1.0)
+    return {
+        "half1_mean": half1_mean,
+        "half2_mean": half2_mean,
+        "rel_delta": float(rel_delta),
+    }
+
+
 def run_monte_carlo_sensitivity(
     scenario_id: str,
     param_distributions: dict[str, dict],
@@ -410,7 +570,7 @@ def run_monte_carlo_per_scenario(
     seed: int = 42,
     scenario_ids: list[str] | None = None,
 ) -> tuple[list[dict], dict[str, dict]]:
-    """Run Monte Carlo for every scenario, reusing the same parameter draws.
+    """Run Monte Carlo for every scenario, reusing one parameter draw matrix.
 
     Same continuous draws are applied to every scenario so cross-scenario
     NPV comparisons hold parameter noise constant — a standard variance-
@@ -449,13 +609,13 @@ def run_monte_carlo_per_scenario(
 
 def run_sensitivity_analysis(
     project_root: Path,
-    scenario_id: str = "S-hybrid-amr",
+    scenario_id: str = "S-lean-human",
     n_mc_samples: int = 10000,
 ) -> dict[str, Path]:
     """Run full sensitivity analysis.
 
-    OAT runs against `scenario_id` (default S-hybrid-amr — the leading scenario).
-    Monte Carlo runs per-scenario across all five scenarios.
+    OAT runs against `scenario_id` (default S-lean-human — the recommended scenario).
+    Monte Carlo runs per-scenario across all published scenarios.
 
     Returns dict mapping output paths.
     """
@@ -476,6 +636,7 @@ def run_sensitivity_analysis(
         "human_overhead_mult": 1.35,
         "discount_rate": 0.08,
         "transfer_factor": TRANSFER_FACTOR_BASELINE,
+        "humanoid_supervision_ratio": 0.10,
     }
 
     oat_cfg = sens_cfg.get("oat") or {
@@ -484,6 +645,7 @@ def run_sensitivity_analysis(
         "human_overhead_mult": [1.0, 1.7],
         "discount_rate": [0.04, 0.12],
         "transfer_factor": [0.50, 0.90],
+        "humanoid_supervision_ratio": [0.05, 0.50],
     }
     param_ranges: dict[str, tuple[float, float]] = {
         k: (float(v[0]), float(v[1])) for k, v in oat_cfg.items()
@@ -498,6 +660,7 @@ def run_sensitivity_analysis(
         "human_overhead_mult": {"type": "uniform", "low": 1.0, "high": 1.7},
         "discount_rate": {"type": "uniform", "low": 0.04, "high": 0.12},
         "transfer_factor": {"type": "uniform", "low": 0.50, "high": 0.90},
+        "humanoid_supervision_ratio": {"type": "uniform", "low": 0.05, "high": 0.50},
     }
 
     print(f"  OAT sensitivity ({scenario_id}, {len(param_ranges)} parameters)...")
@@ -506,7 +669,9 @@ def run_sensitivity_analysis(
 
     print(f"  Monte Carlo: {n_mc_samples} samples × {len(SCENARIO_COMPOSITIONS)} scenarios...")
     mc_samples, mc_summary_per_scenario = run_monte_carlo_per_scenario(
-        param_distributions, n_samples=n_mc_samples
+        param_distributions,
+        n_samples=n_mc_samples,
+        seed=_load_monte_carlo_seed(project_root),
     )
 
     # Persist OAT (small, full)
@@ -523,6 +688,15 @@ def run_sensitivity_analysis(
 
     # Leading scenario summary surfaces at top level for README/report consumers
     leading_summary = mc_summary_per_scenario.get(scenario_id, {})
+    scenario_ids = list(SCENARIO_COMPOSITIONS)
+    rank_probabilities, infeasible_sample_count = _rank_probabilities(
+        mc_samples, scenario_ids, n_mc_samples
+    )
+    evpi_eur = compute_evpi_per_parameter(mc_samples, scenario_ids, list(param_distributions))
+    leading_npvs = np.asarray(
+        [sample["npv_eur"] for sample in mc_samples if sample["scenario_id"] == scenario_id],
+        dtype=float,
+    )
 
     report = {
         "phase": "sensitivity_analysis",
@@ -532,10 +706,14 @@ def run_sensitivity_analysis(
         "oat_elasticity_ranking": elasticity_ranking,
         "mc_param_distributions": param_distributions,
         "mc_samples": n_mc_samples,
-        "oat_results_path": str(oat_path),
-        "mc_samples_path": str(mc_path),
+        "oat_results_path": repo_relative(oat_path),
+        "mc_samples_path": repo_relative(mc_path),
         "mc_summary": leading_summary,
         "mc_summary_per_scenario": mc_summary_per_scenario,
+        "rank_probabilities": rank_probabilities,
+        "evpi_eur": evpi_eur,
+        "convergence": _convergence_diagnostic(leading_npvs),
+        "infeasible_sample_count": infeasible_sample_count,
     }
 
     report_path = project_root / "reports" / "sensitivity_analysis_report.json"

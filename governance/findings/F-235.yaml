@@ -1,0 +1,17 @@
+id: F-235
+title: "Pyright strict ratchet + coverage >=90%"
+category: fragmented_standards
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  pyright basic; CONTRIBUTING historically overclaimed strict.
+verification_script: scripts/check_pyright_strict.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - Strict header count non-decreasing; cov-fail-under>=90; make lint green.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+  FINAL THRESHOLD (2026-07-16, F-240): pyproject.toml --cov-fail-under=90
+  (measured full suite 91%; omit remains */tests/* and */__main__.py only).

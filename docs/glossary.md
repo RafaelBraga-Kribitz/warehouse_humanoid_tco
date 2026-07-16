@@ -3,9 +3,15 @@
 Three-language reference: English — German — Portuguese.  
 Terms are listed in English alphabetical order.
 
+Anchors used by README first-use links: <a id="amr"></a><a id="npv"></a><a id="tco"></a><a id="oat"></a><a id="utilisation"></a><a id="transfer-factor"></a><a id="kollektivvertrag"></a><a id="monte-carlo"></a>
+
 | English | German | Portuguese | Definition |
 |---|---|---|---|
 | AMR | AMR (Autonomer Mobiler Roboter) | RMA (Robô Móvel Autônomo) | Autonomous Mobile Robot. Wheeled, not humanoid. Used by Knapp and TGW today. |
+| OAT | Ein-Faktor-Sensitivität | OAT | One-at-a-time sensitivity: vary one parameter across its range while holding others fixed. |
+| Utilisation (ρ) | Auslastung (ρ) | Utilização (ρ) | Queueing utilisation ρ = λ·E[S]/c. Scenarios are gated at ρ ≤ 0.85 for capacity ceilings. |
+| Transfer factor | Transferfaktor | Fator de transferência | Multiplier mapping teleoperation demo cycle times to production speed (here 0.50–0.90). |
+| Monte Carlo | Monte-Carlo | Monte Carlo | Sampling continuous parameters from stated distributions to propagate uncertainty into NPV. |
 | AutoStore | AutoStore | AutoStore | Cube-storage warehouse architecture. Robots retrieve bins from a 3D grid. Reference architecture for v1.0 simulation. |
 | Betriebsrat | Betriebsrat | Conselho de Trabalhadores | Austrian works council. Has co-determination rights under §96 ArbVG over technical worker-monitoring measures. |
 | Capex | Investitionsausgaben | Capex | Capital expenditure. One-time cost for equipment acquisition. |

@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: mart_tco_scenarios
+    columns:
+      - name: scenario_id
+        tests: [unique, not_null]
+  - name: mart_simulation_capacity_ceiling
+    columns:
+      - name: scenario_id
+        tests: [unique, not_null]
+  - name: mart_humanoid_capabilities_summary
+    columns:
+      - name: task_category
+        tests: [not_null]
+  - name: mart_simulation_runs
+    columns:
+      - name: scenario_id
+        tests: [not_null]

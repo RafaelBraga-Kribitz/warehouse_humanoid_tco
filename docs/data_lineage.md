@@ -40,6 +40,23 @@ NPV/opex — at the modeled 120 orders/hr arrival every scenario is demand-bound
 `cost_per_order` denominator (hence the labeled `E → F` edge). The discriminating
 operational metric is the capacity-ceiling sweep (`P`), not operating throughput.
 
+## Decision influence diagram
+
+```mermaid
+flowchart TD
+    D["Warehouse demand and ρ≤0.85"] --> C["Feasible crew composition"]
+    W["Wage and overhead assumptions"] --> C
+    X["Humanoid capex, availability and transfer factor"] --> R["Robot cost and capacity"]
+    I["F-222 integration cost and residual value"] --> R
+    C --> N["5-year cost NPV"]
+    R --> N
+    N --> K{"Decision"}
+    K -->|"lowest modeled cost"| L["S-lean-human now"]
+    K -->|"robot-only comparison"| F["S-future-2028"]
+    V["Local pilot telemetry and vacancy evidence"] -. validates/replaces .-> X
+    V -. validates .-> D
+```
+
 ## Key files
 
 | Artifact | Path | Produced by |

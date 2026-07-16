@@ -16,8 +16,10 @@ jobs:
           python-version: "3.11"
       - name: Install uv
         run: pip install uv
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies (locked)
+        run: |
+          uv sync --frozen --extra dev --extra analytics
+          echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
       - name: Black
         run: black --check src/ tests/ scripts/
       - name: Ruff
@@ -34,8 +36,10 @@ jobs:
           python-version: "3.11"
       - name: Install uv
         run: pip install uv
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies (locked)
+        run: |
+          uv sync --frozen --extra dev --extra analytics
+          echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
       - name: Generate simulation data (required for F-044 verification)
         run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
       - name: Run tests
@@ -69,8 +73,10 @@ jobs:
           python-version: "3.11"
       - name: Install uv
         run: pip install uv
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies (locked)
+        run: |
+          uv sync --frozen --extra dev --extra analytics
+          echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
       - name: Run module_02 simulation
         run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
       - name: Run module_03 TCO
@@ -94,8 +100,10 @@ jobs:
           python-version: "3.11"
       - name: Install uv
         run: pip install uv
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies (locked)
+        run: |
+          uv sync --frozen --extra dev --extra analytics
+          echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
       - name: Generate simulation data (required for F-044 verification)
         run: python -m warehouse_humanoid_tco.pipelines.module_02_simulation
       - name: make audit

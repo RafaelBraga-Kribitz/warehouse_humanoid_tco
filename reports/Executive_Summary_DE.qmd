@@ -2,17 +2,44 @@
 title: "Humanoid-Roboter in der österreichischen Intralogistik: Eine Rentabilitätsanalyse"
 subtitle: "Executive Summary"
 author: "Rafael Braga"
-date: "2026-05-29"
+date: "2026-07-16"
 lang: de
 params:
   tco_report: "reports/module_03_tco_report.json"
   sensitivity_report: "reports/sensitivity_analysis_report.json"
 format:
-  pdf:
-    documentclass: article
-    geometry: margin=2cm
-    fontsize: 11pt
+  html:
+    toc: false
+  typst:
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
 ---
+
+## Empfehlung
+
+**Jetzt:** Crew auf S-lean-human (3 Personen, ρ≤0,85 nach Pick-Lines-Skalierung)
+dimensionieren. Es ist mit €647K Fünfjahres-Barwertkosten die günstigste
+modellierte, kapazitätsfähige Option. **Bei Robotern:** S-future-2028 ist mit
+€2,533M die günstigste robotergänzte Variante, bleibt aber teurer als die
+menschliche Baseline. Keine Beschaffung allein auf Basis von Lohnarbitrage
+freigeben; offene Stellen und Warehouse-Telemetrie sind die entscheidenden
+Validierungspunkte.
+
+## Entscheidung auf einen Blick
+
+| Szenario | 5-Jahr NPV | Gesamtkosten-Reduktion vs. Baseline (NPV) | Entscheidung |
+|---|---:|---:|---|
+| **S-lean-human** | **−€647K** | **62,5%** | Jetzt umsetzen |
+| S-baseline-human | −€1726K | 0,0% | Legacy-Referenz |
+| **S-future-2028** | **−€2533K** | **-46,7%** | Günstigster Roboterfall |
+| S-pure-humanoid | −€2878K | -66,7% | Nicht bevorzugt |
+| S-hybrid-amr | −€3841K | -122,5% | Integration belastet |
+| S-hybrid-5050 | −€5252K | -204,2% | Nicht bevorzugt |
+
+Alle Werte stammen aus [`tco_scenarios.csv`](../exports/tableau_public/tco_scenarios.csv);
+sie sind Kosten-Barwerte, daher bedeutet ein weniger negativer Wert geringere Kosten.
 
 ## Projektziel
 
@@ -38,30 +65,10 @@ wie sie bei Knapp AG und TGW Logistics eingesetzt werden.
 3. **TCO-Modell (Modul 3):** 5-Jahres-Kapitalwertanalyse (NPV, einfache Amortisationszeit; IRR entfällt — reines Kostenmodell ohne Erlöse)
 4. **Dashboard (Modul 4):** Interaktives BI-Dashboard (Tableau Public; CSV-Exporte auch direkt in Power BI importierbar — siehe ADR-0008)
 
-## Wichtigste Erkenntnisse
+## Wesentliche Einschränkungen
 
-### Optimales Szenario unter den modellierten Annahmen: S-hybrid-amr
-
-Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlichen Arbeitskräften, 20% Humanoid und 20% AMR die 5-Jahres-Gesamtbetriebskosten (TCO):
-
-| Szenario | 5-Jahr NPV | Kostenersparnis vs. Baseline | Amortisationszeit |
-|---|---|---|---|
-| **S-hybrid-amr** | **−€1.079K** | **45%** | **1,1 Jahre** |
-| S-hybrid-5050 | −€1.577K | 35% | 3,8 Jahre |
-| S-baseline-human | −€1.608K | — | — |
-| S-pure-humanoid | −€1.546K | 70% | 3,8 Jahre |
-| S-future-2028 | −€1.399K | 39% | 2,6 Jahre |
-
-### Kritische Erkenntnisse
-
-1. **Arbeitskostendomäne:** Das Kostenmodell wird von Personalkostenreduktion, nicht von Roboter-Capex, dominiert. OAT-Sensitivität (`data/processed/sensitivity_oat_results.parquet`, Szenario S-hybrid-amr) zeigt: Stundensätze (€15,13–€22,00/h, WKO Spedition & Lagereibetriebe BG-III 2025/26) bewegen NPV um **€306K**, der Overhead-Multiplikator (1,0–1,7) um weitere **€427K** — kombiniert ~**€733K** Arbeitskosten-Bandbreite gegenüber nur **€158K** für Humanoid-Capex (€60K–€180K/Einheit). Verhältnis ≈ **4,6:1** Arbeit-zu-Capex.
-
-2. **Humanoid-Sensitivität:** Bei einem Capex > €180K pro Roboter verschwindet der Vorteil des S-hybrid-amr. Siehe Empfindlichkeitsanalyse (`reports/sensitivity_analysis_report.json`).
-
-3. **Modellunsicherheit:** Alle Szenarien zeigen statistisch ähnliche Durchsätze (~947-956 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher **nicht** auf statistisch separierbare Durchsatzunterschiede zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe `reports/module_02_simulation_validation.qmd` (Kruskal-Wallis p=0.960110).
-
-## Hinweis
-
-Alle Daten und Quellen sind öffentlich zugänglich. Der vollständige
-Quellcode ist auf GitHub verfügbar. Die Analyse ist vollständig
-reproduzierbar: `make all` erzeugt alle Artefakte.
+Die Demonstrationsdaten sind Haushaltsaufgaben, keine Lagertelemetrie. Der
+Transferfaktor (0,50–0,90), Verfügbarkeit und die €200K Systemintegration sind
+modelliert, aber vor einer Investition mit einem lokalen Pilotversuch zu prüfen.
+Die Sensitivitätsfrontieren zeigen im veröffentlichten Capex-Bereich keinen
+Kostengleichstand zwischen S-future-2028 und S-lean-human.

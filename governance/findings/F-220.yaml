@@ -1,0 +1,15 @@
+id: F-220
+title: "Crew-size enumerator — min-cost integer crews subject to rho"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Crew sizes hand-picked; no optimization module.
+verification_script: tests/governance/test_f220_optimizer.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - crew_optimizer.py; neighborhood optimality test; determinism.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

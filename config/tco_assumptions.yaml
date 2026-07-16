@@ -41,6 +41,14 @@ infrastructure:
   integration_cost_eur: 200000     # one-time system integration
   integration_cost_range: [100000, 400000]
 
+unmodeled_parameters:
+  - {key: financial.discount_rate_range, bias: neutral, note: Legacy range is not the active sensitivity range, planned: F-222}
+  - {key: labor.training_cost_range, bias: favors_robots, note: Training range is not sampled by the model, planned: F-222}
+  - {key: humanoid.unit_capex_range, bias: favors_robots, note: Legacy capex range is not the active sensitivity range, planned: F-222}
+  - {key: humanoid.financing_rate, bias: favors_humans, note: Financing costs are not modeled in NPV, planned: F-222}
+  - {key: infrastructure.grid_expansion_cost_eur_per_bin, bias: favors_robots, note: Grid expansion cost is excluded from TCO, planned: F-222}
+  - {key: infrastructure.integration_cost_range, bias: favors_robots, note: Integration cost range is not sampled, planned: F-222}
+
 # Sensitivity analysis specification — the SINGLE SOURCE OF TRUTH for the OAT
 # ranges and Monte-Carlo distributions used by analysis/sensitivity.py.
 #
@@ -57,15 +65,26 @@ sensitivity:
     human_overhead_mult: [1.0, 1.7]
     discount_rate: [0.04, 0.12]
     transfer_factor: [0.50, 0.90]       # WBT->production capability transfer
+    humanoid_supervision_ratio: [0.05, 0.50]
   monte_carlo:               # per-parameter distribution for the 10k-sample MC
     humanoid_capex_eur: {type: lognormal, mean: 120000, std: 30000}
     human_wage_eur: {type: normal, mean: 18.50, std: 2.0}
     human_overhead_mult: {type: uniform, low: 1.0, high: 1.7}
     discount_rate: {type: uniform, low: 0.04, high: 0.12}
     transfer_factor: {type: uniform, low: 0.50, high: 0.90}
+    humanoid_supervision_ratio: {type: uniform, low: 0.05, high: 0.50}
   base_point:                # OAT pivot / central estimate
     humanoid_capex_eur: 120000.0
     human_wage_eur: 18.50
     human_overhead_mult: 1.35
     discount_rate: 0.08
     transfer_factor: 0.70
+    humanoid_supervision_ratio: 0.10
+
+# Demand frontier specification. Later shifts are separately staffed and use the
+# premium when the crew optimizer compares five-year costs.
+demand_frontier:
+  lambda_per_hour: [120, 200, 300, 400]
+  shifts: [1, 2, 3]
+  night_shift_premium: 1.5
+  target_rho: 0.85

@@ -1,0 +1,13 @@
+financial:
+  horizon_years: 5
+  discount_rate: 0.08
+labor:
+  base_hourly_wage_eur: 18.50
+  overhead_multiplier: 1.35
+humanoid:
+  unit_capex_eur: 120000
+  installation_cost_per_unit_eur: 8000
+  annual_maintenance_fraction: 0.08
+amr:
+  unit_capex_eur: 65000
+  annual_maintenance_fraction: 0.06

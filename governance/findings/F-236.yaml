@@ -1,0 +1,16 @@
+id: F-236
+title: "Claims ledger + citation spot audit"
+category: governance_gaps
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No total claims-evidence contract across narrative artifacts.
+verification_script: scripts/check_claims_ledger.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - CLAIMS_LEDGER regenerates clean; CITATION_AUDIT >=5 rows; zero untagged euros/%.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+  CLOSED: 2026-07-16. Ledger generation, numeric-tag coverage, and citation audit pass.

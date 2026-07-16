@@ -4,8 +4,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib
 import polars as pl
 import pytest
+
+# Headless CI / broken Tcl installs must not pull the TkAgg backend.
+matplotlib.use("Agg")
 
 
 @pytest.fixture

@@ -1,0 +1,64 @@
+---
+title: "Humanoid Robots in Austrian Intralogistics: A Cost Decision Memo"
+subtitle: "Executive Summary"
+author: "Rafael Braga"
+date: "2026-07-16"
+lang: en
+params:
+  tco_report: "reports/module_03_tco_report.json"
+  sensitivity_report: "reports/sensitivity_analysis_report.json"
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
+---
+
+## Recommendation
+
+**Act now:** size the crew to S-lean-human (three people, ρ≤0.85 after
+pick-lines scaling). At €647K in five-year present-value cost, it is the
+least-cost modeled capacity-feasible option. **For robot-inclusive
+alternatives:** S-future-2028 is lowest at €2.533M, but remains costlier than
+the human baseline. Do not approve procurement solely on wage-arbitrage
+assumptions; local vacancies and warehouse telemetry are the decision-critical
+validation inputs.
+
+## Decision at a glance
+
+| Scenario | 5-year NPV | Total-cost reduction vs baseline (NPV) | Decision |
+|---|---:|---:|---|
+| **S-lean-human** | **−€647K** | **62.5%** | Implement now |
+| S-baseline-human | −€1.726M | 0.0% | Legacy reference |
+| **S-future-2028** | **−€2.533M** | **−46.7%** | Lowest-cost robot case |
+| S-pure-humanoid | −€2.878M | −66.7% | Not preferred |
+| S-hybrid-amr | −€3.841M | −122.5% | Integration burden |
+
+All values come from
+[`tco_scenarios.csv`](../exports/tableau_public/tco_scenarios.csv). They are
+cost NPVs, so a less-negative number represents lower cost.
+
+## Scope and evidence
+
+The project combines 2,359 publicly available UnifoLM demonstration episodes,
+a SimPy AutoStore model, and a five-year TCO model using Austrian labor inputs.
+The data are household demonstrations rather than warehouse tasks; the model
+therefore applies a 0.50–0.90 WBT-to-production transfer factor.
+
+## Method
+
+1. Capability extraction summarizes cycle-time evidence.
+2. Discrete-event simulation checks operational feasibility.
+3. The financial model calculates capex, recurring operating costs, residual
+   value, and the five-year cost NPV.
+4. OAT, paired Monte Carlo (common random numbers), and two-way frontiers test
+   sensitivity without changing scenario identity.
+
+## Key limitations
+
+Availability derating, wage growth, system integration (€200K for robot
+scenarios), and residual value are modeled. They are assumptions, not
+measurements. The published frontiers do not identify a S-future-2028 /
+S-lean-human cost tie within the €60K–€180K humanoid-capex grid. A local pilot
+should replace the transfer proxy before a capital commitment.

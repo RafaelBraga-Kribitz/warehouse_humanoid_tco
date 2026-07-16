@@ -22,9 +22,16 @@ data/raw/at_wages/
 data/interim/
 data/processed/*.parquet
 data/processed/*.csv
+# dbt validation layer — generated database and compiled models
+analytics/dbt/target/
+analytics/dbt/dbt_packages/
 # MANIFEST.yaml files ARE committed
 !data/raw/MANIFEST.yaml
 !data/processed/MANIFEST.yaml
+# Module 1 capability summary is the Module 2/CI input fixture (HF Hub gated otherwise)
+!data/processed/humanoid_capabilities_summary.parquet
+# Quarto/Typst package cache — never commit; re-downloaded on render
+reports/.quarto/
 
 # Notebooks — .ipynb is generated from .py source via jupytext
 notebooks/*.ipynb
@@ -34,8 +41,14 @@ notebooks/*.ipynb
 reports/*.html
 !reports/Executive_Summary_DE.html
 reports/*.pdf
+# Recruiter-facing decision artifacts ARE committed (F-216/F-227/F-228 — README links them)
+!reports/Executive_Summary_DE.pdf
+!reports/Executive_Summary_EN.pdf
+!reports/exhibit_deck.pdf
 reports/*.log
 reports/*_files/
+reports/*.typ
+reports/*.quarto_ipynb
 # derisk_inspection_report.json IS committed — it pins dataset SHAs for reproducibility
 
 # OS

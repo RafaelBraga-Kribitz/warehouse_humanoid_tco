@@ -35,6 +35,52 @@ class WarehouseScenario:
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
+def scale_line_cycle_to_order(
+    mean_s: float, std_s: float, pick_lines: float
+) -> tuple[float, float]:
+    """Convert per-pick-line cycle times into per-order service times.
+
+    Config stores cycle times as seconds per pick line (ADR-0009 / Knapp).
+    Orders contain ``pick_lines`` lines on average. Under independent line draws:
+
+        mean_order = mean_line × L
+        std_order  = std_line × √L
+
+    See ADR-0017 (F-237). ``AgentProfile.cycle_time_*`` values are always
+    interpreted as per-order service after this scaling.
+    """
+    if pick_lines <= 0:
+        raise ValueError(f"pick_lines must be positive; got {pick_lines}")
+    if mean_s < 0 or std_s < 0:
+        raise ValueError(f"cycle times must be non-negative; got mean={mean_s}, std={std_s}")
+    return float(mean_s * pick_lines), float(std_s * (pick_lines**0.5))
+
+
+def compute_operational_availability(
+    mtbf_hours: float,
+    mttr_hours: float,
+    battery_capacity_hours: float,
+    recharge_time_hours: float,
+) -> float:
+    """Return combined reliability and battery-duty availability.
+
+    The value derates an agent's service rate: callers multiply its cycle time
+    by ``1 / availability``. Inputs are strictly positive because a zero or
+    negative duration has no physical interpretation in this model.
+    """
+    inputs = {
+        "mtbf_hours": mtbf_hours,
+        "mttr_hours": mttr_hours,
+        "battery_capacity_hours": battery_capacity_hours,
+        "recharge_time_hours": recharge_time_hours,
+    }
+    if any(value <= 0 for value in inputs.values()):
+        raise ValueError(f"availability durations must be positive; got {inputs}")
+    reliability = mtbf_hours / (mtbf_hours + mttr_hours)
+    battery_duty = battery_capacity_hours / (battery_capacity_hours + recharge_time_hours)
+    return reliability * battery_duty
+
+
 def predict_utilisation(scenario: WarehouseScenario) -> float:
     """Predict the queueing utilisation rho = lambda * E[S] / c for `scenario`.
 
