@@ -88,11 +88,11 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         scenarios,
         costs,
         color=[
-            RECOMMENDED
-            if s == "S-lean-hybrid-amr"
-            else BASELINE
-            if s == "S-baseline-human"
-            else OTHER
+            (
+                RECOMMENDED
+                if s == "S-lean-hybrid-amr"
+                else BASELINE if s == "S-baseline-human" else OTHER
+            )
             for s in scenarios
         ],
     )

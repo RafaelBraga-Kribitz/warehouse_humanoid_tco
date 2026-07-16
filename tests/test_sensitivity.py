@@ -228,9 +228,9 @@ def test_per_scenario_lean_hybrid_leads() -> None:
     means = {sid: summary[sid]["npv_mean"] for sid in summary}
     # Less negative = better
     best = max(means, key=lambda k: means[k])
-    assert best == "S-lean-hybrid-amr", (
-        f"Expected S-lean-hybrid-amr to lead; got {best} with means={means}"
-    )
+    assert (
+        best == "S-lean-hybrid-amr"
+    ), f"Expected S-lean-hybrid-amr to lead; got {best} with means={means}"
 
 
 # ── validate_human_baseline_throughput ────────────────────────────────────────

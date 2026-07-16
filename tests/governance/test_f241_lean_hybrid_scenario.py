@@ -13,19 +13,24 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_f241_lean_hybrid_scenario_and_chart09() -> None:
-    config = yaml.safe_load((ROOT / "config" / "autostore_baseline.yaml").read_text(encoding="utf-8"))
+    config = yaml.safe_load(
+        (ROOT / "config" / "autostore_baseline.yaml").read_text(encoding="utf-8")
+    )
     scenarios = {row["id"]: row for row in config["scenarios"]}
     hybrid = scenarios.get("S-lean-hybrid-amr")
-    counts_ok = (
-        hybrid is not None
-        and hybrid.get("agent_counts") == {"human": 1, "humanoid": 0, "amr": 3}
-    )
+    counts_ok = hybrid is not None and hybrid.get("agent_counts") == {
+        "human": 1,
+        "humanoid": 0,
+        "amr": 3,
+    }
 
     with (ROOT / "exports" / "tableau_public" / "tco_scenarios.csv").open(
         encoding="utf-8", newline=""
     ) as handle:
         rows = {row["scenario_id"]: row for row in csv.DictReader(handle)}
-    hybrid_npv = float(rows["S-lean-hybrid-amr"]["npv_eur"]) if "S-lean-hybrid-amr" in rows else None
+    hybrid_npv = (
+        float(rows["S-lean-hybrid-amr"]["npv_eur"]) if "S-lean-hybrid-amr" in rows else None
+    )
     lean_npv = float(rows["S-lean-human"]["npv_eur"]) if "S-lean-human" in rows else None
     cheapest_ok = (
         hybrid_npv is not None
@@ -44,15 +49,11 @@ def test_f241_lean_hybrid_scenario_and_chart09() -> None:
     frontier = json.loads((ROOT / "reports" / "demand_frontier.json").read_text(encoding="utf-8"))
     series = {
         shifts: [
-            row["npv_eur"] / 1_000_000
-            for row in frontier["results"]
-            if row["shifts"] == shifts
+            row["npv_eur"] / 1_000_000 for row in frontier["results"] if row["shifts"] == shifts
         ]
         for shifts in (1, 2, 3)
     }
-    pairs_differ = (
-        series[1] != series[2] and series[1] != series[3] and series[2] != series[3]
-    )
+    pairs_differ = series[1] != series[2] and series[1] != series[3] and series[2] != series[3]
     chart_path = ROOT / "reports" / "executive_charts" / "09_robot_entry_frontier.png"
     chart_ok = chart_path.exists() and chart_path.stat().st_size > 1_000
 
