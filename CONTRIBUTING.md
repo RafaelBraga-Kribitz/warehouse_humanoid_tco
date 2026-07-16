@@ -29,6 +29,7 @@ README.md
 PROJECT_CHARTER.md
 CHANGELOG.md
 CONTRIBUTING.md
+MAINTENANCE.md
 LICENSE
 governance/adrs/NNNN-*.md   # ADRs only
 docs/glossary.md

@@ -9,6 +9,10 @@ linked_finding: F-229
 
 # ADR-0016: Validate published marts with dbt-duckdb
 
+- **Date:** 2026-07-16
+- **Status:** Accepted
+- **Deciders:** Rafael Braga
+
 ## Context
 
 The reviewed DuckDB SQL projections in ADR-0013 define the published Tableau

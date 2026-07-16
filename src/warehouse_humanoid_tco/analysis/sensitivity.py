@@ -479,9 +479,7 @@ def compute_evpi_per_parameter(
         return {name: 0.0 for name in parameter_names}
 
     scenario_means = {
-        scenario_id: float(
-            np.mean([float(rows[scenario_id]["npv_eur"]) for rows in complete])
-        )
+        scenario_id: float(np.mean([float(rows[scenario_id]["npv_eur"]) for rows in complete]))
         for scenario_id in scenario_ids
     }
     current_value = max(scenario_means.values())
@@ -498,13 +496,17 @@ def compute_evpi_per_parameter(
             indices = np.flatnonzero(bins == bin_id)
             if not len(indices):
                 continue
-            conditional_value += len(indices) / len(complete) * max(
-                float(
-                    np.mean(
-                        [float(complete[index][scenario_id]["npv_eur"]) for index in indices]
+            conditional_value += (
+                len(indices)
+                / len(complete)
+                * max(
+                    float(
+                        np.mean(
+                            [float(complete[index][scenario_id]["npv_eur"]) for index in indices]
+                        )
                     )
+                    for scenario_id in scenario_ids
                 )
-                for scenario_id in scenario_ids
             )
         # Sampling noise can make an otherwise non-negative value infinitesimally
         # negative; zero is the economically meaningful lower bound.
@@ -690,9 +692,7 @@ def run_sensitivity_analysis(
     rank_probabilities, infeasible_sample_count = _rank_probabilities(
         mc_samples, scenario_ids, n_mc_samples
     )
-    evpi_eur = compute_evpi_per_parameter(
-        mc_samples, scenario_ids, list(param_distributions)
-    )
+    evpi_eur = compute_evpi_per_parameter(mc_samples, scenario_ids, list(param_distributions))
     leading_npvs = np.asarray(
         [sample["npv_eur"] for sample in mc_samples if sample["scenario_id"] == scenario_id],
         dtype=float,

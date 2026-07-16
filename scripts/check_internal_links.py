@@ -42,7 +42,10 @@ def _committed_markdown_files() -> list[Path]:
     return [
         REPO_ROOT / line
         for line in result.stdout.splitlines()
-        if line and not line.startswith("data/raw/") and (REPO_ROOT / line).exists()
+        if line
+        and not line.startswith("data/raw/")
+        and not line.replace("\\", "/").startswith("reports/.quarto/")
+        and (REPO_ROOT / line).exists()
     ]
 
 

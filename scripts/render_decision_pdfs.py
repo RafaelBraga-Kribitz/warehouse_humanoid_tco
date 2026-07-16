@@ -40,7 +40,13 @@ def render_memo(source: Path, output: Path) -> None:
     doc = SimpleDocTemplate(str(output), pagesize=A4, rightMargin=1.8 * cm, leftMargin=1.8 * cm)
     story = [Paragraph(source.stem.replace("_", " "), styles["Title"]), Spacer(1, 12)]
     for heading, body in sections(source):
-        story.extend([Paragraph(heading, styles["Heading2"]), Paragraph(body, styles["BodyText"]), Spacer(1, 10)])
+        story.extend(
+            [
+                Paragraph(heading, styles["Heading2"]),
+                Paragraph(body, styles["BodyText"]),
+                Spacer(1, 10),
+            ]
+        )
     doc.build(story)
 
 

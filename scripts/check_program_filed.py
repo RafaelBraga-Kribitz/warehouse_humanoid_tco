@@ -1,4 +1,5 @@
 """F-200 — Quality Transformation Program findings filed."""
+
 from __future__ import annotations
 
 import sys
@@ -7,11 +8,40 @@ import yaml
 from _governance_check import REPO_ROOT, gate
 
 REQUIRED = [
-    "F-201", "F-202", "F-203", "F-204", "F-205", "F-206", "F-207",
-    "F-210", "F-211", "F-212", "F-213", "F-214", "F-215", "F-216",
-    "F-217", "F-218", "F-219", "F-220", "F-221", "F-222", "F-223",
-    "F-224", "F-225", "F-226", "F-227", "F-228", "F-229", "F-230",
-    "F-231", "F-232", "F-233", "F-234", "F-235", "F-236",
+    "F-201",
+    "F-202",
+    "F-203",
+    "F-204",
+    "F-205",
+    "F-206",
+    "F-207",
+    "F-210",
+    "F-211",
+    "F-212",
+    "F-213",
+    "F-214",
+    "F-215",
+    "F-216",
+    "F-217",
+    "F-218",
+    "F-219",
+    "F-220",
+    "F-221",
+    "F-222",
+    "F-223",
+    "F-224",
+    "F-225",
+    "F-226",
+    "F-227",
+    "F-228",
+    "F-229",
+    "F-230",
+    "F-231",
+    "F-232",
+    "F-233",
+    "F-234",
+    "F-235",
+    "F-236",
 ]
 FINDINGS = REPO_ROOT / "governance" / "findings"
 BLUEPRINT = REPO_ROOT / "governance" / "QUALITY_BLUEPRINT.md"

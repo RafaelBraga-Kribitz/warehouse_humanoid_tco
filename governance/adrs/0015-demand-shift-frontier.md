@@ -9,6 +9,10 @@ linked_finding: F-232
 
 # ADR-0015: Demand and shift frontier uses optimized crews
 
+- **Date:** 2026-07-16
+- **Status:** Accepted
+- **Deciders:** Rafael Braga
+
 ## Context
 
 A single demand point cannot show when robot capacity enters an economically

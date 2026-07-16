@@ -39,21 +39,33 @@ def npv(scenario_id: str, **overrides: float) -> float:
     )
 
 
-def robot_frontier(capex: np.ndarray, wage: np.ndarray, transfer: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def robot_frontier(
+    capex: np.ndarray, wage: np.ndarray, transfer: np.ndarray
+) -> tuple[np.ndarray, np.ndarray]:
     """Return robot-vs-lean cost deltas on two two-way parameter grids."""
     lean = npv("S-lean-human")
     capex_wage = np.empty((len(wage), len(capex)))
     capex_transfer = np.empty((len(transfer), len(capex)))
     for row, value in enumerate(wage):
         for col, capex_value in enumerate(capex):
-            capex_wage[row, col] = npv(
-                "S-future-2028", humanoid_capex_eur=float(capex_value), human_wage_eur=float(value)
-            ) - lean
+            capex_wage[row, col] = (
+                npv(
+                    "S-future-2028",
+                    humanoid_capex_eur=float(capex_value),
+                    human_wage_eur=float(value),
+                )
+                - lean
+            )
     for row, value in enumerate(transfer):
         for col, capex_value in enumerate(capex):
-            capex_transfer[row, col] = npv(
-                "S-future-2028", humanoid_capex_eur=float(capex_value), transfer_factor=float(value)
-            ) - lean
+            capex_transfer[row, col] = (
+                npv(
+                    "S-future-2028",
+                    humanoid_capex_eur=float(capex_value),
+                    transfer_factor=float(value),
+                )
+                - lean
+            )
     return capex_wage, capex_transfer
 
 
@@ -84,7 +96,13 @@ def chart(path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, 
             style="italic",
             color="#333333",
         )
-    axis.scatter([120], [18.5 if "wage" in ylabel.lower() else 0.70], color=OTHER, edgecolor="black", zorder=3)
+    axis.scatter(
+        [120],
+        [18.5 if "wage" in ylabel.lower() else 0.70],
+        color=OTHER,
+        edgecolor="black",
+        zorder=3,
+    )
     axis.set(
         title=title,
         xlabel="Humanoid unit capex (€k)",
@@ -112,7 +130,9 @@ def variance_proxy() -> dict[str, object]:
     correlations: dict[str, float] = {}
     for parameter, (low, high) in ranges.items():
         values = np.linspace(low, high, 21)
-        outputs = np.asarray([npv("S-future-2028", **{parameter: float(value)}) for value in values])
+        outputs = np.asarray(
+            [npv("S-future-2028", **{parameter: float(value)}) for value in values]
+        )
         scores[parameter] = float(np.var(outputs))
         correlations[parameter] = float(np.corrcoef(values, outputs)[0, 1])
     total = sum(scores.values()) or 1.0

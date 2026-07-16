@@ -1,4 +1,5 @@
 """F-207 — reject absolute paths in published JSON and CSV artifacts."""
+
 from __future__ import annotations
 
 import re
@@ -22,9 +23,7 @@ def absolute_path_matches(root: Path) -> set[Path]:
 
 def main() -> int:
     matches = absolute_path_matches(REPO_ROOT)
-    matched_paths = ", ".join(
-        str(path.relative_to(REPO_ROOT)) for path in sorted(matches)
-    )
+    matched_paths = ", ".join(str(path.relative_to(REPO_ROOT)) for path in sorted(matches))
     return gate(
         "check_no_abs_paths.py",
         "F-207",

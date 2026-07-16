@@ -672,9 +672,7 @@ def module_03_main(
         )
         if baseline_result and pure_humanoid_result:
             baseline_cost_per_order = baseline_result.get("cost_per_order_eur", 0.0)
-            lean_result = next(
-                (r for r in tco_results if r["scenario_id"] == "S-lean-human"), None
-            )
+            lean_result = next((r for r in tco_results if r["scenario_id"] == "S-lean-human"), None)
             if baseline_cost_per_order > 0:
                 lean_cpo = lean_result.get("cost_per_order_eur") if lean_result else None
                 # Approximate lean annual opex from nominal 5yr / years for payback helper.

@@ -1,4 +1,5 @@
 """F-206 — German executive summary uses total-cost NPV reductions."""
+
 from __future__ import annotations
 
 import csv

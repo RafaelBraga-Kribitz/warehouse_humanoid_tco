@@ -1,4 +1,5 @@
 """F-235 — strict-module and coverage-ratchet verification."""
+
 from __future__ import annotations
 
 import subprocess

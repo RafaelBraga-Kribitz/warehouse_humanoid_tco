@@ -16,6 +16,7 @@ from warehouse_humanoid_tco.pipelines.module_03_tco import (
 
 BASELINE_ANNUAL_OPEX = compute_annual_labor_cost(8, 18.50, 1.35, 252, 8.0)
 
+
 def test_annual_labor_cost_basic() -> None:
     cost = compute_annual_labor_cost(
         n_humans=10,
@@ -130,16 +131,12 @@ def test_tco_scenario_hybrid_amr_lowest_npv() -> None:
 
 
 def test_tco_scenario_no_irr_field() -> None:
-    result = compute_tco_scenario(
-        "S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
-    )
+    result = compute_tco_scenario("S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX)
     assert "irr" not in result
 
 
 def test_tco_scenario_required_keys() -> None:
-    result = compute_tco_scenario(
-        "S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
-    )
+    result = compute_tco_scenario("S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX)
     required = {
         "scenario_id",
         "npv_eur",

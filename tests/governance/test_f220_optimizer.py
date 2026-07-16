@@ -113,9 +113,11 @@ def test_reported_optimum_has_no_cheaper_feasible_neighbour(
     best_counts = best["agent_counts"]
 
     ranges = [
-        range(max(0, best_counts[agent_type] - 2), min(12, best_counts[agent_type] + 2) + 1)
-        if agent_type in policy
-        else range(1)
+        (
+            range(max(0, best_counts[agent_type] - 2), min(12, best_counts[agent_type] + 2) + 1)
+            if agent_type in policy
+            else range(1)
+        )
         for agent_type in AGENT_TYPES
     ]
     for values in product(*ranges):

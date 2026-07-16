@@ -1,4 +1,5 @@
 """F-225 — frontiers and global sensitivity artifacts remain publishable."""
+
 from __future__ import annotations
 
 import json

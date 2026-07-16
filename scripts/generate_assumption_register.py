@@ -86,7 +86,7 @@ def _rows() -> Iterator[tuple[str, str, object, object, str, str, str, str]]:
                 source_class = "declared model gap"
             else:
                 status = "modeled" if final_key in source_text else "unmodeled (unknown)"
-                source = str(config_path.relative_to(REPO_ROOT))
+                source = config_path.relative_to(REPO_ROOT).as_posix()
                 source_class = "configuration"
             yield (
                 config_path.name,

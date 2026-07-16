@@ -1,4 +1,5 @@
 """F-223 — cost lines must reconcile to each committed scenario NPV."""
+
 from __future__ import annotations
 
 import json

@@ -41,6 +41,6 @@ def test_f238_committed_pdfs_are_quarto_quality() -> None:
         assert b"ReportLab Generated PDF" not in data, f"{name} is still ReportLab"
 
     deck = (ROOT / "reports" / "exhibit_deck.pdf").read_bytes()
-    assert b"/Subtype /Image" in deck or b"/Subtype/Image" in deck, (
-        "exhibit_deck.pdf must embed at least one chart image"
-    )
+    assert (
+        b"/Subtype /Image" in deck or b"/Subtype/Image" in deck
+    ), "exhibit_deck.pdf must embed at least one chart image"

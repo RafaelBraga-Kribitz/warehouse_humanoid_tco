@@ -1,4 +1,5 @@
 """F-232 — demand frontier verification."""
+
 from __future__ import annotations
 
 import json

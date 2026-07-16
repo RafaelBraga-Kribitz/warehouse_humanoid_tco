@@ -1,4 +1,5 @@
 """F-205 — verify configuration leaves are consumed or declared unmodeled."""
+
 from __future__ import annotations
 
 import sys

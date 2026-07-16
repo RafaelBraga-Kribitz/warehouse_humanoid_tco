@@ -1,4 +1,5 @@
 """F-201 — verification (ratchet while open)."""
+
 from __future__ import annotations
 
 from _ratchet import ratchet

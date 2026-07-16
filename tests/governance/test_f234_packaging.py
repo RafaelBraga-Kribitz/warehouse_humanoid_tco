@@ -1,4 +1,5 @@
 """F-234 — package quickstart verification."""
+
 from __future__ import annotations
 
 import subprocess
@@ -14,7 +15,9 @@ def test_f_234_packaging_surface_is_self_contained() -> None:
     root = Path(__file__).resolve().parents[2]
     quickstart = root / "examples" / "quickstart.py"
     try:
-        version = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+        version = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"][
+            "version"
+        ]
         run = subprocess.run(
             [sys.executable, str(quickstart)],
             cwd=root,
@@ -32,4 +35,6 @@ def test_f_234_packaging_surface_is_self_contained() -> None:
         )
     except (FileNotFoundError, KeyError, tomllib.TOMLDecodeError, subprocess.TimeoutExpired):
         fixed = False
-    ratchet("F-234", fixed=fixed, gap_msg="quickstart, version, or maintenance policy is incomplete")
+    ratchet(
+        "F-234", fixed=fixed, gap_msg="quickstart, version, or maintenance policy is incomplete"
+    )

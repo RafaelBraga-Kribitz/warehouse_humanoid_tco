@@ -1,4 +1,5 @@
 """F-233 — stub/real check (ratchet while open)."""
+
 from __future__ import annotations
 
 import sys

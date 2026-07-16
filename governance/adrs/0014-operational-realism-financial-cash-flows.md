@@ -9,13 +9,17 @@ linked_finding: F-222
 
 # ADR-0014: Operational availability and realistic TCO cash flows
 
+- **Date:** 2026-07-16
+- **Status:** Accepted
+- **Deciders:** Rafael Braga
+
 ## Context
 
 The model exposed reliability, battery, integration, wage-growth, residual, and
 supervision assumptions but did not consistently apply them to capacity or TCO.
 This understated the operational and financial cost of early humanoid deployments.
 
-## Decisions
+## Decision
 
 1. **Availability:** Derate each humanoid service rate by
    `MTBF / (MTBF + MTTR) × battery_capacity / (battery_capacity + recharge)`.

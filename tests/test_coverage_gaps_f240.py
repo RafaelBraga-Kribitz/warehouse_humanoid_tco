@@ -79,7 +79,11 @@ def test_profile_notebook_includes_summary_and_derisk(tmp_path: Path) -> None:
     notebook = json.loads(out_nb.read_text(encoding="utf-8"))
     assert len(notebook["cells"]) >= 5
     sources = " ".join(
-        "".join(cell.get("source", [])) if isinstance(cell.get("source"), list) else cell.get("source", "")
+        (
+            "".join(cell.get("source", []))
+            if isinstance(cell.get("source"), list)
+            else cell.get("source", "")
+        )
         for cell in notebook["cells"]
     )
     assert "humanoid_capabilities_summary" in sources or "Module 1" in sources
@@ -167,7 +171,11 @@ def test_module_01_skips_missing_sha_and_failed_extract(tmp_path: Path) -> None:
             {
                 "wbt_datasets": [
                     {"repo_id": "org/NoSha", "phase": 1, "task_category": "pick_medium_object"},
-                    {"repo_id": "org/BadExtract", "phase": 1, "task_category": "pick_medium_object"},
+                    {
+                        "repo_id": "org/BadExtract",
+                        "phase": 1,
+                        "task_category": "pick_medium_object",
+                    },
                 ],
                 "diversemanip_datasets": [
                     {"repo_id": "org/NoShaDM", "phase": 2, "task_category": "place_general"},
@@ -226,7 +234,7 @@ def test_module_02_humanoid_overrides_scaled(tmp_path: Path) -> None:
 
 def test_generate_demand_frontier_writes_report_and_chart(tmp_path: Path) -> None:
     root = Path(__file__).resolve().parents[1]
-    # Use real repo so capability parquet + configs exist; write outputs under tmp via chdir? 
+    # Use real repo so capability parquet + configs exist; write outputs under tmp via chdir?
     # generate_demand_frontier writes to project_root/reports — use real root but assert keys.
     paths = generate_demand_frontier(root)
     assert paths["report"].exists()

@@ -39,8 +39,7 @@ def _normalise_policy(policy: Iterable[str]) -> frozenset[str]:
     # ADR-0017 / F-237: AutoStore ports need fine-motor pick — pure AMR is invalid.
     if allowed == frozenset({"amr"}):
         raise ValueError(
-            "pure-AMR policy is excluded: AutoStore ports require fine-motor pick "
-            "(see ADR-0017)"
+            "pure-AMR policy is excluded: AutoStore ports require fine-motor pick " "(see ADR-0017)"
         )
     return allowed
 
@@ -63,8 +62,8 @@ def module_02_humanoid_cycle_overrides(
     if not summary_path.exists():
         return {}
     summary = pl.read_parquet(summary_path)
-    reference_task = sim_config.get("agents", {}).get("humanoid", {}).get(
-        "reference_task", "pick_medium_object"
+    reference_task = (
+        sim_config.get("agents", {}).get("humanoid", {}).get("reference_task", "pick_medium_object")
     )
     match = summary.filter(pl.col("task_category") == reference_task)
     if match.height == 0:
@@ -116,9 +115,7 @@ def _agent_cycle_times(sim_config: dict[str, Any]) -> dict[str, tuple[float, flo
         elif mean is None or std is None:
             raise ValueError(f"Missing cycle time for agent type {agent_type!r}")
         else:
-            cycle_times[agent_type] = scale_line_cycle_to_order(
-                float(mean), float(std), pick_lines
-            )
+            cycle_times[agent_type] = scale_line_cycle_to_order(float(mean), float(std), pick_lines)
     return cycle_times
 
 
@@ -296,14 +293,22 @@ def generate_demand_frontier(project_root: Path) -> dict[str, Path]:
     costed once per shift crew, which makes this an explicit conservative
     staffing comparison rather than a claim that robots run unattended.
     """
-    sim_config = yaml.safe_load(
-        (project_root / "config" / "autostore_baseline.yaml").read_text(encoding="utf-8")
-    ) or {}
-    tco_assumptions = yaml.safe_load(
-        (project_root / "config" / "tco_assumptions.yaml").read_text(encoding="utf-8")
-    ) or {}
+    sim_config = (
+        yaml.safe_load(
+            (project_root / "config" / "autostore_baseline.yaml").read_text(encoding="utf-8")
+        )
+        or {}
+    )
+    tco_assumptions = (
+        yaml.safe_load(
+            (project_root / "config" / "tco_assumptions.yaml").read_text(encoding="utf-8")
+        )
+        or {}
+    )
     frontier_config = tco_assumptions.get("demand_frontier", {})
-    lambdas = [float(value) for value in frontier_config.get("lambda_per_hour", [120, 200, 300, 400])]
+    lambdas = [
+        float(value) for value in frontier_config.get("lambda_per_hour", [120, 200, 300, 400])
+    ]
     shifts = [int(value) for value in frontier_config.get("shifts", [1, 2, 3])]
     night_premium = float(frontier_config.get("night_shift_premium", 1.5))
     target_rho = float(frontier_config.get("target_rho", 0.85))
@@ -315,7 +320,9 @@ def generate_demand_frontier(project_root: Path) -> dict[str, Path]:
             wage_multiplier = (1.0 + (shift_count - 1) * night_premium) / shift_count
             shifted_assumptions = json.loads(json.dumps(tco_assumptions))
             labor = shifted_assumptions.setdefault("labor", {})
-            labor["base_hourly_wage_eur"] = float(labor.get("base_hourly_wage_eur", 18.5)) * wage_multiplier
+            labor["base_hourly_wage_eur"] = (
+                float(labor.get("base_hourly_wage_eur", 18.5)) * wage_multiplier
+            )
             overrides = module_02_humanoid_cycle_overrides(sim_config, project_root)
             result = optimize_crew(
                 frozenset(_AGENT_TYPES),
