@@ -1,0 +1,15 @@
+id: F-218
+title: "UnifoLM license compliance memo"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  Committed LFS data has no redistrib/license audit artifact.
+verification_script: scripts/check_license_memo.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - LICENSE_COMPLIANCE.md has one row per dataset with recognized license token.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

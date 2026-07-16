@@ -1,0 +1,19 @@
+id: F-201
+title: "Hero banner: integrate user-provided Figma banner (text-free of typos)"
+category: fake_completion
+kind: recurrence_invariant
+status: open
+opened_at: 2026-07-16
+closed_at: null
+recurrence_count: 0
+evidence: |
+  docs/assets/hero-banner.png shows SEENITIVITY typo and garbled robot-chest text.
+verification_script: tests/governance/test_f201_banner.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - PNG width>=1600; size 20KB-1.6MB; finding notes contain text-transcription:; no misspelled above-fold text. BLOCKED-ON-USER for Figma file.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+
+  Interim (2026-07-16): Phase 0 peers closed; user Figma banner not yet supplied.
+  Per LOCKED decision (2): removed the typo'd AI hero banner image line from README
+  (comment left in place). F-201 stays open until docs/assets/hero-banner-v2.png arrives.

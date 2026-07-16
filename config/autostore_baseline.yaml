@@ -1,51 +1,33 @@
-# AutoStore reference architecture — v1.0 (FULLY CALIBRATED)
-# See PROJECT_CHARTER.md §7.3 Controlled Variables
-# See ADR-0003 for why AutoStore is the only fully calibrated architecture in v1.0
-
 architecture: autostore
-version: "1.0"
+version: '1.0'
 status: calibrated
-
 layout:
   grid_columns: 10
   grid_rows: 10
-  bin_depth: 10                    # bins stacked vertically
+  bin_depth: 10
   total_bins: 10000
-  ports: 4                         # pick stations
-  robots_per_port: 1               # robots servicing each port
-
+  ports: 4
+  robots_per_port: 1
 operations:
   shift_hours: 8
   operating_days_per_year: 252
-  order_arrival_rate_per_hour: 120 # Poisson lambda; from Knapp public benchmarks
-  pick_lines_per_order: 2.5        # mean pick lines per order
-
+  order_arrival_rate_per_hour: 120
+  pick_lines_per_order: 2.5
 agents:
   human:
-    cycle_time_mean_seconds: 25    # seconds per pick line (Knapp benchmark)
+    cycle_time_mean_seconds: 25
     cycle_time_std_seconds: 8
     error_rate: 0.002
-    hourly_wage_eur: 18.50         # base; KV Spedition & Lagereibetriebe BG-III 2025/26
-    overhead_multiplier: 1.35      # social contributions, benefits
+    hourly_wage_eur: 18.5
+    overhead_multiplier: 1.35
     absence_rate_per_shift: 0.05
-
   humanoid:
-    # Populated from Module 1 output: data/processed/humanoid_capabilities_summary.parquet
-    # Placeholder values — overwritten at runtime
     cycle_time_mean_seconds: null
     cycle_time_std_seconds: null
     error_rate: null
-    capex_eur: 120000              # 2026 market estimate; configurable in tco_assumptions.yaml
-    # MTBF / MTTR live in humanoid_operational below (early-deployment rationale)
+    capex_eur: 120000
     energy_kwh_per_shift: 8.0
-    # Which Module-1 task category supplies the humanoid cycle time fed to the
-    # SimPy simulation. An explicit, warehouse-relevant choice (picking is the
-    # modelled warehouse task). Previously the pipeline used "first row with a
-    # non-null std", which silently depended on the alphabetical sort of
-    # category names and selected bimanual_handling — the slowest, two-handed
-    # task. See module_02_simulation._select_humanoid_cycle_time.
     reference_task: pick_medium_object
-
   amr:
     cycle_time_mean_seconds: 35
     cycle_time_std_seconds: 5
@@ -54,74 +36,147 @@ agents:
     mtbf_hours: 4000
     mttr_hours: 2
     energy_kwh_per_shift: 4.0
-
-# agent_counts is the single source of truth for how many of each agent type
-# each scenario fields. Both Module 2 (SimPy server capacities — must be
-# integer) and Module 3 (cost model) read these counts directly. They replace
-# the prior `int(total_agents * fraction)` computation, which silently
-# truncated fractional crews: 60/20/20 of 8 floored to 4 + 1 + 1 = 6, not 8,
-# so S-hybrid-amr was actually a 6-unit crew while documentation implied 8.
-# Counts are now explicit and the truncation is gone. The *_fraction fields are
-# retained only as human-readable intent annotations; they are NOT used to size
-# crews. Where a scenario fields fewer than `total_agents` units (S-hybrid-amr),
-# that is an intentional lean-crew design and is disclosed as such — part of its
-# cost advantage comes from fielding fewer total units at the modelled 120
-# orders/hr demand (rho < 1 confirms 6 units suffice).
 scenarios:
-  - id: S-baseline-human
-    human_fraction: 1.0
-    humanoid_fraction: 0.0
-    amr_fraction: 0.0
-    agent_counts: {human: 8, humanoid: 0, amr: 0}   # 8 units
-  - id: S-pure-humanoid
-    human_fraction: 0.0
-    humanoid_fraction: 1.0
-    amr_fraction: 0.0
-    agent_counts: {human: 0, humanoid: 8, amr: 0}   # 8 units
-  - id: S-hybrid-5050
-    human_fraction: 0.5
-    humanoid_fraction: 0.5
-    amr_fraction: 0.0
-    agent_counts: {human: 4, humanoid: 4, amr: 0}   # 8 units
-  - id: S-hybrid-amr
-    human_fraction: 0.6
-    humanoid_fraction: 0.2
-    amr_fraction: 0.2
-    agent_counts: {human: 4, humanoid: 1, amr: 1}   # 6 units — lean mixed crew
-  - id: S-future-2028
-    human_fraction: 0.5
-    humanoid_fraction: 0.5
-    amr_fraction: 0.0
-    humanoid_throughput_multiplier: 1.30
-    agent_counts: {human: 4, humanoid: 4, amr: 0}   # 8 units
-
-total_agents: 8                    # nominal workforce budget per scenario (see agent_counts)
-
+# S-baseline-human is the legacy overstaffed baseline (explicit 8-human reference).
+- id: S-baseline-human
+  human_fraction: 1.0
+  humanoid_fraction: 0.0
+  amr_fraction: 0.0
+  agent_counts:
+    human: 8
+    humanoid: 0
+    amr: 0
+- id: S-lean-human
+  human_fraction: 1.0
+  humanoid_fraction: 0.0
+  amr_fraction: 0.0
+  agent_counts:
+    human: 3
+    humanoid: 0
+    amr: 0
+- id: S-pure-humanoid
+  human_fraction: 0.0
+  humanoid_fraction: 1.0
+  amr_fraction: 0.0
+  agent_counts:
+    human: 0
+    humanoid: 11
+    amr: 0
+- id: S-hybrid-5050
+  human_fraction: 0.5
+  humanoid_fraction: 0.5
+  amr_fraction: 0.0
+  agent_counts:
+    human: 11
+    humanoid: 11
+    amr: 0
+- id: S-hybrid-amr
+  human_fraction: 0.125
+  humanoid_fraction: 0.625
+  amr_fraction: 0.25
+  agent_counts:
+    human: 3
+    humanoid: 11
+    amr: 4
+- id: S-future-2028
+  human_fraction: 0.5
+  humanoid_fraction: 0.5
+  amr_fraction: 0.0
+  humanoid_throughput_multiplier: 1.3
+  agent_counts:
+    human: 3
+    humanoid: 9
+    amr: 0
+total_agents: 8
 capability_transfer:
-  # WBT demos are human-teleoperated at demonstration speed.
-  # Production humanoid throughput is estimated as a fraction of demo speed.
-  # This is the single largest methodological assumption in the model.
   wbt_to_production_factor:
-    point_estimate: 0.70
-    range: [0.50, 0.90]
-    rationale: >
-      Early-deployment robotics literature (Boston Dynamics Spot case studies,
-      Figure AI pilot disclosures) suggests 50-90% of lab capability in
-      structured production environments. We use 70% as the central estimate.
-      This is the primary sensitivity parameter driving H3/H4 uncertainty.
-    source: "Internal assumption; no public benchmark for Unitree G1 in warehouse ops as of 2026"
+    point_estimate: 0.7
+    range:
+    - 0.5
+    - 0.9
+    rationale: 'Early-deployment robotics literature (Boston Dynamics Spot case studies,
+      Figure AI pilot disclosures) suggests 50-90% of lab capability in structured
+      production environments. We use 70% as the central estimate. This is the primary
+      sensitivity parameter driving H3/H4 uncertainty.
 
+      '
+    source: Internal assumption; no public benchmark for Unitree G1 in warehouse ops
+      as of 2026
 humanoid_operational:
-  mtbf_hours: 40.0              # mean time between failures (early deployment)
-  mttr_hours: 0.5               # mean time to repair/reset
-  battery_capacity_hours: 4.0   # hours per charge
+  mtbf_hours: 40.0
+  mttr_hours: 0.5
+  battery_capacity_hours: 4.0
   recharge_time_hours: 1.0
-  supervision_ratio: 0.10       # fraction of one human FTE for robot supervision
-  shift_degradation_factor: 0.05  # throughput reduction per hour of shift
-  source: "Conservative estimates for early-deployment industrial robotics"
-
+  supervision_ratio: 0.1
+  shift_degradation_factor: 0.05
+  source: Conservative estimates for early-deployment industrial robotics
 amr_operational:
   mtbf_hours: 80.0
   battery_capacity_hours: 6.0
   recharge_time_hours: 0.5
-  source: "Typical AMR spec from public vendor datasheets (Locus, Geek+)"
+  source: Typical AMR spec from public vendor datasheets (Locus, Geek+)
+unmodeled_parameters:
+- key: layout.grid_columns
+  bias: unknown
+  note: Grid geometry is not simulated
+  planned: F-222
+- key: layout.grid_rows
+  bias: unknown
+  note: Grid geometry is not simulated
+  planned: F-222
+- key: layout.bin_depth
+  bias: unknown
+  note: Bin depth is not simulated
+  planned: F-222
+- key: layout.total_bins
+  bias: unknown
+  note: Storage capacity is not simulated
+  planned: F-222
+- key: layout.robots_per_port
+  bias: unknown
+  note: Port assignment is not simulated
+  planned: F-222
+- key: agents.human.error_rate
+  bias: favors_robots
+  note: Human picking errors are not costed
+  planned: F-222
+- key: agents.human.absence_rate_per_shift
+  bias: favors_robots
+  note: Human absence is not modeled
+  planned: F-222
+- key: agents.humanoid.error_rate
+  bias: favors_robots
+  note: Humanoid picking errors are not costed
+  planned: F-222
+- key: agents.amr.error_rate
+  bias: favors_robots
+  note: AMR errors are not costed
+  planned: F-222
+- key: agents.amr.mtbf_hours
+  bias: favors_robots
+  note: AMR failure rate is not simulated
+  planned: F-222
+- key: agents.amr.mttr_hours
+  bias: favors_robots
+  note: AMR repair time is not simulated
+  planned: F-222
+- key: capability_transfer.wbt_to_production_factor.rationale
+  bias: neutral
+  note: Rationale is documentation rather than a model input
+  planned: none
+- key: humanoid_operational.shift_degradation_factor
+  bias: favors_robots
+  note: Humanoid shift degradation is not simulated
+  planned: F-222
+- key: amr_operational.mtbf_hours
+  bias: favors_robots
+  note: AMR failure rate is not simulated
+  planned: F-222
+- key: amr_operational.battery_capacity_hours
+  bias: favors_robots
+  note: AMR battery capacity is not simulated
+  planned: F-222
+- key: amr_operational.recharge_time_hours
+  bias: favors_robots
+  note: AMR recharge time is not simulated
+  planned: F-222

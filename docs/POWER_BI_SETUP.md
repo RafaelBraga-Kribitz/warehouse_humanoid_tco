@@ -12,7 +12,7 @@ This guide explains how to create a Power BI dashboard from the exported CSV dat
 The following CSV files are ready for Power BI import (located in `exports/tableau_public/`):
 
 1. **tco_scenarios.csv** — TCO results by scenario (NPV, capex, opex, payback)
-2. **simulation_runs.csv** — Simulation raw results (15 runs × 5 scenarios)
+2. **simulation_runs.csv** — Simulation raw results (15 runs × 6 scenarios)
 3. **humanoid_capabilities_summary.csv** — Task-level humanoid capabilities
 
 ## Steps to Create .pbix File

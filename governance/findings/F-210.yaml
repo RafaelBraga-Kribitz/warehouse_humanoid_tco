@@ -1,0 +1,15 @@
+id: F-210
+title: "Canonical decision statement in Charter + README Decision summary"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No named decision owner/options/trigger; results bury the recommendation.
+verification_script: scripts/check_decision_statement.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - DECISION_STATEMENT delimiters in Charter; README quotes >=120 chars verbatim; labor scarcity sentence; capex trigger matches breakeven JSON.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

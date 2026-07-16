@@ -1,5 +1,5 @@
 .PHONY: all setup bootstrap lint test module-01 module-02 module-03 module-04 profile dashboards ci-local clean help \
-        audit verify session-start session-end presentation
+        audit verify session-start session-end presentation assumptions-register dbt exec-summary lock-export
 
 PYTHON ?= python
 # Use ?= so env override (VENV="" in CI workflows) takes precedence over default
@@ -11,7 +11,8 @@ help:
 	@echo "warehouse_humanoid_tco — Makefile targets"
 	@echo ""
 	@echo "Setup:"
-	@echo "  make setup          Install dependencies + venv"
+	@echo "  make setup          Install deps via uv sync --frozen (dev + analytics)"
+	@echo "  make lock-export    Refresh uv.lock + requirements.txt from pyproject"
 	@echo "  make bootstrap      Install pre-commit hooks (one-time per clone)"
 	@echo ""
 	@echo "Governance (see governance/AUDIT_PROCEDURE.md):"
@@ -19,6 +20,8 @@ help:
 	@echo "  make audit          Run all check_*.py + write governance/AUDIT_STATE.json"
 	@echo "  make verify         audit + tests + closed-finding re-verification"
 	@echo "  make session-end    Write governance/SESSION_END.md for next-session handoff"
+	@echo "  make assumptions-register  Regenerate governance/ASSUMPTION_REGISTER.md"
+	@echo "                            Python: python scripts/generate_assumption_register.py"
 	@echo ""
 	@echo "Pipeline (full run):"
 	@echo "  make all            Run modules 0-4 (data → dashboards)"
@@ -30,8 +33,9 @@ help:
 	@echo "Analysis:"
 	@echo "  make profile        Generate data profiling notebook"
 	@echo "  make dashboards     Generate Tableau/Power BI exports + charts"
-	@echo "  make exec-summary   Re-render reports/Executive_Summary_DE from QMD (requires quarto)"
-	@echo "  make presentation   Regenerate module-04 charts + render all QMD reports"
+	@echo "  make dbt            Build dbt-duckdb validation marts from processed parquet"
+	@echo "  make exec-summary   Quarto typst PDFs: DE/EN memos + exhibit deck (requires quarto)"
+	@echo "  make presentation   Regenerate module-04 charts + Quarto typst decision PDFs"
 	@echo ""
 	@echo "Quality:"
 	@echo "  make lint           Black + Ruff + Pyright"
@@ -46,8 +50,14 @@ help:
 
 setup:
 	uv venv .venv
-	uv sync --frozen --extra dev
-	@echo "✓ Environment ready (locked)"
+	uv sync --frozen --extra dev --extra analytics
+	@echo "✓ Environment ready (locked; dev + analytics)"
+
+# Refresh lock + main-only requirements.txt after pyproject dependency edits.
+lock-export:
+	uv lock
+	uv export --format requirements-txt --no-hashes --no-emit-project -o requirements.txt
+	@echo "✓ uv.lock and requirements.txt refreshed"
 
 bootstrap: setup
 	$(VENV) pre-commit install
@@ -79,8 +89,25 @@ audit:
 	@$(PYTHON) scripts/check_ssot_scope.py
 	@$(PYTHON) scripts/check_finding_coverage.py
 	@$(PYTHON) scripts/check_report_data.py
+	@$(PYTHON) scripts/check_program_filed.py
+	@$(PYTHON) scripts/check_internal_links.py
+	@$(PYTHON) scripts/check_single_adr_home.py
+	@$(PYTHON) scripts/check_config_consumption.py
+	@$(PYTHON) scripts/check_no_abs_paths.py
+	@$(PYTHON) scripts/check_decision_statement.py
+	@$(PYTHON) scripts/check_hypothesis_verdicts.py
+	@$(PYTHON) scripts/check_license_memo.py
+	@$(PYTHON) scripts/check_assumption_register.py
+	@$(PYTHON) scripts/check_repro_log.py
+	@$(PYTHON) scripts/check_publication_pack.py
+	@$(PYTHON) scripts/check_pyright_strict.py
+	@$(PYTHON) scripts/check_claims_ledger.py
+	@$(PYTHON) scripts/check_chart_manifest.py
 	@$(PYTHON) scripts/write_audit_state.py
 	@echo "✓ audit complete — see governance/AUDIT_STATE.json"
+
+assumptions-register:
+	@$(PYTHON) scripts/generate_assumption_register.py
 
 # verify = audit + tests + closed-finding re-verification
 verify: audit
@@ -135,24 +162,30 @@ all: module-01 module-02 module-03 module-04
 
 # ── Report Rendering ──────────────────────────────────────────────────────────
 
-# Re-render the Executive Summary HTML/PDF from the QMD source.
-# Closes the F-020 staleness category: rather than hand-editing the HTML when
-# the QMD changes, contributors run this target. Requires `quarto` on PATH.
+# Quarto typst PDFs for recruiter artifacts (F-238). No TeX required.
+# Hard-fails without quarto — do not substitute ReportLab for committed PDFs.
 exec-summary:
 	@command -v quarto >/dev/null 2>&1 || { \
-		echo "✗ quarto not installed. See https://quarto.org/docs/get-started/"; \
+		echo "✗ quarto required. See https://quarto.org/docs/get-started/"; \
 		exit 1; \
 	}
-	quarto render reports/Executive_Summary_DE.qmd
+	quarto render reports/Executive_Summary_DE.qmd --to typst
+	quarto render reports/Executive_Summary_DE.qmd --to html
+	quarto render reports/Executive_Summary_EN.qmd --to typst
+	quarto render reports/exhibit_deck.qmd --to typst
 
 # Regenerate presentation-layer artifacts after data / methodology changes.
 # Closes F-043: charts and QMD-rendered HTML diverge from CSV/JSON outputs
-# unless module-04 + quarto are explicitly re-run. This target gives contributors
-# (and CI) one entry point. Does NOT re-run modules 01-03; those are data
-# pipelines and live under `make all`.
+# unless module-04 + quarto are explicitly re-run. Decision PDFs use typst
+# (same as exec-summary). Does NOT re-run modules 01-03; those live under
+# `make all`. Never calls scripts/render_decision_pdfs.py.
 presentation: module-04
 	@if command -v quarto >/dev/null 2>&1; then \
+		$(MAKE) exec-summary; \
 		for qmd in reports/*.qmd; do \
+			case "$$qmd" in \
+				*/Executive_Summary_DE.qmd|*/Executive_Summary_EN.qmd|*/exhibit_deck.qmd) continue ;; \
+			esac; \
 			[ -f "$$qmd" ] || continue; \
 			echo "Rendering $$qmd..."; \
 			quarto render "$$qmd"; \
@@ -180,6 +213,10 @@ dashboards: module-01 module-02 module-03 module-04
 	@echo "  Tableau: exports/tableau_public/*.csv"
 	@echo "  Charts: reports/executive_charts/*.png"
 	@echo "  Setup: see docs/DASHBOARD_SETUP.md"
+
+# dbt source paths are relative to the repository root; keep this invocation here.
+dbt:
+	$(VENV) dbt build --project-dir analytics/dbt --profiles-dir analytics/dbt
 
 # ── Notebooks ─────────────────────────────────────────────────────────────────
 

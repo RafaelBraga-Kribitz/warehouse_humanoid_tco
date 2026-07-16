@@ -37,7 +37,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="Executive_Summary_DE_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="Executive_Summary_DE_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="Executive_Summary_DE_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="Executive_Summary_DE_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="Executive_Summary_DE_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -46,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="../Executive_Summary_DE.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="..\Executive_Summary_DE.pdf"><i class="bi bi-file-pdf"></i>Typst</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -69,7 +69,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">29. Mai 2026</p>
+      <p class="date">16. Juli 2026</p>
     </div>
   </div>
   
@@ -81,6 +81,68 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="empfehlung" class="level2">
+<h2 class="anchored" data-anchor-id="empfehlung">Empfehlung</h2>
+<p><strong>Jetzt:</strong> Crew auf S-lean-human (3 Personen, ρ≤0,85 nach Pick-Lines-Skalierung) dimensionieren. Es ist mit €647K Fünfjahres-Barwertkosten die günstigste modellierte, kapazitätsfähige Option. <strong>Bei Robotern:</strong> S-future-2028 ist mit €2,533M die günstigste robotergänzte Variante, bleibt aber teurer als die menschliche Baseline. Keine Beschaffung allein auf Basis von Lohnarbitrage freigeben; offene Stellen und Warehouse-Telemetrie sind die entscheidenden Validierungspunkte.</p>
+</section>
+<section id="entscheidung-auf-einen-blick" class="level2">
+<h2 class="anchored" data-anchor-id="entscheidung-auf-einen-blick">Entscheidung auf einen Blick</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 28%">
+<col style="width: 28%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Szenario</th>
+<th style="text-align: right;">5-Jahr NPV</th>
+<th style="text-align: right;">Gesamtkosten-Reduktion vs.&nbsp;Baseline (NPV)</th>
+<th>Entscheidung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>S-lean-human</strong></td>
+<td style="text-align: right;"><strong>−€647K</strong></td>
+<td style="text-align: right;"><strong>62,5%</strong></td>
+<td>Jetzt umsetzen</td>
+</tr>
+<tr class="even">
+<td>S-baseline-human</td>
+<td style="text-align: right;">−€1726K</td>
+<td style="text-align: right;">0,0%</td>
+<td>Legacy-Referenz</td>
+</tr>
+<tr class="odd">
+<td><strong>S-future-2028</strong></td>
+<td style="text-align: right;"><strong>−€2533K</strong></td>
+<td style="text-align: right;"><strong>-46,7%</strong></td>
+<td>Günstigster Roboterfall</td>
+</tr>
+<tr class="even">
+<td>S-pure-humanoid</td>
+<td style="text-align: right;">−€2878K</td>
+<td style="text-align: right;">-66,7%</td>
+<td>Nicht bevorzugt</td>
+</tr>
+<tr class="odd">
+<td>S-hybrid-amr</td>
+<td style="text-align: right;">−€3841K</td>
+<td style="text-align: right;">-122,5%</td>
+<td>Integration belastet</td>
+</tr>
+<tr class="even">
+<td>S-hybrid-5050</td>
+<td style="text-align: right;">−€5252K</td>
+<td style="text-align: right;">-204,2%</td>
+<td>Nicht bevorzugt</td>
+</tr>
+</tbody>
+</table>
+<p>Alle Werte stammen aus <a href="../exports/tableau_public/tco_scenarios.csv"><code>tco_scenarios.csv</code></a>; sie sind Kosten-Barwerte, daher bedeutet ein weniger negativer Wert geringere Kosten.</p>
+</section>
 <section id="projektziel" class="level2">
 <h2 class="anchored" data-anchor-id="projektziel">Projektziel</h2>
 <p>Dieses Projekt entwickelt einen reproduzierbaren, datengestützten Rahmen für die Analyse der Gesamtbetriebskosten (TCO) von Humanoid-Robotern in österreichischen Logistikzentren — insbesondere für AutoStore-Systeme, wie sie bei Knapp AG und TGW Logistics eingesetzt werden.</p>
@@ -98,76 +160,13 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li><strong>Capability Extraction (Modul 1):</strong> Ableitung empirischer Leistungskennzahlen aus Roboter-Episodendaten (Zykluszeiten, Erfolgsraten)</li>
 <li><strong>Simulation (Modul 2):</strong> Diskrete Ereignissimulation (SimPy) eines AutoStore-Lagers mit verschiedenen Belegschaftsszenarien</li>
-<li><strong>TCO-Modell (Modul 3):</strong> 5-Jahres-Kapitalwertanalyse (NPV, IRR, Amortisationszeit)</li>
-<li><strong>Dashboard (Modul 4):</strong> Interaktives BI-Dashboard (Tableau Public + Power BI)</li>
+<li><strong>TCO-Modell (Modul 3):</strong> 5-Jahres-Kapitalwertanalyse (NPV, einfache Amortisationszeit; IRR entfällt — reines Kostenmodell ohne Erlöse)</li>
+<li><strong>Dashboard (Modul 4):</strong> Interaktives BI-Dashboard (Tableau Public; CSV-Exporte auch direkt in Power BI importierbar — siehe ADR-0008)</li>
 </ol>
 </section>
-<section id="wichtigste-erkenntnisse" class="level2">
-<h2 class="anchored" data-anchor-id="wichtigste-erkenntnisse">Wichtigste Erkenntnisse</h2>
-<section id="optimales-szenario-unter-den-modellierten-annahmen-s-hybrid-amr" class="level3">
-<h3 class="anchored" data-anchor-id="optimales-szenario-unter-den-modellierten-annahmen-s-hybrid-amr">Optimales Szenario unter den modellierten Annahmen: S-hybrid-amr</h3>
-<p>Unter den modellierten Annahmen minimiert das Hybrid-Szenario mit 60% menschlichen Arbeitskräften, 20% Humanoid und 20% AMR die 5-Jahres-Gesamtbetriebskosten (TCO):</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Szenario</th>
-<th>5-Jahr NPV</th>
-<th>Kostenersparnis vs.&nbsp;Baseline</th>
-<th>Amortisationszeit</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>S-hybrid-amr</strong></td>
-<td><strong>−€1.079K</strong></td>
-<td><strong>45%</strong></td>
-<td><strong>1,1 Jahre</strong></td>
-</tr>
-<tr class="even">
-<td>S-hybrid-5050</td>
-<td>−€1.577K</td>
-<td>35%</td>
-<td>3,8 Jahre</td>
-</tr>
-<tr class="odd">
-<td>S-baseline-human</td>
-<td>−€1.608K</td>
-<td>—</td>
-<td>—</td>
-</tr>
-<tr class="even">
-<td>S-pure-humanoid</td>
-<td>−€1.546K</td>
-<td>70%</td>
-<td>3,8 Jahre</td>
-</tr>
-<tr class="odd">
-<td>S-future-2028</td>
-<td>−€1.399K</td>
-<td>39%</td>
-<td>2,6 Jahre</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="kritische-erkenntnisse" class="level3">
-<h3 class="anchored" data-anchor-id="kritische-erkenntnisse">Kritische Erkenntnisse</h3>
-<ol type="1">
-<li><p><strong>Arbeitskostendomäne:</strong> Das Kostenmodell wird von Personalkostenreduktion, nicht von Roboter-Capex, dominiert. OAT-Sensitivität (<code>data/processed/sensitivity_oat_results.parquet</code>, Szenario S-hybrid-amr) zeigt: Stundensätze (€15,13–€22,00/h, WKO Spedition &amp; Lagereibetriebe BG-III 2025/26) bewegen NPV um <strong>€306K</strong>, der Overhead-Multiplikator (1,0–1,7) um weitere <strong>€427K</strong> — kombiniert ~<strong>€733K</strong> Arbeitskosten-Bandbreite gegenüber nur <strong>€158K</strong> für Humanoid-Capex (€60K–€180K/Einheit). Verhältnis ≈ <strong>4,6:1</strong> Arbeit-zu-Capex.</p></li>
-<li><p><strong>Humanoid-Sensitivität:</strong> Bei einem Capex &gt; €180K pro Roboter verschwindet der Vorteil des S-hybrid-amr. Siehe Empfindlichkeitsanalyse (<code>reports/sensitivity_analysis_report.json</code>).</p></li>
-<li><p><strong>Modellunsicherheit:</strong> Alle Szenarien zeigen statistisch ähnliche Durchsätze (~947-956 Bestellungen/Schicht) in der Simulation. Die Differenzierung zwischen Szenarien ist daher <strong>nicht</strong> auf statistisch separierbare Durchsatzunterschiede zurückzuführen, sondern auf kostenseitige Annahmen (Lohnkosten, Capex, Verfügbarkeit). Siehe <code>reports/module_02_simulation_validation.qmd</code> (Kruskal-Wallis p=0.960110).</p></li>
-</ol>
-</section>
-</section>
-<section id="hinweis" class="level2">
-<h2 class="anchored" data-anchor-id="hinweis">Hinweis</h2>
-<p>Alle Daten und Quellen sind öffentlich zugänglich. Der vollständige Quellcode ist auf GitHub verfügbar. Die Analyse ist vollständig reproduzierbar: <code>make all</code> erzeugt alle Artefakte.</p>
+<section id="wesentliche-einschränkungen" class="level2">
+<h2 class="anchored" data-anchor-id="wesentliche-einschränkungen">Wesentliche Einschränkungen</h2>
+<p>Die Demonstrationsdaten sind Haushaltsaufgaben, keine Lagertelemetrie. Der Transferfaktor (0,50–0,90), Verfügbarkeit und die €200K Systemintegration sind modelliert, aber vor einer Investition mit einem lokalen Pilotversuch zu prüfen. Die Sensitivitätsfrontieren zeigen im veröffentlichten Capex-Bereich keinen Kostengleichstand zwischen S-future-2028 und S-lean-human.</p>
 </section>
 
 </main>

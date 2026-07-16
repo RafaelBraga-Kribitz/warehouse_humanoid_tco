@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: processed
+    tables:
+      - name: humanoid_capabilities_summary
+        meta:
+          external_location: "data/processed/{name}.parquet"
+      - name: simulation_runs
+        meta:
+          external_location: "data/processed/{name}.parquet"
+      - name: simulation_capacity_ceiling
+        meta:
+          external_location: "data/processed/{name}.parquet"
+      - name: tco_scenarios
+        meta:
+          external_location: "data/processed/{name}.parquet"

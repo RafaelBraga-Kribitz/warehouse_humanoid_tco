@@ -1,0 +1,18 @@
+id: F-219
+title: "Analytical SQL layer via DuckDB for published Tableau CSVs"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  duckdb declared but unused; Tableau CSVs from opaque polars passthrough.
+verification_script: tests/governance/test_f219_sql_parity.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - SQL files + parity test; module_04 uses DuckDB SQL path; numeric parity on tco sum.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.
+  CLOSED: 2026-07-16. SQL projections enumerate published fields and Module 4
+  executes them through DuckDB over Parquet. The parity test falls back to
+  DuckDB-over-CSV when generated Parquet is unavailable and checks TCO NPV sum.

@@ -2,10 +2,19 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import polars as pl
+
+from warehouse_humanoid_tco.visualization.chart_style import (
+    ADVERSE,
+    BASELINE,
+    EURO_MILLIONS,
+    RECOMMENDED,
+    apply_style,
+)
 
 PARAM_LABELS = {
     "humanoid_capex_eur": "Humanoid Capex (€/unit)",
@@ -20,6 +29,10 @@ def main() -> None:
     project_root = Path(__file__).parent.parent
     oat_path = project_root / "data" / "processed" / "sensitivity_oat_results.parquet"
     out_path = project_root / "reports" / "executive_charts" / "04_sensitivity_tornado.png"
+    report = json.loads((project_root / "reports" / "sensitivity_analysis_report.json").read_text())
+    elasticities = {
+        item["parameter"]: item["peak_elasticity"] for item in report["oat_elasticity_ranking"]
+    }
 
     df = pl.read_parquet(oat_path)
 
@@ -43,7 +56,7 @@ def main() -> None:
     npv_low = summary["npv_low"].to_list()
     npv_high = summary["npv_high"].to_list()
 
-    labels = [PARAM_LABELS.get(p, p) for p in params]
+    labels = [f"{PARAM_LABELS.get(p, p)}  (ε≈{elasticities[p]:.2f})" for p in params]
 
     fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -51,13 +64,15 @@ def main() -> None:
 
     for i, (low, high, _label) in enumerate(zip(npv_low, npv_high, labels, strict=True)):
         # Low side (more negative = higher cost)
-        ax.barh(i, low - baseline_npv, left=baseline_npv, color="#E07B39", alpha=0.85, height=0.5)
+        ax.barh(i, low - baseline_npv, left=baseline_npv, color=ADVERSE, alpha=0.85, height=0.5)
         # High side (less negative = lower cost)
-        ax.barh(i, high - baseline_npv, left=baseline_npv, color="#4A90D9", alpha=0.85, height=0.5)
+        ax.barh(
+            i, high - baseline_npv, left=baseline_npv, color=RECOMMENDED, alpha=0.85, height=0.5
+        )
 
     ax.set_yticks(list(y_pos))
     ax.set_yticklabels(labels, fontsize=11)
-    ax.axvline(baseline_npv, color="black", linewidth=1.2, linestyle="--", alpha=0.6)
+    ax.axvline(baseline_npv, color=BASELINE, linewidth=1.2, linestyle="--", alpha=0.8)
 
     ax.set_xlabel("5-Year NPV (€)", fontsize=11)
     ax.set_title(
@@ -77,17 +92,24 @@ def main() -> None:
         color="gray",
     )
 
-    # Format x-axis in EUR millions
-    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"€{x/1e6:.1f}M"))
+    apply_style(ax)
+    ax.xaxis.set_major_formatter(EURO_MILLIONS)
 
     from matplotlib.patches import Patch
 
     legend_elements = [
-        Patch(facecolor="#E07B39", alpha=0.85, label="Parameter at low end (higher cost)"),
-        Patch(facecolor="#4A90D9", alpha=0.85, label="Parameter at high end (lower cost)"),
+        Patch(facecolor=ADVERSE, alpha=0.85, label="Parameter at adverse end (higher cost)"),
+        Patch(facecolor=RECOMMENDED, alpha=0.85, label="Parameter at favorable end (lower cost)"),
     ]
     ax.legend(handles=legend_elements, loc="lower right", fontsize=9)
 
+    fig.text(
+        0.01,
+        0.01,
+        "Source: sensitivity_analysis_report.json · ε≈normalised elasticity",
+        fontsize=7,
+        color=BASELINE,
+    )
     plt.tight_layout()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out_path, dpi=150, bbox_inches="tight")

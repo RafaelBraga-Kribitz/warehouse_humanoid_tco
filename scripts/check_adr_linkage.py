@@ -12,7 +12,7 @@ import sys
 
 from _governance_check import REPO_ROOT
 
-ADR_DIRS = ("docs/ADR/", "governance/adrs/")
+ADR_DIRS = ("governance/adrs/",)
 GOVERNANCE_PREFIXES = ("governance/findings/", "governance/SSOT_REGISTRY.yaml")
 
 

@@ -17,8 +17,10 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install uv
         run: pip install uv
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies (locked)
+        run: |
+          uv sync --frozen --extra dev --extra analytics
+          echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
       - name: Ruff
         run: ruff check src/
       - name: Pytest
@@ -36,8 +38,10 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install uv
         run: pip install uv
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Install dependencies (locked; analytics required for dbt)
+        run: |
+          uv sync --frozen --extra dev --extra analytics
+          echo "${{ github.workspace }}/.venv/bin" >> $GITHUB_PATH
       - name: Prepare data dirs
         run: mkdir -p data/raw data/processed
       - name: Module 1 (capability extraction)
@@ -50,6 +54,8 @@ jobs:
         run: python -m warehouse_humanoid_tco.pipelines.module_03_tco
       - name: Module 4 (dashboards)
         run: python -m warehouse_humanoid_tco.pipelines.module_04_dashboards
+      - name: Build dbt validation marts
+        run: dbt build --project-dir analytics/dbt --profiles-dir analytics/dbt
       - uses: actions/upload-artifact@v4
         with:
           name: outputs

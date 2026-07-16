@@ -11,10 +11,10 @@ from warehouse_humanoid_tco.models.tco import (
     compute_payback_years,
 )
 from warehouse_humanoid_tco.pipelines.module_03_tco import (
-    _BASELINE_ANNUAL_OPEX,
     compute_tco_scenario,
 )
 
+BASELINE_ANNUAL_OPEX = compute_annual_labor_cost(8, 18.50, 1.35, 252, 8.0)
 
 def test_annual_labor_cost_basic() -> None:
     cost = compute_annual_labor_cost(
@@ -88,13 +88,10 @@ def test_irr_no_positive_flows_returns_none_or_negative() -> None:
 # ── pipelines/module_03_tco.py ──────────────────────────────────────────────
 
 
-def test_baseline_annual_opex_constant() -> None:
-    expected = 8 * (252 * 8) * 18.50 * 1.35
-    assert abs(_BASELINE_ANNUAL_OPEX - expected) < 1.0
-
-
 def test_tco_scenario_baseline_human() -> None:
-    result = compute_tco_scenario("S-baseline-human", {}, {})
+    result = compute_tco_scenario(
+        "S-baseline-human", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     assert result["npv_eur"] < 0
     assert result["total_capex_eur"] == 0.0
     assert result["total_opex_5yr_eur_nominal"] > 0
@@ -102,12 +99,14 @@ def test_tco_scenario_baseline_human() -> None:
     # PV must be less than nominal under positive discount rate.
     assert result["total_opex_5yr_eur_pv"] < result["total_opex_5yr_eur_nominal"]
     assert result["cost_reduction_vs_baseline_pct"] == 0.0
-    assert result["payback_years"] == 0.0  # no capex to recover
+    assert result["payback_years"] is None  # baseline is not an investment
 
 
 def test_tco_scenario_pure_humanoid_has_opex() -> None:
     """Pure humanoid scenario has nonzero opex: maintenance (8%/yr of capex) + energy."""
-    result = compute_tco_scenario("S-pure-humanoid", {}, {})
+    result = compute_tco_scenario(
+        "S-pure-humanoid", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     assert result["total_opex_5yr_eur_nominal"] > 0  # maintenance + energy, not zero
     assert result["total_opex_5yr_eur_pv"] > 0
     assert result["total_capex_eur"] > 0
@@ -117,20 +116,30 @@ def test_tco_scenario_pure_humanoid_has_opex() -> None:
 
 
 def test_tco_scenario_hybrid_amr_lowest_npv() -> None:
-    baseline = compute_tco_scenario("S-baseline-human", {}, {})
-    hybrid_amr = compute_tco_scenario("S-hybrid-amr", {}, {})
-    pure_humanoid = compute_tco_scenario("S-pure-humanoid", {}, {})
+    baseline = compute_tco_scenario(
+        "S-baseline-human", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
+    hybrid_amr = compute_tco_scenario(
+        "S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
+    pure_humanoid = compute_tco_scenario(
+        "S-pure-humanoid", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     assert hybrid_amr["npv_eur"] > baseline["npv_eur"]
     assert hybrid_amr["npv_eur"] > pure_humanoid["npv_eur"]
 
 
 def test_tco_scenario_no_irr_field() -> None:
-    result = compute_tco_scenario("S-hybrid-amr", {}, {})
+    result = compute_tco_scenario(
+        "S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     assert "irr" not in result
 
 
 def test_tco_scenario_required_keys() -> None:
-    result = compute_tco_scenario("S-hybrid-amr", {}, {})
+    result = compute_tco_scenario(
+        "S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     required = {
         "scenario_id",
         "npv_eur",
@@ -152,6 +161,9 @@ def test_tco_scenario_all_five_scenarios() -> None:
         "S-hybrid-amr",
         "S-future-2028",
     ]
-    results = [compute_tco_scenario(s, {}, {}) for s in scenarios]
+    results = [
+        compute_tco_scenario(s, {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX)
+        for s in scenarios
+    ]
     for r in results:
         assert r["npv_eur"] < 0  # all are cost models — NPV must be negative

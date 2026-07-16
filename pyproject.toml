@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "warehouse-humanoid-tco"
-version = "0.1.0"
+version = "1.0.0"
 description = "Humanoid robot TCO analyzer for Austrian intralogistics — portfolio project"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -30,7 +30,9 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
-    "black>=24.0",
+    "hypothesis>=6.0",
+    # dbt-core currently constrains pathspec <0.13; Black 26 requires >=1.0.
+    "black>=24.0,<26",
     "ruff>=0.4",
     "pyright>=1.1",
     "jupytext>=1.16",
@@ -40,6 +42,10 @@ notebooks = [
     "jupytext>=1.16",
     "jupyter>=1.0",
     "ipykernel>=6.0",
+    "nbclient>=0.10",
+]
+analytics = [
+    "dbt-duckdb>=1.9",
 ]
 
 [project.scripts]
@@ -75,7 +81,7 @@ venv = ".venv"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=src/warehouse_humanoid_tco --cov-report=term-missing --cov-fail-under=70"
+addopts = "--cov=src/warehouse_humanoid_tco --cov-report=term-missing --cov-fail-under=90"
 markers = [
     "integration: marks tests that require file fixtures or full pipeline execution",
 ]

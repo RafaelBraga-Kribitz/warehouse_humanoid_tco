@@ -1,0 +1,162 @@
+{
+  "methodology": "Deterministic crew optimization over demand and separately staffed shifts.",
+  "lambda_per_hour": [
+    120.0,
+    200.0,
+    300.0,
+    400.0
+  ],
+  "shifts": [
+    1,
+    2,
+    3
+  ],
+  "night_shift_premium": 1.5,
+  "target_rho": 0.85,
+  "results": [
+    {
+      "lambda_per_hour": 120.0,
+      "shifts": 1,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 3,
+      "robot_count": 3,
+      "npv_eur": 452706.1806407064,
+      "rho": 0.6770833333333334
+    },
+    {
+      "lambda_per_hour": 120.0,
+      "shifts": 2,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 3,
+      "robot_count": 3,
+      "npv_eur": 506656.2681446786,
+      "rho": 0.6770833333333334
+    },
+    {
+      "lambda_per_hour": 120.0,
+      "shifts": 3,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 3,
+      "robot_count": 3,
+      "npv_eur": 524639.6306460027,
+      "rho": 0.6770833333333334
+    },
+    {
+      "lambda_per_hour": 200.0,
+      "shifts": 1,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 5,
+      "robot_count": 5,
+      "npv_eur": 610643.4010572509,
+      "rho": 0.7716049382716049
+    },
+    {
+      "lambda_per_hour": 200.0,
+      "shifts": 2,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 5,
+      "robot_count": 5,
+      "npv_eur": 664593.4885612233,
+      "rho": 0.7716049382716049
+    },
+    {
+      "lambda_per_hour": 200.0,
+      "shifts": 3,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 5,
+      "robot_count": 5,
+      "npv_eur": 682576.8510625474,
+      "rho": 0.7716049382716049
+    },
+    {
+      "lambda_per_hour": 300.0,
+      "shifts": 1,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 8,
+      "robot_count": 8,
+      "npv_eur": 847549.2316820679,
+      "rho": 0.7844650205761315
+    },
+    {
+      "lambda_per_hour": 300.0,
+      "shifts": 2,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 8,
+      "robot_count": 8,
+      "npv_eur": 901499.3191860401,
+      "rho": 0.7844650205761315
+    },
+    {
+      "lambda_per_hour": 300.0,
+      "shifts": 3,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 8,
+      "robot_count": 8,
+      "npv_eur": 919482.6816873644,
+      "rho": 0.7844650205761315
+    },
+    {
+      "lambda_per_hour": 400.0,
+      "shifts": 1,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 11,
+      "robot_count": 11,
+      "npv_eur": 1084455.062306885,
+      "rho": 0.7908950617283949
+    },
+    {
+      "lambda_per_hour": 400.0,
+      "shifts": 2,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 11,
+      "robot_count": 11,
+      "npv_eur": 1138405.1498108571,
+      "rho": 0.7908950617283949
+    },
+    {
+      "lambda_per_hour": 400.0,
+      "shifts": 3,
+      "night_shift_premium": 1.5,
+      "target_rho": 0.85,
+      "human_count": 1,
+      "humanoid_count": 0,
+      "amr_count": 11,
+      "robot_count": 11,
+      "npv_eur": 1156388.5123121813,
+      "rho": 0.7908950617283949
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+id: F-227
+title: "Bilingual decision memos + Challenge this analysis FAQ"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No decision memo shape; no objection FAQ; DE/EN twin missing.
+verification_script: tests/governance/test_f227_memo_faq.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - >=8 FAQ Qs with links; both PDFs; EN/DE % equal; data_lineage >=2 mermaid.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

@@ -6,7 +6,7 @@
       "id": "F-001",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-001.yaml",
+      "path": "governance\\findings\\F-001.yaml",
       "status": "closed",
       "title": "PROJECT_CHARTER.md exceeds 200-line scannable budget",
       "verification_script": "scripts/check_charter_size.py"
@@ -17,7 +17,7 @@
       "id": "F-002",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-002.yaml",
+      "path": "governance\\findings\\F-002.yaml",
       "status": "closed",
       "title": "PROJECT_CHARTER.md \u00a711 Change Log duplicates CHANGELOG.md",
       "verification_script": "scripts/check_charter_size.py"
@@ -28,7 +28,7 @@
       "id": "F-003",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-003.yaml",
+      "path": "governance\\findings\\F-003.yaml",
       "status": "closed",
       "title": "Dual sensitivity modules (models/sensitivity.py and analysis/sensitivity.py)",
       "verification_script": "tests/governance/test_f003_sensitivity_single_module.py"
@@ -39,7 +39,7 @@
       "id": "F-004",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-004.yaml",
+      "path": "governance\\findings\\F-004.yaml",
       "status": "closed",
       "title": "export_for_powerbi is dead code with no sunset",
       "verification_script": "scripts/check_deprecations.py"
@@ -50,7 +50,7 @@
       "id": "F-005",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-005.yaml",
+      "path": "governance\\findings\\F-005.yaml",
       "status": "closed",
       "title": "Generated reports have no freshness contract (date: today, no mtime check, no prefix-collision check)",
       "verification_script": "tests/governance/test_f005_report_freshness.py"
@@ -61,7 +61,7 @@
       "id": "F-006",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-006.yaml",
+      "path": "governance\\findings\\F-006.yaml",
       "status": "closed",
       "title": "CONTRIBUTING.md claims \"pyright strict\" but pyproject.toml is typeCheckingMode = \"basic\"",
       "verification_script": "scripts/check_contributing_claims.py"
@@ -72,7 +72,7 @@
       "id": "F-007",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-007.yaml",
+      "path": "governance\\findings\\F-007.yaml",
       "status": "closed",
       "title": "Fake completion \u2014 pipeline.yml escape hatch + hollow verify-integrity",
       "verification_script": "tests/governance/test_f007_no_fake_completion.py"
@@ -83,7 +83,7 @@
       "id": "F-008",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-008.yaml",
+      "path": "governance\\findings\\F-008.yaml",
       "status": "closed",
       "title": "Orphaned workflows \u2014 reproducibility.yml is cron-only, never gates a PR",
       "verification_script": "scripts/check_workflow_registry.py"
@@ -94,7 +94,7 @@
       "id": "F-009",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-009.yaml",
+      "path": "governance\\findings\\F-009.yaml",
       "status": "closed",
       "title": ".pre-commit-config.yaml ssot-check files pattern excludes CHARTER, config/, reports/",
       "verification_script": "scripts/check_ssot_scope.py"
@@ -105,7 +105,7 @@
       "id": "F-010",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-010.yaml",
+      "path": "governance\\findings\\F-010.yaml",
       "status": "closed",
       "title": "No persistent machine-readable audit state",
       "verification_script": "tests/governance/test_f010_audit_state_present.py"
@@ -116,7 +116,7 @@
       "id": "F-011",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-011.yaml",
+      "path": "governance\\findings\\F-011.yaml",
       "status": "closed",
       "title": "Methodology drift \u2014 TIER0/1/2 \u2192 11-dim \u2192 12-dim \u2192 adversarial-Explore across sessions",
       "verification_script": "tests/governance/test_f011_methodology_canonical.py"
@@ -127,7 +127,7 @@
       "id": "F-012",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-012.yaml",
+      "path": "governance\\findings\\F-012.yaml",
       "status": "closed",
       "title": "Audit-doc accumulation (CHARTER \u00a711 acts as journal; no retirement rule)",
       "verification_script": "scripts/check_todo_dir.py"
@@ -138,7 +138,7 @@
       "id": "F-013",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-013.yaml",
+      "path": "governance\\findings\\F-013.yaml",
       "status": "closed",
       "title": "Pre-commit hooks not installed locally",
       "verification_script": "tests/governance/test_f013_bootstrap_documented.py"
@@ -149,7 +149,7 @@
       "id": "F-014",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-014.yaml",
+      "path": "governance\\findings\\F-014.yaml",
       "status": "closed",
       "title": "Makefile help text duplicates simulation n_runs (forward gate; currently in sync)",
       "verification_script": "scripts/check_makefile_numerics.py"
@@ -160,7 +160,7 @@
       "id": "F-015",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-015.yaml",
+      "path": "governance\\findings\\F-015.yaml",
       "status": "closed",
       "title": "CLAUDE.md missing \u2014 no agent protocol; meta-plan predicted graphify claim must be banned at creation",
       "verification_script": "scripts/check_claude_md.py"
@@ -171,7 +171,7 @@
       "id": "F-016",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-016.yaml",
+      "path": "governance\\findings\\F-016.yaml",
       "status": "closed",
       "title": "Notebook sequence \u2014 missing 02_*; jupytext discipline unverified",
       "verification_script": "scripts/check_notebook_sequence.py"
@@ -182,7 +182,7 @@
       "id": "F-017",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-017.yaml",
+      "path": "governance\\findings\\F-017.yaml",
       "status": "closed",
       "title": "README Tableau Public \"publication pending\" claim is unverifiable",
       "verification_script": "tests/governance/test_f017_tableau_status.py"
@@ -193,7 +193,7 @@
       "id": "F-018",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-018.yaml",
+      "path": "governance\\findings\\F-018.yaml",
       "status": "closed",
       "title": "autostore_baseline.yaml carries contradictory humanoid MTBF (2000h vs 40h)",
       "verification_script": "tests/governance/test_f018_mtbf_consistency.py"
@@ -204,7 +204,7 @@
       "id": "F-019",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-29",
-      "path": "governance/findings/F-019.yaml",
+      "path": "governance\\findings\\F-019.yaml",
       "status": "closed",
       "title": "README synthetic-vs-real-data narrative needs single canonical statement",
       "verification_script": "tests/governance/test_f019_data_provenance_statement.py"
@@ -215,7 +215,7 @@
       "id": "F-020",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-020.yaml",
+      "path": "governance\\findings\\F-020.yaml",
       "status": "closed",
       "title": "Executive_Summary_DE.qmd headline NPV table contradicts current pipeline CSV",
       "verification_script": "tests/governance/test_f020_exec_summary_npv.py"
@@ -226,7 +226,7 @@
       "id": "F-021",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-021.yaml",
+      "path": "governance\\findings\\F-021.yaml",
       "status": "closed",
       "title": "Executive_Summary_DE.qmd throughput numbers off by 2.7\u00d7 vs module_02_simulation_report.json",
       "verification_script": "tests/governance/test_f021_exec_summary_throughput.py"
@@ -237,7 +237,7 @@
       "id": "F-022",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-022.yaml",
+      "path": "governance\\findings\\F-022.yaml",
       "status": "closed",
       "title": "Executive_Summary_DE.qmd wage range \u20ac9,25\u2013\u20ac27,75 contradicts KV-sourced config",
       "verification_script": "tests/governance/test_f022_wage_range_qmd.py"
@@ -248,7 +248,7 @@
       "id": "F-023",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-023.yaml",
+      "path": "governance\\findings\\F-023.yaml",
       "status": "closed",
       "title": "QMD + config + raw MANIFEST cite the wrong KV (Handel) for warehouse wages",
       "verification_script": "tests/governance/test_f023_kv_naming.py"
@@ -259,7 +259,7 @@
       "id": "F-024",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-024.yaml",
+      "path": "governance\\findings\\F-024.yaml",
       "status": "closed",
       "title": "Dashboard setup docs + Makefile help still claim 75 simulation runs / 15 per scenario",
       "verification_script": "tests/governance/test_f024_run_count_docs.py"
@@ -270,7 +270,7 @@
       "id": "F-025",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-025.yaml",
+      "path": "governance\\findings\\F-025.yaml",
       "status": "closed",
       "title": "data/raw/MANIFEST.yaml ships placeholder nulls for revision_sha and access_date",
       "verification_script": "tests/governance/test_f025_raw_manifest_provenance.py"
@@ -281,7 +281,7 @@
       "id": "F-026",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-026.yaml",
+      "path": "governance\\findings\\F-026.yaml",
       "status": "closed",
       "title": "data/raw/MANIFEST.yaml references at_wages/ and wko_kv/ directories that do not exist",
       "verification_script": "tests/governance/test_f026_referenced_dirs.py"
@@ -292,7 +292,7 @@
       "id": "F-027",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-027.yaml",
+      "path": "governance\\findings\\F-027.yaml",
       "status": "closed",
       "title": "Simulation samples per-line service time as truncated Gaussian, biasing throughput",
       "verification_script": "tests/governance/test_f027_service_time_distribution.py"
@@ -303,7 +303,7 @@
       "id": "F-028",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-028.yaml",
+      "path": "governance\\findings\\F-028.yaml",
       "status": "closed",
       "title": "Simulation never computes or asserts queueing utilisation \u03c1 = \u03bb/(c\u03bc)",
       "verification_script": "tests/governance/test_f028_utilisation_check.py"
@@ -314,7 +314,7 @@
       "id": "F-029",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-029.yaml",
+      "path": "governance\\findings\\F-029.yaml",
       "status": "closed",
       "title": "Sensitivity printout mislabels p5/p95 output quantiles as \"90% CI\"",
       "verification_script": "tests/governance/test_f029_quantile_label.py"
@@ -325,7 +325,7 @@
       "id": "F-030",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-030.yaml",
+      "path": "governance\\findings\\F-030.yaml",
       "status": "closed",
       "title": "OAT tornado is naive delta-from-base, not normalised elasticity or variance contribution",
       "verification_script": "tests/governance/test_f030_tornado_normalisation.py"
@@ -336,7 +336,7 @@
       "id": "F-031",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-031.yaml",
+      "path": "governance\\findings\\F-031.yaml",
       "status": "closed",
       "title": "Monte Carlo humanoid_capex_eur ~ Normal(120k, 30k) is not truncated, allows negative draws",
       "verification_script": "tests/governance/test_f031_capex_truncation.py"
@@ -347,7 +347,7 @@
       "id": "F-032",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-032.yaml",
+      "path": "governance\\findings\\F-032.yaml",
       "status": "closed",
       "title": "transfer_factor MC range [0.5, 0.9] is inconsistent with downstream max(.,0.05) floor",
       "verification_script": "tests/governance/test_f032_transfer_factor_floor.py"
@@ -358,7 +358,7 @@
       "id": "F-033",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-033.yaml",
+      "path": "governance\\findings\\F-033.yaml",
       "status": "closed",
       "title": "module_03_tco.py emits undiscounted nominal total_opex alongside discounted NPV",
       "verification_script": "tests/governance/test_f033_opex_pv_disambiguation.py"
@@ -369,7 +369,7 @@
       "id": "F-034",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-034.yaml",
+      "path": "governance\\findings\\F-034.yaml",
       "status": "closed",
       "title": "S-future-2028 humanoid_throughput_multiplier never propagates to TCO pipeline",
       "verification_script": "tests/governance/test_f034_future_multiplier_propagation.py"
@@ -380,7 +380,7 @@
       "id": "F-035",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-035.yaml",
+      "path": "governance\\findings\\F-035.yaml",
       "status": "closed",
       "title": "Knapp AutoStore throughput reference 960/shift is a magic number with no citation",
       "verification_script": "tests/governance/test_f035_knapp_citation.py"
@@ -391,7 +391,7 @@
       "id": "F-036",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-036.yaml",
+      "path": "governance\\findings\\F-036.yaml",
       "status": "closed",
       "title": "Reproducibility scaffolding is dead \u2014 seed_all + granular seeds + AgentProfile.seed all unused",
       "verification_script": "tests/governance/test_f036_reproducibility_scaffolding.py"
@@ -402,7 +402,7 @@
       "id": "F-037",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-037.yaml",
+      "path": "governance\\findings\\F-037.yaml",
       "status": "closed",
       "title": "README MC 90% interval digits hand-transcribed and drift from sensitivity_analysis_report.json",
       "verification_script": "tests/governance/test_f037_readme_mc_digits.py"
@@ -413,7 +413,7 @@
       "id": "F-038",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-038.yaml",
+      "path": "governance\\findings\\F-038.yaml",
       "status": "closed",
       "title": "docs/DASHBOARD_SETUP.md Power BI DAX snippet is syntactically invalid",
       "verification_script": "tests/governance/test_f038_dax_validity.py"
@@ -424,7 +424,7 @@
       "id": "F-039",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-039.yaml",
+      "path": "governance\\findings\\F-039.yaml",
       "status": "closed",
       "title": "docs/DASHBOARD_SETUP.md cites stale Best NPV \u20ac-924,125 that exists in no current artifact",
       "verification_script": "tests/governance/test_f039_stale_best_npv_card.py"
@@ -435,7 +435,7 @@
       "id": "F-040",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-040.yaml",
+      "path": "governance\\findings\\F-040.yaml",
       "status": "closed",
       "title": "notebooks/01_data_profile_summary.ipynb has zero committed cell outputs",
       "verification_script": "tests/governance/test_f040_notebook_outputs.py"
@@ -446,7 +446,7 @@
       "id": "F-041",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-041.yaml",
+      "path": "governance\\findings\\F-041.yaml",
       "status": "closed",
       "title": ".github/workflows/ci.yml does not run the pipeline that produces claimed outputs",
       "verification_script": "tests/governance/test_f041_ci_runs_pipeline.py"
@@ -457,7 +457,7 @@
       "id": "F-042",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-30",
-      "path": "governance/findings/F-042.yaml",
+      "path": "governance\\findings\\F-042.yaml",
       "status": "closed",
       "title": "ci.yml Docker smoke test overrides ENTRYPOINT with no-op import",
       "verification_script": "tests/governance/test_f042_docker_entrypoint.py"
@@ -468,7 +468,7 @@
       "id": "F-043",
       "kind": "recurrence_invariant",
       "opened_at": "2026-05-31",
-      "path": "governance/findings/F-043.yaml",
+      "path": "governance\\findings\\F-043.yaml",
       "status": "closed",
       "title": "Presentation-layer artifacts (charts, QMD renders) regenerate stale after methodology changes",
       "verification_script": "tests/governance/test_f043_presentation_layer_regen.py"
@@ -479,7 +479,7 @@
       "id": "F-044",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-03",
-      "path": "governance/findings/F-044.yaml",
+      "path": "governance\\findings\\F-044.yaml",
       "status": "closed",
       "title": "Executive chart 03 reports demand-bound throughput, not scenario capacity",
       "verification_script": "tests/governance/test_f044_capacity_chart.py"
@@ -490,7 +490,7 @@
       "id": "F-045",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-03",
-      "path": "governance/findings/F-045.yaml",
+      "path": "governance\\findings\\F-045.yaml",
       "status": "closed",
       "title": "Cost-per-order break-even thresholds claimed in narrative but absent from committed artifacts",
       "verification_script": "tests/governance/test_f045_breakeven_thresholds_surfaced.py"
@@ -501,7 +501,7 @@
       "id": "F-046",
       "kind": "missing_artifact",
       "opened_at": "2026-06-04",
-      "path": "governance/findings/F-046.yaml",
+      "path": "governance\\findings\\F-046.yaml",
       "status": "closed",
       "title": "Cost-per-order has no executive chart despite being the headline unit-economics KPI",
       "verification_script": "tests/governance/test_f046_cost_per_order_chart_exists.py"
@@ -512,7 +512,7 @@
       "id": "F-100",
       "kind": "historical_change",
       "opened_at": "2026-05-20",
-      "path": "governance/findings/F-100.yaml",
+      "path": "governance\\findings\\F-100.yaml",
       "status": "closed_historical",
       "title": "PROJECT_CHARTER.md \u00a711 Change Log \u2014 historical migration record",
       "verification_script": null
@@ -523,35 +523,466 @@
       "id": "F-101",
       "kind": "recurrence_invariant",
       "opened_at": "2026-06-13",
-      "path": "governance/findings/F-101.yaml",
+      "path": "governance\\findings\\F-101.yaml",
       "status": "closed",
       "title": "Module 1 fails open \u2014 reports success on 0 episodes when raw data is unavailable",
       "verification_script": "tests/governance/test_f101_module01_fails_closed_on_empty.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": "2026-07-16",
+      "id": "F-200",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-200.yaml",
+      "status": "closed",
+      "title": "Quality Transformation Program filed as F-201+ queue + QUALITY_BLUEPRINT.md",
+      "verification_script": "scripts/check_program_filed.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": null,
+      "id": "F-201",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-201.yaml",
+      "status": "open",
+      "title": "Hero banner: integrate user-provided Figma banner (text-free of typos)",
+      "verification_script": "tests/governance/test_f201_banner.py"
+    },
+    {
+      "category": "documentation_entropy",
+      "closed_at": "2026-07-16",
+      "id": "F-202",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-202.yaml",
+      "status": "closed",
+      "title": "Charter documentation index truth + internal link gate",
+      "verification_script": "scripts/check_internal_links.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": "2026-07-16",
+      "id": "F-203",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-203.yaml",
+      "status": "closed",
+      "title": "Single ADR home at governance/adrs/",
+      "verification_script": "scripts/check_single_adr_home.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": "2026-07-16",
+      "id": "F-204",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-204.yaml",
+      "status": "closed",
+      "title": "Empty taxonomy review CSV resolved (delete + honest rule-based description)",
+      "verification_script": "tests/governance/test_f204_taxonomy_provenance.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": "2026-07-16",
+      "id": "F-205",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-205.yaml",
+      "status": "closed",
+      "title": "Decorative config triage \u2014 unmodeled_parameters partition with signed bias",
+      "verification_script": "scripts/check_config_consumption.py"
+    },
+    {
+      "category": "numeric_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-206",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-206.yaml",
+      "status": "closed",
+      "title": "DE executive summary metric alignment to total-cost NPV reduction",
+      "verification_script": "tests/governance/test_f206_de_metric.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": "2026-07-16",
+      "id": "F-207",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-207.yaml",
+      "status": "closed",
+      "title": "Absolute paths scrubbed from committed reports",
+      "verification_script": "scripts/check_no_abs_paths.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-210",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-210.yaml",
+      "status": "closed",
+      "title": "Canonical decision statement in Charter + README Decision summary",
+      "verification_script": "scripts/check_decision_statement.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-211",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-211.yaml",
+      "status": "closed",
+      "title": "EXPERIMENTS.md H1-H4 with numeric rules and machine-checked verdicts",
+      "verification_script": "scripts/check_hypothesis_verdicts.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-212",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-212.yaml",
+      "status": "closed",
+      "title": "Add S-lean-human scenario sized by rho<=0.85 rule",
+      "verification_script": "tests/governance/test_f212_lean_human.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-213",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-213.yaml",
+      "status": "closed",
+      "title": "External validity \u2014 household UnifoLM tasks disclosed in README",
+      "verification_script": "tests/governance/test_f213_validity_disclosure.py"
+    },
+    {
+      "category": "stale_generated_outputs",
+      "closed_at": "2026-07-16",
+      "id": "F-214",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-214.yaml",
+      "status": "closed",
+      "title": "Chart design system + regenerated executive charts with uncertainty",
+      "verification_script": "tests/governance/test_f214_chart_system.py"
+    },
+    {
+      "category": "documentation_entropy",
+      "closed_at": "2026-07-16",
+      "id": "F-215",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-215.yaml",
+      "status": "closed",
+      "title": "README decision-first rewrite with persona paths and positioning",
+      "verification_script": "tests/governance/test_f215_readme_structure.py"
+    },
+    {
+      "category": "fake_completion",
+      "closed_at": "2026-07-16",
+      "id": "F-216",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-216.yaml",
+      "status": "closed",
+      "title": "Rendered DE PDF + recruiter link to PDF not QMD",
+      "verification_script": "tests/governance/test_f216_recruiter_artifact.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": "2026-07-16",
+      "id": "F-217",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-217.yaml",
+      "status": "closed",
+      "title": "Property-test lattice + golden masters for TCO kernels",
+      "verification_script": "tests/test_tco_properties.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-218",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-218.yaml",
+      "status": "closed",
+      "title": "UnifoLM license compliance memo",
+      "verification_script": "scripts/check_license_memo.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-219",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-219.yaml",
+      "status": "closed",
+      "title": "Analytical SQL layer via DuckDB for published Tableau CSVs",
+      "verification_script": "tests/governance/test_f219_sql_parity.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-220",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-220.yaml",
+      "status": "closed",
+      "title": "Crew-size enumerator \u2014 min-cost integer crews subject to rho",
+      "verification_script": "tests/governance/test_f220_optimizer.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-221",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-221.yaml",
+      "status": "closed",
+      "title": "Fair scenario redesign using optimizer + effect decomposition",
+      "verification_script": "tests/governance/test_f221_fair_scenarios.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-222",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-222.yaml",
+      "status": "closed",
+      "title": "Material realism \u2014 availability, integration, wage growth, residual, supervision",
+      "verification_script": "tests/governance/test_f222_realism.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-223",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-223.yaml",
+      "status": "closed",
+      "title": "Cost taxonomy + euro-exact reconciliation + auditor worksheet",
+      "verification_script": "tests/governance/test_f223_reconciliation.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-224",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-224.yaml",
+      "status": "closed",
+      "title": "Common random numbers + P(rank 1) + operational MC input",
+      "verification_script": "tests/governance/test_f224_crn.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-225",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-225.yaml",
+      "status": "closed",
+      "title": "Breakeven frontiers + Sobol + SENSITIVITY.md v2",
+      "verification_script": "tests/governance/test_f225_frontiers.py"
+    },
+    {
+      "category": "dead_artifacts",
+      "closed_at": "2026-07-16",
+      "id": "F-226",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-226.yaml",
+      "status": "closed",
+      "title": "Generated assumption register machine-enforced",
+      "verification_script": "scripts/check_assumption_register.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-227",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-227.yaml",
+      "status": "closed",
+      "title": "Bilingual decision memos + Challenge this analysis FAQ",
+      "verification_script": "tests/governance/test_f227_memo_faq.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-228",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-228.yaml",
+      "status": "closed",
+      "title": "Exhibit deck generated and pinned",
+      "verification_script": "tests/governance/test_f228_deck.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-229",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-229.yaml",
+      "status": "closed",
+      "title": "dbt-duckdb validation layer over processed parquet",
+      "verification_script": "tests/governance/test_f229_dbt_parity.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-230",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-230.yaml",
+      "status": "closed",
+      "title": "Third-party reproduction log",
+      "verification_script": "scripts/check_repro_log.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-231",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-231.yaml",
+      "status": "closed",
+      "title": "EVPI / value of information per MC parameter",
+      "verification_script": "tests/governance/test_f231_evpi.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-232",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-232.yaml",
+      "status": "closed",
+      "title": "Multi-shift + demand frontier where robots enter optimal mix",
+      "verification_script": "tests/governance/test_f232_demand_frontier.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-233",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-233.yaml",
+      "status": "closed",
+      "title": "Case study + CITATION.cff + DOI release checklist",
+      "verification_script": "scripts/check_publication_pack.py"
+    },
+    {
+      "category": "missing_artifact",
+      "closed_at": "2026-07-16",
+      "id": "F-234",
+      "kind": "missing_artifact",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-234.yaml",
+      "status": "closed",
+      "title": "Framework packaging + MAINTENANCE.md annual refresh policy",
+      "verification_script": "tests/governance/test_f234_packaging.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": "2026-07-16",
+      "id": "F-235",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-235.yaml",
+      "status": "closed",
+      "title": "Pyright strict ratchet + coverage >=90%",
+      "verification_script": "scripts/check_pyright_strict.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": "2026-07-16",
+      "id": "F-236",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-236.yaml",
+      "status": "closed",
+      "title": "Claims ledger + citation spot audit",
+      "verification_script": "scripts/check_claims_ledger.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-237",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-237.yaml",
+      "status": "closed",
+      "title": "Order service time omits pick_lines_per_order \u2014 crew sizing and headline numbers invalid",
+      "verification_script": "tests/governance/test_f237_pick_lines_service.py"
+    },
+    {
+      "category": "methodology_drift",
+      "closed_at": "2026-07-16",
+      "id": "F-238",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-238.yaml",
+      "status": "closed",
+      "title": "Recruiter PDFs are ReportLab text dumps, not Quarto typst renders",
+      "verification_script": "tests/governance/test_f238_quarto_typst_pdfs.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": "2026-07-16",
+      "id": "F-239",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-239.yaml",
+      "status": "closed",
+      "title": "uv.lock stale \u2014 analytics extra missing; CI unlocked install",
+      "verification_script": "tests/governance/test_f239_uv_lock_analytics.py"
+    },
+    {
+      "category": "fragmented_standards",
+      "closed_at": "2026-07-16",
+      "id": "F-240",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-07-16",
+      "path": "governance\\findings\\F-240.yaml",
+      "status": "closed",
+      "title": "Coverage fail-under still 76% despite F-235 claiming >=90",
+      "verification_script": "tests/governance/test_f240_coverage_ratchet.py"
     }
   ],
-  "generated_at": "2026-06-13T12:54:05.886426+00:00",
-  "git_branch": "claude/youthful-mccarthy-uhgr4q",
-  "git_head_sha": "191fbcb2e76fb7b8ead3cb099c42df33336002c3",
+  "generated_at": "2026-07-16T15:59:20.224228+00:00",
+  "git_branch": "main",
+  "git_head_sha": "d284a99c14f14a8a4d71140a96f934e3ff443a4c",
   "migrations": [
     {
       "linked_finding": "F-003",
       "max_days_in_progress": 45,
       "name": "sensitivity-merge",
-      "path": "governance/migrations/01-sensitivity-merge.yaml",
+      "path": "governance\\migrations\\01-sensitivity-merge.yaml",
       "started_at": "2026-05-20",
       "status": "complete"
     }
   ],
   "summary": {
-    "findings_closed": 47,
+    "findings_closed": 85,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
-    "findings_open": 0,
-    "findings_total": 48,
+    "findings_open": 1,
+    "findings_total": 87,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
-    "open_by_category": {}
+    "open_by_category": {
+      "fake_completion": 1
+    }
   },
   "validation_errors": [],
   "writer": "scripts/write_audit_state.py"

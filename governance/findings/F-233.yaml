@@ -1,0 +1,15 @@
+id: F-233
+title: "Case study + CITATION.cff + DOI release checklist"
+category: missing_artifact
+kind: missing_artifact
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: |
+  No submission-ready case study pack. Partially BLOCKED-ON-USER for external review.
+verification_script: scripts/check_publication_pack.py
+notes: |
+  ACCEPTANCE CRITERIA:
+  - case_study.qmd; CITATION.cff; RELEASE_CHECKLIST.md present.
+  LOCKED DECISIONS: see QUALITY_BLUEPRINT.md and Execution Spec v2 plan.

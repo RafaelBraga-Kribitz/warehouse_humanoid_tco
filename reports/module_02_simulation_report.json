@@ -1,10 +1,10 @@
 {
   "phase": "module_02_simulation",
-  "total_runs": 75,
-  "scenarios_tested": 5,
+  "total_runs": 90,
+  "scenarios_tested": 6,
   "n_runs_per_scenario": 15,
-  "simulation_runs_path": "/home/user/warehouse_humanoid_tco/data/processed/simulation_runs.parquet",
-  "capacity_ceiling_path": "/home/user/warehouse_humanoid_tco/data/processed/simulation_capacity_ceiling.parquet",
+  "simulation_runs_path": "data/processed/simulation_runs.parquet",
+  "capacity_ceiling_path": "data/processed/simulation_capacity_ceiling.parquet",
   "capacity_target_rho": 0.85,
   "capacity_n_runs_per_scenario": 5
 }

@@ -36,6 +36,8 @@ amr:
   annual_maintenance_fraction: 0.06
 """
 
+BASELINE_ANNUAL_OPEX = 500_000.0
+
 SIM_CONFIG = """
 operations:
   operating_days_per_year: 252
@@ -76,6 +78,7 @@ def test_changing_wage_changes_npv() -> None:
         "S-pure-humanoid",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(base_cfg, sim_cfg),
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
         composition=comp,
     )
 
@@ -85,6 +88,7 @@ def test_changing_wage_changes_npv() -> None:
         "S-pure-humanoid",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(hot_cfg, sim_cfg),
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
         composition=comp,
     )
     # Supervision labor scales with wage, so even pure-humanoid NPV must move.
@@ -99,6 +103,7 @@ def test_changing_capex_changes_npv() -> None:
         "S-pure-humanoid",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(base_cfg, sim_cfg),
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
         composition=comp,
     )
     hot_cfg = copy.deepcopy(base_cfg)
@@ -107,6 +112,7 @@ def test_changing_capex_changes_npv() -> None:
         "S-pure-humanoid",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(hot_cfg, sim_cfg),
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
         composition=comp,
     )
     assert hot["total_capex_eur"] > base["total_capex_eur"]
@@ -118,10 +124,18 @@ def test_explicit_composition_has_no_int_truncation() -> None:
     params = build_financial_params(yaml.safe_load(NESTED_CONFIG), yaml.safe_load(SIM_CONFIG))
     # 4 humans cost strictly less labor than 5 humans (no silent floor).
     r4 = compute_tco_scenario(
-        "X", {"throughput_orders_per_shift": 950.0}, params, composition=_composition(4, 1, 1)
+        "X",
+        {"throughput_orders_per_shift": 950.0},
+        params,
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
+        composition=_composition(4, 1, 1),
     )
     r5 = compute_tco_scenario(
-        "X", {"throughput_orders_per_shift": 950.0}, params, composition=_composition(5, 1, 1)
+        "X",
+        {"throughput_orders_per_shift": 950.0},
+        params,
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
+        composition=_composition(5, 1, 1),
     )
     assert r5["total_opex_5yr_eur_nominal"] > r4["total_opex_5yr_eur_nominal"]
 
@@ -133,6 +147,7 @@ def test_total_cost_metric_distinct_from_opex_metric() -> None:
         "S-pure-humanoid",
         {"throughput_orders_per_shift": 950.0},
         params,
+        baseline_annual_opex=BASELINE_ANNUAL_OPEX,
         composition=_composition(0, 8, 0),
     )
     # Pure-humanoid slashes opex but carries large capex; the opex-only metric

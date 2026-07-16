@@ -4,7 +4,7 @@ This is a single-contributor portfolio project. "Contributing" here means: rules
 
 ## The Single Source of Truth Rule
 
-**`PROJECT_CHARTER.md` is the SSOT.** All project facts (goals, scope, requirements, architecture, decisions) live there or in `docs/ADR/`. Nowhere else.
+**`PROJECT_CHARTER.md` is the SSOT.** All project facts (goals, scope, requirements, architecture, decisions) live there or in `governance/adrs/`. Nowhere else.
 
 If you need to write a project-level fact:
 
@@ -30,7 +30,7 @@ PROJECT_CHARTER.md
 CHANGELOG.md
 CONTRIBUTING.md
 LICENSE
-docs/ADR/NNNN-*.md          # ADRs only
+governance/adrs/NNNN-*.md   # ADRs only
 docs/glossary.md
 reports/*.md
 reports/*.qmd

@@ -1,0 +1,22 @@
+id: F-238
+title: "Recruiter PDFs are ReportLab text dumps, not Quarto typst renders"
+category: methodology_drift
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-07-16
+closed_at: 2026-07-16
+recurrence_count: 0
+evidence: >
+  reports/Executive_Summary_DE.pdf, Executive_Summary_EN.pdf, and exhibit_deck.pdf
+  were produced by scripts/render_decision_pdfs.py (ReportLab), ~3–9 KB text dumps
+  without real tables or embedded charts. Makefile exec-summary previously targeted
+  LaTeX pdf. Committed recruiter artifacts must be Quarto typst renders (≥30 KB,
+  non-ReportLab producer; deck embeds ≥1 chart image).
+verification_script: tests/governance/test_f238_quarto_typst_pdfs.py
+notes: |
+  ACCEPTANCE:
+  - QMD frontmatter declares typst for DE/EN/deck
+  - make exec-summary renders all three via --to typst
+  - PDFs ≥30KB, no ReportLab producer string; deck has /Subtype /Image
+  - render_decision_pdfs.py demoted to emergency fallback only
+  Closed 2026-07-16 after Quarto 1.9.38 typst renders (DE 56KB, EN 48KB, deck 254KB).

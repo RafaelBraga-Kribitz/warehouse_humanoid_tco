@@ -23,9 +23,12 @@ from warehouse_humanoid_tco.models.simulation import (
     DEFAULT_CAPACITY_CEILING_RHO,
     AgentProfile,
     WarehouseScenario,
+    compute_operational_availability,
     run_scenario,
+    scale_line_cycle_to_order,
     simulate_at_capacity,
 )
+from warehouse_humanoid_tco.utils.paths import repo_relative
 from warehouse_humanoid_tco.utils.reproducibility import seed_all
 
 
@@ -147,12 +150,37 @@ def module_02_main(
     if transfer_factor <= 0:
         raise ValueError(f"wbt_to_production_factor must be > 0; got {transfer_factor}")
     demo_cycle_mean, demo_cycle_std = _select_humanoid_cycle_time(summary_df, reference_task)
-    humanoid_cycle_mean = demo_cycle_mean / transfer_factor
-    humanoid_cycle_std = demo_cycle_std / transfer_factor
+    humanoid_ops = config.get("humanoid_operational", {})
+    humanoid_availability = compute_operational_availability(
+        float(humanoid_ops.get("mtbf_hours", 40.0)),
+        float(humanoid_ops.get("mttr_hours", 0.5)),
+        float(humanoid_ops.get("battery_capacity_hours", 4.0)),
+        float(humanoid_ops.get("recharge_time_hours", 1.0)),
+    )
+    # Availability is a service-rate derate, not a separate capacity multiplier:
+    # every productive cycle consumes its expected outage and recharge time.
+    humanoid_cycle_mean = demo_cycle_mean / transfer_factor / humanoid_availability
+    humanoid_cycle_std = demo_cycle_std / transfer_factor / humanoid_availability
+    pick_lines = float(config["operations"]["pick_lines_per_order"])
+    # Config cycle times are per pick line; AgentProfile stores per-order service (F-237).
+    human_mean, human_std = scale_line_cycle_to_order(
+        float(config["agents"]["human"]["cycle_time_mean_seconds"]),
+        float(config["agents"]["human"]["cycle_time_std_seconds"]),
+        pick_lines,
+    )
+    amr_mean, amr_std = scale_line_cycle_to_order(
+        float(config["agents"]["amr"]["cycle_time_mean_seconds"]),
+        float(config["agents"]["amr"]["cycle_time_std_seconds"]),
+        pick_lines,
+    )
+    humanoid_cycle_mean, humanoid_cycle_std = scale_line_cycle_to_order(
+        humanoid_cycle_mean, humanoid_cycle_std, pick_lines
+    )
     print(
         f"  Humanoid cycle time: demo {demo_cycle_mean:.1f}±{demo_cycle_std:.1f}s "
         f"(task={reference_task}) -> production {humanoid_cycle_mean:.1f}"
-        f"±{humanoid_cycle_std:.1f}s (transfer={transfer_factor:.2f})"
+        f"±{humanoid_cycle_std:.1f}s/order (transfer={transfer_factor:.2f}, "
+        f"availability={humanoid_availability:.3f}, pick_lines={pick_lines})"
     )
 
     # ========== Run Simulations ==========
@@ -193,8 +221,8 @@ def module_02_main(
             agent_profiles.append(
                 AgentProfile(
                     agent_type="human",
-                    cycle_time_mean=config["agents"]["human"]["cycle_time_mean_seconds"],
-                    cycle_time_std=config["agents"]["human"]["cycle_time_std_seconds"],
+                    cycle_time_mean=human_mean,
+                    cycle_time_std=human_std,
                     count=human_count,
                     seed=seed,
                 )
@@ -215,8 +243,8 @@ def module_02_main(
             agent_profiles.append(
                 AgentProfile(
                     agent_type="amr",
-                    cycle_time_mean=config["agents"]["amr"]["cycle_time_mean_seconds"],
-                    cycle_time_std=config["agents"]["amr"]["cycle_time_std_seconds"],
+                    cycle_time_mean=amr_mean,
+                    cycle_time_std=amr_std,
                     count=amr_count,
                     seed=seed,
                 )
@@ -296,8 +324,8 @@ def module_02_main(
         "total_runs": len(all_runs),
         "scenarios_tested": len(scenarios),
         "n_runs_per_scenario": n_runs,
-        "simulation_runs_path": str(runs_path) if runs_path else None,
-        "capacity_ceiling_path": str(capacity_path) if capacity_path else None,
+        "simulation_runs_path": repo_relative(runs_path) if runs_path else None,
+        "capacity_ceiling_path": repo_relative(capacity_path) if capacity_path else None,
         "capacity_target_rho": capacity_target_rho,
         "capacity_n_runs_per_scenario": capacity_n_runs,
     }

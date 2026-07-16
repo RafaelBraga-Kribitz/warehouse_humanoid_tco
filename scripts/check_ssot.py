@@ -5,7 +5,7 @@ violated. The rules are defined in PROJECT_CHARTER.md section 2.5.
 
 Rules checked:
   1. PROJECT_CHARTER.md last_updated within 14 days of the latest commit
-     touching src/, notebooks/, or docs/ADR/.
+     touching src/, notebooks/, or governance/adrs/.
   2. Every ADR has the required headings (Date, Status, Context,
      Decision, Consequences).
   3. PROJECT_CHARTER.md Change Log has an entry whose date matches the
@@ -24,10 +24,9 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 CHARTER_PATH = Path("PROJECT_CHARTER.md")
-ADR_DIR = Path("docs/ADR")
 GOVERNANCE_ADR_DIR = Path("governance/adrs")
 GOVERNANCE_CHANGELOG = Path("governance/CHANGELOG.md")
-WATCHED_DIRS = ("src", "notebooks", "docs/ADR", "governance/adrs")
+WATCHED_DIRS = ("src", "notebooks", "governance/adrs")
 STALENESS_THRESHOLD_DAYS = 14
 
 REQUIRED_ADR_HEADINGS = (
@@ -126,12 +125,12 @@ def check_charter_staleness(metadata: dict[str, str]) -> None:
 def check_adrs() -> None:
     """Rule 2: every ADR has the required headings and a valid filename.
 
-    Checks both docs/ADR/ (legacy location) and governance/adrs/ (Phase 2+).
+    Checks the canonical governance/adrs/ location.
     """
     filename_pattern = re.compile(r"^\d{4}-[a-z0-9-]+\.md$")
     translation_suffix = re.compile(r"-[a-z]{2}$")
 
-    adr_dirs = [d for d in (ADR_DIR, GOVERNANCE_ADR_DIR) if d.exists()]
+    adr_dirs = [GOVERNANCE_ADR_DIR] if GOVERNANCE_ADR_DIR.exists() else []
     if not adr_dirs:
         return
 

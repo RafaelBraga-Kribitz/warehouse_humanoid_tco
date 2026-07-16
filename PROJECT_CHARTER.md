@@ -6,7 +6,7 @@ This document is the ONLY authoritative source for project goals, scope,
 requirements, and design decisions.
 
 RULES (enforced by CI):
-  1. Any project decision that is not in this document or in docs/ADR/ does
+  1. Any project decision that is not in this document or in governance/adrs/ does
      not exist.
   2. Changes to anything in this file require a corresponding ADR entry.
   3. README.md, notebooks, and code docstrings MAY summarize from this file
@@ -23,7 +23,7 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 <!-- SSOT_METADATA_START
 version: 1.1.5
 status: active
-last_updated: 2026-06-05
+last_updated: 2026-07-16
 last_reviewed: 2026-06-05
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
@@ -33,7 +33,7 @@ SSOT_METADATA_END -->
 
 # 📋 Project Charter: Warehouse Humanoid TCO Analyzer
 
-> **🎯 This is the Single Source of Truth (SSOT)** for the project. If you are looking for what the project is, what it does, what it does not do, or why a decision was made, **the answer is here or it is in [`docs/ADR/`](./docs/ADR/).** Nowhere else. CI enforces this discipline.
+> **🎯 This is the Single Source of Truth (SSOT)** for the project. If you are looking for what the project is, what it does, what it does not do, or why a decision was made, **the answer is here or it is in [`governance/adrs/`](./governance/adrs/).** Nowhere else. CI enforces this discipline.
 
 ## Table of Contents
 
@@ -56,7 +56,7 @@ SSOT_METADATA_END -->
 | Secondary goal | Produce a reproducible analytical framework for humanoid robot TCO that has analytical value beyond the portfolio |
 | Time budget | 8 to 10 weeks part-time |
 | Status | v1.0 complete. All 4 modules shipped with real data (2,359 episodes). [Tableau Public dashboard](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1) published; external outreach (LinkedIn) pending. |
-| Repo structure | See SRS §8 |
+| Repo structure | See [Repository Structure](./governance/REPO_STRUCTURE.md) |
 
 ---
 
@@ -72,16 +72,18 @@ Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 
 ### 3.1 Problem Statement
 
-Austrian intralogistics and manufacturing leaders (Knapp AG, TGW Logistics, voestalpine, Magna Steyr) are evaluating humanoid robots from Unitree, Apptronik, Figure, and Agility for warehouse and production tasks. As of 2026, there is no publicly available, reproducible analytical framework that:
+<!-- DECISION_STATEMENT_START -->
+**Decision owner:** COO/site director of an Austrian AutoStore-class warehouse.
+**Decision question:** Which workforce/procurement choice should the site make for 2026–2028?
+**Options:** (1) deploy humanoids now; (2) deploy lean-human+AMR now; (3) wait, with a humanoid procurement trigger.
+**Recommendation:** right-size the crew now and defer humanoid procurement: no pure-humanoid capex in the searched €10,000–€500,000 range reaches parity with right-sized staffing at 120 orders/hr — even near-free humanoids lose to the 3-human lean crew, so capex is not the binding constraint; revisit under demand growth, labor scarcity, or multi-shift operation (see `reports/demand_frontier.json`). Integration cost and availability derating are modeled (F-222).
+The no-breakeven result is recorded in `reports/module_03_tco_report.json::breakeven_thresholds.vs_lean_human.no_breakeven_in_search_range` (the earlier €10,030 figure was the search's €10K lower bound, not a real crossover); transfer-factor evidence is the observed WBT teleoperation cycle-time proxy, with 0.50–0.90 transfer factor sampled in sensitivity analysis.
+In Austrian intralogistics the practical automation driver is unfillable vacancies, not wage arbitrage; this model conservatively assumes labor is available at KV rates, so robot value is understated wherever vacancies go unfilled.
+<!-- DECISION_STATEMENT_END -->
 
-1. Grounds humanoid capabilities in observed empirical data rather than vendor marketing.
-2. Translates those capabilities into operational simulations under realistic Austrian conditions.
-3. Quantifies financial impact (TCO, NPV, IRR, payback) given Austrian labor cost structures (Kollektivvertrag) and capital cost assumptions.
-4. Surfaces results in a BI dashboard accessible to non-technical decision-makers.
+### 3.2 Decision-support portfolio purpose
 
-### 3.2 Project Goal
-
-Build that framework, end-to-end, using only public data sources, and publish it as open-source under MIT license.
+The decision problem above is primary. This project secondarily demonstrates a reproducible, open-source analytical framework: it grounds observed capabilities, simulates Austrian operations, quantifies TCO/NPV, and surfaces results for non-technical stakeholders.
 
 ### 3.3 ✅ Success Criteria
 
@@ -134,11 +136,11 @@ This section points to everything beyond the executive summary. **The SSOT rule 
 
 | Document | Purpose | Location |
 |---|---|---|
-| **CRISP-DM Phase Mapping** | How each module maps to the CRISP-DM lifecycle | `governance/adrs/0001-*.md` |
-| **Functional Requirements (FR-01 to FR-15)** | All Must/Should/Could/Won't requirements with MoSCoW priority | `governance/REQUIREMENTS.md` |
-| **Non-Functional Requirements** | Reproducibility, quality, performance, documentation, ethics | `governance/REQUIREMENTS.md` |
-| **Backlog (BL-01 to BL-05)** | Future scope, managed via ADR | `governance/REQUIREMENTS.md` |
-| **Technology Stack (locked)** | Python 3.11, uv, polars, SimPy, Tableau, Quarto, etc. | `governance/TECH_STACK.md` |
+| **CRISP-DM Phase Mapping** | How each module maps to the CRISP-DM lifecycle | `governance/adrs/` (ADR-0001) |
+| **Functional requirements** | Project objectives, scope, and success criteria | Charter §§3.1–3.3 |
+| **Non-functional requirements** | Reproducibility, quality, documentation, and ethics | Charter §2, §3.3, and `CONTRIBUTING.md` |
+| **Future backlog** | Scope changes require an ADR before implementation | Charter §3.6 and `governance/adrs/` |
+| **Technology stack** | Python package, dependencies, and developer standards | `pyproject.toml` and `CONTRIBUTING.md` |
 | **Coding Standards** | snake_case, type hints, docstrings, no magic numbers | `CONTRIBUTING.md` |
 
 ### 4.2 📊 Data & Experiment Design
@@ -146,7 +148,7 @@ This section points to everything beyond the executive summary. **The SSOT rule 
 | Document | Purpose | Location |
 |---|---|---|
 | **Data Sources (authoritative list)** | WBT datasets, DiverseManip, reference data, all SHAs pinned | `governance/DATA_SOURCES.md` |
-| **Data Storage Layout** | `data/raw/`, `data/interim/`, `data/processed/` structure | `governance/DATA_STORAGE.md` |
+| **Data storage layout** | Raw, interim, and processed data conventions | `governance/DATA_SOURCES.md` |
 | **Pandera Schemas** | `EpisodeMetadataSchema`, `HumanoidCapabilityPerEpisodeSchema`, etc. | `src/warehouse_humanoid_tco/data/schemas.py` |
 | **Experiment Hypotheses (H1–H4)** | Four testable hypotheses with decision rules and status | `governance/EXPERIMENTS.md` |
 | **Scenarios (S-baseline-human, S-hybrid-amr, etc.)** | Five workforce composition scenarios | `governance/EXPERIMENTS.md` |
@@ -158,7 +160,7 @@ This section points to everything beyond the executive summary. **The SSOT rule 
 | Document | Purpose | Location |
 |---|---|---|
 | **Repository Structure (canonical)** | Canonical layout with every subdirectory explained | `governance/REPO_STRUCTURE.md` |
-| **SRS + CLI + Testing + Logging** | Modules 0–4, CLI spec, test strategy, determinism requirements | `governance/MODULE_SPECS.md` |
+| **Module behaviour** | Modules 1–4 entry points and implementation contracts | `src/warehouse_humanoid_tco/pipelines/*.py` docstrings |
 
 ### 4.4 🛡️ Governance & Scope
 

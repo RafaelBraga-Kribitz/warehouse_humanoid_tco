@@ -222,13 +222,13 @@ def test_per_scenario_shared_draws_same_seed() -> None:
         assert len(values) == 1, f"Draws differ across scenarios for {key}: {values}"
 
 
-def test_per_scenario_hybrid_amr_leads() -> None:
-    """Under T0.1+T0.2 model, S-hybrid-amr should lead by mean NPV."""
+def test_per_scenario_lean_human_leads() -> None:
+    """After F-221/F-237 fair sizing, S-lean-human leads by mean NPV."""
     _, summary = run_monte_carlo_per_scenario(_mc_distributions(), n_samples=500, seed=42)
     means = {sid: summary[sid]["npv_mean"] for sid in summary}
     # Less negative = better
     best = max(means, key=lambda k: means[k])
-    assert best == "S-hybrid-amr", f"Expected S-hybrid-amr to lead; got {best} with means={means}"
+    assert best == "S-lean-human", f"Expected S-lean-human to lead; got {best} with means={means}"
 
 
 # ── validate_human_baseline_throughput ────────────────────────────────────────

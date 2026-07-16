@@ -135,4 +135,4 @@ plt.show()
 # | MC σ = €418k on a €924k NPV | Wide uncertainty band — assumptions drive the result |
 #
 # All numbers are model outputs from public assumptions. See `config/tco_assumptions.yaml`
-# for sources and `docs/ADR/0007` for the simulation validation story.
+# for sources and `governance/adrs/0007` for the simulation validation story.
