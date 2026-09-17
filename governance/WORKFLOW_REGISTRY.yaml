@@ -66,3 +66,10 @@ workflows:
     phase_4_decision: |
       Keep weekly schedule but also gate a sample (single module re-run) on PR
       to make reproducibility a per-PR claim, not just a weekly assertion.
+
+  readme-quality.yml:
+    purpose: Portfolio README Quality Gate — audits README.md against the BRAGA contract (braga-portfolio-docs).
+    triggers: [pull_request: README/LICENSE/docs assets paths, push: main (same paths), workflow_dispatch]
+    gates:
+      - python -m readme_quality audit --repo . (contract repo RafaelBraga-Kribitz/braga-portfolio-docs; exit 1 = required requirement FAIL)
+    owner: portfolio author
