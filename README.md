@@ -1,4 +1,4 @@
-# warehouse_humanoid_tco
+# Warehouse Humanoid TCO
 
 ![Hero Banner](./docs/assets/hero-banner-v2.png)
 
@@ -7,6 +7,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org/downloads/release/python-3110/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Governance Audited](https://img.shields.io/badge/governance-audited-brightgreen)](governance/AUDIT_PROCEDURE.md)
+[![Status: Complete](https://img.shields.io/badge/status-Complete-brightgreen)](#status)
 
 **Status:** Complete
 
@@ -21,6 +22,14 @@ When do humanoid robots beat human labor in warehouse economics? A reproducible 
 At modeled demand, **S-lean-hybrid-amr** is the cheapest ρ-feasible scenario (€0.453M five-year present-value cost; 1 human + 3 AMRs from the demand frontier). **S-lean-human** (3 humans, €0.647M) remains the human-only comparator. The retained eight-human row is a labelled legacy-overstaffed reference, not a fair technology baseline. Of the humanoid-inclusive scenarios, S-future-2028 is lowest cost (€2.533M) but remains costlier than the human baseline. In Austrian intralogistics the practical automation driver is unfillable vacancies, not wage arbitrage; this model conservatively assumes labor is available at KV rates, so robot value is understated wherever vacancies go unfilled. <!-- claim: reports/module_03_tco_report.json::scenario_results[5].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[1].npv_eur [eur_m] -->
 
 ![5-year total cost ranking](./reports/executive_charts/01_tco_npv_ranking.png)
+
+## See it running
+
+![Terminal demo: the four pipeline modules running end to end](./docs/assets/demo.gif)
+
+*`make all` runs Modules 1–4 (capability extraction → simulation → TCO → dashboards) and writes every chart and table quoted on this page to `reports/` and `exports/`. Recording: [`docs/assets/demo.cast`](./docs/assets/demo.cast).*
+
+Interactive view: [Tableau Public dashboard](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1), fed from the CSVs in [`exports/tableau_public/`](./exports/tableau_public/).
 
 ## Explore this project
 
@@ -83,6 +92,20 @@ The source data are household demonstrations: plates-into-dishwasher, pillow pic
 
 **Dashboards:** [Tableau Public](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1) · CSVs in [`exports/tableau_public/`](./exports/tableau_public/) · SQL provenance in [`analytics/sql/`](./analytics/sql/) (DuckDB; CI-tested parity).
 
+## Architecture
+
+```mermaid
+flowchart LR
+    U["UnifoLM episodes<br/>2,359 · VERIFIED"] --> M1["Module 1<br/>capability extraction<br/>cycle times, taxonomy"]
+    KV["Austrian KV wages,<br/>capex assumptions<br/>CALIBRATED"] --> M3
+    M1 --> M2["Module 2<br/>discrete-event simulation<br/>7 scenarios × 15 replicas · SIMULATED"]
+    M2 --> M3["Module 3<br/>5-year TCO + Monte Carlo<br/>10,000 draws · SIMULATED"]
+    M3 --> M4["Module 4<br/>dashboards, exports, charts"]
+    M4 --> R["reports/ · exports/tableau_public/ · Tableau Public"]
+```
+
+Entry points: `make module-01` … `make module-04` call `warehouse_humanoid_tco.pipelines.module_0N_*`; `make all` runs them in order. Governance artifacts (findings, ADRs, audit state) live in [`governance/`](./governance/).
+
 ## Quick start
 
 ```bash
@@ -92,7 +115,7 @@ uv venv .venv && source .venv/bin/activate && uv pip install -e ".[dev]"
 make all
 ```
 
-Without `uv`: `pip install -r requirements.txt`. Demo: ![demo](./docs/assets/demo.gif)
+Without `uv`: `pip install -r requirements.txt`.
 
 ## How this was built
 
@@ -114,9 +137,31 @@ This ranking is a modeled comparison, not a site-specific procurement case. The 
 
 Replace the household transfer proxy with local pick-move-place telemetry, measure integration effort and availability on the actual grid, and re-run the demand frontier under observed order mix and unfilled vacancies. Client wage tables and contracted capex would replace public KV estimates and list prices. Until those inputs exist, the recommendation is conditional on the documented assumptions, not a client business case.
 
+## Repository structure
+
+```text
+analytics/                  18 files
+config/                     6 files
+data/                       48 files
+docker/                     2 files
+docs/                       20 files
+examples/                   2 files
+exports/                    5 files
+governance/                 136 files
+notebooks/                  5 files
+reports/                    39 files
+scripts/                    52 files
+src/                        33 files
+tests/                      87 files
+CHANGELOG.md
+CITATION.cff
+```
+
 ## Status
 
 **Status:** Complete
+
+Repository last updated 2026-09-16 (date of the last commit).
 
 ## Author
 
