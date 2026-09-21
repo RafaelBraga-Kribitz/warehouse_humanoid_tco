@@ -95,7 +95,7 @@ The source data are household demonstrations: plates-into-dishwasher, pillow pic
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TD
     U["UnifoLM episodes<br/>2,359 · VERIFIED"] --> M1["Module 1<br/>capability extraction<br/>cycle times, taxonomy"]
     KV["Austrian KV wages,<br/>capex assumptions<br/>CALIBRATED"] --> M3
     M1 --> M2["Module 2<br/>discrete-event simulation<br/>7 scenarios × 15 replicas · SIMULATED"]
