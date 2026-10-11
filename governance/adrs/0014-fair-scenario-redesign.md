@@ -28,15 +28,15 @@ class; the human/humanoid hybrid additionally selects the closest feasible
 integer 50/50 split. Future-2028 applies its configured humanoid throughput
 multiplier while sizing and costing.
 
-`S-baseline-human` remains an explicitly labelled historical eight-human,
-legacy-overstaffed reference. `S-lean-human` is the optimizer-sized
+`Legacy Overstaffed Team` remains an explicitly labelled historical eight-human,
+legacy-overstaffed reference. `Lean Human Team` is the optimizer-sized
 human-only comparator.
 
 ## Consequences
 
 ### Old headline
 
-“S-hybrid-amr is the cheapest option” conflated a smaller crew with the
+“Human + Humanoid + AMR Team is the cheapest option” conflated a smaller crew with the
 technology mix and was not a technology-only recommendation.
 
 ### New headline

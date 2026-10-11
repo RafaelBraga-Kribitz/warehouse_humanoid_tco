@@ -13,8 +13,8 @@ def test_f_227_memos_and_faq_exist() -> None:
     en = (ROOT / "reports" / "Executive_Summary_EN.qmd").read_text()
     assert "## Empfehlung" in de
     assert "## Recommendation" in en
-    assert "S-lean-human" in de and "S-lean-human" in en
-    assert "S-lean-hybrid-amr" in de and "S-lean-hybrid-amr" in en
+    assert "Lean Human Team" in de and "Lean Human Team" in en
+    assert "Lean Human + AMR Team" in de and "Lean Human + AMR Team" in en
 
     for filename in ("Executive_Summary_DE.pdf", "Executive_Summary_EN.pdf"):
         path = ROOT / "reports" / filename

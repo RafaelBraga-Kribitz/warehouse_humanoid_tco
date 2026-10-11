@@ -86,15 +86,19 @@ def _base_params() -> dict:
 
 def test_oat_returns_correct_count() -> None:
     param_ranges = {"humanoid_capex_eur": (60000.0, 180000.0)}
-    results = run_oat_sensitivity("S-hybrid-amr", _base_params(), param_ranges, n_steps=5)
+    results = run_oat_sensitivity(
+        "Human + Humanoid + AMR Team", _base_params(), param_ranges, n_steps=5
+    )
     assert len(results) == 5
 
 
 def test_oat_result_schema() -> None:
     param_ranges = {"human_wage_eur": (10.0, 25.0)}
-    results = run_oat_sensitivity("S-hybrid-amr", _base_params(), param_ranges, n_steps=3)
+    results = run_oat_sensitivity(
+        "Human + Humanoid + AMR Team", _base_params(), param_ranges, n_steps=3
+    )
     for r in results:
-        assert r["scenario_id"] == "S-hybrid-amr"
+        assert r["scenario_id"] == "Human + Humanoid + AMR Team"
         assert "parameter" in r
         assert "parameter_value" in r
         assert "npv_eur" in r
@@ -105,13 +109,17 @@ def test_oat_multiple_params() -> None:
         "humanoid_capex_eur": (60000.0, 180000.0),
         "human_wage_eur": (10.0, 25.0),
     }
-    results = run_oat_sensitivity("S-hybrid-amr", _base_params(), param_ranges, n_steps=5)
+    results = run_oat_sensitivity(
+        "Human + Humanoid + AMR Team", _base_params(), param_ranges, n_steps=5
+    )
     assert len(results) == 10  # 2 params × 5 steps
 
 
 def test_oat_npv_monotonic_with_capex() -> None:
     param_ranges = {"humanoid_capex_eur": (60000.0, 180000.0)}
-    results = run_oat_sensitivity("S-hybrid-amr", _base_params(), param_ranges, n_steps=5)
+    results = run_oat_sensitivity(
+        "Human + Humanoid + AMR Team", _base_params(), param_ranges, n_steps=5
+    )
     npvs = [r["npv_eur"] for r in results]
     # Higher capex → more negative NPV → monotonically decreasing
     assert all(npvs[i] >= npvs[i + 1] for i in range(len(npvs) - 1))
@@ -120,7 +128,9 @@ def test_oat_npv_monotonic_with_capex() -> None:
 def test_oat_transfer_factor_included() -> None:
     """Transfer factor must produce a non-trivial NPV swing."""
     param_ranges = {"transfer_factor": (0.50, 0.90)}
-    results = run_oat_sensitivity("S-hybrid-amr", _base_params(), param_ranges, n_steps=5)
+    results = run_oat_sensitivity(
+        "Human + Humanoid + AMR Team", _base_params(), param_ranges, n_steps=5
+    )
     npvs = [r["npv_eur"] for r in results]
     # Lower transfer (early values) → more negative; range must be nonzero
     assert max(npvs) - min(npvs) > 1000.0
@@ -139,7 +149,7 @@ def _mc_distributions() -> dict:
 
 def test_mc_returns_correct_sample_count() -> None:
     samples, summary = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=50, seed=42
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=50, seed=42
     )
     assert len(samples) == 50
     assert summary["n_samples"] == 50
@@ -147,7 +157,7 @@ def test_mc_returns_correct_sample_count() -> None:
 
 def test_mc_summary_has_percentiles() -> None:
     _, summary = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=50, seed=42
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=50, seed=42
     )
     for key in ["npv_mean", "npv_std", "npv_p5", "npv_p50", "npv_p95"]:
         assert key in summary
@@ -155,32 +165,36 @@ def test_mc_summary_has_percentiles() -> None:
 
 def test_mc_npv_variance_nonzero() -> None:
     _, summary = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=50, seed=42
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=50, seed=42
     )
     assert summary["npv_std"] > 0, "MC collapsed: npv_std=0 means parameters are not varying"
 
 
 def test_mc_deterministic_with_seed() -> None:
-    _, s1 = run_monte_carlo_sensitivity("S-hybrid-amr", _mc_distributions(), n_samples=50, seed=7)
-    _, s2 = run_monte_carlo_sensitivity("S-hybrid-amr", _mc_distributions(), n_samples=50, seed=7)
+    _, s1 = run_monte_carlo_sensitivity(
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=50, seed=7
+    )
+    _, s2 = run_monte_carlo_sensitivity(
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=50, seed=7
+    )
     assert abs(s1["npv_mean"] - s2["npv_mean"]) < 0.01
 
 
 def test_mc_sample_schema() -> None:
     samples, _ = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=10, seed=42
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=10, seed=42
     )
     for s in samples:
         assert "sample_id" in s
         assert "scenario_id" in s
-        assert s["scenario_id"] == "S-hybrid-amr"
+        assert s["scenario_id"] == "Human + Humanoid + AMR Team"
         assert "npv_eur" in s
         assert s["npv_eur"] < 0  # cost model: all NPVs negative
 
 
 def test_mc_p5_less_than_p95() -> None:
     _, summary = run_monte_carlo_sensitivity(
-        "S-hybrid-amr", _mc_distributions(), n_samples=200, seed=42
+        "Human + Humanoid + AMR Team", _mc_distributions(), n_samples=200, seed=42
     )
     assert summary["npv_p5"] < summary["npv_p95"]
 
@@ -188,7 +202,7 @@ def test_mc_p5_less_than_p95() -> None:
 def test_mc_does_not_sample_agent_counts() -> None:
     """Agent counts must be fixed per scenario, not sampled."""
     samples, _ = run_monte_carlo_sensitivity(
-        "S-baseline-human", _mc_distributions(), n_samples=20, seed=42
+        "Legacy Overstaffed Team", _mc_distributions(), n_samples=20, seed=42
     )
     # No agent-count sampled columns should appear in records
     for s in samples:
@@ -223,14 +237,14 @@ def test_per_scenario_shared_draws_same_seed() -> None:
 
 
 def test_per_scenario_lean_hybrid_leads() -> None:
-    """After F-241, S-lean-hybrid-amr leads by mean NPV."""
+    """After F-241, Lean Human + AMR Team leads by mean NPV."""
     _, summary = run_monte_carlo_per_scenario(_mc_distributions(), n_samples=500, seed=42)
     means = {sid: summary[sid]["npv_mean"] for sid in summary}
     # Less negative = better
     best = max(means, key=lambda k: means[k])
     assert (
-        best == "S-lean-hybrid-amr"
-    ), f"Expected S-lean-hybrid-amr to lead; got {best} with means={means}"
+        best == "Lean Human + AMR Team"
+    ), f"Expected Lean Human + AMR Team to lead; got {best} with means={means}"
 
 
 # ── validate_human_baseline_throughput ────────────────────────────────────────

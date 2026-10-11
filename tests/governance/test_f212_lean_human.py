@@ -20,7 +20,11 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 def _lean_scenario() -> tuple[dict, dict]:
     config = yaml.safe_load((REPO_ROOT / "config" / "autostore_baseline.yaml").read_text())
     scenario = next(
-        (candidate for candidate in config["scenarios"] if candidate.get("id") == "S-lean-human"),
+        (
+            candidate
+            for candidate in config["scenarios"]
+            if candidate.get("id") == "Lean Human Team"
+        ),
         None,
     )
     assert scenario is not None
@@ -40,7 +44,7 @@ def test_lean_human_is_sized_to_the_utilisation_rule() -> None:
     human = config["agents"]["human"]
     operations = config["operations"]
     scenario = WarehouseScenario(
-        scenario_id="S-lean-human",
+        scenario_id="Lean Human Team",
         architecture=config["architecture"],
         total_agents=human_count,
         agent_profiles=[
@@ -57,7 +61,7 @@ def test_lean_human_is_sized_to_the_utilisation_rule() -> None:
     ratchet(
         "F-212",
         fixed=valid_composition and predict_utilisation(scenario) <= 0.85,
-        gap_msg="S-lean-human is absent, non-human, oversized, or exceeds rho <= 0.85",
+        gap_msg="Lean Human Team is absent, non-human, oversized, or exceeds rho <= 0.85",
     )
 
 
@@ -69,6 +73,6 @@ def test_lean_human_is_in_published_tco_and_readme() -> None:
     readme = (REPO_ROOT / "README.md").read_text()
     ratchet(
         "F-212",
-        fixed="S-lean-human" in csv_ids and "S-lean-human" in readme,
-        gap_msg="S-lean-human is missing from the Tableau TCO CSV or README",
+        fixed="Lean Human Team" in csv_ids and "Lean Human Team" in readme,
+        gap_msg="Lean Human Team is missing from the Tableau TCO CSV or README",
     )

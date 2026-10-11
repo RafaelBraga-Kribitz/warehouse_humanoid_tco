@@ -12,9 +12,9 @@
       "transfer_factor_sampled",
       "humanoid_supervision_ratio_sampled"
     ],
-    "sha256": "9c0f0ec1beedda42c8e32f62cf63bb2084a6a503e50b5957e44dce5d315debae",
+    "sha256": "d27f784d0ff627f00583458185ebb07d48f02bf3c29a219139ff590274bbbf80",
     "finding": "F-241",
-    "hash_kind": "polars_to_dicts_json"
+    "hash_kind": "polars_to_dicts_json_6sig"
   },
   "data/processed/sensitivity_oat_results.parquet": {
     "rows": 66,
@@ -26,9 +26,9 @@
       "delta_vs_base",
       "normalised_elasticity"
     ],
-    "sha256": "38ad4095e141c01a81c0234cf5ed23bc55a62b30f65eda0847513f2dde107358",
+    "sha256": "24b1a9d53b0c823e2e09538674ef60f5abbaa8aba837e46d6271bdda28f47bce",
     "finding": "F-241",
-    "hash_kind": "polars_to_dicts_json"
+    "hash_kind": "polars_to_dicts_json_6sig"
   },
   "data/processed/humanoid_capabilities_summary.parquet": {
     "rows": 4,
@@ -45,9 +45,9 @@
       "success_rate",
       "insufficient_sample"
     ],
-    "sha256": "a5e8b12a18b8cfea5e294b0177586ef4ad062aa41f0c120a16d5d45a0077aeac",
+    "sha256": "17cdafbb0e3c856603107fede5ae5d250cd71030b645378bab1c3aec7155b053",
     "finding": "F-221",
-    "hash_kind": "polars_to_dicts_json"
+    "hash_kind": "polars_to_dicts_json_6sig"
   },
   "data/processed/simulation_runs.parquet": {
     "rows": 105,
@@ -63,9 +63,9 @@
       "utilization_amr",
       "utilization_humanoid"
     ],
-    "sha256": "202b0d960e9f98badd7d6f479f4b9bfd5f50b214bed78803c50cfcf6cdfc10f4",
+    "sha256": "be0d72eec2dd8decdfbbb80fde88963c20ae32a0b1e224823c95e543c999beff",
     "finding": "F-241",
-    "hash_kind": "polars_to_dicts_json",
+    "hash_kind": "polars_to_dicts_json_6sig",
     "content_stable": false
   },
   "data/processed/tco_scenarios.parquet": {
@@ -88,9 +88,9 @@
       "throughput_std_orders_per_shift",
       "total_cost_reduction_vs_baseline_pct"
     ],
-    "sha256": "b7dd43ea97b2c6b3018da99a29a5e54d1e19dadb1b37932bd373d5cf12bcc4bb",
+    "sha256": "abf9a7a3567cef46d6df66ba65f340afa3dcadaa3a0110316d18a5cb9accdf36",
     "finding": "F-241",
-    "hash_kind": "polars_to_dicts_json"
+    "hash_kind": "polars_to_dicts_json_6sig"
   },
   "data/processed/simulation_capacity_ceiling.parquet": {
     "rows": 7,
@@ -106,8 +106,8 @@
       "observed_throughput_std",
       "n_runs_at_ceiling"
     ],
-    "sha256": "78b8211e000e95dd9a3398759b33de4d4e6c746c8c86aa9567afff3d3e78833c",
+    "sha256": "a97e5f3aef5d0f7648c005754302d0991d722b2eed2d111fafd36af2131634a6",
     "finding": "F-241",
-    "hash_kind": "polars_to_dicts_json"
+    "hash_kind": "polars_to_dicts_json_6sig"
   }
 }

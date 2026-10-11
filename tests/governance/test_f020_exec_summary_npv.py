@@ -16,11 +16,11 @@ from _ratchet import REPO_ROOT, ratchet
 QMD = REPO_ROOT / "reports" / "Executive_Summary_DE.qmd"
 CSV_PATH = REPO_ROOT / "exports" / "tableau_public" / "tco_scenarios.csv"
 SCENARIOS = (
-    "S-hybrid-amr",
-    "S-pure-humanoid",
-    "S-baseline-human",
-    "S-hybrid-5050",
-    "S-future-2028",
+    "Human + Humanoid + AMR Team",
+    "All-Humanoid Team",
+    "Legacy Overstaffed Team",
+    "Half Human + Half Humanoid Team",
+    "Future 2028 Humanoid Team",
 )
 
 

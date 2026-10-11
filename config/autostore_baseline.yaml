@@ -37,8 +37,8 @@ agents:
     mttr_hours: 2
     energy_kwh_per_shift: 4.0
 scenarios:
-# S-baseline-human is the legacy overstaffed baseline (explicit 8-human reference).
-- id: S-baseline-human
+# Legacy Overstaffed Team is the legacy overstaffed baseline (explicit 8-human reference).
+- id: Legacy Overstaffed Team
   human_fraction: 1.0
   humanoid_fraction: 0.0
   amr_fraction: 0.0
@@ -46,7 +46,7 @@ scenarios:
     human: 8
     humanoid: 0
     amr: 0
-- id: S-lean-human
+- id: Lean Human Team
   human_fraction: 1.0
   humanoid_fraction: 0.0
   amr_fraction: 0.0
@@ -55,7 +55,7 @@ scenarios:
     humanoid: 0
     amr: 0
 # Frontier-optimal lean mix at λ=120/h (demand_frontier.json::results[0]); F-241.
-- id: S-lean-hybrid-amr
+- id: Lean Human + AMR Team
   human_fraction: 0.25
   humanoid_fraction: 0.0
   amr_fraction: 0.75
@@ -63,7 +63,7 @@ scenarios:
     human: 1
     humanoid: 0
     amr: 3
-- id: S-pure-humanoid
+- id: All-Humanoid Team
   human_fraction: 0.0
   humanoid_fraction: 1.0
   amr_fraction: 0.0
@@ -71,7 +71,7 @@ scenarios:
     human: 0
     humanoid: 11
     amr: 0
-- id: S-hybrid-5050
+- id: Half Human + Half Humanoid Team
   human_fraction: 0.5
   humanoid_fraction: 0.5
   amr_fraction: 0.0
@@ -79,7 +79,7 @@ scenarios:
     human: 11
     humanoid: 11
     amr: 0
-- id: S-hybrid-amr
+- id: Human + Humanoid + AMR Team
   human_fraction: 0.125
   humanoid_fraction: 0.625
   amr_fraction: 0.25
@@ -87,7 +87,7 @@ scenarios:
     human: 3
     humanoid: 11
     amr: 4
-- id: S-future-2028
+- id: Future 2028 Humanoid Team
   human_fraction: 0.5
   humanoid_fraction: 0.5
   amr_fraction: 0.0

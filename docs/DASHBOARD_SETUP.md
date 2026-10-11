@@ -69,7 +69,7 @@ optional user-side path using the same CSV exports — no `.pbix` is shipped.
 
 ### 3. Create Report
 - **Page 1:** TCO Overview
-  - Card: Winner (S-hybrid-amr)
+  - Card: Winner (Human + Humanoid + AMR Team)
   - Card: Best NPV (read from `tco_scenarios.csv`; least-negative `npv_eur`)
   - Clustered bar: NPV by scenario
   - Stacked bar: Cost breakdown

@@ -53,12 +53,12 @@ def test_lean_human_crew_at_least_three() -> None:
     cfg = yaml.safe_load(
         (REPO_ROOT / "config" / "autostore_baseline.yaml").read_text(encoding="utf-8")
     )
-    lean = next(s for s in cfg["scenarios"] if s["id"] == "S-lean-human")
+    lean = next(s for s in cfg["scenarios"] if s["id"] == "Lean Human Team")
     n_human = int(lean["agent_counts"]["human"])
     ratchet(
         "F-237",
         fixed=n_human >= 3 and lean["agent_counts"].get("humanoid", 0) == 0,
-        gap_msg=f"S-lean-human human={n_human} must be ≥3 after pick-lines scaling",
+        gap_msg=f"Lean Human Team human={n_human} must be ≥3 after pick-lines scaling",
     )
 
 

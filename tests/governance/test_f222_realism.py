@@ -21,7 +21,7 @@ from warehouse_humanoid_tco.pipelines.module_03_tco import compute_tco_scenario
 
 def _scenario_result(**assumptions: float) -> dict:
     return compute_tco_scenario(
-        "S-pure-humanoid",
+        "All-Humanoid Team",
         {"throughput_orders_per_shift": 100.0},
         assumptions,
         baseline_annual_opex=1_000_000.0,

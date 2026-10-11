@@ -19,6 +19,7 @@ from pathlib import Path
 import polars as pl
 import yaml
 
+from warehouse_humanoid_tco.data.enums import ScenarioId
 from warehouse_humanoid_tco.models.simulation import compute_operational_availability
 from warehouse_humanoid_tco.models.tco import (
     compute_annual_labor_cost,
@@ -95,6 +96,19 @@ def build_financial_params(tco_assumptions: dict, sim_config: dict) -> dict:
     }
 
 
+# Crew-mix fractions (human, humanoid, AMR) for the synthetic/test path that has
+# no explicit agent_counts. Keyed by exact ScenarioId; never by name substring.
+_LEGACY_FRACTIONS: dict[str, tuple[float, float, float]] = {
+    ScenarioId.LEGACY_OVERSTAFFED_TEAM: (1.0, 0.0, 0.0),
+    ScenarioId.LEAN_HUMAN_TEAM: (1.0, 0.0, 0.0),
+    ScenarioId.LEAN_HUMAN_AMR_TEAM: (0.25, 0.0, 0.75),
+    ScenarioId.ALL_HUMANOID_TEAM: (0.0, 1.0, 0.0),
+    ScenarioId.HALF_HUMAN_HALF_HUMANOID_TEAM: (0.5, 0.5, 0.0),
+    ScenarioId.HUMAN_HUMANOID_AMR_TEAM: (0.6, 0.2, 0.2),
+    ScenarioId.FUTURE_2028_HUMANOID_TEAM: (0.5, 0.5, 0.0),
+}
+
+
 def _composition_from_config(scenario_config: dict, total_agents: int) -> dict:
     """Build an explicit-count composition dict from a config scenario entry.
 
@@ -148,12 +162,12 @@ def compute_breakeven_thresholds(
     lean_cost_per_order: float | None = None,
     lean_annual_opex: float | None = None,
 ) -> dict:
-    """Compute break-even capex for pure-humanoid vs baseline and vs lean-human.
+    """Compute break-even capex for all-humanoid vs baseline and vs lean-human-team.
 
-    Binary search on capex to find the value at which pure-humanoid
+    Binary search on capex to find the value at which all-humanoid
     cost_per_order equals the comparator cost_per_order.
     """
-    scenario_data = sim_df.filter(pl.col("scenario_id") == "S-pure-humanoid")
+    scenario_data = sim_df.filter(pl.col("scenario_id") == ScenarioId.ALL_HUMANOID_TEAM)
     if len(scenario_data) == 0:
         return {}
 
@@ -170,7 +184,7 @@ def compute_breakeven_thresholds(
         modified_assumptions = assumptions.copy()
         modified_assumptions["humanoid_capex_eur"] = capex_value
         result = compute_tco_scenario(
-            "S-pure-humanoid",
+            ScenarioId.ALL_HUMANOID_TEAM,
             {"throughput_orders_per_shift": throughput_mean},
             modified_assumptions,
             years=years,
@@ -217,8 +231,8 @@ def compute_breakeven_thresholds(
         ),
         "current_capex_eur_per_unit": round(original_capex, 0),
         "methodology": (
-            "Binary search on capex to find where pure-humanoid cost_per_order "
-            "= baseline-human cost_per_order"
+            "Binary search on capex to find where all-humanoid cost_per_order "
+            "= legacy-team cost_per_order"
         ),
     }
     if lean_cost_per_order is not None and lean_cost_per_order > 0:
@@ -233,8 +247,8 @@ def compute_breakeven_thresholds(
             "lean_cost_per_order_eur": round(lean_cost_per_order, 3),
             "current_capex_eur_per_unit": round(original_capex, 0),
             "methodology": (
-                "Binary search on capex to find where pure-humanoid cost_per_order "
-                "= S-lean-hybrid-amr cost_per_order (F-241 decision trigger; "
+                "Binary search on capex to find where all-humanoid cost_per_order "
+                "= Lean Human + AMR Team cost_per_order (F-241 decision trigger; "
                 "JSON key vs_lean_human retained for F-210 claim path)"
             ),
         }
@@ -313,29 +327,15 @@ def compute_tco_scenario(
     else:
         # Legacy substring inference (synthetic / test path). Retained so unit
         # Synthetic callers may use this path when no explicit composition exists.
-        human_fraction = 0.0
-        humanoid_fraction = 0.0
-        amr_fraction = 0.0
-        if "baseline-human" in scenario_id:
-            human_fraction = 1.0
-        elif "pure-humanoid" in scenario_id:
-            humanoid_fraction = 1.0
-        elif "hybrid-5050" in scenario_id:
-            human_fraction = 0.5
-            humanoid_fraction = 0.5
-        elif "hybrid-amr" in scenario_id:
-            human_fraction = 0.6
-            humanoid_fraction = 0.2
-            amr_fraction = 0.2
-        elif "future-2028" in scenario_id:
-            human_fraction = 0.5
-            humanoid_fraction = 0.5
+        human_fraction, humanoid_fraction, amr_fraction = _LEGACY_FRACTIONS.get(
+            scenario_id, (0.0, 0.0, 0.0)
+        )
         total_agents = assumptions.get("total_agents", 8)
         n_humanoid_int = float(max(0, int(total_agents * humanoid_fraction)))
         n_human = float(max(0, int(total_agents * human_fraction)))
         n_amr = float(max(0, int(total_agents * amr_fraction)))
         humanoid_throughput_multiplier = 1.0
-        if "future-2028" in scenario_id:
+        if scenario_id == ScenarioId.FUTURE_2028_HUMANOID_TEAM:
             humanoid_throughput_multiplier = assumptions.get(
                 "humanoid_throughput_multiplier_future_2028", 1.30
             )
@@ -478,12 +478,12 @@ def compute_tco_scenario(
         if baseline_annual_opex > 0
         else 0.0
     )
-    if scenario_id == "S-baseline-human":
+    if scenario_id == ScenarioId.LEGACY_OVERSTAFFED_TEAM:
         opex_reduction_pct = 0.0
 
     # Simple (undiscounted) payback of capex via annual opex savings.
     annual_savings = max(0.0, baseline_annual_opex - annual_opex)
-    if scenario_id == "S-baseline-human":
+    if scenario_id == ScenarioId.LEGACY_OVERSTAFFED_TEAM:
         payback_years = None
     elif capex_year0 <= 0:
         payback_years = 0.0
@@ -582,7 +582,7 @@ def module_03_main(
     if len(sim_df) > 0:
         # Compute the baseline first so cost-reduction/payback are measured
         # against the live configuration rather than a frozen fallback.
-        baseline_id = "S-baseline-human"
+        baseline_id = ScenarioId.LEGACY_OVERSTAFFED_TEAM
         b_data = sim_df.filter(pl.col("scenario_id") == baseline_id)
         raw_baseline_mean = b_data["throughput_orders_per_shift"].mean() if len(b_data) else 0.0
         b_throughput = float(raw_baseline_mean or 0.0)  # type: ignore[arg-type]
@@ -665,15 +665,15 @@ def module_03_main(
     # F-045: break-even thresholds
     if tco_results and len(sim_df) > 0:
         baseline_result = next(
-            (r for r in tco_results if "baseline-human" in r["scenario_id"]), None
+            (r for r in tco_results if r["scenario_id"] == ScenarioId.LEGACY_OVERSTAFFED_TEAM), None
         )
         pure_humanoid_result = next(
-            (r for r in tco_results if "pure-humanoid" in r["scenario_id"]), None
+            (r for r in tco_results if r["scenario_id"] == ScenarioId.ALL_HUMANOID_TEAM), None
         )
         if baseline_result and pure_humanoid_result:
             baseline_cost_per_order = baseline_result.get("cost_per_order_eur", 0.0)
             lean_result = next(
-                (r for r in tco_results if r["scenario_id"] == "S-lean-hybrid-amr"), None
+                (r for r in tco_results if r["scenario_id"] == ScenarioId.LEAN_HUMAN_AMR_TEAM), None
             )
             if baseline_cost_per_order > 0:
                 lean_cpo = lean_result.get("cost_per_order_eur") if lean_result else None
@@ -689,7 +689,7 @@ def module_03_main(
                     baseline_annual_opex=baseline_annual_opex,
                     years=years,
                     discount_rate=discount_rate,
-                    composition=compositions.get("S-pure-humanoid"),
+                    composition=compositions.get(ScenarioId.ALL_HUMANOID_TEAM),
                     lean_cost_per_order=lean_cpo,
                     lean_annual_opex=lean_opex,
                 )

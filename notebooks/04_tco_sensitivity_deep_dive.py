@@ -102,7 +102,7 @@ scenario_ids = tco.column("scenario_id").to_pylist()
 scenario_npvs = [v / 1e3 for v in tco.column("npv_eur").to_pylist()]
 
 fig, ax = plt.subplots(figsize=(8, 3.5))
-colors = ["#aac4de" if s == "S-baseline-human" else "#2d6a9f" for s in scenario_ids]
+colors = ["#aac4de" if s == "Legacy Overstaffed Team" else "#2d6a9f" for s in scenario_ids]
 bars = ax.bar(scenario_ids, scenario_npvs, color=colors)
 ax.set_ylabel("5-Year NPV (k€)")
 ax.set_title("TCO by Scenario (lower = less costly)")
@@ -120,7 +120,7 @@ for bar, val in zip(bars, scenario_npvs, strict=False):
 plt.tight_layout()
 plt.show()
 
-# **Non-obvious finding:** S-hybrid-amr (€-924k) outperforms S-pure-humanoid (€-960k).
+# **Non-obvious finding:** Human + Humanoid + AMR Team (€-924k) outperforms All-Humanoid Team (€-960k).
 # Full humanoid replacement is *more expensive* than a human+AMR hybrid, because the AMR handles
 # repetitive transport at lower capex while humans handle variable tasks. The automation sweet spot
 # is not 100% — it is the mixed configuration that minimises total cost per order.
@@ -131,7 +131,7 @@ plt.show()
 # |---|---|
 # | Labor overhead swing = 5× humanoid capex swing | Wage negotiations matter more than hardware deals |
 # | P95 NPV = €-460k (vs baseline €-1.6M) | Best-case scenario achieves ~71% cost reduction |
-# | S-hybrid-amr beats S-pure-humanoid by €36k/5yr | Full automation is not the optimum |
+# | Human + Humanoid + AMR Team beats All-Humanoid Team by €36k/5yr | Full automation is not the optimum |
 # | MC σ = €418k on a €924k NPV | Wide uncertainty band — assumptions drive the result |
 #
 # All numbers are model outputs from public assumptions. See `config/tco_assumptions.yaml`

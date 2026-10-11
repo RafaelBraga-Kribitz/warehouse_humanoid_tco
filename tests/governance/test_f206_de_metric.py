@@ -9,16 +9,19 @@ from pathlib import Path
 
 from _ratchet import ratchet
 
+from warehouse_humanoid_tco.data.enums import ScenarioId
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 QMD_PATH = REPO_ROOT / "reports" / "Executive_Summary_DE.qmd"
 CSV_PATH = REPO_ROOT / "exports" / "tableau_public" / "tco_scenarios.csv"
+_SCENARIO_NAMES = {member.value for member in ScenarioId}
 
 
 def _summary_reductions(qmd: str) -> dict[str, float]:
     reductions: dict[str, float] = {}
     for line in qmd.splitlines():
         cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
-        if len(cells) < 3 or not cells[0].lstrip("*").startswith("S-"):
+        if len(cells) < 3 or cells[0].replace("*", "") not in _SCENARIO_NAMES:
             continue
         scenario = cells[0].replace("*", "")
         match = re.search(r"(-?\d+(?:,\d+)?)%", cells[2])
@@ -37,7 +40,8 @@ def test_f_206_de_metric_alignment() -> None:
 
     actual = _summary_reductions(qmd)
     rows_match = all(
-        scenario == "S-baseline-human" or abs(actual.get(scenario, float("inf")) - value) <= 0.1
+        scenario == "Legacy Overstaffed Team"
+        or abs(actual.get(scenario, float("inf")) - value) <= 0.1
         for scenario, value in expected.items()
     )
     date_match = re.search(r'^date:\s*"(\d{4}-\d{2}-\d{2})"', qmd, re.MULTILINE)

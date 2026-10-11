@@ -84,7 +84,7 @@ def main() -> None:
     ax.text(
         0.5,
         1.01,
-        "S-hybrid-amr scenario · OAT across config ranges · "
+        "Lean Human + AMR Team scenario · OAT across config ranges · "
         f"baseline NPV = €{baseline_npv/1000:,.0f}K",
         transform=ax.transAxes,
         ha="center",

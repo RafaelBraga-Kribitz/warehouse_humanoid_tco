@@ -19,7 +19,7 @@ evidence: |
     04_sensitivity_tornado.png  — OAT parameter importance
 
   Missing: a bar chart of cost_per_order_eur per scenario with break-even
-  reference line at €1.344 (baseline-human cost). S-hybrid-amr's €0.895
+  reference line at €1.344 (baseline-human cost). Human + Humanoid + AMR Team's €0.895
   advantage over the €1.344 baseline is the headline finding but is not
   visible in any single chart without mental arithmetic across Chart 1 and
   external knowledge of order volumes.
@@ -28,7 +28,7 @@ notes: |
   Closed by adding Chart 5 to generate_executive_charts() in module_04_dashboards.py.
   Horizontal bar chart of cost_per_order_eur per scenario sorted ascending, with a
   dashed reference line at baseline-human cost (€1.344). Green bars = below baseline,
-  red bars = above baseline. S-hybrid-amr (€0.895) is immediately visible as the
+  red bars = above baseline. Human + Humanoid + AMR Team (€0.895) is immediately visible as the
   only scenario below the baseline reference line.
 
   PNG committed at reports/executive_charts/05_cost_per_order.png (132KB, 300dpi).

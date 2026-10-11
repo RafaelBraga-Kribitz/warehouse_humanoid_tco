@@ -37,7 +37,7 @@ falsely feasible one-human lean crew.
    Alternative (fully correlated lines → std × L) rejected: pick-line times are
    closer to i.i.d. draws than a single scaled random variable.
 
-3. **Pure-AMR exclusion.** Do not add `S-lean-amr`. Optimizer and demand-frontier
+3. **Pure-AMR exclusion.** Do not add a lean AMR-only scenario. Optimizer and demand-frontier
    policy sets exclude `{amr}`-only. AutoStore port work in this model requires
    fine-motor pick that AMRs alone cannot perform; AMR may only appear with humans
    and/or humanoids.

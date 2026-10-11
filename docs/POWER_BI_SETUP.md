@@ -53,7 +53,7 @@ Create the following pages in your report:
 - Category: `scenario_id` (from `tco_scenarios`)
 - Values: `npv_eur`
 - Sort by `npv_eur` ascending
-- Color: Highlight winning scenario (S-hybrid-amr) in green
+- Color: Highlight winning scenario (Human + Humanoid + AMR Team) in green
 
 **Visual 2: Capex vs Opex Breakdown (Stacked Bar)**
 - Category: `scenario_id`
@@ -61,7 +61,7 @@ Create the following pages in your report:
 - Title: "Cost Composition by Scenario"
 
 **Visual 3: Key Metrics (Card Visuals)**
-- Winning scenario (S-hybrid-amr)
+- Winning scenario (Human + Humanoid + AMR Team)
 - Best NPV: €-924,125
 - Cost reduction vs baseline: 50%
 - Payback period: 0.6 years

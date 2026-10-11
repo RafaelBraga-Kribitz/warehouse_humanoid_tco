@@ -31,7 +31,7 @@ PRs regenerate presentation artifacts (`make presentation` / F-043).
 - **F-207** Repo-relative paths in report JSON
 - **F-210** Canonical decision statement + labor scarcity
 - **F-211** EXPERIMENTS.md H1–H4 machine-checked verdicts
-- **F-212** `S-lean-human` fair comparator
+- **F-212** `Lean Human Team` fair comparator
 - **F-213** Household→warehouse external validity disclosure
 - **F-214** Chart design system + MC whiskers + manifest
 - **F-215** README decision-first rewrite + positioning

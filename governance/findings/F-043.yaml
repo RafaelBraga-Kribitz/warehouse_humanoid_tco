@@ -7,7 +7,7 @@ opened_at: 2026-05-31
 closed_at: 2026-05-31
 recurrence_count: 0
 evidence: |
-  After major methodology changes (e.g., F-033 opex split, F-034 S-future-2028
+  After major methodology changes (e.g., F-033 opex split, F-034 Future 2028 Humanoid Team
   differentiation), presentation artifacts diverge from the underlying data:
 
   1. reports/executive_charts/*.png (cost composition bar, tornado sensitivity
@@ -29,7 +29,7 @@ evidence: |
      .qmd + data. A finding-closure PR can update data; the HTML land stale
      because the PR didn't invoke the render step.
 
-  **Evidence of staleness:** After F-033 + F-034, S-future-2028 row in some
+  **Evidence of staleness:** After F-033 + F-034, Future 2028 Humanoid Team row in some
   reports may show old capex / opex / NPV values or fail to apply the 1.30
   throughput multiplier. `reports/executive_charts/` PNGs not regenerated.
 verification_script: tests/governance/test_f043_presentation_layer_regen.py

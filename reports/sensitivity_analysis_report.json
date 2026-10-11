@@ -1,6 +1,6 @@
 {
   "phase": "sensitivity_analysis",
-  "scenario_id": "S-lean-hybrid-amr",
+  "scenario_id": "Lean Human + AMR Team",
   "oat_parameters": [
     "humanoid_capex_eur",
     "human_wage_eur",
@@ -115,7 +115,7 @@
     "npv_p95": -394657.86847954436
   },
   "mc_summary_per_scenario": {
-    "S-baseline-human": {
+    "Legacy Overstaffed Team": {
       "n_samples": 10000,
       "npv_mean": -1735184.8329245585,
       "npv_std": 341705.97287961637,
@@ -127,7 +127,7 @@
       "npv_p75": -1478341.4878206265,
       "npv_p95": -1213739.9613760305
     },
-    "S-lean-human": {
+    "Lean Human Team": {
       "n_samples": 10000,
       "npv_mean": -650694.3123467095,
       "npv_std": 128139.7398298561,
@@ -139,7 +139,7 @@
       "npv_p75": -554378.057932735,
       "npv_p95": -455152.48551601137
     },
-    "S-lean-hybrid-amr": {
+    "Lean Human + AMR Team": {
       "n_samples": 10000,
       "npv_mean": -461414.25371210004,
       "npv_std": 43755.334581303265,
@@ -151,7 +151,7 @@
       "npv_p75": -428688.8757979198,
       "npv_p95": -394657.86847954436
     },
-    "S-pure-humanoid": {
+    "All-Humanoid Team": {
       "n_samples": 10000,
       "npv_mean": -3489723.490842464,
       "npv_std": 920187.5427814858,
@@ -163,7 +163,7 @@
       "npv_p75": -2816345.3616741514,
       "npv_p95": -2200763.5667549362
     },
-    "S-hybrid-5050": {
+    "Half Human + Half Humanoid Team": {
       "n_samples": 10000,
       "npv_mean": -5875602.636113732,
       "npv_std": 1113073.1093294013,
@@ -175,7 +175,7 @@
       "npv_p75": -5065689.290103278,
       "npv_p95": -4283988.281952742
     },
-    "S-hybrid-amr": {
+    "Human + Humanoid + AMR Team": {
       "n_samples": 10000,
       "npv_mean": -4466439.335984547,
       "npv_std": 954453.390898046,
@@ -187,7 +187,7 @@
       "npv_p75": -3765740.488174863,
       "npv_p95": -3130318.7023250614
     },
-    "S-future-2028": {
+    "Future 2028 Humanoid Team": {
       "n_samples": 10000,
       "npv_mean": -2921149.6562335747,
       "npv_std": 617452.3755856844,
@@ -201,13 +201,13 @@
     }
   },
   "rank_probabilities": {
-    "S-baseline-human": 0.0,
-    "S-lean-human": 0.0021,
-    "S-lean-hybrid-amr": 0.9979,
-    "S-pure-humanoid": 0.0,
-    "S-hybrid-5050": 0.0,
-    "S-hybrid-amr": 0.0,
-    "S-future-2028": 0.0
+    "Legacy Overstaffed Team": 0.0,
+    "Lean Human Team": 0.0021,
+    "Lean Human + AMR Team": 0.9979,
+    "All-Humanoid Team": 0.0,
+    "Half Human + Half Humanoid Team": 0.0,
+    "Human + Humanoid + AMR Team": 0.0,
+    "Future 2028 Humanoid Team": 0.0
   },
   "evpi_eur": {
     "humanoid_capex_eur": 5.820766091346741e-11,
@@ -255,7 +255,7 @@
   },
   "correlation_sensitivity": {
     "method": "Pearson correlation across the same OAT coarse grids",
-    "scenario_id": "S-future-2028",
+    "scenario_id": "Future 2028 Humanoid Team",
     "coefficients": {
       "humanoid_capex_eur": -1.0,
       "human_wage_eur": -1.0,
@@ -267,15 +267,15 @@
   },
   "decision_flip_thresholds": {
     "definition": "Thresholds compare scenario cost at all other base assumptions; positive NPV is lower cost.",
-    "S-lean-hybrid-amr": {
+    "Lean Human + AMR Team": {
       "status": "cheapest across the published robot frontier grid",
       "base_npv_eur": -460171.3275831704
     },
-    "S-future-2028": {
+    "Future 2028 Humanoid Team": {
       "capex_eur_per_unit_to_tie_lean_hybrid": null,
       "interpretation": "No tie inside \u20ac60k\u2013\u20ac180k capex with other assumptions fixed."
     },
-    "S-hybrid-amr": {
+    "Human + Humanoid + AMR Team": {
       "integration_cost_eur": 200000,
       "interpretation": "The F-222 integration cost is retained; it prevents a robot ranking claim."
     }

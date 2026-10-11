@@ -43,14 +43,14 @@ def robot_frontier(
     capex: np.ndarray, wage: np.ndarray, transfer: np.ndarray
 ) -> tuple[np.ndarray, np.ndarray]:
     """Return robot-vs-lean cost deltas on two two-way parameter grids."""
-    lean = npv("S-lean-hybrid-amr")
+    lean = npv("Lean Human + AMR Team")
     capex_wage = np.empty((len(wage), len(capex)))
     capex_transfer = np.empty((len(transfer), len(capex)))
     for row, value in enumerate(wage):
         for col, capex_value in enumerate(capex):
             capex_wage[row, col] = (
                 npv(
-                    "S-future-2028",
+                    "Future 2028 Humanoid Team",
                     humanoid_capex_eur=float(capex_value),
                     human_wage_eur=float(value),
                 )
@@ -60,7 +60,7 @@ def robot_frontier(
         for col, capex_value in enumerate(capex):
             capex_transfer[row, col] = (
                 npv(
-                    "S-future-2028",
+                    "Future 2028 Humanoid Team",
                     humanoid_capex_eur=float(capex_value),
                     transfer_factor=float(value),
                 )
@@ -111,7 +111,7 @@ def chart(path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, 
     apply_style(axis)
     colorbar = figure.colorbar(image, ax=axis)
     colorbar.ax.ticklabel_format(style="plain")
-    colorbar.set_label("Extra 5-year cost vs S-lean-hybrid-amr (€M; positive = robot costlier)")
+    colorbar.set_label("Extra 5-year cost vs Lean Human + AMR Team (€M; positive = robot costlier)")
     figure.savefig(path, dpi=180)
     plt.close(figure)
 
@@ -131,7 +131,7 @@ def variance_proxy() -> dict[str, object]:
     for parameter, (low, high) in ranges.items():
         values = np.linspace(low, high, 21)
         outputs = np.asarray(
-            [npv("S-future-2028", **{parameter: float(value)}) for value in values]
+            [npv("Future 2028 Humanoid Team", **{parameter: float(value)}) for value in values]
         )
         scores[parameter] = float(np.var(outputs))
         correlations[parameter] = float(np.corrcoef(values, outputs)[0, 1])
@@ -150,7 +150,7 @@ def variance_proxy() -> dict[str, object]:
         },
         "correlation_sensitivity": {
             "method": "Pearson correlation across the same OAT coarse grids",
-            "scenario_id": "S-future-2028",
+            "scenario_id": "Future 2028 Humanoid Team",
             "coefficients": correlations,
         },
     }
@@ -187,15 +187,15 @@ def main() -> None:
             "Thresholds compare scenario cost at all other base assumptions; "
             "positive NPV is lower cost."
         ),
-        "S-lean-hybrid-amr": {
+        "Lean Human + AMR Team": {
             "status": "cheapest across the published robot frontier grid",
-            "base_npv_eur": npv("S-lean-hybrid-amr"),
+            "base_npv_eur": npv("Lean Human + AMR Team"),
         },
-        "S-future-2028": {
+        "Future 2028 Humanoid Team": {
             "capex_eur_per_unit_to_tie_lean_hybrid": None,
             "interpretation": "No tie inside €60k–€180k capex with other assumptions fixed.",
         },
-        "S-hybrid-amr": {
+        "Human + Humanoid + AMR Team": {
             "integration_cost_eur": 200_000,
             "interpretation": (
                 "The F-222 integration cost is retained; it prevents a robot ranking claim."

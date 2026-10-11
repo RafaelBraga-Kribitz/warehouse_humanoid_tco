@@ -15,9 +15,9 @@ Anchors used by README first-use links: <a id="amr"></a><a id="npv"></a><a id="t
 | AI Coding Agents (Claude, Cursor Agent, Copilot) | KI-Coding-Agenten | Agentes de coding com IA | AI tools used as digital assistants to help write code, verify math, and document the project. |
 | AMR | AMR (Autonomer Mobiler Roboter) | RMA (Robô Móvel Autônomo) | Autonomous Mobile Robot. Moves goods in a warehouse automatically; typically a wheeled cart or flat platform, not a humanoid with arms and legs. Used by Knapp and TGW today. |
 | Audit State / QUALITY_BLUEPRINT | Audit-Status / QUALITY_BLUEPRINT | Estado de auditoria / QUALITY_BLUEPRINT | Governance documents that track quality control so an outsider can verify the code was tested rigorously and numbers were not invented. |
+| All-Humanoid Team | All-Humanoid Team | All-Humanoid Team | All human workers replaced by humanoid robots. |
 | AutoStore | AutoStore | AutoStore | Cube-storage warehouse architecture. Robots retrieve bins from a 3D grid. Reference architecture for v1.0 simulation. |
 | Availability Derating | Verfügbarkeitsabschlag | Derating de disponibilidade | Realistic adjustment so robots are not assumed available 100% of the time (breakdowns, charging, maintenance). |
-| Baseline / S-baseline-human | Baseline / S-baseline-human | Linha de base / S-baseline-human | Starting point for comparison. **S-baseline-human** is an older, inefficient warehouse overstaffed with 8 human workers. |
 | Betriebsrat | Betriebsrat | Conselho de Trabalhadores | Austrian works council. Has co-determination rights under §96 ArbVG over technical worker-monitoring measures. |
 | Binding Constraint | Bindende Restriktion | Restrição vinculante | Primary bottleneck in a scenario. Here, humanoid Capex is not the binding constraint; demand (orders per hour) is. |
 | Branches, Commits, and Tags | Branches, Commits und Tags | Branches, commits e tags | Git version-control terms: a commit is a saved change; a branch is an isolated workspace; a tag marks a release (e.g. v0.5.0). |
@@ -52,7 +52,10 @@ Anchors used by README first-use links: <a id="amr"></a><a id="npv"></a><a id="t
 | Fair-Sizing Redesign (ADR-0014) | Fair-Sizing-Neudesign (ADR-0014) | Redesenho de dimensionamento justo (ADR-0014) | Documented change so optimized robots are compared to a lean human team, not an overstaffed legacy crew. |
 | Frontier-Optimal / Lean Mix | Frontier-optimal / Lean-Mix | Mistura lean / frontier-ótimo | Most efficient, cost-effective worker–machine mix found by the simulation. |
 | FTE / Headcount Assumptions | FTE / Personalannahmen | FTE / pressupostos de headcount | Full-Time Equivalent = one full-time employee. Changing headcount assumptions moves the financial math more than robot sticker price. |
+| Future 2028 Humanoid Team | Future 2028 Humanoid Team | Future 2028 Humanoid Team | 2028 scenario assuming cheaper, better humanoids; most viable humanoid-inclusive option, still loses to lean humans. |
 | GitHub Actions / reproducibility.yml | GitHub Actions / reproducibility.yml | GitHub Actions / reproducibility.yml | GitHub automation for quality checks; `reproducibility.yml` runs a weekly determinism check. |
+| Half Human + Half Humanoid Team | Half Human + Half Humanoid Team | Half Human + Half Humanoid Team | Scenario with a 50/50 mix of human workers and robots. |
+| Human + Humanoid + AMR Team | Human + Humanoid + AMR Team | Human + Humanoid + AMR Team | Mix of humans, humanoids, and flat AMRs. |
 | Integration Cost | Integrationskosten | Custo de integração | Secondary costs to fit robots into a human environment (software, layout changes, training); included in the simulation. |
 | Intralogistics | Intralogistik | Intralogística | Moving, packing, and tracking goods *inside* a warehouse or distribution center. |
 | IRR | Interner Zinsfuß (IZF) | TIR (Taxa Interna de Retorno) | Internal Rate of Return. Financial metric in Module 3. |
@@ -60,7 +63,10 @@ Anchors used by README first-use links: <a id="amr"></a><a id="npv"></a><a id="t
 | Jupyter Notebook | Jupyter Notebook | Jupyter Notebook | Interactive document for code, narrative, and charts. |
 | Knapp AG | Knapp AG | Knapp AG | Major intralogistics company near the author’s home in Austria; the project targets the math analysts at firms like Knapp face in 2026. |
 | Kollektivvertrag (KV) | Kollektivvertrag (KV) | Convenção coletiva (KV) | Austrian sector-wide collective wage agreement. Source of legally mandated labor cost inputs used vs. robot costs. |
+| Lean Human + AMR Team | Lean Human + AMR Team | Lean Human + AMR Team | Most cost-effective scenario overall: 1 human + 3 AMRs, no humanoids. |
+| Lean Human Team | Lean Human Team | Lean Human Team | Optimized team of 3 humans; fair baseline vs. robots (not the overstaffed 8-human warehouse). |
 | Learning Curve | Lernkurve | Curva de aprendizado | Performance improving with practice. A 12-month robot learning curve is noted as a future accuracy upgrade. |
+| Legacy Overstaffed Team | Legacy Overstaffed Team | Legacy Overstaffed Team | Starting point for comparison. **Legacy Overstaffed Team** is an older, inefficient warehouse overstaffed with 8 human workers. |
 | Legacy-Overstaffed Reference | Legacy-Überbesetzung | Referência legacy sobredimensionada | The 8-human baseline: an inefficient overstaffed start. Comparing robots to it makes robots look artificially good. |
 | LeRobot V2.0+ | LeRobot V2.0+ | LeRobot V2.0+ | Hugging Face standard dataset format for robot learning. Used by UnifoLM-WBT-Dataset. |
 | Makefile / pyproject.toml / requirements.txt | Makefile / pyproject.toml / requirements.txt | Makefile / pyproject.toml / requirements.txt | Python project config files that define how to build the project and which package versions to install. |
@@ -86,13 +92,6 @@ Anchors used by README first-use links: <a id="amr"></a><a id="npv"></a><a id="t
 | ρ (Rho) / ρ-Feasible / ρ≤0.85 Sizing Rule | ρ (Rho) / ρ-machbar / ρ≤0,85-Regel | ρ (rô) / ρ-viável / regra ρ≤0,85 | Utilization capacity. Plan humans/robots at most at 85% of max speed as a bottleneck buffer. |
 | Replicas (Simulation Replicas) | Replikate (Simulationsreplikate) | Réplicas (de simulação) | Each of 7 scenarios is run 15 identical times so one random fluke does not dominate the average. |
 | Reproduction Log | Reproduktionsprotokoll | Log de reprodução | Step-by-step record (`REPRODUCTION_LOG.md`) that the full simulation re-ran from scratch with the same numbers. |
-| S- (Scenario Prefix) | S- (Szenario-Präfix) | S- (prefixo de cenário) | “S-” marks one of the seven human/robot configurations tested in the simulation. |
-| S-future-2028 | S-future-2028 | S-future-2028 | 2028 scenario assuming cheaper, better humanoids; most viable humanoid-inclusive option, still loses to lean humans. |
-| S-hybrid-5050 | S-hybrid-5050 | S-hybrid-5050 | Scenario with a 50/50 mix of human workers and robots. |
-| S-hybrid-amr | S-hybrid-amr | S-hybrid-amr | Mix of humans, humanoids, and flat AMRs. |
-| S-lean-human | S-lean-human | S-lean-human | Optimized team of 3 humans; fair baseline vs. robots (not the overstaffed 8-human warehouse). |
-| S-lean-hybrid-amr | S-lean-hybrid-amr | S-lean-hybrid-amr | Most cost-effective scenario overall: 1 human + 3 AMRs, no humanoids. |
-| S-pure-humanoid | S-pure-humanoid | S-pure-humanoid | All human workers replaced by humanoid robots. |
 | SimPy | SimPy | SimPy | Python discrete-event simulation library. Powers Module 2 warehouse simulation. |
 | SSOT | Einzige Informationsquelle (SSOT) | FÚVF (Fonte Única da Verdade) | Single Source of Truth. Ultimate rulebook (`PROJECT_CHARTER.md`); resolves disagreements on process. |
 | Stingray | Stingray | Stingray | TGW shuttle-based warehouse architecture. Stub config in v1.0; full calibration v1.1. |

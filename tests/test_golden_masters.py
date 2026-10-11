@@ -22,10 +22,18 @@ PLATFORM_SENSITIVE = frozenset(
 
 
 def _content_sha256(path: Path) -> str:
-    """Hash logical row content so pins survive cross-platform Parquet encodings."""
+    """Hash logical row content (floats at 6 significant digits) so pins survive
+    cross-platform Parquet encodings and last-ulp float differences."""
     frame = pl.read_parquet(path)
+    rows = [
+        {
+            key: float(f"{value:.6g}") if isinstance(value, float) else value
+            for key, value in row.items()
+        }
+        for row in frame.to_dicts()
+    ]
     payload = json.dumps(
-        frame.to_dicts(),
+        rows,
         sort_keys=True,
         default=str,
         separators=(",", ":"),

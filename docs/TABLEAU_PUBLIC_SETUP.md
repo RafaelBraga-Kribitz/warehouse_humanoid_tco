@@ -59,7 +59,7 @@ This guide walks through creating three interconnected dashboards for the humano
 - Measures: `npv_eur` (sum)
 - Visualization: Horizontal Bar Chart
 - Sort: By NPV ascending (worst to best)
-- Highlight best scenario (S-hybrid-amr) in green
+- Highlight best scenario (Human + Humanoid + AMR Team) in green
 - Add annotations: "Winner: 43% cost reduction"
 
 **Sheet 1b: Cost Composition**

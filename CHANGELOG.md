@@ -9,6 +9,21 @@ Versions are thematic milestones, not strict semver releases.
 
 ## [Unreleased]
 
+### Changed (F-242 — business-readable scenario names)
+- The seven scenario codes are replaced by self-explanatory names in config, code,
+  JSON/CSV exports, charts 01–09, README, memos, decks, and docs. The readable name
+  is the identifier itself (`ScenarioId`):
+  `S-lean-hybrid-amr` → `Lean Human + AMR Team`, `S-lean-human` → `Lean Human Team`,
+  `S-baseline-human` → `Legacy Overstaffed Team`, `S-future-2028` → `Future 2028 Humanoid Team`,
+  `S-pure-humanoid` → `All-Humanoid Team`, `S-hybrid-amr` → `Human + Humanoid + AMR Team`,
+  `S-hybrid-5050` → `Half Human + Half Humanoid Team`.
+  No numeric result changed. Row order in alphabetical outputs changed, so README
+  `scenario_results[N]` claim tags were re-indexed. Guarded by
+  `tests/governance/test_f242_business_scenario_names.py`.
+- Fixed: the tornado chart subtitle named the wrong scenario (the sensitivity run is on the
+  lean mix). The legacy composition fallback now matches exact scenario IDs instead of name
+  substrings. Golden-master hashes round floats to 6 significant digits.
+
 ### Fixed (Audit remediation — wiring, realism, and honest framing)
 - **TCO config is now actually wired.** `compute_tco_scenario` read flat keys
   (`human_hourly_wage_eur` etc.) that did not exist in the nested
@@ -21,9 +36,9 @@ Versions are thematic milestones, not strict semver releases.
   likewise now come from `config/tco_assumptions.yaml::sensitivity` (replacing a
   decorative 10-item list the code ignored).
 - **Agent counts are explicit (no silent truncation).** `int(total_agents *
-  fraction)` floored S-hybrid-amr to a 6-unit crew while docs implied 8. Crew
+  fraction)` floored Human + Humanoid + AMR Team to a 6-unit crew while docs implied 8. Crew
   sizes are now `config/autostore_baseline.yaml::scenarios.agent_counts`, read by
-  both Module 2 and Module 3; S-hybrid-amr is documented as an intentional
+  both Module 2 and Module 3; Human + Humanoid + AMR Team is documented as an intentional
   6-unit lean crew. Numbers unchanged; the hidden artifact is gone.
 - **Transfer factor reaches the simulation.** The 0.70 WBT→production factor was
   applied only in the cost model; the SimPy capacity used raw teleoperation-demo
@@ -37,9 +52,9 @@ Versions are thematic milestones, not strict semver releases.
   the opex-only `cost_reduction_vs_baseline_pct`/`opex_reduction_vs_baseline_pct`.
   Pure-humanoid is 70% lower on opex but only 3.9% on total cost; README now
   ranks by total-cost reduction and explains the difference.
-- **S-future-2028 no longer equals S-hybrid-5050 in Monte Carlo.** The throughput
+- **Future 2028 Humanoid Team no longer equals Half Human + Half Humanoid Team in Monte Carlo.** The throughput
   multiplier is now applied in `analysis/sensitivity.py`, so the MC mean
-  (€-1.42M) differs from S-hybrid-5050 (€-1.60M) and brackets the deterministic
+  (€-1.42M) differs from Half Human + Half Humanoid Team (€-1.60M) and brackets the deterministic
   NPV (€-1.40M).
 - **README/QMD/data-lineage de-staled.** OAT tornado figures re-sourced from the
   report (overhead ±€214K, wage ±€156K, capex ±€79K — not the prior €542K/€388K/
@@ -57,8 +72,8 @@ Versions are thematic milestones, not strict semver releases.
   payback helpers are a tested API the cost-model pipeline does not use.
 
 ### Fixed
-- **README financial table: S-future-2028 row corrected.** The row previously duplicated S-hybrid-5050's NPV (€-1,576,941), Capex (€532K), and Opex (€1,308,562); only its cost/order (€1.170) was right. Values now match `data/processed/tco_scenarios.parquet` / `exports/tableau_public/tco_scenarios.csv`: NPV €-1,398,599, Capex €409K, Opex €1,238,969. Table re-sorted by NPV so S-future-2028 sits between S-pure-humanoid and S-hybrid-amr.
-- **README sensitivity: MC robustness claim made precise.** The "only scenario whose p95 doesn't overlap the baseline mean" line was imprecise (other scenarios' p95 also clear the baseline mean). Reframed to the distinctive, accurate fact: S-hybrid-amr is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M).
+- **README financial table: Future 2028 Humanoid Team row corrected.** The row previously duplicated Half Human + Half Humanoid Team's NPV (€-1,576,941), Capex (€532K), and Opex (€1,308,562); only its cost/order (€1.170) was right. Values now match `data/processed/tco_scenarios.parquet` / `exports/tableau_public/tco_scenarios.csv`: NPV €-1,398,599, Capex €409K, Opex €1,238,969. Table re-sorted by NPV so Future 2028 Humanoid Team sits between All-Humanoid Team and Human + Humanoid + AMR Team.
+- **README sensitivity: MC robustness claim made precise.** The "only scenario whose p95 doesn't overlap the baseline mean" line was imprecise (other scenarios' p95 also clear the baseline mean). Reframed to the distinctive, accurate fact: Human + Humanoid + AMR Team is the only scenario whose worst case (p5 = €-1.39M) still beats the baseline mean (€-1.62M).
 - **README sensitivity: OAT tornado figures corrected.** Wage swing (€824K → €388K), overhead swing (€427K → €542K, now ranked first), humanoid capex (€158K → €258K), transfer factor (€120K → €204K). Combined labor swing €1.25M → €930K; labor:capex ratio 8× → 3.6×. Values derived from `data/processed/sensitivity_oat_results.parquet`.
 
 ---

@@ -1,0 +1,37 @@
+id: F-242
+title: "Replace developer scenario codes with business-readable names everywhere, and guard against regression."
+category: documentation_entropy
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-11
+closed_at: 2026-10-11
+recurrence_count: 0
+evidence: >
+  Stakeholder feedback: S-lean-hybrid-amr, S-lean-human, S-baseline-human,
+  S-future-2028, S-pure-humanoid, S-hybrid-amr and S-hybrid-5050 are not understandable
+  by business readers. They appeared in config, code, JSON/CSV, charts, memos, decks and docs.
+verification_script: tests/governance/test_f242_business_scenario_names.py
+notes: |
+  RENAME MAP (the only place besides the guard test and CHANGELOG where retired codes may appear):
+  S-lean-hybrid-amr -> Lean Human + AMR Team
+  S-lean-human      -> Lean Human Team
+  S-baseline-human  -> Legacy Overstaffed Team
+  S-future-2028     -> Future 2028 Humanoid Team
+  S-pure-humanoid   -> All-Humanoid Team
+  S-hybrid-amr      -> Human + Humanoid + AMR Team
+  S-hybrid-5050     -> Half Human + Half Humanoid Team
+
+  DESIGN: the readable name IS the identifier (config id, ScenarioId enum value, scenario_id
+  column in every export). One string everywhere means no display-name lookup to drift.
+  ScenarioId is the single source of truth; the config must list the same names in the same order.
+
+  GUARDS (all in the verification script): config/enum parity; names look like business English;
+  no retired code in any tracked text file or rendered PDF; published CSV/JSON only use enum names;
+  breakeven_thresholds still present (it vanished once because code matched name substrings);
+  no `"fragment" in scenario_id` substring matching in src/ or scripts/.
+
+  REGENERATED: simulation, TCO, sensitivity, dashboards, tornado, frontier charts, claims ledger,
+  golden masters, and the Quarto memo/deck PDFs. No numeric result changed.
+
+  FOLLOW-UP (pre-existing, not fixed here): charts 06 and 09 y-axes show "€0.0M" tick labels
+  because EURO_MILLIONS divides values that are already in €M.

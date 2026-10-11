@@ -7,7 +7,7 @@ from warehouse_humanoid_tco.models.simulation import AgentProfile, WarehouseScen
 
 def _make_scenario(seed: int = 42) -> WarehouseScenario:
     return WarehouseScenario(
-        scenario_id="S-baseline-human",
+        scenario_id="Legacy Overstaffed Team",
         architecture="autostore",
         total_agents=8,
         agent_profiles=[
