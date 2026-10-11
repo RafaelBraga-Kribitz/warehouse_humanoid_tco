@@ -39,7 +39,7 @@ type_cmd ".venv/bin/python docs/assets/demo_mc_summary.py"
 sleep "$PAUSE_AFTER"
 
 # --- 3. Scenario ranking ------------------------------------------------------
-section_header "Scenario ranking — Human + Humanoid + AMR Team remains the lowest-NPV scenario"
+section_header "Scenario ranking — Lean Human + AMR Team is the cheapest of 7 scenarios"
 type_cmd ".venv/bin/python docs/assets/demo_scenarios.py"
 .venv/bin/python docs/assets/demo_scenarios.py
 sleep "$PAUSE_AFTER"

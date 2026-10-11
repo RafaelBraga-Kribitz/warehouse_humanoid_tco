@@ -15,6 +15,7 @@
 - **Phase 3** (2026-07-16): F-231–F-235 closed (EVPI, demand frontier, publication pack, packaging, pyright strict).
 - **F-242** (2026-10-11): Scenario codes (`S-…`) replaced by business-readable names across config, code, exports, charts, memos, and docs; guarded by `tests/governance/test_f242_business_scenario_names.py`. No numeric result changed.
 - **F-243** (2026-10-11): Charts 06 and 09 y-axis ticks fixed (formatter double-divided by 1e6, every tick read `€0.0M`); guarded by `tests/governance/test_f243_euro_axis_ticks.py`.
+- **F-244** (2026-10-11): README hero banner replaced by the text-only design-system banner and demo GIF re-recorded with the business scenario names and current numbers (the old names were baked into image pixels); locked and tested by `tests/governance/test_f244_readme_visuals.py`.
 
 (See `governance/findings/` and `QUALITY_BLUEPRINT.md` for acceptance criteria.)
 

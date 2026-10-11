@@ -1,0 +1,24 @@
+{
+  "generator": "braga-portfolio-docs readme_quality.hero @ 9dc70ab (python -m readme_quality hero --name warehouse_humanoid_tco)",
+  "fonts": "Söhne (design-system trial files, braga-design-system-template/system/assets/fonts)",
+  "png_sha256": "a56978f79b4aead839b90a25d865c54b663fee3838c2428190f3c8809de410ab",
+  "text": {
+    "kind": [
+      "BRAGA · ANALYTICAL PROJECT"
+    ],
+    "status": [
+      "COMPLETE"
+    ],
+    "facts": [
+      "LICENSE  MIT  ·  RUNTIME  Python >=3.11  ·  CI  GitHub Actions"
+    ],
+    "title": [
+      "Warehouse Humanoid TCO"
+    ],
+    "descriptor": [
+      "When do humanoid robots beat human labour in warehouse",
+      "economics? Discrete-event simulation and Monte Carlo TCO on 2,359",
+      "robot episodes."
+    ]
+  }
+}
