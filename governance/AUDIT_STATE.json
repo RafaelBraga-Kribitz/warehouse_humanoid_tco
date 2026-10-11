@@ -1002,9 +1002,9 @@
       "verification_script": "tests/governance/test_f244_readme_visuals.py"
     }
   ],
-  "generated_at": "2026-10-11T14:07:04.682537+00:00",
+  "generated_at": "2026-10-11T14:22:47.116099+00:00",
   "git_branch": "claude/F-244-readme-images",
-  "git_head_sha": "b64fad1d951c00427f9d18f894dfd93975354d30",
+  "git_head_sha": "f5b6f80f2f36f706ff351409874fe21b269136fa",
   "migrations": [
     {
       "linked_finding": "F-003",
