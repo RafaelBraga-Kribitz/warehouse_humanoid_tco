@@ -13,6 +13,7 @@
 - **Phase 1** (2026-07-16): F-210–F-219 closed (decision statement, hypotheses, lean-human, validity, charts, README, PDF, property tests, license, DuckDB SQL).
 - **Phase 2** (2026-07-16): F-220–F-230, F-236 closed (optimizer, fair scenarios, realism, cost taxonomy, CRN, frontiers, register, memos/FAQ, deck, dbt, repro log, claims ledger).
 - **Phase 3** (2026-07-16): F-231–F-235 closed (EVPI, demand frontier, publication pack, packaging, pyright strict).
+- **F-242** (2026-10-11): Scenario codes (`S-…`) replaced by business-readable names across config, code, exports, charts, memos, and docs; guarded by `tests/governance/test_f242_business_scenario_names.py`. No numeric result changed.
 
 (See `governance/findings/` and `QUALITY_BLUEPRINT.md` for acceptance criteria.)
 

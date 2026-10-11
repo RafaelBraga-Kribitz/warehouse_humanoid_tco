@@ -980,9 +980,9 @@
       "verification_script": "tests/governance/test_f242_business_scenario_names.py"
     }
   ],
-  "generated_at": "2026-10-11T13:01:25.068490+00:00",
-  "git_branch": "HEAD",
-  "git_head_sha": "43ed60ec8eb03f0e4c294d1b78b332938af1fef2",
+  "generated_at": "2026-10-11T13:02:38.527346+00:00",
+  "git_branch": "claude/F-242-business-scenario-names",
+  "git_head_sha": "d80478504c15a9c84282a19bea86998efcf3d844",
   "migrations": [
     {
       "linked_finding": "F-003",
