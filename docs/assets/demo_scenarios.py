@@ -1,9 +1,10 @@
-"""Print TCO scenarios in a readable format for the demo GIF."""
+"""Print TCO scenarios in a readable format for the demo GIF (cheapest first)."""
 
 import pyarrow.parquet as pq
 
 t = pq.read_table("data/processed/tco_scenarios.parquet")
-print(f"{'scenario_id':<22} {'NPV (EUR)':>16}")
-print("-" * 40)
-for r in t.to_pylist():
-    print(f"{r['scenario_id']:<22} {r['npv_eur']:>16,.0f}")
+rows = sorted(t.to_pylist(), key=lambda r: r["npv_eur"], reverse=True)
+print(f"{'scenario_id':<34} {'NPV (EUR)':>14}")
+print("-" * 49)
+for r in rows:
+    print(f"{r['scenario_id']:<34} {r['npv_eur']:>14,.0f}")

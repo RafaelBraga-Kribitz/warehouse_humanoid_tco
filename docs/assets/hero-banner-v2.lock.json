@@ -1,0 +1,85 @@
+{
+  "png_sha256": "6c78f112b29a744181a915b59c41602edb1d36388034f75b565b18539d2a2c4e",
+  "spec": {
+    "kpis": [
+      {
+        "label": "Cheapest option",
+        "subtitle": "(Lean Human + AMR Team)",
+        "value": "€0.453M"
+      },
+      {
+        "label": "Best humanoid case",
+        "subtitle": "(Future 2028 Humanoid Team)",
+        "value": "€2.533M"
+      },
+      {
+        "label": "Discount rate",
+        "subtitle": "",
+        "value": "8%"
+      },
+      {
+        "label": "Horizon",
+        "subtitle": "",
+        "value": "5 yr"
+      }
+    ],
+    "rows": [
+      {
+        "rank": "01",
+        "label": "LEAN HUMAN + AMR TEAM",
+        "total": "0.45 M€",
+        "capex": "€195K",
+        "per_order": "€0.37",
+        "bar_fraction": 0.0862
+      },
+      {
+        "rank": "02",
+        "label": "LEAN HUMAN TEAM",
+        "total": "0.65 M€",
+        "capex": "€0",
+        "per_order": "€0.54",
+        "bar_fraction": 0.1233
+      },
+      {
+        "rank": "03",
+        "label": "LEGACY OVERSTAFFED TEAM",
+        "total": "1.73 M€",
+        "capex": "€0",
+        "per_order": "€1.44",
+        "bar_fraction": 0.3287
+      },
+      {
+        "rank": "04",
+        "label": "FUTURE 2028 HUMANOID TEAM",
+        "total": "2.53 M€",
+        "capex": "€1365K",
+        "per_order": "€2.12",
+        "bar_fraction": 0.4823
+      },
+      {
+        "rank": "05",
+        "label": "ALL-HUMANOID TEAM",
+        "total": "2.88 M€",
+        "capex": "€2052K",
+        "per_order": "€2.41",
+        "bar_fraction": 0.548
+      },
+      {
+        "rank": "06",
+        "label": "HUMAN + HUMANOID + AMR TEAM",
+        "total": "3.84 M€",
+        "capex": "€2312K",
+        "per_order": "€3.24",
+        "bar_fraction": 0.7314
+      },
+      {
+        "rank": "07",
+        "label": "HALF HUMAN + HALF HUMANOID TEAM",
+        "total": "5.25 M€",
+        "capex": "€2052K",
+        "per_order": "€4.41",
+        "bar_fraction": 1.0
+      }
+    ]
+  }
+}

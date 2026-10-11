@@ -989,11 +989,22 @@
       "status": "closed",
       "title": "Charts 06 and 09 show '\u20ac0.0M' on every y-axis tick (formatter double-divides by 1e6).",
       "verification_script": "tests/governance/test_f243_euro_axis_ticks.py"
+    },
+    {
+      "category": "stale_generated_outputs",
+      "closed_at": "2026-10-11",
+      "id": "F-244",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-10-11",
+      "path": "governance/findings/F-244.yaml",
+      "status": "closed",
+      "title": "README hero banner and demo GIF still show the retired scenario names (and stale numbers).",
+      "verification_script": "tests/governance/test_f244_readme_visuals.py"
     }
   ],
-  "generated_at": "2026-10-11T13:15:20.380562+00:00",
-  "git_branch": "claude/F-243-euro-axis-ticks",
-  "git_head_sha": "64a64082f98825f0cda2c315a2731a861904e8b9",
+  "generated_at": "2026-10-11T14:07:04.682537+00:00",
+  "git_branch": "claude/F-244-readme-images",
+  "git_head_sha": "b64fad1d951c00427f9d18f894dfd93975354d30",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -1005,11 +1016,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 88,
+    "findings_closed": 89,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 1,
-    "findings_total": 90,
+    "findings_total": 91,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,

@@ -9,6 +9,14 @@ Versions are thematic milestones, not strict semver releases.
 
 ## [Unreleased]
 
+### Fixed (F-244 — README images still showed the old scenario names)
+- The README hero banner and terminal demo GIF carried the retired `S-…` codes inside the image
+  pixels (so F-242's text scan missed them) plus stale numbers: the banner's KPI values were
+  swapped and its table omitted the winner; the demo predated F-241. The banner's data regions are
+  now repainted from the TCO report by `scripts/generate_hero_banner.py`, the demo was re-recorded
+  and re-rendered by `scripts/render_demo_gif.py`, and the tornado subtitle reads the scenario from
+  the sensitivity report. `tests/governance/test_f244_readme_visuals.py` pins all of it.
+
 ### Fixed (F-243 — euro axis ticks on charts 06 and 09)
 - Charts 06 and 09 labelled every y-axis tick `€0.0M` because values already in €M were
   divided by 1,000,000 again by the shared formatter. Both now plot raw euros like chart 02, so
