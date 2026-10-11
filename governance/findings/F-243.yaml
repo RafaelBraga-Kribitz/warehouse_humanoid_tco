@@ -1,0 +1,22 @@
+id: F-243
+title: "Charts 06 and 09 show '€0.0M' on every y-axis tick (formatter double-divides by 1e6)."
+category: numeric_drift
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-11
+closed_at: 2026-10-11
+recurrence_count: 0
+evidence: >
+  reports/executive_charts/06_effect_decomposition.png and 09_robot_entry_frontier.png plotted
+  values already divided into €M while the y-axis used EURO_MILLIONS (value / 1e6), so every
+  tick read €0.0M or €-0.0M. Found while reviewing charts for F-242.
+verification_script: tests/governance/test_f243_euro_axis_ticks.py
+notes: |
+  FIX: plot raw euros on both charts (as chart 02 already does) so EURO_MILLIONS yields
+  €-5.0M … €1.0M (chart 06) and €0.5M … €1.1M (chart 09). Data labels and chart-data manifest
+  values are unchanged.
+
+  GUARD: the test renders chart 06 (generate_executive_charts) and chart 09
+  (generate_demand_frontier), reads the tick labels Matplotlib actually produced, and requires
+  every euro tick label to match its tick position within rounding and to be unique per axis.
+  Confirmed it fails on the old code (all ticks "0.0"/"-0.0") and passes on the fix.

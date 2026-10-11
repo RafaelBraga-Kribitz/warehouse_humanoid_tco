@@ -389,7 +389,7 @@ def generate_demand_frontier(project_root: Path) -> dict[str, Path]:
         subset = [row for row in rows if row["shifts"] == shift_count]
         xs = [row["lambda_per_hour"] for row in subset]
         # Frontier stores positive discounted cost (see optimize_crew docstring).
-        ys = [row["npv_eur"] / 1_000_000 for row in subset]
+        ys = [row["npv_eur"] for row in subset]  # raw euros: EURO_MILLIONS formats the axis
         ax.plot(
             xs,
             ys,

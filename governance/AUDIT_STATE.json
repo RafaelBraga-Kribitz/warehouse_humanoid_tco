@@ -978,11 +978,22 @@
       "status": "closed",
       "title": "Replace developer scenario codes with business-readable names everywhere, and guard against regression.",
       "verification_script": "tests/governance/test_f242_business_scenario_names.py"
+    },
+    {
+      "category": "numeric_drift",
+      "closed_at": "2026-10-11",
+      "id": "F-243",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-10-11",
+      "path": "governance/findings/F-243.yaml",
+      "status": "closed",
+      "title": "Charts 06 and 09 show '\u20ac0.0M' on every y-axis tick (formatter double-divides by 1e6).",
+      "verification_script": "tests/governance/test_f243_euro_axis_ticks.py"
     }
   ],
-  "generated_at": "2026-10-11T13:02:38.527346+00:00",
-  "git_branch": "claude/F-242-business-scenario-names",
-  "git_head_sha": "d80478504c15a9c84282a19bea86998efcf3d844",
+  "generated_at": "2026-10-11T13:15:20.380562+00:00",
+  "git_branch": "claude/F-243-euro-axis-ticks",
+  "git_head_sha": "64a64082f98825f0cda2c315a2731a861904e8b9",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -994,11 +1005,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 87,
+    "findings_closed": 88,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 1,
-    "findings_total": 89,
+    "findings_total": 90,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,
