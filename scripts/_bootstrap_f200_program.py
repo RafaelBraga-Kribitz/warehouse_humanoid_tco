@@ -95,12 +95,12 @@ FINDING_SPECS: dict[str, tuple[str, str, str, str, str, str]] = {
         "4 VERDICT H lines; H2/H3/H4 recomputed from artifacts match stated verdicts.",
     ),
     "F-212": (
-        "Add S-lean-human scenario sized by rho<=0.85 rule",
+        "Add Lean Human Team scenario sized by rho<=0.85 rule",
         "methodology_drift",
         "recurrence_invariant",
         "tests/governance/test_f212_lean_human.py",
-        "S-hybrid-amr fields 6 units vs 8-human baseline; no lean-human comparator.",
-        "S-lean-human in config/CSV/README; human<=7; rho(N)<=0.85 recomputed.",
+        "Human + Humanoid + AMR Team fields 6 units vs 8-human baseline; no lean-human comparator.",
+        "Lean Human Team in config/CSV/README; human<=7; rho(N)<=0.85 recomputed.",
     ),
     "F-213": (
         "External validity — household UnifoLM tasks disclosed in README",
@@ -366,7 +366,7 @@ PRs regenerate presentation artifacts (`make presentation` / F-043).
 - **F-207** Repo-relative paths in report JSON
 - **F-210** Canonical decision statement + labor scarcity
 - **F-211** EXPERIMENTS.md H1–H4 machine-checked verdicts
-- **F-212** `S-lean-human` fair comparator
+- **F-212** `Lean Human Team` fair comparator
 - **F-213** Household→warehouse external validity disclosure
 - **F-214** Chart design system + MC whiskers + manifest
 - **F-215** README decision-first rewrite + positioning

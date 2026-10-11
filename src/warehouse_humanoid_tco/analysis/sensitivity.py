@@ -1,7 +1,7 @@
 """Sensitivity Analysis: OAT + Monte Carlo for TCO parameters.
 
 Implements:
-1. One-at-a-time (OAT) sensitivity for the S-hybrid-amr scenario.
+1. One-at-a-time (OAT) sensitivity for the Lean Human + AMR Team scenario.
 2. Monte Carlo (10,000 runs) per scenario with agent counts fixed; samples only
    continuous parameters (wage, overhead, capex, discount rate, transfer factor).
 3. Results export to parquet (all samples) + JSON report (per-scenario summary).
@@ -24,6 +24,7 @@ import numpy as np
 import polars as pl
 import yaml
 
+from warehouse_humanoid_tco.data.enums import ScenarioId
 from warehouse_humanoid_tco.models.tco import (
     compute_annual_humanoid_opex,
     compute_annual_labor_cost,
@@ -126,17 +127,52 @@ def _load_monte_carlo_seed(project_root: Path, default: int = 42) -> int:
 
 # Fixed agent composition per scenario. Source: config/autostore_baseline.yaml
 # (agent_counts). `throughput_multiplier` mirrors the TCO pipeline's F-034
-# adjustment so S-future-2028 (next-gen humanoids 30% faster) is NOT identical
-# to S-hybrid-5050 in the Monte-Carlo output (audit Risk #6).
+# adjustment so Future 2028 Humanoid Team (next-gen humanoids 30% faster) is NOT identical
+# to Half Human + Half Humanoid Team in the Monte-Carlo output (audit Risk #6).
 # Counts re-derived under F-237 pick-lines scaling + F-221 fair optimizer.
 SCENARIO_COMPOSITIONS: dict[str, dict[str, float]] = {
-    "S-baseline-human": {"n_human": 8, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-lean-human": {"n_human": 3, "n_humanoid": 0, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-lean-hybrid-amr": {"n_human": 1, "n_humanoid": 0, "n_amr": 3, "throughput_multiplier": 1.0},
-    "S-pure-humanoid": {"n_human": 0, "n_humanoid": 11, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-hybrid-5050": {"n_human": 11, "n_humanoid": 11, "n_amr": 0, "throughput_multiplier": 1.0},
-    "S-hybrid-amr": {"n_human": 3, "n_humanoid": 11, "n_amr": 4, "throughput_multiplier": 1.0},
-    "S-future-2028": {"n_human": 3, "n_humanoid": 9, "n_amr": 0, "throughput_multiplier": 1.30},
+    ScenarioId.LEGACY_OVERSTAFFED_TEAM: {
+        "n_human": 8,
+        "n_humanoid": 0,
+        "n_amr": 0,
+        "throughput_multiplier": 1.0,
+    },
+    ScenarioId.LEAN_HUMAN_TEAM: {
+        "n_human": 3,
+        "n_humanoid": 0,
+        "n_amr": 0,
+        "throughput_multiplier": 1.0,
+    },
+    ScenarioId.LEAN_HUMAN_AMR_TEAM: {
+        "n_human": 1,
+        "n_humanoid": 0,
+        "n_amr": 3,
+        "throughput_multiplier": 1.0,
+    },
+    ScenarioId.ALL_HUMANOID_TEAM: {
+        "n_human": 0,
+        "n_humanoid": 11,
+        "n_amr": 0,
+        "throughput_multiplier": 1.0,
+    },
+    ScenarioId.HALF_HUMAN_HALF_HUMANOID_TEAM: {
+        "n_human": 11,
+        "n_humanoid": 11,
+        "n_amr": 0,
+        "throughput_multiplier": 1.0,
+    },
+    ScenarioId.HUMAN_HUMANOID_AMR_TEAM: {
+        "n_human": 3,
+        "n_humanoid": 11,
+        "n_amr": 4,
+        "throughput_multiplier": 1.0,
+    },
+    ScenarioId.FUTURE_2028_HUMANOID_TEAM: {
+        "n_human": 3,
+        "n_humanoid": 9,
+        "n_amr": 0,
+        "throughput_multiplier": 1.30,
+    },
 }
 
 
@@ -190,7 +226,8 @@ def compute_tco_for_params(
     eff_humanoid = n_humanoid * transfer_multiplier
     # F-034 parity: a next-gen throughput multiplier means the same throughput
     # needs fewer effective humanoid units (less capex/opex). Mirrors the TCO
-    # pipeline so S-future-2028 differs from S-hybrid-5050 under MC (Risk #6).
+    # pipeline so Future 2028 Humanoid Team differs from Half Human + Half Humanoid
+    # Team under MC (Risk #6).
     if throughput_multiplier > 0:
         eff_humanoid = eff_humanoid / throughput_multiplier
     if humanoid_availability <= 0:
@@ -610,12 +647,12 @@ def run_monte_carlo_per_scenario(
 
 def run_sensitivity_analysis(
     project_root: Path,
-    scenario_id: str = "S-lean-hybrid-amr",
+    scenario_id: str = ScenarioId.LEAN_HUMAN_AMR_TEAM,
     n_mc_samples: int = 10000,
 ) -> dict[str, Path]:
     """Run full sensitivity analysis.
 
-    OAT runs against `scenario_id` (default S-lean-hybrid-amr — the recommended
+    OAT runs against `scenario_id` (default Lean Human + AMR Team — the recommended
     frontier lean mix after F-241). Monte Carlo runs per-scenario across all
     published scenarios.
     """

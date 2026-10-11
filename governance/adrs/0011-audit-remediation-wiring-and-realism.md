@@ -25,7 +25,7 @@ wiring:
    every `assumptions.get(key, default)` silently used a hardcoded default. NPV
    was byte-identical after multiplying the config wage ×5 and capex ×8.
 2. **Crew sizes were silently truncated.** `int(total_agents * fraction)` floored
-   S-hybrid-amr (60/20/20 of 8) to 4 + 1 + 1 = 6 units while docs implied 8.
+   Human + Humanoid + AMR Team (60/20/20 of 8) to 4 + 1 + 1 = 6 units while docs implied 8.
 3. **The 0.70 WBT→production transfer factor — the charter's "single largest
    methodological assumption" — never reached the simulation.** Capacity used raw
    teleoperation-demo cycle times. The humanoid cycle time was also selected as
@@ -33,7 +33,7 @@ wiring:
    picked `bimanual_handling` rather than the modelled warehouse pick.
 4. **The dashboard "cost reduction" was opex-only**, overstating the total-cost
    advantage (pure-humanoid: 70% opex vs 3.9% NPV).
-5. **S-future-2028 was identical to S-hybrid-5050 in the Monte Carlo** (the
+5. **Future 2028 Humanoid Team was identical to Half Human + Half Humanoid Team in the Monte Carlo** (the
    throughput multiplier reached the deterministic TCO but not the sensitivity).
 
 ## Decision
@@ -45,15 +45,15 @@ wiring:
   because the defaults equalled the config values.
 - Make crew sizes explicit integer `agent_counts` in
   `config/autostore_baseline.yaml::scenarios`, read by Modules 2 and 3. Where a
-  scenario fields fewer than `total_agents` units (S-hybrid-amr = 6), it is a
+  scenario fields fewer than `total_agents` units (Human + Humanoid + AMR Team = 6), it is a
   disclosed lean-crew design, not a hidden truncation.
 - Apply the transfer factor to the simulated humanoid cycle time, and select that
   cycle time from an explicit `reference_task` (`pick_medium_object`), invariant
   to summary row order.
 - Add an NPV-based `total_cost_reduction_vs_baseline_pct` and rank by it; retain
   the opex-only figure under an explicit alias.
-- Apply the throughput multiplier in `analysis/sensitivity.py` so S-future-2028
-  differs from S-hybrid-5050 in the MC.
+- Apply the throughput multiplier in `analysis/sensitivity.py` so Future 2028 Humanoid Team
+  differs from Half Human + Half Humanoid Team in the MC.
 
 ## Consequences
 
@@ -66,7 +66,7 @@ wiring:
 
 ### Negative
 
-- The capacity ceiling, S-future-2028 MC, and break-even (€125,865 → €125,582)
+- The capacity ceiling, Future 2028 Humanoid Team MC, and break-even (€125,865 → €125,582)
   values changed from earlier reports; README/QMD/lineage were re-synced. The
   break-even change also fixed a pre-existing inconsistency between the report
   JSON and the cost-per-order artifact.

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import textwrap
 from datetime import date
 from pathlib import Path
 
@@ -21,6 +22,7 @@ import matplotlib.pyplot as plt
 import polars as pl
 
 from warehouse_humanoid_tco.analysis.crew_optimizer import generate_demand_frontier
+from warehouse_humanoid_tco.data.enums import ScenarioId
 from warehouse_humanoid_tco.utils.paths import repo_relative
 from warehouse_humanoid_tco.visualization.chart_style import (
     ADVERSE,
@@ -90,8 +92,8 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         color=[
             (
                 RECOMMENDED
-                if s == "S-lean-hybrid-amr"
-                else BASELINE if s == "S-baseline-human" else OTHER
+                if s == ScenarioId.LEAN_HUMAN_AMR_TEAM
+                else BASELINE if s == ScenarioId.LEGACY_OVERSTAFFED_TEAM else OTHER
             )
             for s in scenarios
         ],
@@ -228,12 +230,14 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     scenarios_cpo = tco_cpo["scenario_id"].to_list()
     cpo = tco_cpo["cost_per_order_eur"].to_list()
     baseline_cpo = float(
-        tco_cpo.filter(pl.col("scenario_id") == "S-baseline-human")["cost_per_order_eur"][0]
+        tco_cpo.filter(pl.col("scenario_id") == ScenarioId.LEGACY_OVERSTAFFED_TEAM)[
+            "cost_per_order_eur"
+        ][0]
     )
     colors_cpo = [
         (
             RECOMMENDED
-            if s == "S-lean-hybrid-amr"
+            if s == ScenarioId.LEAN_HUMAN_AMR_TEAM
             else (
                 BASELINE
                 if abs(v - baseline_cpo) / baseline_cpo <= 0.02
@@ -272,14 +276,22 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     # F-241: separate the legacy eight-human staffing effect from the cost of
     # each technology mix. Positive values are savings relative to the legacy
     # baseline; a negative bar is a premium relative to the frontier lean hybrid.
-    baseline_cost = -float(tco.filter(pl.col("scenario_id") == "S-baseline-human")["npv_eur"][0])
-    lean_rows = tco.filter(pl.col("scenario_id") == "S-lean-hybrid-amr")
+    baseline_cost = -float(
+        tco.filter(pl.col("scenario_id") == ScenarioId.LEGACY_OVERSTAFFED_TEAM)["npv_eur"][0]
+    )
+    lean_rows = tco.filter(pl.col("scenario_id") == ScenarioId.LEAN_HUMAN_AMR_TEAM)
     # Unit-test fixtures and legacy exports predate the fair comparator. In that
     # case, retain a neutral baseline reference rather than failing chart export.
     lean_cost = -float(lean_rows["npv_eur"][0]) if len(lean_rows) else baseline_cost
     robot_rows = tco.filter(
         pl.col("scenario_id").is_in(
-            ["S-lean-human", "S-pure-humanoid", "S-hybrid-5050", "S-hybrid-amr", "S-future-2028"]
+            [
+                ScenarioId.LEAN_HUMAN_TEAM,
+                ScenarioId.ALL_HUMANOID_TEAM,
+                ScenarioId.HALF_HUMAN_HALF_HUMANOID_TEAM,
+                ScenarioId.HUMAN_HUMANOID_AMR_TEAM,
+                ScenarioId.FUTURE_2028_HUMANOID_TEAM,
+            ]
         )
     ).sort("scenario_id")
     effect_labels = ["Crew sizing\n(8→1H+3A)"] + robot_rows["scenario_id"].to_list()
@@ -291,6 +303,14 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         effect_labels,
         [value / 1_000_000 for value in effect_values],
         color=[RECOMMENDED] + [ADVERSE if value < 0 else OTHER for value in effect_values[1:]],
+    )
+    ax.set_xticks(range(len(effect_labels)))
+    ax.set_xticklabels(
+        [
+            "\n".join(textwrap.wrap(label, 14)) if "\n" not in label else label
+            for label in effect_labels
+        ],
+        fontsize=9,
     )
     ax.axhline(0, color=BASELINE, linewidth=1)
     ax.set_ylabel("Five-year cost effect (€M, present value)")
@@ -309,7 +329,7 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     fig.text(
         0.5,
         0.01,
-        "First bar: savings from rightsizing the legacy human crew to S-lean-hybrid-amr. "
+        "First bar: savings from rightsizing the legacy human crew to Lean Human + AMR Team. "
         "Remaining bars: cost relative to that frontier lean mix; lower is better.",
         ha="center",
         fontsize=7,

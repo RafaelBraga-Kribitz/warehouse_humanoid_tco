@@ -91,7 +91,7 @@ def test_irr_no_positive_flows_returns_none_or_negative() -> None:
 
 def test_tco_scenario_baseline_human() -> None:
     result = compute_tco_scenario(
-        "S-baseline-human", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+        "Legacy Overstaffed Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
     )
     assert result["npv_eur"] < 0
     assert result["total_capex_eur"] == 0.0
@@ -106,7 +106,7 @@ def test_tco_scenario_baseline_human() -> None:
 def test_tco_scenario_pure_humanoid_has_opex() -> None:
     """Pure humanoid scenario has nonzero opex: maintenance (8%/yr of capex) + energy."""
     result = compute_tco_scenario(
-        "S-pure-humanoid", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+        "All-Humanoid Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
     )
     assert result["total_opex_5yr_eur_nominal"] > 0  # maintenance + energy, not zero
     assert result["total_opex_5yr_eur_pv"] > 0
@@ -118,25 +118,29 @@ def test_tco_scenario_pure_humanoid_has_opex() -> None:
 
 def test_tco_scenario_hybrid_amr_lowest_npv() -> None:
     baseline = compute_tco_scenario(
-        "S-baseline-human", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+        "Legacy Overstaffed Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
     )
     hybrid_amr = compute_tco_scenario(
-        "S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+        "Human + Humanoid + AMR Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
     )
     pure_humanoid = compute_tco_scenario(
-        "S-pure-humanoid", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+        "All-Humanoid Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
     )
     assert hybrid_amr["npv_eur"] > baseline["npv_eur"]
     assert hybrid_amr["npv_eur"] > pure_humanoid["npv_eur"]
 
 
 def test_tco_scenario_no_irr_field() -> None:
-    result = compute_tco_scenario("S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX)
+    result = compute_tco_scenario(
+        "Human + Humanoid + AMR Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     assert "irr" not in result
 
 
 def test_tco_scenario_required_keys() -> None:
-    result = compute_tco_scenario("S-hybrid-amr", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX)
+    result = compute_tco_scenario(
+        "Human + Humanoid + AMR Team", {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX
+    )
     required = {
         "scenario_id",
         "npv_eur",
@@ -152,11 +156,11 @@ def test_tco_scenario_required_keys() -> None:
 
 def test_tco_scenario_all_five_scenarios() -> None:
     scenarios = [
-        "S-baseline-human",
-        "S-pure-humanoid",
-        "S-hybrid-5050",
-        "S-hybrid-amr",
-        "S-future-2028",
+        "Legacy Overstaffed Team",
+        "All-Humanoid Team",
+        "Half Human + Half Humanoid Team",
+        "Human + Humanoid + AMR Team",
+        "Future 2028 Humanoid Team",
     ]
     results = [
         compute_tco_scenario(s, {}, {}, baseline_annual_opex=BASELINE_ANNUAL_OPEX)

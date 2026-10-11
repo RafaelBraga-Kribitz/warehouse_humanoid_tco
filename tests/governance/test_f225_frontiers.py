@@ -16,8 +16,8 @@ def test_f_225_frontiers_and_sensitivity_extensions_exist() -> None:
     sobol = report["sobol_indices"]
     assert sobol["estimator"] == "coarse_grid_variance_proxy"
     assert sobol["indices"]["human_wage_eur"]["first_order"] >= 0
-    assert "S-future-2028" in report["decision_flip_thresholds"]
-    assert "S-lean-hybrid-amr" in report["decision_flip_thresholds"]
+    assert "Future 2028 Humanoid Team" in report["decision_flip_thresholds"]
+    assert "Lean Human + AMR Team" in report["decision_flip_thresholds"]
 
     charts = ROOT / "reports" / "executive_charts"
     for name in ("07_frontier_capex_wage.png", "08_frontier_capex_transfer.png"):

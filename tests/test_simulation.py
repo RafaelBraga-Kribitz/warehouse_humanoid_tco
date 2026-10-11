@@ -14,7 +14,7 @@ from warehouse_humanoid_tco.models.simulation import (
 
 def _human_scenario(shift_hours: float = 1.0, seed: int = 42) -> WarehouseScenario:
     return WarehouseScenario(
-        scenario_id="S-baseline-human",
+        scenario_id="Legacy Overstaffed Team",
         architecture="autostore",
         total_agents=8,
         agent_profiles=[
@@ -59,7 +59,7 @@ def test_simulation_result_schema() -> None:
 
 def test_simulation_scenario_id_propagated() -> None:
     result = run_scenario(_human_scenario(), run_id=3)
-    assert result["scenario_id"] == "S-baseline-human"
+    assert result["scenario_id"] == "Legacy Overstaffed Team"
     assert result["run_id"] == 3
 
 
@@ -73,7 +73,7 @@ def test_simulation_deterministic() -> None:
 
 def test_simulation_multi_agent_type() -> None:
     scenario = WarehouseScenario(
-        scenario_id="S-hybrid-amr",
+        scenario_id="Human + Humanoid + AMR Team",
         architecture="autostore",
         total_agents=8,
         agent_profiles=[
@@ -106,7 +106,7 @@ def test_scenarios_with_different_agent_mixes_produce_different_throughput() -> 
     first profile (the original v0.1.0 bug).
     """
     human_only = WarehouseScenario(
-        scenario_id="S-baseline-human",
+        scenario_id="Legacy Overstaffed Team",
         architecture="autostore",
         total_agents=8,
         agent_profiles=[

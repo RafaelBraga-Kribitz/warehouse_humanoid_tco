@@ -28,7 +28,7 @@ def main() -> int:
     )
 
     h2_supported = any(
-        row["scenario_id"] not in {"S-baseline-human", "S-lean-human"}
+        row["scenario_id"] not in {"Legacy Overstaffed Team", "Lean Human Team"}
         and float(row["total_cost_reduction_vs_baseline_pct"]) > 0
         for row in scenarios
     )
@@ -39,7 +39,7 @@ def main() -> int:
     )
     summaries = sensitivity_report["mc_summary_per_scenario"]
     winner_id = max(summaries, key=lambda scenario_id: summaries[scenario_id]["npv_mean"])
-    h4_supported = summaries[winner_id]["npv_p5"] > summaries["S-baseline-human"]["npv_mean"]
+    h4_supported = summaries[winner_id]["npv_p5"] > summaries["Legacy Overstaffed Team"]["npv_mean"]
     ok = (
         all(f"## H{number} " in experiments for number in range(1, 5))
         and verdict_line(experiments, "H2", h2_supported)

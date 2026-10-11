@@ -1,6 +1,6 @@
-# Auditor worksheet: S-hybrid-amr
+# Auditor worksheet: Human + Humanoid + AMR Team
 
-This is a hand recomputation of the committed `S-hybrid-amr` result in
+This is a hand recomputation of the committed `Human + Humanoid + AMR Team` result in
 `reports/module_03_tco_report.json`. Config citations use YAML paths; the
 result is rounded only for presentation.
 
@@ -8,7 +8,7 @@ result is rounded only for presentation.
 
 | Input | Value | Config citation |
 |---|---:|---|
-| Humans / humanoids / AMRs | 4 / 1 / 1 | `autostore_baseline.yaml: scenarios[id=S-hybrid-amr].agent_counts` |
+| Humans / humanoids / AMRs | 4 / 1 / 1 | `autostore_baseline.yaml: scenarios[id=Human + Humanoid + AMR Team].agent_counts` |
 | Wage / overhead | €18.50 / 1.35 | `tco_assumptions.yaml: labor.base_hourly_wage_eur`, `labor.overhead_multiplier` |
 | Days / shift hours | 252 / 8 | `autostore_baseline.yaml: operations.operating_days_per_year`, `operations.shift_hours` |
 | Humanoid capex / installation / training | €120,000 / €8,000 / €5,000 | `tco_assumptions.yaml: humanoid.unit_capex_eur`, `humanoid.installation_cost_per_unit_eur`, `labor.training_cost_per_humanoid_eur` |

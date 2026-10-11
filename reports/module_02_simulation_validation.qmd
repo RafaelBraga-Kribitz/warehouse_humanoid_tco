@@ -22,7 +22,7 @@ Pass criterion: simulated throughput within 20% of Knapp reference (960 orders/8
 
 ## Executive Summary
 
-**PASS:** S-baseline-human simulation achieves 949.7 ± 34.1 orders/shift, a **-1.08% deviation** from Knapp's published 960 orders/shift. This is well within the 20% tolerance gate.
+**PASS:** Legacy Overstaffed Team simulation achieves 949.7 ± 34.1 orders/shift, a **-1.08% deviation** from Knapp's published 960 orders/shift. This is well within the 20% tolerance gate.
 
 All scenarios remain **statistically indistinguishable** by Kruskal-Wallis test (p=0.960110), indicating that the current queueing model produces similar realized throughput across the five staffing scenarios. Cost differentiation in Module 3 is therefore driven by financial assumptions rather than statistically separable throughput.
 
@@ -39,7 +39,7 @@ df = pl.read_parquet("../data/processed/simulation_runs.parquet")
 knapp_reference = 960.0
 
 # Baseline (human-only) results
-baseline = df.filter(pl.col("scenario_id") == "S-baseline-human")
+baseline = df.filter(pl.col("scenario_id") == "Legacy Overstaffed Team")
 baseline_mean = baseline["throughput_orders_per_shift"].mean()
 baseline_std = baseline["throughput_orders_per_shift"].std(ddof=1)
 baseline_min = baseline["throughput_orders_per_shift"].min()
@@ -52,7 +52,7 @@ print("="*60)
 print("SIMULATION vs KNAPP AUTOSTORE BENCHMARK")
 print("="*60)
 print(f"\nKnapp Reference (public):      {knapp_reference:.0f} orders/8h shift")
-print(f"Simulation Result (S-baseline): {baseline_mean:.1f} ± {baseline_std:.1f} orders/8h shift")
+print(f"Simulation Result (Legacy Overstaffed Team): {baseline_mean:.1f} ± {baseline_std:.1f} orders/8h shift")
 print(f"  Min/Max range:               {baseline_min:.0f} / {baseline_max:.0f}")
 print(f"  Replicates:                  {len(baseline)} runs")
 print(f"\nDeviation:                     {deviation_pct:.2f}%")
@@ -77,7 +77,7 @@ from scipy import stats
 # Group by scenario
 scenario_groups = [
     df.filter(pl.col("scenario_id") == sid)["throughput_orders_per_shift"].to_numpy()
-    for sid in ["S-baseline-human", "S-hybrid-5050", "S-hybrid-amr", "S-pure-humanoid", "S-future-2028"]
+    for sid in ["Legacy Overstaffed Team", "Half Human + Half Humanoid Team", "Human + Humanoid + AMR Team", "All-Humanoid Team", "Future 2028 Humanoid Team"]
 ]
 
 stat, p_value = stats.kruskal(*scenario_groups)

@@ -17,7 +17,7 @@ def test_f241_lean_hybrid_scenario_and_chart09() -> None:
         (ROOT / "config" / "autostore_baseline.yaml").read_text(encoding="utf-8")
     )
     scenarios = {row["id"]: row for row in config["scenarios"]}
-    hybrid = scenarios.get("S-lean-hybrid-amr")
+    hybrid = scenarios.get("Lean Human + AMR Team")
     counts_ok = hybrid is not None and hybrid.get("agent_counts") == {
         "human": 1,
         "humanoid": 0,
@@ -29,9 +29,9 @@ def test_f241_lean_hybrid_scenario_and_chart09() -> None:
     ) as handle:
         rows = {row["scenario_id"]: row for row in csv.DictReader(handle)}
     hybrid_npv = (
-        float(rows["S-lean-hybrid-amr"]["npv_eur"]) if "S-lean-hybrid-amr" in rows else None
+        float(rows["Lean Human + AMR Team"]["npv_eur"]) if "Lean Human + AMR Team" in rows else None
     )
-    lean_npv = float(rows["S-lean-human"]["npv_eur"]) if "S-lean-human" in rows else None
+    lean_npv = float(rows["Lean Human Team"]["npv_eur"]) if "Lean Human Team" in rows else None
     cheapest_ok = (
         hybrid_npv is not None
         and lean_npv is not None
@@ -41,8 +41,8 @@ def test_f241_lean_hybrid_scenario_and_chart09() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     charter = (ROOT / "PROJECT_CHARTER.md").read_text(encoding="utf-8")
     narrative_ok = (
-        "S-lean-hybrid-amr" in readme
-        and "S-lean-hybrid-amr" in charter
+        "Lean Human + AMR Team" in readme
+        and "Lean Human + AMR Team" in charter
         and "queued follow-up" not in readme.lower()
     )
 
@@ -69,7 +69,7 @@ def test_f241_lean_hybrid_scenario_and_chart09() -> None:
     breakeven_ok = (
         vs_lean.get("no_breakeven_in_search_range") is True
         and vs_lean.get("capex_eur_per_unit") is None
-        and "S-lean-hybrid-amr" in vs_lean.get("methodology", "")
+        and "Lean Human + AMR Team" in vs_lean.get("methodology", "")
     )
 
     fixed = (
@@ -85,7 +85,7 @@ def test_f241_lean_hybrid_scenario_and_chart09() -> None:
         "F-241",
         fixed=fixed,
         gap_msg=(
-            "S-lean-hybrid-amr missing/mis-sized, not cheapest, narrative incomplete, "
+            "Lean Human + AMR Team missing/mis-sized, not cheapest, narrative incomplete, "
             "chart 09 series identical, or vs_lean not recomputed vs hybrid"
         ),
     )

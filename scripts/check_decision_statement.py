@@ -42,7 +42,7 @@ def main() -> int:
         "COO/site director",
         "Austrian AutoStore-class warehouse",
         "deploy humanoids now",
-        "lean-human+AMR now",
+        "Lean Human + AMR Team now",
         "wait, with a humanoid procurement trigger",
         "2026–2028",
         "0.50–0.90 transfer factor",

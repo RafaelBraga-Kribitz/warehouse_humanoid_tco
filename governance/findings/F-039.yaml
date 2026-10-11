@@ -9,7 +9,7 @@ recurrence_count: 0
 evidence: |
   Pre-closure: docs/DASHBOARD_SETUP.md:69 hard-coded "Card: Best NPV (€-924,125)",
   a value that exists in no current artifact. exports/tableau_public/tco_scenarios.csv
-  shows the current best (least-negative) NPV is S-hybrid-amr at -1,078,786.
+  shows the current best (least-negative) NPV is Human + Humanoid + AMR Team at -1,078,786.
 verification_script: tests/governance/test_f039_stale_best_npv_card.py
 notes: |
   Closed by replacing the hard-coded literal with a data-pointer placeholder:

@@ -42,13 +42,13 @@ def _make_minimal_config(config_path: Path, n_scenarios: int = 2) -> None:
         "capability_transfer": {"wbt_to_production_factor": {"point_estimate": 1.0}},
         "scenarios": [
             {
-                "id": "S-baseline-human",
+                "id": "Legacy Overstaffed Team",
                 "human_fraction": 1.0,
                 "humanoid_fraction": 0.0,
                 "amr_fraction": 0.0,
             },
             {
-                "id": "S-hybrid-amr",
+                "id": "Human + Humanoid + AMR Team",
                 "human_fraction": 0.6,
                 "humanoid_fraction": 0.2,
                 "amr_fraction": 0.2,
@@ -151,7 +151,7 @@ def _make_processed_data(processed_dir: Path) -> None:
 
     pl.DataFrame(
         {
-            "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
+            "scenario_id": ["Legacy Overstaffed Team", "Human + Humanoid + AMR Team"],
             "run_id": [0, 0],
             "throughput_orders_per_shift": [920.0, 880.0],
             "queue_length_mean": [0.5, 0.3],
@@ -166,7 +166,7 @@ def _make_processed_data(processed_dir: Path) -> None:
 
     pl.DataFrame(
         {
-            "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
+            "scenario_id": ["Legacy Overstaffed Team", "Human + Humanoid + AMR Team"],
             "npv_eur": [-1608300.0, -924125.0],
             "total_capex_eur": [0.0, 120000.0],
             "total_opex_5yr_eur_nominal": [2014000.0, 1007000.0],
@@ -186,7 +186,7 @@ def _make_processed_data(processed_dir: Path) -> None:
     # F-044: chart 03 + tableau export read the capacity-ceiling parquet.
     pl.DataFrame(
         {
-            "scenario_id": ["S-baseline-human", "S-hybrid-amr"],
+            "scenario_id": ["Legacy Overstaffed Team", "Human + Humanoid + AMR Team"],
             "target_rho": [0.85, 0.85],
             "total_agents": [8, 6],
             "bottleneck_agent_type": ["human", "humanoid"],

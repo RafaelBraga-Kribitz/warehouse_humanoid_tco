@@ -9,7 +9,7 @@ recurrence_count: 0
 evidence: |
   Pre-closure: reports/Executive_Summary_DE.qmd headline table AND the tracked
   reports/Executive_Summary_DE.html render both shipped stale numbers
-  (−€924K / 43% / 0,6 J for S-hybrid-amr etc.) that didn't match
+  (−€924K / 43% / 0,6 J for Human + Humanoid + AMR Team etc.) that didn't match
   exports/tableau_public/tco_scenarios.csv (current values: -1079k, -1577k,
   -1608k, -1546k, -1577k). PR #23 fixed the QMD but left the HTML stale;
   Codex correctly flagged that. Underlying root cause: there was no make
@@ -28,7 +28,7 @@ notes: |
      operation; surfaced in `make help`. The target hard-fails if quarto is
      not on PATH, making the dependency explicit. The next contributor with
      quarto installed will regenerate the HTML idempotently from the QMD.
-  S-hybrid-amr remains the NPV winner under the updated numbers, so the
+  Human + Humanoid + AMR Team remains the NPV winner under the updated numbers, so the
   "Optimales Szenario" narrative is preserved.
   Verification: test_f020_exec_summary_npv.py scans every QMD scenario row
   and asserts the k€ NPV matches the CSV within €1k. Previously xfail, now

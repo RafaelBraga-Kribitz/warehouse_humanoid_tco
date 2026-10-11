@@ -27,7 +27,7 @@ notes: |
      reports/sensitivity_analysis_report.json.
   4. Verification test tightened to ignore comment-only mentions: an actual
      elasticity/Sobol/Morris *symbol* must appear in code, not just a TODO.
-  Current ranking on S-hybrid-amr:
+  Current ranking on Human + Humanoid + AMR Team:
      - human_overhead_mult / human_wage_eur: peak |elasticity| ≈ 0.76 (tied)
      - transfer_factor:                       0.25
      - discount_rate:                         0.19

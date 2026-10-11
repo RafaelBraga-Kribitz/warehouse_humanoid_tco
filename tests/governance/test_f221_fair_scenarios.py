@@ -31,16 +31,16 @@ def _module_02_cycle_time_override() -> dict[str, tuple[float, float]]:
 @pytest.mark.parametrize(
     ("scenario_id", "policy", "kwargs"),
     [
-        ("S-lean-human", {"human"}, {}),
-        ("S-pure-humanoid", {"humanoid"}, {}),
+        ("Lean Human Team", {"human"}, {}),
+        ("All-Humanoid Team", {"humanoid"}, {}),
         (
-            "S-hybrid-5050",
+            "Half Human + Half Humanoid Team",
             {"human", "humanoid"},
             {"balance_agent_types": ("human", "humanoid")},
         ),
-        ("S-hybrid-amr", {"human", "humanoid", "amr"}, {}),
+        ("Human + Humanoid + AMR Team", {"human", "humanoid", "amr"}, {}),
         (
-            "S-future-2028",
+            "Future 2028 Humanoid Team",
             {"human", "humanoid"},
             {"humanoid_throughput_multiplier": 1.30},
         ),
@@ -65,7 +65,7 @@ def test_scenario_counts_match_fair_optimizer(
 
 def test_legacy_baseline_is_explicit_and_exports_are_synchronised() -> None:
     """Keep the eight-human reference while requiring its label and exact exports."""
-    assert SCENARIOS["S-baseline-human"]["agent_counts"] == {
+    assert SCENARIOS["Legacy Overstaffed Team"]["agent_counts"] == {
         "human": 8,
         "humanoid": 0,
         "amr": 0,
@@ -97,7 +97,7 @@ def test_f221_artifacts_document_the_new_headline() -> None:
     goldens = json.loads((ROOT / "tests" / "golden" / "golden_masters.json").read_text())
     fixed = (
         (ROOT / "reports" / "executive_charts" / "06_effect_decomposition.png").exists()
-        and "S-lean-hybrid-amr is cheapest" in readme
+        and "Lean Human + AMR Team is cheapest" in readme
         and "Old headline" in adr
         and "New headline" in adr
         and goldens["data/processed/tco_scenarios.parquet"]["finding"] == "F-241"

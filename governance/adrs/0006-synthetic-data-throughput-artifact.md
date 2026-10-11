@@ -14,7 +14,7 @@ linked_invariant_test: null
 
 ## Context
 
-The first simulation run on the synthetic fixture (5 episodes) produced throughput of **930–980 orders/shift across ALL five scenarios**, including S-pure-humanoid. Scenarios with completely different workforce mixes — 100% human vs. 100% humanoid — showed statistically identical throughput. This was a red flag.
+The first simulation run on the synthetic fixture (5 episodes) produced throughput of **930–980 orders/shift across ALL five scenarios**, including All-Humanoid Team. Scenarios with completely different workforce mixes — 100% human vs. 100% humanoid — showed statistically identical throughput. This was a red flag.
 
 ## Investigation
 
@@ -30,7 +30,7 @@ The system was working correctly — it was the test inputs that masked scenario
 
 ## Outcome
 
-After switching to real empirical inputs, throughput variance across scenarios increased substantially, and the sensitivity analysis became meaningful. The S-hybrid-amr advantage over S-pure-humanoid became explainable by task mix assignment, not cycle time noise.
+After switching to real empirical inputs, throughput variance across scenarios increased substantially, and the sensitivity analysis became meaningful. The Human + Humanoid + AMR Team advantage over All-Humanoid Team became explainable by task mix assignment, not cycle time noise.
 
 ## Consequences
 

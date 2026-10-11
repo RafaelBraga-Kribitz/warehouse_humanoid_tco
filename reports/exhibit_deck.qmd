@@ -26,15 +26,15 @@ sensitivity = json.loads(
     (REPORTS / "sensitivity_analysis_report.json").read_text(encoding="utf-8")
 )
 rows = {row["scenario_id"]: row for row in tco["scenario_results"]}
-lean = rows["S-lean-hybrid-amr"]["npv_eur"]
-future = rows["S-future-2028"]["npv_eur"]
+lean = rows["Lean Human + AMR Team"]["npv_eur"]
+future = rows["Future 2028 Humanoid Team"]["npv_eur"]
 ```
 
-## Deploy lean-human+AMR now; defer humanoid procurement
+## Deploy Lean Human + AMR Team now; defer humanoid procurement
 
-S-lean-hybrid-amr costs €453K over five years and is the lowest-cost feasible
+Lean Human + AMR Team costs €453K over five years and is the lowest-cost feasible
 scenario (1 human + 3 AMRs from the demand frontier). The least-cost
-humanoid-inclusive case, S-future-2028, costs €2.533M and remains above the
+humanoid-inclusive case, Future 2028 Humanoid Team, costs €2.533M and remains above the
 human baseline.
 
 ![](executive_charts/01_tco_npv_ranking.png){width=90%}
@@ -44,17 +44,17 @@ human baseline.
 The retained baseline is a transparent legacy reference. Fair comparison starts
 with a demand-sized crew under the ρ≤0.85 constraint.
 
-## Robot ranking: S-future-2028 leads humanoids, but does not win overall
+## Robot ranking: Future 2028 Humanoid Team leads humanoids, but does not win overall
 
 ```{python}
 #| echo: false
-f"Humanoid leader: S-future-2028 ({future:,.0f} EUR NPV); lean hybrid: {lean:,.0f} EUR."
+f"Humanoid leader: Future 2028 Humanoid Team ({future:,.0f} EUR NPV); lean hybrid: {lean:,.0f} EUR."
 ```
 
 ## Integration makes hybrid-AMR worse, not better
 
-S-hybrid-amr carries the €200K system-integration cost retained under F-222 and
-is costlier than S-future-2028 despite its AMR operating design.
+Human + Humanoid + AMR Team carries the €200K system-integration cost retained under F-222 and
+is costlier than Future 2028 Humanoid Team despite its AMR operating design.
 
 ## Capacity is feasible; cost is the discriminating result
 
@@ -70,7 +70,7 @@ conservatively translates capability, but local telemetry should replace it.
 
 ```{python}
 #| echo: false
-sensitivity["decision_flip_thresholds"]["S-future-2028"]["interpretation"]
+sensitivity["decision_flip_thresholds"]["Future 2028 Humanoid Team"]["interpretation"]
 ```
 
 See chart 07 for the capex × wage frontier and chart 08 for capex × transfer.

@@ -18,9 +18,9 @@ notes: |
   may not use excluded technologies; the 50/50 hybrid adds a near-equal
   human/humanoid composition constraint and selects the closest feasible mix
   when an exact balance is infeasible. Future-2028 preserves its configured
-  humanoid throughput multiplier during sizing. S-baseline-human deliberately
+  humanoid throughput multiplier during sizing. Legacy Overstaffed Team deliberately
   remains the historical eight-human reference, labelled legacy overstaffed
-  baseline; S-lean-human is the optimized human-only comparator. Outputs,
+  baseline; Lean Human Team is the optimized human-only comparator. Outputs,
   financial records, closed-form capacity rows, visual decomposition, README,
   and golden values are regenerated from those counts. The governance test
   independently reruns the optimizer and checks all published scenario counts

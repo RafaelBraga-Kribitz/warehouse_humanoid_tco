@@ -121,7 +121,9 @@ def test_run_sensitivity_analysis_creates_outputs(tmp_path: Path) -> None:
     (tmp_path / "data" / "processed").mkdir(parents=True)
     (tmp_path / "reports").mkdir(parents=True)
 
-    paths = run_sensitivity_analysis(tmp_path, scenario_id="S-hybrid-amr", n_mc_samples=100)
+    paths = run_sensitivity_analysis(
+        tmp_path, scenario_id="Human + Humanoid + AMR Team", n_mc_samples=100
+    )
 
     assert paths["oat_results"].exists()
     assert paths["mc_samples"].exists()
@@ -186,7 +188,9 @@ def test_module03_main_with_sim_data(tmp_path: Path) -> None:
     sim_df = pl.DataFrame(
         {
             "scenario_id": (
-                ["S-baseline-human"] * 5 + ["S-hybrid-amr"] * 5 + ["S-pure-humanoid"] * 5
+                ["Legacy Overstaffed Team"] * 5
+                + ["Human + Humanoid + AMR Team"] * 5
+                + ["All-Humanoid Team"] * 5
             ),
             "run_id": list(range(5)) * 3,
             "throughput_orders_per_shift": [900.0 + i for i in range(15)],
@@ -216,7 +220,7 @@ def test_module03_main_tco_parquet_has_npv(tmp_path: Path) -> None:
 
     sim_df = pl.DataFrame(
         {
-            "scenario_id": ["S-hybrid-amr"] * 3,
+            "scenario_id": ["Human + Humanoid + AMR Team"] * 3,
             "run_id": [0, 1, 2],
             "throughput_orders_per_shift": [900.0, 950.0, 920.0],
             "queue_length_mean": [0.5, 0.4, 0.6],

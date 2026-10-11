@@ -75,7 +75,7 @@ def test_changing_wage_changes_npv() -> None:
     comp = _composition(0, 8, 0)  # pure-humanoid: insensitive to wage except supervision
 
     base = compute_tco_scenario(
-        "S-pure-humanoid",
+        "All-Humanoid Team",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(base_cfg, sim_cfg),
         baseline_annual_opex=BASELINE_ANNUAL_OPEX,
@@ -85,7 +85,7 @@ def test_changing_wage_changes_npv() -> None:
     hot_cfg = copy.deepcopy(base_cfg)
     hot_cfg["labor"]["base_hourly_wage_eur"] = 99.0  # 5x wage
     hot = compute_tco_scenario(
-        "S-pure-humanoid",
+        "All-Humanoid Team",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(hot_cfg, sim_cfg),
         baseline_annual_opex=BASELINE_ANNUAL_OPEX,
@@ -100,7 +100,7 @@ def test_changing_capex_changes_npv() -> None:
     sim_cfg = yaml.safe_load(SIM_CONFIG)
     comp = _composition(0, 8, 0)
     base = compute_tco_scenario(
-        "S-pure-humanoid",
+        "All-Humanoid Team",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(base_cfg, sim_cfg),
         baseline_annual_opex=BASELINE_ANNUAL_OPEX,
@@ -109,7 +109,7 @@ def test_changing_capex_changes_npv() -> None:
     hot_cfg = copy.deepcopy(base_cfg)
     hot_cfg["humanoid"]["unit_capex_eur"] = 240000  # 2x capex
     hot = compute_tco_scenario(
-        "S-pure-humanoid",
+        "All-Humanoid Team",
         {"throughput_orders_per_shift": 950.0},
         build_financial_params(hot_cfg, sim_cfg),
         baseline_annual_opex=BASELINE_ANNUAL_OPEX,
@@ -144,7 +144,7 @@ def test_total_cost_metric_distinct_from_opex_metric() -> None:
     """Opex-only reduction must not be conflated with total-cost reduction."""
     params = build_financial_params(yaml.safe_load(NESTED_CONFIG), yaml.safe_load(SIM_CONFIG))
     pure = compute_tco_scenario(
-        "S-pure-humanoid",
+        "All-Humanoid Team",
         {"throughput_orders_per_shift": 950.0},
         params,
         baseline_annual_opex=BASELINE_ANNUAL_OPEX,
@@ -165,6 +165,11 @@ def test_future_2028_differs_from_hybrid_5050_in_mc() -> None:
         "transfer_factor": {"type": "uniform", "low": 0.50, "high": 0.90},
     }
     _, summary = sens.run_monte_carlo_per_scenario(
-        dists, n_samples=500, scenario_ids=["S-hybrid-5050", "S-future-2028"]
+        dists,
+        n_samples=500,
+        scenario_ids=["Half Human + Half Humanoid Team", "Future 2028 Humanoid Team"],
     )
-    assert summary["S-future-2028"]["npv_mean"] != summary["S-hybrid-5050"]["npv_mean"]
+    assert (
+        summary["Future 2028 Humanoid Team"]["npv_mean"]
+        != summary["Half Human + Half Humanoid Team"]["npv_mean"]
+    )

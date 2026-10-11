@@ -2,9 +2,9 @@
 
 The source of ranges, base points, and distributions is
 `config/tco_assumptions.yaml::sensitivity`. The current published ranking comes
-from `exports/tableau_public/tco_scenarios.csv`: S-lean-hybrid-amr is cheapest,
-and S-future-2028 is the least-cost humanoid-inclusive option. After F-241,
-Monte Carlo assigns S-lean-hybrid-amr ~99.8% rank probability across the CRN
+from `exports/tableau_public/tco_scenarios.csv`: Lean Human + AMR Team is cheapest,
+and Future 2028 Humanoid Team is the least-cost humanoid-inclusive option. After F-241,
+Monte Carlo assigns Lean Human + AMR Team ~99.8% rank probability across the CRN
 sample.
 
 ## One-at-a-time sweeps
@@ -35,11 +35,11 @@ ranking evidence for H4.
 
 | Pair | Base-case decision | Interpretation |
 |---|---|---|
-| S-lean-hybrid-amr vs any humanoid option | S-lean-hybrid-amr | Cheapest ρ-feasible crew at modeled demand |
-| S-lean-hybrid-amr vs S-lean-human | S-lean-hybrid-amr | Frontier mix beats human-only lean crew |
-| S-future-2028 vs S-pure-humanoid | S-future-2028 | Better humanoid-inclusive cost due to lower effective unit need |
-| S-hybrid-amr vs S-future-2028 | S-future-2028 | AMR plus €200k integration cost is not recovered |
-| S-baseline-human vs S-lean-human | S-lean-human | The eight-human baseline is a legacy overstaffed reference |
+| Lean Human + AMR Team vs any humanoid option | Lean Human + AMR Team | Cheapest ρ-feasible crew at modeled demand |
+| Lean Human + AMR Team vs Lean Human Team | Lean Human + AMR Team | Frontier mix beats human-only lean crew |
+| Future 2028 Humanoid Team vs All-Humanoid Team | Future 2028 Humanoid Team | Better humanoid-inclusive cost due to lower effective unit need |
+| Human + Humanoid + AMR Team vs Future 2028 Humanoid Team | Future 2028 Humanoid Team | AMR plus €200k integration cost is not recovered |
+| Legacy Overstaffed Team vs Lean Human Team | Lean Human Team | The eight-human baseline is a legacy overstaffed reference |
 
 ## Sobol-style screening
 
@@ -54,10 +54,10 @@ are published as `correlation_sensitivity`.
 ## Two-way frontiers and decision flips
 
 Charts `07_frontier_capex_wage.png` and `08_frontier_capex_transfer.png` map
-S-future-2028 minus S-lean-hybrid-amr five-year NPV cost across capex × wage and
+Future 2028 Humanoid Team minus Lean Human + AMR Team five-year NPV cost across capex × wage and
 capex × transfer-factor grids. The zero contour is a cost tie; positive values
 mean the robot option remains costlier. `decision_flip_thresholds` records the
-grid-bound result explicitly: no S-future-2028 tie with S-lean-hybrid-amr occurs
+grid-bound result explicitly: no Future 2028 Humanoid Team tie with Lean Human + AMR Team occurs
 inside the published €60k–€180k capex range when other parameters are fixed.
 
 Chart 09 plots five-year frontier crew cost versus demand for 1/2/3 shifts

@@ -20,7 +20,7 @@ def test_f_224_crn_rank_probabilities_and_diagnostics(tmp_path: Path) -> None:
     sampled_columns = [column for column in samples.columns if column.endswith("_sampled")]
 
     scenario_pair = samples.filter(
-        pl.col("scenario_id").is_in(["S-baseline-human", "S-pure-humanoid"])
+        pl.col("scenario_id").is_in(["Legacy Overstaffed Team", "All-Humanoid Team"])
     )
     for column in sampled_columns:
         draws_by_sample = scenario_pair.group_by("sample_id").agg(

@@ -3,7 +3,7 @@
 This FAQ names the objections that could change the decision. It links evidence
 and assumptions directly so a reader can reproduce or dispute each claim.
 
-## Q1. Is S-lean-human an unfairly small crew?
+## Q1. Is Lean Human Team an unfairly small crew?
 
 No. It is explicitly sized to the per-policy-class ρ≤0.85 rule and has its
 simulation result in the [authoritative scenario export](../exports/tableau_public/tco_scenarios.csv).
@@ -29,10 +29,10 @@ The capex × transfer frontier is published as
 [chart 08](../reports/executive_charts/08_frontier_capex_transfer.png), with its
 estimator described in [SENSITIVITY.md](../governance/SENSITIVITY.md).
 
-## Q6. Why is S-hybrid-amr not the robot recommendation?
+## Q6. Why is Human + Humanoid + AMR Team not the robot recommendation?
 
 It retains the F-222 €200K system-integration cost and is more expensive than
-S-future-2028 in the [TCO report](../reports/module_03_tco_report.json).
+Future 2028 Humanoid Team in the [TCO report](../reports/module_03_tco_report.json).
 
 ## Q7. Are Monte Carlo probabilities evidence for the current ranking?
 

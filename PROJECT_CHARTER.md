@@ -23,7 +23,7 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 <!-- SSOT_METADATA_START
 version: 1.1.5
 status: active
-last_updated: 2026-07-16
+last_updated: 2026-10-11
 last_reviewed: 2026-06-05
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco
@@ -75,8 +75,8 @@ Full rules: `CONTRIBUTING.md` and `governance/AUDIT_PROCEDURE.md`.
 <!-- DECISION_STATEMENT_START -->
 **Decision owner:** COO/site director of an Austrian AutoStore-class warehouse.
 **Decision question:** Which workforce/procurement choice should the site make for 2026–2028?
-**Options:** (1) deploy humanoids now; (2) deploy lean-human+AMR now; (3) wait, with a humanoid procurement trigger.
-**Recommendation:** deploy S-lean-hybrid-amr now (1 human + 3 AMRs) and defer humanoid procurement: no pure-humanoid capex in the searched €10,000–€500,000 range reaches parity with this frontier lean mix at 120 orders/hr — even near-free humanoids lose to 1H+3A, so capex is not the binding constraint; revisit under demand growth, labor scarcity, or multi-shift operation (see `reports/demand_frontier.json`). Integration cost and availability derating are modeled (F-222).
+**Options:** (1) deploy humanoids now; (2) deploy Lean Human + AMR Team now; (3) wait, with a humanoid procurement trigger.
+**Recommendation:** deploy Lean Human + AMR Team now (1 human + 3 AMRs) and defer humanoid procurement: no pure-humanoid capex in the searched €10,000–€500,000 range reaches parity with this frontier lean mix at 120 orders/hr — even near-free humanoids lose to 1H+3A, so capex is not the binding constraint; revisit under demand growth, labor scarcity, or multi-shift operation (see `reports/demand_frontier.json`). Integration cost and availability derating are modeled (F-222).
 The no-breakeven result is recorded in `reports/module_03_tco_report.json::breakeven_thresholds.vs_lean_human.no_breakeven_in_search_range` (the earlier €10,030 figure was the search's €10K lower bound, not a real crossover); transfer-factor evidence is the observed WBT teleoperation cycle-time proxy, with 0.50–0.90 transfer factor sampled in sensitivity analysis.
 In Austrian intralogistics the practical automation driver is unfillable vacancies, not wage arbitrage; this model conservatively assumes labor is available at KV rates, so robot value is understated wherever vacancies go unfilled.
 <!-- DECISION_STATEMENT_END -->
@@ -151,7 +151,7 @@ This section points to everything beyond the executive summary. **The SSOT rule 
 | **Data storage layout** | Raw, interim, and processed data conventions | `governance/DATA_SOURCES.md` |
 | **Pandera Schemas** | `EpisodeMetadataSchema`, `HumanoidCapabilityPerEpisodeSchema`, etc. | `src/warehouse_humanoid_tco/data/schemas.py` |
 | **Experiment Hypotheses (H1–H4)** | Four testable hypotheses with decision rules and status | `governance/EXPERIMENTS.md` |
-| **Scenarios (S-baseline-human, S-hybrid-amr, etc.)** | Five workforce composition scenarios | `governance/EXPERIMENTS.md` |
+| **Scenarios (Legacy Overstaffed Team, Human + Humanoid + AMR Team, etc.)** | Five workforce composition scenarios | `governance/EXPERIMENTS.md` |
 | **Sensitivity Analysis Protocol** | OAT + Monte Carlo, 5 continuous parameters, common random numbers | `governance/SENSITIVITY.md` |
 | **References (7 peer-reviewed sources)** | Knapp, Kimms & Schade, Unitree, Boston Dynamics, Wächter, Statistik Austria, WKO | `governance/REFERENCES.md` |
 

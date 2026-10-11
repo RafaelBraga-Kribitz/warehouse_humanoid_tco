@@ -34,11 +34,19 @@ class AgentType(StrEnum):
 
 
 class ScenarioId(StrEnum):
-    BASELINE_HUMAN = "S-baseline-human"
-    PURE_HUMANOID = "S-pure-humanoid"
-    HYBRID_5050 = "S-hybrid-5050"
-    HYBRID_AMR = "S-hybrid-amr"
-    FUTURE_2028 = "S-future-2028"
+    """Business-readable scenario names (F-242).
+
+    The string value is the identifier used everywhere: config, JSON, CSV,
+    chart labels, and prose. Never reintroduce the retired ``S-...`` codes.
+    """
+
+    LEGACY_OVERSTAFFED_TEAM = "Legacy Overstaffed Team"
+    LEAN_HUMAN_TEAM = "Lean Human Team"
+    LEAN_HUMAN_AMR_TEAM = "Lean Human + AMR Team"
+    ALL_HUMANOID_TEAM = "All-Humanoid Team"
+    HALF_HUMAN_HALF_HUMANOID_TEAM = "Half Human + Half Humanoid Team"
+    HUMAN_HUMANOID_AMR_TEAM = "Human + Humanoid + AMR Team"
+    FUTURE_2028_HUMANOID_TEAM = "Future 2028 Humanoid Team"
 
 
 class ArchitectureType(StrEnum):

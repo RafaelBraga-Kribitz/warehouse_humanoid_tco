@@ -24,7 +24,7 @@
 - F-031 (PR #38) — MC `humanoid_capex_eur` switched from Normal to lognormal (strictly positive).
 - F-032 (PR #39) — Dead `max(transfer_factor, 0.05)` floor removed; replaced with explicit positive check.
 - F-033 (PR #40) — `total_opex_5yr_eur` split into `_nominal` and `_pv`; downstream consumers updated.
-- F-034 (PR #41) — `humanoid_throughput_multiplier` now propagates through TCO; S-future-2028 differentiates.
+- F-034 (PR #41) — `humanoid_throughput_multiplier` now propagates through TCO; Future 2028 Humanoid Team differentiates.
 - F-035 (PR #42) — ADR-0009 v2 ships with honest derivation + tautology disclosure (v1 errors fixed).
 - F-036 (PR #43) — `seed_all` + canonical `global_seed` wired into module_02; dead granular seeds removed.
 - F-037 (PR #37) — README MC quantile digits templated against report JSON; relabel "CI" → "output interval".
@@ -55,7 +55,7 @@ The Adversary job (`check_closed_findings.py`) re-runs every closed verification
 1. **F-040** is the only open finding. To close it the next session needs either:
    - Explicit user authorization to modify `notebooks/01_data_profile_summary.ipynb` (then this session's hybrid approach — populate cell 2 with the shipped `derisk_inspection_report.json` content; cells 7,9,11,13 stay source-only or get try/except guards — would close it in ~10 minutes), or
    - A separate decision to remove the README "stakeholder transparency" claims and delete the notebook entirely (also closes via the test's `notebook absent → vacuously fixed` branch).
-2. **Sensitivity multiplier propagation** — F-034 closed the headline-TCO gap but `analysis/sensitivity.py::SCENARIO_COMPOSITIONS` still treats S-future-2028 identically to S-hybrid-5050 in MC output. Worth a new finding if the differentiation matters in the sensitivity report.
+2. **Sensitivity multiplier propagation** — F-034 closed the headline-TCO gap but `analysis/sensitivity.py::SCENARIO_COMPOSITIONS` still treats Future 2028 Humanoid Team identically to Half Human + Half Humanoid Team in MC output. Worth a new finding if the differentiation matters in the sensitivity report.
 3. **AgentProfile.seed dead field** — F-036 closure note flagged it; harmless but a clean-up candidate.
 4. **Codex usage limits** — reached during this session; reviews after PR #38 returned "usage limit reached" notes. Doesn't affect merging but means automated review feedback paused.
 

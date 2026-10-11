@@ -18,7 +18,7 @@ notes: |
   ACCEPTANCE CRITERIA:
   - scale_line_cycle_to_order applied in Module 2 + crew_optimizer (mean×L, std×√L)
   - predict_utilisation for 1 human at 120/hr with scaled service > 1.0
-  - S-lean-human agent_counts.human ≥ 3 after re-optimize
+  - Lean Human Team agent_counts.human ≥ 3 after re-optimize
   - Pure-AMR excluded from frontier/optimizer policies (ADR-0017)
   - breakeven_thresholds.vs_lean_human drives decision trigger
   LOCKED DECISIONS: ADR-0017; Execution Spec F-237 plan.
