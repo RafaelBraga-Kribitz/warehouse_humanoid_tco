@@ -9,6 +9,12 @@ Versions are thematic milestones, not strict semver releases.
 
 ## [Unreleased]
 
+### Fixed (F-243 — euro axis ticks on charts 06 and 09)
+- Charts 06 and 09 labelled every y-axis tick `€0.0M` because values already in €M were
+  divided by 1,000,000 again by the shared formatter. Both now plot raw euros like chart 02, so
+  ticks read e.g. `€-5.0M … €1.0M`. Guarded by `tests/governance/test_f243_euro_axis_ticks.py`,
+  which renders the charts and compares each tick label with its position.
+
 ### Changed (F-242 — business-readable scenario names)
 - The seven scenario codes are replaced by self-explanatory names in config, code,
   JSON/CSV exports, charts 01–09, README, memos, decks, and docs. The readable name

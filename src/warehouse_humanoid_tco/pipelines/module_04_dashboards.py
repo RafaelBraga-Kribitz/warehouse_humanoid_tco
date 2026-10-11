@@ -301,7 +301,7 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(10, 6))
     bars = ax.bar(
         effect_labels,
-        [value / 1_000_000 for value in effect_values],
+        effect_values,  # raw euros: EURO_MILLIONS formats the axis
         color=[RECOMMENDED] + [ADVERSE if value < 0 else OTHER for value in effect_values[1:]],
     )
     ax.set_xticks(range(len(effect_labels)))
