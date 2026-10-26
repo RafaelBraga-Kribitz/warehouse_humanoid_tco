@@ -1000,11 +1000,22 @@
       "status": "closed",
       "title": "README hero banner and demo GIF still show the retired scenario names (and stale numbers).",
       "verification_script": "tests/governance/test_f244_readme_visuals.py"
+    },
+    {
+      "category": "governance_gaps",
+      "closed_at": "2026-10-26",
+      "id": "F-245",
+      "kind": "recurrence_invariant",
+      "opened_at": "2026-10-26",
+      "path": "governance/findings/F-245.yaml",
+      "status": "closed",
+      "title": "The two August 2026 audit bugs (first-profile routing; TCO pipeline ignoring simulation and crew config) had no direct regression guard.",
+      "verification_script": "tests/governance/test_f245_august_audit_bug_guards.py"
     }
   ],
-  "generated_at": "2026-10-11T14:22:47.116099+00:00",
-  "git_branch": "claude/F-244-readme-images",
-  "git_head_sha": "f5b6f80f2f36f706ff351409874fe21b269136fa",
+  "generated_at": "2026-10-26T19:13:05.328538+00:00",
+  "git_branch": "claude/portfolio-polish-2026-10-26",
+  "git_head_sha": "644369e23762c94a73f9d56805ab3936a3f2a9ce",
   "migrations": [
     {
       "linked_finding": "F-003",
@@ -1016,11 +1027,11 @@
     }
   ],
   "summary": {
-    "findings_closed": 89,
+    "findings_closed": 90,
     "findings_closed_historical": 1,
     "findings_in_progress": 0,
     "findings_open": 1,
-    "findings_total": 91,
+    "findings_total": 92,
     "findings_wont_fix": 0,
     "migrations_in_progress": 0,
     "migrations_total": 1,

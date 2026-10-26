@@ -1,0 +1,27 @@
+id: F-245
+title: "The two August 2026 audit bugs (first-profile routing; TCO pipeline ignoring simulation and crew config) had no direct regression guard."
+category: governance_gaps
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-10-26
+closed_at: 2026-10-26
+recurrence_count: 0
+evidence: >
+  Both bugs are fixed on main: routing is count-weighted in
+  src/warehouse_humanoid_tco/models/simulation.py::run_scenario (fix fb5b1c7, 2026-05-22), and
+  module_03_tco.py passes each scenario's simulated mean throughput and its config agent_counts
+  into compute_tco_scenario (fixes 191fbcb and d804785). Mutation check on 2026-10-26: replacing
+  the pipeline's throughput with a constant, or dropping the config composition, left all
+  292 tests green. The existing routing test (test_simulation.py) only catches the routing bug
+  when the slow agent type is listed second.
+verification_script: tests/governance/test_f245_august_audit_bug_guards.py
+notes: |
+  GUARDS
+  - Routing: two agent types with equal counts and speeds must each have non-zero utilisation
+    and a ratio between 0.5 and 2.0, in both profile orders.
+  - Throughput: doubling simulated throughput halves cost per order; NPV is unchanged (NPV is a
+    fixed-demand cost model by design, see compute_tco_scenario docstring).
+  - Crew counts: module_03_main NPV equals compute_tco_scenario with the config agent_counts for
+    every scenario, and editing a crew count in config moves that scenario's NPV.
+  Each guard was checked against the reintroduced bug: it fails on the buggy code and passes on main.
+  No analytical result changed.
