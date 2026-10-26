@@ -4,10 +4,10 @@
 
 [![CI](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml)
 [![Reproducibility](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/reproducibility.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/reproducibility.yml)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org/downloads/release/python-3110/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Governance Audited](https://img.shields.io/badge/governance-audited-brightgreen)](governance/AUDIT_PROCEDURE.md)
-[![Status: Complete](https://img.shields.io/badge/status-Complete-brightgreen)](#status)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-5A5C61?labelColor=26282C)](https://www.python.org/downloads/release/python-3110/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-5A5C61?labelColor=26282C)](LICENSE)
+[![Governance Audited](https://img.shields.io/badge/governance-audited-5A5C61?labelColor=26282C)](governance/AUDIT_PROCEDURE.md)
+[![Status: Complete](https://img.shields.io/badge/status-Complete-5A5C61?labelColor=26282C)](#status)
 
 **Status:** Complete
 
@@ -100,6 +100,33 @@ The source data are household demonstrations: plates-into-dishwasher, pillow pic
 ## Architecture
 
 ```mermaid
+%%{init: {
+  "theme": "base",
+  "fontFamily": "BKribitz, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif",
+  "themeVariables": {
+    "background": "#E4E6EA",
+    "primaryColor": "#DCDEE2",
+    "primaryTextColor": "#26282C",
+    "primaryBorderColor": "#26282C",
+    "secondaryColor": "#E4E6EA",
+    "secondaryTextColor": "#26282C",
+    "secondaryBorderColor": "#5A5C61",
+    "tertiaryColor": "#E4E6EA",
+    "tertiaryTextColor": "#26282C",
+    "tertiaryBorderColor": "#C2C4CA",
+    "lineColor": "#5A5C61",
+    "textColor": "#26282C",
+    "mainBkg": "#DCDEE2",
+    "nodeBorder": "#26282C",
+    "clusterBkg": "#E4E6EA",
+    "clusterBorder": "#C2C4CA",
+    "edgeLabelBackground": "#E4E6EA",
+    "titleColor": "#26282C",
+    "fontFamily": "BKribitz, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif",
+    "fontSize": "14px"
+  },
+  "flowchart": { "curve": "linear", "htmlLabels": true, "padding": 8 }
+}}%%
 flowchart TD
     U["UnifoLM episodes<br/>2,359 · VERIFIED"] --> M1["Module 1<br/>capability extraction<br/>cycle times, taxonomy"]
     KV["Austrian KV wages,<br/>capex assumptions<br/>CALIBRATED"] --> M3

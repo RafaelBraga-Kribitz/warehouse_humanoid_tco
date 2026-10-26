@@ -1,0 +1,99 @@
+{
+  "output": "hero-banner-v2.png",
+  "width": 1600,
+  "height": 640,
+  "mode": "light",
+  "fonts": "BKribitz (design-system checkout)",
+  "design_system": "braga 2.1.0 (D-051)",
+  "status_state": "complete",
+  "title_size": 112,
+  "descriptor_size": 34,
+  "attempts": 1,
+  "blocks": {
+    "wordmark": {
+      "bbox": [
+        72,
+        72,
+        180,
+        107
+      ],
+      "lines": [
+        "BRAGA"
+      ],
+      "font": "BKribitz-800.woff2"
+    },
+    "kind": {
+      "bbox": [
+        194,
+        76,
+        506,
+        106
+      ],
+      "lines": [
+        "·  ANALYTICAL PROJECT"
+      ],
+      "font": "BKribitzMono-400.woff2"
+    },
+    "status": {
+      "bbox": [
+        1410,
+        76,
+        1528,
+        106
+      ],
+      "lines": [
+        "COMPLETE"
+      ],
+      "font": "BKribitzMono-400.woff2"
+    },
+    "facts": {
+      "bbox": [
+        72,
+        538,
+        998,
+        568
+      ],
+      "lines": [
+        "LICENSE  MIT  ·  RUNTIME  Python >=3.11  ·  CI  GitHub Actions"
+      ],
+      "font": "BKribitzMono-400.woff2"
+    },
+    "title": {
+      "bbox": [
+        72,
+        160,
+        1489,
+        277
+      ],
+      "lines": [
+        "Warehouse Humanoid TCO"
+      ],
+      "font": "BKribitz-700.woff2"
+    },
+    "descriptor": {
+      "bbox": [
+        72,
+        309,
+        1052,
+        450
+      ],
+      "lines": [
+        "When do humanoid robots beat human labour in warehouse",
+        "economics? Discrete-event simulation and Monte Carlo TCO on",
+        "2,359 robot episodes."
+      ],
+      "font": "BKribitz-400.woff2"
+    }
+  },
+  "guardrails": [
+    "safe-area",
+    "wrap-and-shrink",
+    "line-length",
+    "no-overlap",
+    "glyph-coverage-per-char",
+    "contrast>=4.5",
+    "pixel-scan",
+    "no-accent"
+  ],
+  "validated": true
+}

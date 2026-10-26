@@ -1,10 +1,13 @@
 {
-  "generator": "braga-portfolio-docs readme_quality.hero @ 9dc70ab (python -m readme_quality hero --name warehouse_humanoid_tco)",
-  "fonts": "Söhne (design-system trial files, braga-design-system-template/system/assets/fonts)",
-  "png_sha256": "a56978f79b4aead839b90a25d865c54b663fee3838c2428190f3c8809de410ab",
+  "generator": "braga-portfolio-docs readme_quality.hero @ cd283ee (python -m readme_quality hero --name warehouse_humanoid_tco)",
+  "fonts": "BKribitz (design-system checkout); braga 2.1.0 (D-051)",
+  "png_sha256": "10f3e3effb59d727605b17ad9ebf54388bd49201841fea8e96dcf183245c0d26",
   "text": {
+    "wordmark": [
+      "BRAGA"
+    ],
     "kind": [
-      "BRAGA · ANALYTICAL PROJECT"
+      "·  ANALYTICAL PROJECT"
     ],
     "status": [
       "COMPLETE"
@@ -17,8 +20,8 @@
     ],
     "descriptor": [
       "When do humanoid robots beat human labour in warehouse",
-      "economics? Discrete-event simulation and Monte Carlo TCO on 2,359",
-      "robot episodes."
+      "economics? Discrete-event simulation and Monte Carlo TCO on",
+      "2,359 robot episodes."
     ]
   }
 }
