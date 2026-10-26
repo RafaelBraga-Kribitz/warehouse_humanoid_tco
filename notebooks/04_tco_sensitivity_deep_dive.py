@@ -25,9 +25,14 @@
 
 import collections
 
+import bk_theme as bk
 import matplotlib.pyplot as plt
 import numpy as np
 import pyarrow.parquet as pq
+
+# Braga design system v2.1: colours only through roles, no text below 12px.
+bk.apply("light")
+SMALL = bk.SIZE["mono-sm"]
 
 oat = pq.read_table("../data/processed/sensitivity_oat_results.parquet")
 mc = pq.read_table("../data/processed/sensitivity_mc_samples.parquet")
@@ -58,12 +63,12 @@ swings_sorted = sorted(swings.items(), key=lambda x: x[1])
 fig, ax = plt.subplots(figsize=(8, 4))
 labels = [s[0] for s in swings_sorted]
 values = [s[1] / 1e3 for s in swings_sorted]  # in k€
-bars = ax.barh(labels, values, color=["#2d6a9f" if v > 500 else "#aac4de" for v in values])
+bars = ax.barh(labels, values, color=[bk.c("ink-2") if v > 500 else bk.c("sc-py") for v in values])
 ax.set_xlabel("NPV Swing (k€, higher = more sensitive)")
 ax.set_title("OAT Sensitivity: TCO drivers ranked by NPV impact")
-ax.axvline(x=0, color="black", linewidth=0.5)
+ax.axvline(x=0, color=bk.c("ink"), linewidth=0.5)
 for bar, val in zip(bars, values, strict=False):
-    ax.text(val + 5, bar.get_y() + bar.get_height() / 2, f"€{val:.0f}k", va="center", fontsize=9)
+    ax.text(val + 5, bar.get_y() + bar.get_height() / 2, f"€{val:.0f}k", va="center", fontsize=SMALL)
 plt.tight_layout()
 plt.savefig("../reports/executive_charts/04_sensitivity_tornado.png", dpi=150, bbox_inches="tight")
 plt.show()
@@ -79,16 +84,17 @@ npv_mc = np.array(mc.column("npv_eur").to_pylist())
 p5, p50, p95 = np.percentile(npv_mc, [5, 50, 95])
 
 fig, ax = plt.subplots(figsize=(8, 3.5))
-ax.hist(npv_mc / 1e3, bins=50, color="#2d6a9f", alpha=0.8, edgecolor="white", linewidth=0.3)
-ax.axvline(p5 / 1e3, color="#e05c1a", linestyle="--", label=f"P5  = €{p5/1e3:,.0f}k")
-ax.axvline(p50 / 1e3, color="#f0a500", linestyle="--", label=f"P50 = €{p50/1e3:,.0f}k")
-ax.axvline(p95 / 1e3, color="#3aaa35", linestyle="--", label=f"P95 = €{p95/1e3:,.0f}k")
+quantile_colors = bk.palette("seq", 3)  # ordered quantiles: one sequential scale
+ax.hist(npv_mc / 1e3, bins=50, color=bk.c("sc-ac"), edgecolor=bk.c("surface"), linewidth=0.3)
+ax.axvline(p5 / 1e3, color=quantile_colors[0], linestyle="--", label=f"P5  = €{p5/1e3:,.0f}k")
+ax.axvline(p50 / 1e3, color=quantile_colors[1], linestyle="--", label=f"P50 = €{p50/1e3:,.0f}k")
+ax.axvline(p95 / 1e3, color=quantile_colors[2], linestyle="--", label=f"P95 = €{p95/1e3:,.0f}k")
 ax.set_xlabel("5-Year NPV (k€)")
 ax.set_ylabel("Frequency")
 ax.set_title(
     f"Monte Carlo NPV Distribution (n=10,000)\nmean=€{npv_mc.mean()/1e3:,.0f}k  σ=€{npv_mc.std()/1e3:,.0f}k"
 )
-ax.legend(fontsize=9)
+ax.legend()
 plt.tight_layout()
 plt.show()
 
@@ -102,7 +108,7 @@ scenario_ids = tco.column("scenario_id").to_pylist()
 scenario_npvs = [v / 1e3 for v in tco.column("npv_eur").to_pylist()]
 
 fig, ax = plt.subplots(figsize=(8, 3.5))
-colors = ["#aac4de" if s == "Legacy Overstaffed Team" else "#2d6a9f" for s in scenario_ids]
+colors = [bk.c("sc-py") if s == "Legacy Overstaffed Team" else bk.c("ink-2") for s in scenario_ids]
 bars = ax.bar(scenario_ids, scenario_npvs, color=colors)
 ax.set_ylabel("5-Year NPV (k€)")
 ax.set_title("TCO by Scenario (lower = less costly)")
@@ -114,8 +120,8 @@ for bar, val in zip(bars, scenario_npvs, strict=False):
         f"€{val:,.0f}k",
         ha="center",
         va="top",
-        fontsize=8,
-        color="white",
+        fontsize=SMALL,
+        color=bk.c("ink"),
     )
 plt.tight_layout()
 plt.show()

@@ -171,6 +171,15 @@ wheels = [
 ]
 
 [[package]]
+name = "bk-viz"
+version = "2.0.0"
+source = { git = "https://github.com/RafaelBraga-Kribitz/bk-viz?rev=fe8125a3043f49a798ef24740b23f81c46863562#fe8125a3043f49a798ef24740b23f81c46863562" }
+dependencies = [
+    { name = "fonttools" },
+    { name = "matplotlib" },
+]
+
+[[package]]
 name = "black"
 version = "25.12.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3798,6 +3807,7 @@ name = "warehouse-humanoid-tco"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
+    { name = "bk-viz" },
     { name = "duckdb" },
     { name = "huggingface-hub" },
     { name = "matplotlib" },
@@ -3837,6 +3847,7 @@ notebooks = [
 
 [package.metadata]
 requires-dist = [
+    { name = "bk-viz", git = "https://github.com/RafaelBraga-Kribitz/bk-viz?rev=fe8125a3043f49a798ef24740b23f81c46863562" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=24.0,<26" },
     { name = "dbt-duckdb", marker = "extra == 'analytics'", specifier = ">=1.9" },
     { name = "duckdb", specifier = ">=0.10" },

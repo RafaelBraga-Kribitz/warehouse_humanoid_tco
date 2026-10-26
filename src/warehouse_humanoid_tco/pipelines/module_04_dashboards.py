@@ -17,6 +17,7 @@ import textwrap
 from datetime import date
 from pathlib import Path
 
+import bk_theme as bk
 import duckdb
 import matplotlib.pyplot as plt
 import polars as pl
@@ -31,7 +32,14 @@ from warehouse_humanoid_tco.visualization.chart_style import (
     OTHER,
     PLAIN_NUMBER,
     RECOMMENDED,
+    SMALL,
     apply_style,
+    color,
+    footer,
+    layout,
+    save_png,
+    title,
+    use_theme,
 )
 
 SQL_DIR = Path(__file__).resolve().parents[3] / "analytics" / "sql"
@@ -68,8 +76,9 @@ def export_for_tableau(processed_dir: Path, export_dir: Path) -> None:
 
 
 def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
-    """Generate executive summary PNG charts for presentations."""
+    """Generate executive summary PNG charts for presentations (Braga design system v2.1)."""
     charts_dir.mkdir(parents=True, exist_ok=True)
+    use_theme("light")
     sensitivity_path = charts_dir.parent / "sensitivity_analysis_report.json"
     sensitivity = (
         json.loads(sensitivity_path.read_text(encoding="utf-8"))
@@ -77,7 +86,8 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         else {}
     )
     mc_summary = sensitivity.get("mc_summary_per_scenario", {})
-    source_note = f"Source: model outputs · {date.today().isoformat()}"
+    source = "model outputs"
+    run_id = date.today().isoformat()
     tco = pl.read_parquet(processed_dir / "tco_scenarios.parquet")
 
     ranking = tco.with_columns((-pl.col("npv_eur") / 1_000_000).alias("total_cost_m_eur")).sort(
@@ -90,7 +100,7 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         scenarios,
         costs,
         color=[
-            (
+            color(
                 RECOMMENDED
                 if s == ScenarioId.LEAN_HUMAN_AMR_TEAM
                 else BASELINE if s == ScenarioId.LEGACY_OVERSTAFFED_TEAM else OTHER
@@ -115,36 +125,43 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
             range(len(costs)),
             xerr=list(zip(*intervals, strict=True)),
             fmt="none",
-            color=BASELINE,
+            ecolor=color("mid"),
+            elinewidth=1.5,
             capsize=3,
             label="p5–p95 uncertainty interval",
         )
-        ax.legend(loc="lower right", fontsize=8)
+        ax.legend(loc="lower right")
     ax.invert_yaxis()
     ax.set_xlabel("Positive 5-year total cost (€M, present value)")
-    ax.set_title("Five-year total cost by scenario (lower is cheaper)")
+    title(ax, "Five-year total cost by scenario (lower is cheaper)")
     apply_style(ax)
     ax.grid(axis="x")
-    for bar, value in zip(bars, costs, strict=True):
+    ax.grid(False, axis="y")
+    for bar, value, (_, high_err) in zip(bars, costs, intervals, strict=True):
         ax.text(
-            value, bar.get_y() + bar.get_height() / 2, f"  €{value:,.2f}M", va="center", fontsize=9
+            value + high_err,  # clear of the whisker's end
+            bar.get_y() + bar.get_height() / 2,
+            f"  €{value:,.2f}M",
+            va="center",
+            color=color("ink"),
         )
-    fig.text(0.01, 0.01, source_note, fontsize=7, color=BASELINE)
-    plt.tight_layout()
-    plt.savefig(charts_dir / "01_tco_npv_ranking.png", dpi=300, bbox_inches="tight")
-    plt.close()
+    footer(fig, source, run_id)
+    layout(fig, 0.08)
+    save_png(fig, charts_dir / "01_tco_npv_ranking.png", dpi=300)
 
     scenarios_sorted = tco["scenario_id"].to_list()
     capex = tco["total_capex_eur"].to_list()
     opex = tco["total_opex_5yr_eur_pv"].to_list()
     fig, ax = plt.subplots(figsize=(10, 6))
     x = range(len(scenarios_sorted))
-    capex_bars = ax.bar(x, capex, label="Capex (hardware, one-time)", color=OTHER)
-    ax.bar(x, opex, bottom=capex, label="Operating cost (5-yr, present value)", color=RECOMMENDED)
+    # Parts of a whole: two structure greys, no highlight (IBCS).
+    capex_color, opex_color = bk.neutral_ramp(2)
+    capex_bars = ax.bar(x, capex, label="Capex (hardware, one-time)", color=capex_color)
+    ax.bar(x, opex, bottom=capex, label="Operating cost (5-yr, present value)", color=opex_color)
     ax.set_xticks(x)
     ax.set_xticklabels(scenarios_sorted, rotation=45, ha="right")
     ax.set_ylabel("Cost (€)")
-    ax.set_title("Five-year cost composition by scenario")
+    title(ax, "Five-year cost composition by scenario")
     ax.legend()
     apply_style(ax)
     ax.yaxis.set_major_formatter(EURO_MILLIONS)
@@ -155,12 +172,12 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
             f"€{(capex_value + opex_value) / 1_000_000:,.2f}M",
             ha="center",
             va="bottom",
-            fontsize=8,
+            fontsize=SMALL,
+            color=color("ink"),
         )
-    fig.text(0.01, 0.01, source_note, fontsize=7, color=BASELINE)
-    plt.tight_layout()
-    plt.savefig(charts_dir / "02_cost_breakdown.png", dpi=300, bbox_inches="tight")
-    plt.close()
+    footer(fig, source, run_id)
+    layout(fig, 0.08)
+    save_png(fig, charts_dir / "02_cost_breakdown.png", dpi=300)
 
     capacity = pl.read_parquet(processed_dir / "simulation_capacity_ceiling.parquet").sort(
         "capacity_orders_per_shift"
@@ -175,12 +192,15 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(10, 6))
     x = list(range(len(scenarios)))
     width = 0.4
+    # IBCS: the analytic estimate is the plan (outline), the simulated check the actual (solid).
     ax.bar(
         [i - width / 2 for i in x],
         theoretical,
         width=width,
-        color=OTHER,
-        label=f"Estimated sustainable capacity (ρ = {target_rho:.2f})",
+        facecolor=color("surface"),
+        edgecolor=color("sc-pl"),
+        linewidth=1.2,
+        label=f"Estimated sustainable capacity (rho = {target_rho:.2f})",
     )
     ax.bar(
         [i + width / 2 for i in x],
@@ -188,12 +208,13 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         width=width,
         yerr=observed_std,
         capsize=4,
-        color=RECOMMENDED,
+        color=color("sc-ac"),
+        error_kw={"ecolor": color("ink"), "elinewidth": 1.0},
         label=f"Simulated capacity check ({n_validation_runs} runs, ±1 standard deviation)",
     )
     ax.axhline(
         960,
-        color=BASELINE,
+        color=color("mid"),
         linestyle="--",
         linewidth=1.2,
         label="Modeled demand: 960 orders per shift",
@@ -203,28 +224,25 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         [f"{s}\n(bottleneck: {b})" for s, b in zip(scenarios, bottlenecks, strict=True)],
         rotation=20,
         ha="right",
-        fontsize=9,
+        fontsize=SMALL,
     )
     ax.set_ylabel("Orders per 8-hour shift")
-    ax.set_title("How much demand can each staffing mix sustain?")
-    ax.legend(loc="upper left", fontsize=8)
+    title(ax, "How much demand can each staffing mix sustain?")
+    ax.legend(loc="upper left")
     apply_style(ax)
     ax.yaxis.set_major_formatter(PLAIN_NUMBER)
-    fig.text(
-        0.5,
-        0.005,
-        "ρ (rho) is utilisation: workload divided by available service capacity. "
-        "The capacity estimate uses λmax = ρ × c / max(cycle time). "
-        "Baseline operation models 960 orders per 8-hour shift.",
-        ha="center",
-        fontsize=7,
-        color=BASELINE,
-        style="italic",
+    footer(
+        fig,
+        source,
+        run_id,
+        note=(
+            "rho is utilisation: workload divided by available service capacity. "
+            "The capacity estimate uses λmax = rho × c / max(cycle time). "
+            "Baseline operation models 960 orders per 8-hour shift."
+        ),
     )
-    fig.text(0.01, 0.025, source_note, fontsize=7, color=BASELINE)
-    plt.tight_layout(rect=(0, 0.04, 1, 1))
-    plt.savefig(charts_dir / "03_simulation_throughput.png", dpi=300, bbox_inches="tight")
-    plt.close()
+    layout(fig, 0.14)
+    save_png(fig, charts_dir / "03_simulation_throughput.png", dpi=300)
 
     tco_cpo = tco.sort("cost_per_order_eur")
     scenarios_cpo = tco_cpo["scenario_id"].to_list()
@@ -234,7 +252,7 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
             "cost_per_order_eur"
         ][0]
     )
-    colors_cpo = [
+    roles_cpo = [
         (
             RECOMMENDED
             if s == ScenarioId.LEAN_HUMAN_AMR_TEAM
@@ -247,31 +265,32 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
         for s, v in zip(scenarios_cpo, cpo, strict=True)
     ]
     fig, ax = plt.subplots(figsize=(10, 6))
-    bars = ax.barh(scenarios_cpo, cpo, color=colors_cpo)
+    bars = ax.barh(scenarios_cpo, cpo, color=[color(role) for role in roles_cpo])
     ax.axvline(
         baseline_cpo,
-        color=BASELINE,
+        color=color("mid"),
         linestyle="--",
         linewidth=1.2,
         label=f"Baseline €{baseline_cpo:.3f}",
     )
     ax.set_xlabel("Cost per order (€; five-year horizon)")
-    ax.set_title("Unit economics: cost per order by scenario")
-    ax.legend(loc="lower right", fontsize=9)
+    title(ax, "Unit economics: cost per order by scenario")
+    ax.legend(loc="lower right")
     apply_style(ax)
     ax.grid(axis="x")
-    for bar, value in zip(bars, cpo, strict=True):
+    ax.grid(False, axis="y")
+    for bar, value, role in zip(bars, cpo, roles_cpo, strict=True):
+        label = f"€{value:.3f}"
         ax.text(
             value + 0.005,
             bar.get_y() + bar.get_height() / 2,
-            f"€{value:.3f}",
+            bk.variance_label(label, -1.0) if role == ADVERSE else label,
             va="center",
-            fontsize=9,
+            color=color("ink"),
         )
-    fig.text(0.01, 0.01, source_note, fontsize=7, color=BASELINE)
-    plt.tight_layout()
-    plt.savefig(charts_dir / "05_cost_per_order.png", dpi=300, bbox_inches="tight")
-    plt.close()
+    footer(fig, source, run_id)
+    layout(fig, 0.08)
+    save_png(fig, charts_dir / "05_cost_per_order.png", dpi=300)
 
     # F-241: separate the legacy eight-human staffing effect from the cost of
     # each technology mix. Positive values are savings relative to the legacy
@@ -302,7 +321,8 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
     bars = ax.bar(
         effect_labels,
         effect_values,  # raw euros: EURO_MILLIONS formats the axis
-        color=[RECOMMENDED] + [ADVERSE if value < 0 else OTHER for value in effect_values[1:]],
+        color=[color(RECOMMENDED)]
+        + [color(ADVERSE if value < 0 else OTHER) for value in effect_values[1:]],
     )
     ax.set_xticks(range(len(effect_labels)))
     ax.set_xticklabels(
@@ -310,35 +330,34 @@ def generate_executive_charts(processed_dir: Path, charts_dir: Path) -> None:
             "\n".join(textwrap.wrap(label, 14)) if "\n" not in label else label
             for label in effect_labels
         ],
-        fontsize=9,
+        fontsize=SMALL,
     )
-    ax.axhline(0, color=BASELINE, linewidth=1)
+    ax.axhline(0, color=color("mid"), linewidth=1)
     ax.set_ylabel("Five-year cost effect (€M, present value)")
-    ax.set_title("Effect decomposition: crew sizing versus technology mix")
+    title(ax, "Effect decomposition: crew sizing versus technology mix")
     apply_style(ax)
     ax.yaxis.set_major_formatter(EURO_MILLIONS)
     for bar, value in zip(bars, effect_values, strict=True):
         ax.text(
             bar.get_x() + bar.get_width() / 2,
             bar.get_height(),
-            f"€{value / 1_000_000:+.2f}M",
+            bk.variance_label(f"€{value / 1_000_000:+.2f}M", value),
             ha="center",
             va="bottom" if value >= 0 else "top",
-            fontsize=8,
+            fontsize=SMALL,
+            color=color("ink"),
         )
-    fig.text(
-        0.5,
-        0.01,
-        "First bar: savings from rightsizing the legacy human crew to Lean Human + AMR Team. "
-        "Remaining bars: cost relative to that frontier lean mix; lower is better.",
-        ha="center",
-        fontsize=7,
-        color=BASELINE,
+    footer(
+        fig,
+        source,
+        run_id,
+        note=(
+            "First bar: savings from rightsizing the legacy human crew to Lean Human + AMR Team. "
+            "Remaining bars: cost relative to that frontier lean mix; lower is better."
+        ),
     )
-    fig.text(0.01, 0.03, source_note, fontsize=7, color=BASELINE)
-    plt.tight_layout(rect=(0, 0.05, 1, 1))
-    plt.savefig(charts_dir / "06_effect_decomposition.png", dpi=300, bbox_inches="tight")
-    plt.close()
+    layout(fig, 0.13)
+    save_png(fig, charts_dir / "06_effect_decomposition.png", dpi=300)
 
     plotted_values = {
         "01_tco_npv_ranking": {
