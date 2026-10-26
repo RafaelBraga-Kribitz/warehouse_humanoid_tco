@@ -5,15 +5,32 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import bk_theme as bk
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import (
+    BoundaryNorm,
+    LinearSegmentedColormap,
+    ListedColormap,
+    Normalize,
+    TwoSlopeNorm,
+)
 
 from warehouse_humanoid_tco.analysis.sensitivity import (
     SCENARIO_COMPOSITIONS,
     TRANSFER_FACTOR_BASELINE,
     compute_tco_for_params,
 )
-from warehouse_humanoid_tco.visualization.chart_style import OTHER, RECOMMENDED, apply_style
+from warehouse_humanoid_tco.visualization.chart_style import (
+    RECOMMENDED,
+    SMALL,
+    apply_style,
+    color,
+    layout,
+    save_png,
+    title,
+    use_theme,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = {
@@ -69,8 +86,35 @@ def robot_frontier(
     return capex_wage, capex_transfer
 
 
-def chart(path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, title: str) -> None:
-    figure, axis = plt.subplots(figsize=(9, 5.2), constrained_layout=True)
+def cost_delta_scale(
+    z_min: float, z_max: float
+) -> tuple[np.ndarray, LinearSegmentedColormap | ListedColormap, Normalize]:
+    """Contour levels, colour map and norm for the cost delta.
+
+    When the grid crosses zero, the design system's good/bad diverging scale with its neutral
+    midpoint at the cost tie. When the whole grid sits on one side of zero there is no tie to
+    show, so the magnitude takes the sequential scale, one band per step, so every band can be
+    told apart (the diverging scale's single arm cannot carry that many steps).
+    """
+    if z_min < 0.0 < z_max:
+        cmap = LinearSegmentedColormap.from_list("bk-div", bk.palette("div"))
+        return (
+            np.linspace(z_min, z_max, 16),
+            cmap,
+            TwoSlopeNorm(vmin=z_min, vcenter=0.0, vmax=z_max),
+        )
+    steps = bk.palette("seq")[::-1]  # lightest first
+    if z_max <= 0.0:
+        steps = steps[::-1]  # larger saving (more negative) reads darker
+    levels = np.linspace(z_min, z_max, len(steps) + 1)
+    return levels, ListedColormap(steps, "bk-seq"), BoundaryNorm(levels, len(steps))
+
+
+def chart(
+    path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, chart_title: str
+) -> None:
+    use_theme("light")
+    figure, axis = plt.subplots(figsize=(9, 5.2))
     # z arrives as robot_npv - lean_npv with cost-negative NPVs, so negate to get
     # the intuitive cost delta: positive = robot-inclusive option costlier.
     # (Pre-fix, levels were computed in raw euros while the plotted array was in
@@ -78,11 +122,14 @@ def chart(path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, 
     # sign convention on the colorbar label was also inverted.)
     zm = -z / 1_000_000
     z_min, z_max = float(zm.min()), float(zm.max())
-    levels = np.linspace(z_min, z_max, 16)
-    image = axis.contourf(x / 1_000, y, zm, levels=levels, cmap="RdYlGn_r")
+    levels, cmap, norm = cost_delta_scale(z_min, z_max)
+    image = axis.contourf(x / 1_000, y, zm, levels=levels, cmap=cmap, norm=norm)
     if z_min < 0.0 < z_max:
-        boundary = axis.contour(x / 1_000, y, zm, levels=[0], colors=RECOMMENDED, linewidths=2)
-        axis.clabel(boundary, fmt={0: "cost tie"}, inline=True, fontsize=9)
+        # The tie line is the chart's one highlight: it is the decision boundary.
+        boundary = axis.contour(
+            x / 1_000, y, zm, levels=[0], colors=color(RECOMMENDED), linewidths=2
+        )
+        axis.clabel(boundary, fmt={0: "cost tie"}, inline=True, fontsize=SMALL)
     else:
         axis.text(
             0.5,
@@ -92,28 +139,34 @@ def chart(path: Path, x: np.ndarray, y: np.ndarray, z: np.ndarray, ylabel: str, 
             transform=axis.transAxes,
             ha="center",
             va="bottom",
-            fontsize=9,
-            style="italic",
-            color="#333333",
+            fontsize=SMALL,
+            color=color("ink"),
+            backgroundcolor=color("surface"),
         )
     axis.scatter(
         [120],
         [18.5 if "wage" in ylabel.lower() else 0.70],
-        color=OTHER,
-        edgecolor="black",
+        color=color("surface"),
+        edgecolor=color("ink"),
+        linewidths=1.5,
         zorder=3,
     )
     axis.set(
-        title=title,
         xlabel="Humanoid unit capex (€k)",
         ylabel=ylabel,
     )
+    title(axis, chart_title)
     apply_style(axis)
+    axis.grid(False)
     colorbar = figure.colorbar(image, ax=axis)
     colorbar.ax.ticklabel_format(style="plain")
-    colorbar.set_label("Extra 5-year cost vs Lean Human + AMR Team (€M; positive = robot costlier)")
-    figure.savefig(path, dpi=180)
-    plt.close(figure)
+    colorbar.outline.set_visible(False)
+    colorbar.set_label(
+        "Extra 5-year cost vs Lean Human + AMR Team\n(€M; positive = robot costlier)",
+        fontsize=SMALL,
+    )
+    layout(figure, 0.0)
+    save_png(figure, path, dpi=180)
 
 
 def variance_proxy() -> dict[str, object]:

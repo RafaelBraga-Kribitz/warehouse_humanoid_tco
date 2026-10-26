@@ -8,14 +8,23 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import polars as pl
+from matplotlib.ticker import MaxNLocator
 
 from warehouse_humanoid_tco.visualization.chart_style import (
-    ADVERSE,
-    BASELINE,
     EURO_THOUSANDS,
-    RECOMMENDED,
     apply_style,
+    color,
+    footer,
+    layout,
+    save_png,
+    title,
+    use_theme,
 )
+
+# IBCS variance roles: the costlier end of an assumption is a bad variance, the cheaper end a
+# good one. Neither side is the chart's highlight.
+COSTLIER = "var-neg"
+CHEAPER = "var-pos"
 
 # Plain-language name and unit formatter for each OAT parameter in
 # config/tco_assumptions.yaml::sensitivity.oat. Every OAT parameter needs an entry;
@@ -76,6 +85,7 @@ def main(project_root: Path | None = None) -> Path:
     ranges = report["oat_parameter_ranges"]
     labels = [parameter_label(p, *ranges[p]) for p in params]
 
+    use_theme("light")
     fig, ax = plt.subplots(figsize=(11, 6.5))
 
     y_pos = range(len(params))
@@ -83,52 +93,42 @@ def main(project_root: Path | None = None) -> Path:
     span = max(npv_high) - min(npv_low)
     for i, (param, low, high) in enumerate(zip(params, npv_low, npv_high, strict=True)):
         # Low side (more negative = higher cost)
-        ax.barh(i, low - baseline_npv, left=baseline_npv, color=ADVERSE, alpha=0.85, height=0.5)
+        ax.barh(i, low - baseline_npv, left=baseline_npv, color=color(COSTLIER), height=0.5)
         # High side (less negative = lower cost)
-        ax.barh(
-            i, high - baseline_npv, left=baseline_npv, color=RECOMMENDED, alpha=0.85, height=0.5
-        )
+        ax.barh(i, high - baseline_npv, left=baseline_npv, color=color(CHEAPER), height=0.5)
         if high - low < 1.0:
             note = "No effect: this crew has no humanoid robots"
-            ax.text(baseline_npv + span * 0.02, i, note, va="center", fontsize=9, color=BASELINE)
+            ax.text(baseline_npv + span * 0.02, i, note, va="center", color=color("ink-2"))
         else:
             swing = f"€{(high - low) / 1000:,.0f}K swing · elasticity {elasticities[param]:.2f}"
-            ax.text(high + span * 0.02, i, swing, va="center", fontsize=9, color=BASELINE)
+            ax.text(high + span * 0.02, i, swing, va="center", color=color("ink-2"))
 
     ax.set_yticks(list(y_pos))
     ax.set_yticklabels(labels, fontsize=11)
-    ax.axvline(baseline_npv, color=BASELINE, linewidth=1.2, linestyle="--", alpha=0.8)
+    ax.axvline(baseline_npv, color=color("ink"), linewidth=1.2, linestyle="--")
 
     ax.set_xlabel(
         "Five-year net present value (€; costs are negative, further right is cheaper)",
-        fontsize=11,
     )
-    ax.set_title(
+    title(
+        ax,
         "Which assumptions move the five-year cost most?",
-        fontsize=13,
-        fontweight="bold",
-        pad=12,
-    )
-    ax.text(
-        0.5,
-        1.01,
         f"{report['scenario_id']} · one assumption changed at a time · "
         f"base case €{baseline_npv / 1000:,.0f}K (dashed line)",
-        transform=ax.transAxes,
-        ha="center",
-        fontsize=9,
-        color="gray",
     )
 
     apply_style(ax)
     ax.xaxis.set_major_formatter(EURO_THOUSANDS)
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=4))
+    ax.grid(axis="x")
+    ax.grid(False, axis="y")
     ax.set_xlim(min(npv_low) - span * 0.05, max(npv_high) + span * 0.40)
 
     from matplotlib.patches import Patch
 
     legend_elements = [
-        Patch(facecolor=ADVERSE, alpha=0.85, label="Assumption at its costlier end"),
-        Patch(facecolor=RECOMMENDED, alpha=0.85, label="Assumption at its cheaper end"),
+        Patch(facecolor=color(COSTLIER), label="Assumption at its costlier end"),
+        Patch(facecolor=color(CHEAPER), label="Assumption at its cheaper end"),
     ]
     ax.legend(
         handles=legend_elements,
@@ -136,21 +136,19 @@ def main(project_root: Path | None = None) -> Path:
         bbox_to_anchor=(0.5, -0.12),
         ncol=2,
         frameon=False,
-        fontsize=9,
     )
 
-    fig.text(
-        0.01,
-        -0.04,
-        "Source: sensitivity_analysis_report.json · ranges from config/tco_assumptions.yaml · "
-        "elasticity = % change in cost per % change in the assumption",
-        fontsize=7,
-        color=BASELINE,
+    footer(
+        fig,
+        "reports/sensitivity_analysis_report.json",
+        note=(
+            "Ranges from config/tco_assumptions.yaml · "
+            "elasticity = % change in cost per % change in the assumption"
+        ),
     )
-    plt.tight_layout()
+    layout(fig, 0.1, right=0.84)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(out_path, dpi=150, bbox_inches="tight")
-    plt.close(fig)
+    save_png(fig, out_path, dpi=150)
     print(f"Saved tornado chart → {out_path}")
     return out_path
 

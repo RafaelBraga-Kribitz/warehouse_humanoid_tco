@@ -21,6 +21,7 @@ dependencies = [
     "numpy-financial>=1.0",
     "huggingface-hub>=0.22",
     "matplotlib>=3.8",
+    "bk-viz @ git+https://github.com/RafaelBraga-Kribitz/bk-viz@fe8125a3043f49a798ef24740b23f81c46863562",
     "plotly>=5.20",
     "pyyaml>=6.0",
     "rich>=13.0",
@@ -50,6 +51,10 @@ analytics = [
 
 [project.scripts]
 warehouse-humanoid-tco = "warehouse_humanoid_tco.__main__:main"
+
+[tool.hatch.metadata]
+# bk-viz (the Braga design system chart theme) is pinned to a git commit.
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/warehouse_humanoid_tco"]

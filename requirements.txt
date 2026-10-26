@@ -6,6 +6,8 @@ annotated-types==0.7.0
     # via pydantic
 anyio==4.13.0
     # via httpx
+bk-viz @ git+https://github.com/RafaelBraga-Kribitz/bk-viz@fe8125a3043f49a798ef24740b23f81c46863562
+    # via warehouse-humanoid-tco
 certifi==2026.5.20
     # via
     #   httpcore
@@ -25,7 +27,9 @@ duckdb==1.5.3
 filelock==3.29.0
     # via huggingface-hub
 fonttools==4.63.0
-    # via matplotlib
+    # via
+    #   bk-viz
+    #   matplotlib
 fsspec==2026.4.0
     # via huggingface-hub
 h11==0.16.0
@@ -47,7 +51,9 @@ kiwisolver==1.5.0
 markdown-it-py==4.2.0
     # via rich
 matplotlib==3.10.9
-    # via warehouse-humanoid-tco
+    # via
+    #   bk-viz
+    #   warehouse-humanoid-tco
 mdurl==0.1.2
     # via markdown-it-py
 mypy-extensions==1.1.0

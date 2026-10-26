@@ -23,7 +23,7 @@ file under docs/, link it from the Table of Contents, and add an ADR.
 <!-- SSOT_METADATA_START
 version: 1.1.5
 status: active
-last_updated: 2026-10-11
+last_updated: 2026-10-26
 last_reviewed: 2026-06-05
 owner: Rafael Braga
 project_codename: warehouse_humanoid_tco

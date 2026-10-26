@@ -15,3 +15,6 @@ notes: "ACCEPTANCE CRITERIA:\n- chart_style.py palette hexes; module_04 imports 
   \ whiskers wired; manifest hashes.\nLOCKED DECISIONS: see QUALITY_BLUEPRINT.md and\
   \ Execution Spec v2 plan.\n\n  Closed by chart_style system + regenerated charts\
   \ + chart_data_manifest (2026-07-16).\n"
+  # 2026-10-26: the locked palette moved to the Braga design system v2.1 (bk-viz 2.0.0,
+  # DECISIONS.md D-053). chart_style.py now holds role names resolved through bk_theme;
+  # the verification script locks those roles and forbids colour literals in the generators.
