@@ -16,7 +16,7 @@ sources:
     local_dir: "data/raw/G1_WBT_Inspire_Pickup_Pillow_MainCamOnly/"
     access_date: "2026-05-29"
     license: "Unitree open license — verify at dataset page before use"
-    notes: "LeRobot V2.0+. Spatial reach + grasp (pillow = soft, deformable object). 715 episodes."
+    notes: "LeRobot V2.0+. Spatial reach + grasp (pillow = soft, deformable object). 609 episodes."
 
   - id: unifolm_wbt_clothes_washer
     name: "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly"
@@ -26,7 +26,7 @@ sources:
     local_dir: "data/raw/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_MainCamOnly/"
     access_date: "2026-05-29"
     license: "Unitree open license — verify at dataset page before use"
-    notes: "LeRobot V2.0+. Placement into constrained space (washing machine opening). 465 episodes."
+    notes: "LeRobot V2.0+. Placement into constrained space (washing machine opening). 457 episodes."
 
   - id: unifolm_wbt_dishwasher
     name: "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher"
@@ -36,7 +36,7 @@ sources:
     local_dir: "data/raw/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher/"
     access_date: "2026-05-29"
     license: "Unitree open license — verify at dataset page before use"
-    notes: "LeRobot V2.0+. Transport + placement with multiple objects (stackable items). 1460 episodes."
+    notes: "LeRobot V2.0+. Transport + placement with multiple objects (stackable items). 300 episodes."
 
   - id: diversemanip_singlearm
     name: "G1_Dex1_DiverseManip_SingleArm_256x256"
