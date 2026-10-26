@@ -22,9 +22,9 @@ Pass criterion: simulated throughput within 20% of Knapp reference (960 orders/8
 
 ## Executive Summary
 
-**PASS:** Legacy Overstaffed Team simulation achieves 949.7 ± 34.1 orders/shift, a **-1.08% deviation** from Knapp's published 960 orders/shift. This is well within the 20% tolerance gate.
+**PASS:** Legacy Overstaffed Team simulation achieves 948.6 ± 33.6 orders/shift, a **-1.19% deviation** from the 960 orders/shift reference (values from `exports/tableau_public/simulation_runs.csv`, 15 runs). This is within the 20% tolerance gate. The gate is a sanity check, not an independent calibration: the model's demand of 120 orders/hour over an 8-hour shift is itself 960 orders, so the gate can only catch lost work (see ADR-0009).
 
-All scenarios remain **statistically indistinguishable** by Kruskal-Wallis test (p=0.960110), indicating that the current queueing model produces similar realized throughput across the five staffing scenarios. Cost differentiation in Module 3 is therefore driven by financial assumptions rather than statistically separable throughput.
+All seven scenarios remain **statistically indistinguishable** by Kruskal-Wallis test (H=1.94, p=0.925), as expected: every crew is sized to serve the same demand at utilisation of 0.85 or less, so each one completes about 960 orders per shift. Cost differences in Module 3 therefore come from crew composition and financial assumptions, not from throughput.
 
 ## Benchmark Comparison
 
@@ -60,11 +60,11 @@ print(f"Status:                        {'PASS ✓' if abs(deviation_pct) <= 20 e
 print("="*60)
 ```
 
-The **-1.08% deviation** demonstrates that the baseline simulation is accurately calibrated to published Knapp AutoStore performance data.
+The **-1.19% deviation** shows that no orders are lost in the baseline run. It does not show independent calibration to Knapp performance data, because the reference equals the configured demand (ADR-0009).
 
 ## Statistical Hypothesis Test: Scenario Differentiation
 
-**Question:** Are the five scenarios statistically distinguishable by throughput?
+**Question:** Are the seven scenarios statistically distinguishable by throughput?
 
 **Method:** Kruskal-Wallis H-test (non-parametric, appropriate for n=15 per group, unknown distribution shape).
 
@@ -77,7 +77,7 @@ from scipy import stats
 # Group by scenario
 scenario_groups = [
     df.filter(pl.col("scenario_id") == sid)["throughput_orders_per_shift"].to_numpy()
-    for sid in ["Legacy Overstaffed Team", "Half Human + Half Humanoid Team", "Human + Humanoid + AMR Team", "All-Humanoid Team", "Future 2028 Humanoid Team"]
+    for sid in sorted(df["scenario_id"].unique().to_list())
 ]
 
 stat, p_value = stats.kruskal(*scenario_groups)
@@ -93,8 +93,8 @@ print("="*60)
 
 if p_value >= 0.05:
     print("\n⚠️  INTERPRETATION: All scenarios produce statistically identical throughput.")
-    print("   Root cause: synthetic cycle time distribution (narrow uniform) masks")
-    print("   inter-scenario labor headcount differences. See ADR-0006.")
+    print("   Expected: every crew is sized to serve the same demand (rho <= 0.85),")
+    print("   so realised throughput equals demand. See ADR-0009 and ADR-0014.")
     print("\n   Implication: TCO differentiation in Module 3 is driven by assumptions")
     print("   (labor cost, capex) NOT by simulation throughput variance.")
 ```
@@ -118,14 +118,14 @@ print(summary)
 
 | Criterion                           | Status | Evidence                              |
 |-------------------------------------|--------|---------------------------------------|
-| Baseline vs Knapp benchmark         | ✓ PASS | -1.08% (well within ±20% gate)        |
+| Baseline vs 960 orders/shift gate   | ✓ PASS | -1.19% (within ±20%; sanity check only, ADR-0009) |
 | Benchmark credibility (citation)    | ✓ PASS | Knapp.com public source               |
-| Scenario statistical differentiation| ✗ FAIL | Kruskal-Wallis p=0.960110 (no significant differences) |
-| Known limitation documented         | ✓ PASS | ADR-0006, MODULE_COMPLETION_SUMMARY   |
+| Scenario throughput differentiation | Not expected | Kruskal-Wallis H=1.94, p=0.925 (all crews meet the same demand) |
+| Known limitation documented         | ✓ PASS | ADR-0009 (gate is tautological), ADR-0014 (fair sizing) |
 
 **Implication for TCO (Module 3):** Module 3 differentiation among scenarios is **not** driven by throughput variance (all scenarios ~960 orders/shift). Instead, it is driven by:
 1. Labor cost reductions (fewer humans in hybrid/humanoid scenarios)
 2. Capital expenditure (humanoid purchase + operating costs)
 3. Sensitivity assumptions (capex, labor rates)
 
-This is methodologically sound and explicitly documented.
+Capacity differences between crews are shown separately in chart 03 (`reports/executive_charts/03_simulation_throughput.png`), which runs each crew at its own capacity ceiling.
