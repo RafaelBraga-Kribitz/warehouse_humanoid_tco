@@ -29,7 +29,7 @@ def sample_task_descriptions() -> list[str]:
 def real_sample_episodes() -> pl.DataFrame | None:
     """Load up to 10 real episodes from cached HuggingFace data for integration tests.
 
-    Uses the WBT Pillow dataset (smallest, ~715 episodes).
+    Uses the WBT Pillow dataset (609 episodes).
     Returns None if dataset is not available locally (allows CI to skip gracefully).
     Mark tests using this as @pytest.mark.integration to skip in fast CI.
     """
