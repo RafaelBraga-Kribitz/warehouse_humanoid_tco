@@ -21,7 +21,9 @@ When do humanoid robots beat human labor in warehouse economics? A reproducible 
 
 At modeled demand, **Lean Human + AMR Team** is the cheapest ρ-feasible scenario (€0.453M five-year present-value cost; 1 human + 3 AMRs from the demand frontier). **Lean Human Team** (3 humans, €0.647M) remains the human-only comparator. The retained eight-human row is a labelled legacy-overstaffed reference, not a fair technology baseline. Of the humanoid-inclusive scenarios, Future 2028 Humanoid Team is lowest cost (€2.533M) but remains costlier than the human baseline. In Austrian intralogistics the practical automation driver is unfillable vacancies, not wage arbitrage; this model conservatively assumes labor is available at KV rates, so robot value is understated wherever vacancies go unfilled. <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[5].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[1].npv_eur [eur_m] -->
 
-![5-year total cost ranking](./reports/executive_charts/01_tco_npv_ranking.png)
+![Horizontal bar chart of five-year total cost for seven warehouse crews, cheapest at the top](./reports/executive_charts/01_tco_npv_ranking.png)
+
+*Five-year cost of each crew (present value). The highlighted 1 human + 3 AMR crew costs €0.45M, against €1.73M for the eight-person legacy crew; every crew that includes humanoid robots costs more than the legacy crew. Grey whiskers are the 5th to 95th percentile range across 10,000 Monte Carlo draws.* <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] -->
 
 ## See it running
 
@@ -48,6 +50,7 @@ Interactive view: [Tableau Public dashboard](https://public.tableau.com/app/prof
 - **2,359 episodes** from 5 UnifoLM datasets; cycle time feeds the simulation <!-- claim: reports/module_01_capability_extraction_report.json::total_episodes_extracted [count] -->
 - **Multi-label taxonomy** is rule-based ([taxonomy rules](./docs/taxonomy_rules.md)); `success_rate=1.0` by construction (demo completion, not reliability)
 - **Provenance:** [`reports/derisk_inspection_report.json`](./reports/derisk_inspection_report.json) · notebook [01_data_profile_summary.ipynb](./notebooks/01_data_profile_summary.ipynb)
+- **Sources:** every dataset (with its pinned Hugging Face revision) and every wage and cost source is listed in [`governance/DATA_SOURCES.md`](./governance/DATA_SOURCES.md); how far each public source supports the exact number used is graded in [`governance/CITATION_AUDIT.md`](./governance/CITATION_AUDIT.md), and every cost assumption with its range is in [`governance/ASSUMPTION_REGISTER.md`](./governance/ASSUMPTION_REGISTER.md).
 - **Epistemic tags:** `VERIFIED` episode counts and SHA-pinned UnifoLM sources; `CALIBRATED` household-to-warehouse transfer factor and Austrian KV wage inputs; `SIMULATED` discrete-event warehouse runs and Monte Carlo TCO; `ILLUSTRATIVE` demo GIF and Tableau workbook as interface evidence, not production telemetry.
 
 #### External validity — what the source data is and is not
@@ -85,12 +88,12 @@ The source data are household demonstrations: plates-into-dishwasher, pillow pic
 
 | Chart | View |
 |-------|------|
-| Total cost | ![](./reports/executive_charts/01_tco_npv_ranking.png) |
-| Cost stack | ![](./reports/executive_charts/02_cost_breakdown.png) |
-| Capacity | ![](./reports/executive_charts/03_simulation_throughput.png) |
-| Tornado | ![](./reports/executive_charts/04_sensitivity_tornado.png) |
-| €/order | ![](./reports/executive_charts/05_cost_per_order.png) |
-| Effect decomposition | ![](./reports/executive_charts/06_effect_decomposition.png) |
+| Total cost | ![Five-year total cost by crew, lower is cheaper](./reports/executive_charts/01_tco_npv_ranking.png) |
+| Cost stack | ![Stacked bars splitting each crew's cost into one-time hardware and five-year operating cost](./reports/executive_charts/02_cost_breakdown.png) |
+| Capacity | ![Orders per shift each crew can sustain, estimated and simulated, against modeled demand](./reports/executive_charts/03_simulation_throughput.png) |
+| Tornado | ![Tornado chart of how each input moves the cheapest crew's five-year cost](./reports/executive_charts/04_sensitivity_tornado.png) |
+| €/order | ![Cost per order by crew with the legacy crew as a dashed reference line](./reports/executive_charts/05_cost_per_order.png) |
+| Effect decomposition | ![Savings from right-sizing the crew versus extra cost of each humanoid crew](./reports/executive_charts/06_effect_decomposition.png) |
 
 **Dashboards:** [Tableau Public](https://public.tableau.com/app/profile/rafael.braga.kribitz/viz/HumanoidRoboticsTCO/Dashboard1) · CSVs in [`exports/tableau_public/`](./exports/tableau_public/) · SQL provenance in [`analytics/sql/`](./analytics/sql/) (DuckDB; CI-tested parity).
 
@@ -163,7 +166,7 @@ CITATION.cff
 
 **Status:** Complete
 
-Repository last updated 2026-09-16 (date of the last commit).
+Repository last updated 2026-10-26 (date of the last commit).
 
 ## Author
 
