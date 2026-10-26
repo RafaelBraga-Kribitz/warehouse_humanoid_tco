@@ -8,6 +8,8 @@ tick labels Matplotlib actually produced, and compares each to its tick position
 
 from __future__ import annotations
 
+import importlib.util
+import json
 import re
 import shutil
 from collections.abc import Callable
@@ -128,3 +130,77 @@ def test_chart_09_frontier_ticks_show_plotted_values(
 
     assert result["chart"].exists()
     _assert_ticks_match_positions(get_axes())
+
+
+EURO_K_LABEL = re.compile(r"^€(-?[\d,]+)K$")
+
+
+def _load_tornado_module() -> object:
+    spec = importlib.util.spec_from_file_location(
+        "generate_tornado_chart", REPO_ROOT / "scripts" / "generate_tornado_chart.py"
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _tornado_project(tmp_path: Path) -> Path:
+    """A scratch project holding the committed sensitivity report and an OAT table built from it."""
+    report = json.loads((REPO_ROOT / "reports" / "sensitivity_analysis_report.json").read_text())
+    base = -460_171.33
+    rows: dict[str, list] = {"parameter": [], "npv_eur": [], "delta_vs_base": []}
+    for item in report["oat_elasticity_ranking"]:
+        for sign in (-1.0, 0.0, 1.0):
+            delta = sign * item["peak_delta_vs_base_eur"]
+            rows["parameter"].append(item["parameter"])
+            rows["npv_eur"].append(base + delta)
+            rows["delta_vs_base"].append(delta)
+    (tmp_path / "data" / "processed").mkdir(parents=True)
+    (tmp_path / "reports").mkdir()
+    pl.DataFrame(rows).write_parquet(
+        tmp_path / "data" / "processed" / "sensitivity_oat_results.parquet"
+    )
+    (tmp_path / "reports" / "sensitivity_analysis_report.json").write_text(json.dumps(report))
+    return tmp_path
+
+
+def test_chart_04_tornado_ticks_are_distinct_and_labels_readable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Chart 04 once labelled every tick €-0.5M or €-0.4M and showed raw config keys."""
+    module = _load_tornado_module()
+    seen: dict[str, list] = {}
+    original = Figure.savefig
+
+    def spy(self: Figure, *args: object, **kwargs: object) -> None:
+        self.canvas.draw()
+        ax = self.axes[0]
+        low, high = sorted(ax.xaxis.get_view_interval())
+        seen["x"] = [
+            (tick.label1.get_text(), loc)
+            for loc, tick in zip(
+                ax.xaxis.get_majorticklocs(), ax.xaxis.get_major_ticks(), strict=True
+            )
+            if low <= loc <= high
+        ]
+        seen["y"] = [label.get_text() for label in ax.get_yticklabels()]
+        original(self, *args, **kwargs)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(Figure, "savefig", spy)
+    out = module.main(_tornado_project(tmp_path))  # type: ignore[attr-defined]
+    assert out.exists()
+
+    labels = [text for text, _ in seen["x"]]
+    assert len(labels) >= 3 and len(set(labels)) == len(labels), f"duplicate ticks: {labels}"
+    for text, loc in seen["x"]:
+        match = EURO_K_LABEL.match(text)
+        assert match, f"unexpected tick label {text!r}"
+        assert abs(float(match.group(1).replace(",", "")) * 1000 - loc) <= 500, (text, loc)
+
+    report = json.loads((REPO_ROOT / "reports" / "sensitivity_analysis_report.json").read_text())
+    parameters = report["oat_parameter_ranges"].keys()
+    assert set(parameters) <= module.PARAM_LABELS.keys()  # type: ignore[attr-defined]
+    assert len(seen["y"]) == len(parameters)
+    for label in seen["y"]:
+        assert "_" not in label, f"code name on the axis: {label!r}"
