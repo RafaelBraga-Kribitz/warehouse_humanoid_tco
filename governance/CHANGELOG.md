@@ -17,6 +17,7 @@
 - **F-243** (2026-10-11): Charts 06 and 09 y-axis ticks fixed (formatter double-divided by 1e6, every tick read `€0.0M`); guarded by `tests/governance/test_f243_euro_axis_ticks.py`.
 - **F-244** (2026-10-11): README hero banner replaced by the text-only design-system banner and demo GIF re-recorded with the business scenario names and current numbers (the old names were baked into image pixels); locked and tested by `tests/governance/test_f244_readme_visuals.py`.
 - **F-245** (2026-10-26): Direct regression guards for the two August 2026 audit bugs (orders routed only to the first agent profile; TCO pipeline ignoring simulated throughput and configured crew counts). Both were already fixed (fb5b1c7, 191fbcb, d804785); each new test was confirmed to fail on the reintroduced bug. Guarded by `tests/governance/test_f245_august_audit_bug_guards.py`. No numeric result changed.
+- **Design system v2.1** (2026-10-26): Executive charts 01–09 and the README banner, badges and Mermaid diagram moved to the Braga design system v2.1 through bk-viz 2.0.0 (colour roles, BKribitz, provenance footer); F-214's palette test now checks role names and rejects colour literals. No numeric result changed.
 
 (See `governance/findings/` and `QUALITY_BLUEPRINT.md` for acceptance criteria.)
 
