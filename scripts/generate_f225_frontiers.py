@@ -8,7 +8,13 @@ from pathlib import Path
 import bk_theme as bk
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap, Normalize, TwoSlopeNorm
+from matplotlib.colors import (
+    BoundaryNorm,
+    LinearSegmentedColormap,
+    ListedColormap,
+    Normalize,
+    TwoSlopeNorm,
+)
 
 from warehouse_humanoid_tco.analysis.sensitivity import (
     SCENARIO_COMPOSITIONS,
@@ -80,20 +86,28 @@ def robot_frontier(
     return capex_wage, capex_transfer
 
 
-def cost_delta_scale(z_min: float, z_max: float) -> tuple[LinearSegmentedColormap, Normalize]:
-    """The design system's good/bad diverging scale, with its neutral midpoint at a cost tie.
+def cost_delta_scale(
+    z_min: float, z_max: float
+) -> tuple[np.ndarray, LinearSegmentedColormap | ListedColormap, Normalize]:
+    """Contour levels, colour map and norm for the cost delta.
 
-    Negative (robot cheaper) takes the good arm, positive (robot costlier) the bad arm. When the
-    whole grid sits on one side of zero only that arm is used, so the neutral grey always means
-    a tie and never a mid-range cost.
+    When the grid crosses zero, the design system's good/bad diverging scale with its neutral
+    midpoint at the cost tie. When the whole grid sits on one side of zero there is no tie to
+    show, so the magnitude takes the sequential scale, one band per step, so every band can be
+    told apart (the diverging scale's single arm cannot carry that many steps).
     """
-    stops = bk.palette("div")  # index 0 = darkest good, last = darkest bad
-    mid = len(stops) // 2
     if z_min < 0.0 < z_max:
-        cmap = LinearSegmentedColormap.from_list("bk-div", stops)
-        return cmap, TwoSlopeNorm(vmin=z_min, vcenter=0.0, vmax=z_max)
-    arm = stops[mid:] if z_min >= 0.0 else stops[: mid + 1]
-    return LinearSegmentedColormap.from_list("bk-div-arm", arm), Normalize(z_min, z_max)
+        cmap = LinearSegmentedColormap.from_list("bk-div", bk.palette("div"))
+        return (
+            np.linspace(z_min, z_max, 16),
+            cmap,
+            TwoSlopeNorm(vmin=z_min, vcenter=0.0, vmax=z_max),
+        )
+    steps = bk.palette("seq")[::-1]  # lightest first
+    if z_max <= 0.0:
+        steps = steps[::-1]  # larger saving (more negative) reads darker
+    levels = np.linspace(z_min, z_max, len(steps) + 1)
+    return levels, ListedColormap(steps, "bk-seq"), BoundaryNorm(levels, len(steps))
 
 
 def chart(
@@ -108,8 +122,7 @@ def chart(
     # sign convention on the colorbar label was also inverted.)
     zm = -z / 1_000_000
     z_min, z_max = float(zm.min()), float(zm.max())
-    levels = np.linspace(z_min, z_max, 16)
-    cmap, norm = cost_delta_scale(z_min, z_max)
+    levels, cmap, norm = cost_delta_scale(z_min, z_max)
     image = axis.contourf(x / 1_000, y, zm, levels=levels, cmap=cmap, norm=norm)
     if z_min < 0.0 < z_max:
         # The tie line is the chart's one highlight: it is the decision boundary.
