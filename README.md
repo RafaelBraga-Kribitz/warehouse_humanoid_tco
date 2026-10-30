@@ -34,8 +34,9 @@ At modeled demand, the lean mix is the cheapest crew that keeps every resource a
 
 *Five-year cost of each crew in today's money. The highlighted lean mix costs €0.45M, against €1.73M for the modeled legacy 8-worker reference. Every crew with humanoid robots costs more than the legacy reference. Grey whiskers show the 5th to 95th percentile range across 10,000 Monte Carlo draws. Labels round to €0.01M; the crew table gives exact euros. Chart labels: "Lean Human + AMR Team" is the lean mix, and "Legacy Overstaffed Team" is the legacy 8-worker reference.* <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] -->
 
+## Why this project exists
+Austrian warehouse operators are offered humanoid robots on the strength of vendor demos, and must also size the crews that pick beside them. This project was meant to tell a COO how many pickers one AutoStore cell needs, and whether to pilot two humanoids or wait. The pre-build evaluation expected €53k of decision value against a central cost of €11,124. That is 4.8×, so it passes the 4× financial hurdle, narrowly. Observed result: Not yet measured; no operator decision is on record. Details: [economic evaluation](docs/economic-evaluation.md). <!-- claim: structural -->
 ## See it running
-
 ![Terminal demo: the four pipeline modules running end to end](./docs/assets/demo.gif)
 
 *`make all` runs the four pipeline stages (capability extraction, simulation, TCO, dashboards). It writes every chart and table on this page to `reports/` and `exports/`. Recording: [`docs/assets/demo.cast`](./docs/assets/demo.cast).*
