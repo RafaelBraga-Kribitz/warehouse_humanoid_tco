@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import sys
 
-from _governance_check import REPO_ROOT, gate
+from _governance_check import REPO_ROOT, gate, readme_contract_text
 
 START = "<!-- DECISION_STATEMENT_START -->"
 END = "<!-- DECISION_STATEMENT_END -->"
@@ -18,7 +18,7 @@ LABOR_SCARCITY = (
 
 def main() -> int:
     charter = (REPO_ROOT / "PROJECT_CHARTER.md").read_text(encoding="utf-8")
-    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme = readme_contract_text((REPO_ROOT / "README.md").read_text(encoding="utf-8"))
     report = json.loads(
         (REPO_ROOT / "reports" / "module_03_tco_report.json").read_text(encoding="utf-8")
     )

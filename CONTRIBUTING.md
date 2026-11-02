@@ -26,6 +26,8 @@ CI enforces this list. Anything else fails the build.
 
 ```
 README.md
+README.pt-BR.md
+README.de-AT.md
 PROJECT_CHARTER.md
 CHANGELOG.md
 CONTRIBUTING.md

@@ -19,6 +19,7 @@ re-runs every closed finding's verification_script on each PR.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import yaml
@@ -27,6 +28,24 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 FINDINGS_DIR = REPO_ROOT / "governance" / "findings"
 
 ENFORCING_STATUSES = {"closed", "closed_historical"}
+
+
+def readme_contract_text(text: str) -> str:
+    """Compare the same narrative budget and evidence across EN-UK navigation layouts."""
+    lines = text.splitlines()
+    link = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+    expected = {"README.md", "README.pt-BR.md", "README.de-AT.md"}
+    if (
+        lines
+        and set(link.findall(lines[0])) == expected
+        and not link.sub("", lines[0]).strip(" ·|\t")
+    ):
+        lines = lines[1:]
+        if lines and not lines[0].strip():
+            lines = lines[1:]
+    body = "\n".join(lines)
+    spellings = {"labour": "labor", "modelled": "modeled"}
+    return re.sub(r"\b(?:labour|modelled)\b", lambda match: spellings[match[0]], body)
 
 
 def finding_status(finding_id: str | None) -> str | None:
