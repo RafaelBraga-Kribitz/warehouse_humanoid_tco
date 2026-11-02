@@ -7,34 +7,34 @@
 [![CI](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/ci.yml)
 [![Reproducibility](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/reproducibility.yml/badge.svg)](https://github.com/RafaelBraga-Kribitz/warehouse_humanoid_tco/actions/workflows/reproducibility.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-5A5C61?labelColor=26282C)](https://www.python.org/downloads/release/python-3110/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-5A5C61?labelColor=26282C)](LICENSE)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-5A5C61?labelColor=26282C)](LICENSE)
 [![Governance Audited](https://img.shields.io/badge/governance-audited-5A5C61?labelColor=26282C)](governance/AUDIT_PROCEDURE.md)
 [![Status: Complete](https://img.shields.io/badge/status-Complete-5A5C61?labelColor=26282C)](#status)
 
 **Status:** Complete
 
-When do humanoid robots beat human labor in warehouse economics? This project compares seven warehouse crews on five-year [total cost of ownership (TCO)](./docs/glossary.md#tco). It supports one decision: which crew to fund.
+When do humanoid robots beat human labour in warehouse economics? This project compares seven warehouse crews on five-year [total cost of ownership (TCO)](./docs/glossary.md#tco). It supports one decision: which crew to fund.
 
 > - **Who decides:** the COO or site director of an Austrian AutoStore-class warehouse.
 > - **What they choose:** where to put the capex (one-time hardware spend): humanoid robots, robot carts (AMRs, autonomous mobile robots), or workers only.
-> - **The answer:** fund the lean mix of 1 worker and 3 robot carts. Over five years in today's money it costs €0.45M, against €0.65M for the fair comparison, the 3-worker crew. That is a modeled saving of about €0.195M (€194,695). The modeled legacy 8-worker reference costs €1.73M. No humanoid crew costs less than that reference. <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[5].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] -->
-> - **The main caveat:** the robot speed data come from household tasks, not warehouse tasks. This is a modeled comparison, not a quote for one site. The lean mix has no humanoid robots, so it does not use the household speed factor.
+> - **The answer:** fund the lean mix of 1 worker and 3 robot carts. Over five years in today's money it costs €0.45M, against €0.65M for the fair comparison, the 3-worker crew. That is a modelled saving of about €0.195M (€194,695). The modelled legacy 8-worker reference costs €1.73M. No humanoid crew costs less than that reference. <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[5].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] -->
+> - **The main caveat:** the robot speed data come from household tasks, not warehouse tasks. This is a modelled comparison, not a quote for one site. The lean mix has no humanoid robots, so it does not use the household speed factor.
 > - **The chart:** [five-year total cost of seven crews](#what-the-numbers-say).
 
 ## Decision summary
 ### Decision statement and legend
-> **Recommendation:** deploy Lean Human + AMR Team now (1 human + 3 AMRs) and defer humanoid procurement: no pure-humanoid capex in the searched €10,000–€500,000 range reaches parity with this frontier lean mix at 120 orders/hr — even near-free humanoids lose to 1H+3A, so capex is not the binding constraint; revisit under demand growth, labor scarcity, or multi-shift operation (see `reports/demand_frontier.json`). Integration cost and availability derating are modeled (F-222). <!-- claim: reports/module_03_tco_report.json::breakeven_thresholds.vs_lean_human.no_breakeven_in_search_range; claim: reports/module_03_tco_report.json::breakeven_thresholds.vs_lean_human.search_range_eur -->
-> In Austrian intralogistics the practical automation driver is unfillable vacancies, not wage arbitrage; this model conservatively assumes labor is available at KV rates, so robot value is understated wherever vacancies go unfilled.
+> **Recommendation:** deploy Lean Human + AMR Team now (1 human + 3 AMRs) and defer humanoid procurement: no pure-humanoid capex in the searched €10,000–€500,000 range reaches parity with this frontier lean mix at 120 orders/hr — even near-free humanoids lose to 1H+3A, so capex is not the binding constraint; revisit under demand growth, labour scarcity, or multi-shift operation (see `reports/demand_frontier.json`). Integration cost and availability derating are modelled (F-222). <!-- claim: reports/module_03_tco_report.json::breakeven_thresholds.vs_lean_human.no_breakeven_in_search_range; claim: reports/module_03_tco_report.json::breakeven_thresholds.vs_lean_human.search_range_eur -->
+> In Austrian intralogistics the practical automation driver is unfillable vacancies, not wage arbitrage; this model conservatively assumes labour is available at KV rates, so robot value is understated wherever vacancies go unfilled.
 
 Legend: this is the decision statement as recorded in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md). F-222 is the tracked finding on integration cost and availability derating (robots are not available all the time). 1H+3A means 1 worker + 3 robot carts. KV is the Austrian collective wage agreement (Kollektivvertrag).
 
 ### What the numbers say
 
-At modeled demand, the lean mix is the cheapest crew that keeps every resource at or below 85 % workload. The 3-worker crew with no robots costs €0.65M (€647,401). It is the human-only comparison. Of the crews with humanoid robots, the 2028 humanoid crew costs least (€2.53M, or €2,532,753). It still costs more than the legacy 8-worker reference. The legacy reference is a modeled, overstaffed crew. No source shows a real site with 8 workers. It is not a fair technology baseline, so the fair comparison is the 3-worker crew. <!-- claim: reports/module_03_tco_report.json::scenario_results[5].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[1].npv_eur [eur_m] -->
+At modelled demand, the lean mix is the cheapest crew that keeps every resource at or below 85 % workload. The 3-worker crew with no robots costs €0.65M (€647,401). It is the human-only comparison. Of the crews with humanoid robots, the 2028 humanoid crew costs least (€2.53M, or €2,532,753). It still costs more than the legacy 8-worker reference. The legacy reference is a modelled, overstaffed crew. No source shows a real site with 8 workers. It is not a fair technology baseline, so the fair comparison is the 3-worker crew. <!-- claim: reports/module_03_tco_report.json::scenario_results[5].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[1].npv_eur [eur_m] -->
 
 ![Horizontal bar chart of five-year total cost for seven warehouse crews, cheapest at the top](./reports/executive_charts/01_tco_npv_ranking.png)
 
-*Five-year cost of each crew in today's money. The highlighted lean mix costs €0.45M, against €1.73M for the modeled legacy 8-worker reference. Every crew with humanoid robots costs more than the legacy reference. Grey whiskers show the 5th to 95th percentile range across 10,000 Monte Carlo draws. Labels round to €0.01M; the crew table gives exact euros. Chart labels: "Lean Human + AMR Team" is the lean mix, and "Legacy Overstaffed Team" is the legacy 8-worker reference.* <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] -->
+*Five-year cost of each crew in today's money. The highlighted lean mix costs €0.45M, against €1.73M for the modelled legacy 8-worker reference. Every crew with humanoid robots costs more than the legacy reference. Grey whiskers show the 5th to 95th percentile range across 10,000 Monte Carlo draws. Labels round to €0.01M; the crew table gives exact euros. Chart labels: "Lean Human + AMR Team" is the lean mix, and "Legacy Overstaffed Team" is the legacy 8-worker reference.* <!-- claim: reports/module_03_tco_report.json::scenario_results[4].npv_eur [eur_m]; claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] -->
 
 ## Why this project exists
 Austrian warehouse operators are offered humanoid robots on the strength of vendor demos, and must also size the crews that pick beside them. This project was meant to tell a COO how many pickers one AutoStore cell needs, and whether to pilot two humanoids or wait. The pre-build evaluation expected €53k of decision value against a central cost of €11,124. That is 4.8×, so it passes the 4× financial hurdle, narrowly. Observed result: Not yet measured; no operator decision is on record. Details: [economic evaluation](docs/economic-evaluation.md). <!-- claim: structural -->
@@ -82,14 +82,14 @@ Employer costs on top of wage (×1.00 to ×1.70) swing the lean mix cost by €1
 | Chart | View | How to read it |
 |-------|------|----------------|
 | 2. Cost stack | ![Stacked bars splitting each crew's cost into one-time hardware and five-year operating cost](./reports/executive_charts/02_cost_breakdown.png) | Capex plus running cost in today's money, before the robots' residual value at year 5. Totals run a little higher than chart 1: €0.46M against €0.45M for the lean mix. The gap is the residual value (€7,465 in today's money). <!-- claim: reports/module_03_tco_report.json::scenario_results[4].residual_salvage_eur --> |
-| 3. Capacity | ![Orders per shift each crew can sustain, estimated and simulated, against modeled demand](./reports/executive_charts/03_simulation_throughput.png) | Orders per 8-hour shift. The dashed line is demand: 960 orders per shift, or 120 per hour. "Bottleneck" names the resource type that limits capacity. "rho" is workload (utilisation). The simulated check uses 5 runs per crew. |
+| 3. Capacity | ![Orders per shift each crew can sustain, estimated and simulated, against modelled demand](./reports/executive_charts/03_simulation_throughput.png) | Orders per 8-hour shift. The dashed line is demand: 960 orders per shift, or 120 per hour. "Bottleneck" names the resource type that limits capacity. "rho" is workload (utilisation). The simulated check uses 5 runs per crew. |
 | 4. What moves the cost most | ![Tornado chart of how each input moves the cheapest crew's five-year cost](./reports/executive_charts/04_sensitivity_tornado.png) | This chart shows cost as a negative number, so further right is cheaper. Its base case is €460K (shown as €-460K), the cost before the robots' residual value. It is €7K above the table value. <!-- claim: reports/sensitivity_analysis_report.json::oat_elasticity_ranking --> |
 | 5. Cost per order | ![Cost per order by crew with the legacy crew as a dashed reference line](./reports/executive_charts/05_cost_per_order.png) | Cost per order in €. The dashed line (€1.444) is the legacy 8-worker reference. Red bars cost more than that line. <!-- claim: reports/module_03_tco_report.json::scenario_results[6].cost_per_order_eur --> |
-| 6. Saving from right-sizing, and extra cost of each humanoid crew | ![Savings from right-sizing the crew versus extra cost of each humanoid crew](./reports/executive_charts/06_effect_decomposition.png) | This chart shows a saving as positive and an extra cost as negative. That is the reverse of the cost sign on this page. First bar: the move from the legacy 8-worker reference to the lean mix saves a modeled €1.27M. This is a model result, not an observed saving. Other bars: extra cost against the lean mix. "1H+3A" means 1 worker + 3 robot carts. <!-- claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] --> |
+| 6. Saving from right-sizing, and extra cost of each humanoid crew | ![Savings from right-sizing the crew versus extra cost of each humanoid crew](./reports/executive_charts/06_effect_decomposition.png) | This chart shows a saving as positive and an extra cost as negative. That is the reverse of the cost sign on this page. First bar: the move from the legacy 8-worker reference to the lean mix saves a modelled €1.27M. This is a model result, not an observed saving. Other bars: extra cost against the lean mix. "1H+3A" means 1 worker + 3 robot carts. <!-- claim: reports/module_03_tco_report.json::scenario_results[6].npv_eur [eur_m] --> |
 
 ## Known limits
 
-- This ranking is a modeled comparison, not a procurement case for one site. It does not establish warehouse-native cycle times, signed humanoid quotes, or vacancy-driven labor scarcity.
+- This ranking is a modelled comparison, not a procurement case for one site. It does not establish warehouse-native cycle times, signed humanoid quotes, or vacancy-driven labour scarcity.
 - Public pricing and estimated KV wages can move the total cost in either direction. Full table: [`governance/LIMITATIONS.md`](./governance/LIMITATIONS.md).
 - Reproducibility here means the documented pipeline and a weekly CI determinism check ([`reproducibility.yml`](./.github/workflows/reproducibility.yml)). An AI coding agent ran the committed [reproduction log](./governance/REPRODUCTION_LOG.md). No third party has repeated the run from a fresh clone. The Tableau workbook and the demo GIF show the interface; they are not production telemetry.
 
@@ -103,7 +103,7 @@ Replace the household transfer proxy with local pick-move-place telemetry. Measu
 
 ## Why this project
 
-I live 20 minutes from Knapp AG's headquarters. I wanted to understand what operations analysts there evaluate when they look at humanoid robot integration in 2026. I did not want the hype cycle. I wanted the unit economics. The biggest surprise: the sensitivity analysis depends more on headcount assumptions than on robot capex. Say you have 8 workers and replace 1.6 of them with 1.6 humanoid robots. The labor saving then depends almost entirely on how many full-time workers you need. It does not depend on whether a robot costs €100K or €180K. <!-- claim: structural -->
+I live 20 minutes from Knapp AG's headquarters. I wanted to understand what operations analysts there evaluate when they look at humanoid robot integration in 2026. I did not want the hype cycle. I wanted the unit economics. The biggest surprise: the sensitivity analysis depends more on headcount assumptions than on robot capex. Say you have 8 workers and replace 1.6 of them with 1.6 humanoid robots. The labour saving then depends almost entirely on how many full-time workers you need. It does not depend on whether a robot costs €100K or €180K. <!-- claim: structural -->
 
 The second surprise: cycle time varies 3× across task categories in the real UnifoLM data. Pick tasks are far noisier than place tasks. This makes the advantage of the robot-cart mix fragile in some scenarios. With more time, I would calibrate against actual Knapp throughput benchmarks instead of public estimates. I would also add a learning curve for humanoid performance over the first 12 months of deployment.
 
@@ -197,6 +197,6 @@ Repository last updated 2026-10-26 (date of the last commit).
   </tr>
 </table>
 
-## License
+## Licence
 
 [MIT](./LICENSE)
