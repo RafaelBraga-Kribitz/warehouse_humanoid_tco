@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from _ratchet import REPO_ROOT, ratchet
+from scripts._governance_check import readme_contract_text
 
 README = REPO_ROOT / "README.md"
 
 
 def test_f215_readme_structure() -> None:
-    text = README.read_text(encoding="utf-8")
+    text = readme_contract_text(README.read_text(encoding="utf-8"))
     lines = text.splitlines()
     decision_idx = next(
         (i for i, ln in enumerate(lines) if ln.strip() == "## Decision summary"), None

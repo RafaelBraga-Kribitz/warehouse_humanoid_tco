@@ -1,0 +1,21 @@
+id: F-210-A
+title: Trilingual README navigation and UK spelling triggered false governance regressions
+category: documentation_entropy
+kind: recurrence_invariant
+status: closed
+opened_at: 2026-11-02
+closed_at: 2026-11-02
+recurrence_count: 0
+evidence: |
+  F-210 compared the README's first 25 raw lines and US spelling with a full
+  EN-UK translation, including the two-line language switcher. F-215 counted
+  that navigation against the unchanged 200-line narrative budget. The new
+  translated files also needed exact allowlist entries, and F-236's generated
+  line-number ledger needed refreshing after the README layout changed.
+verification_script: tests/governance/test_trilingual_readme_contract.py
+notes: |
+  Follow-up to F-210, F-215 and F-236. Strip only the standalone supported
+  navigation row and its blank separator when checking the original content
+  budget. Normalize only labour/labor and modelled/modeled for evidence
+  comparison. Recommendation changes, excess narrative and arbitrary new
+  Markdown files must still fail. Regenerate the ledger from its evidence tags.
