@@ -1,3 +1,5 @@
+[🇧🇷 PT-BR](README.pt-BR.md) · [🇬🇧 EN-UK](README.md) · [🇦🇹 DE-AT](README.de-AT.md)
+
 # Warehouse Humanoid TCO
 
 ![Hero Banner](./docs/assets/hero-banner-v2.png)
