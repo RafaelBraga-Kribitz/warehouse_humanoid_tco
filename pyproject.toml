@@ -86,6 +86,7 @@ venvPath = "."
 venv = ".venv"
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["tests"]
 addopts = "--cov=src/warehouse_humanoid_tco --cov-report=term-missing --cov-fail-under=90"
 markers = [
